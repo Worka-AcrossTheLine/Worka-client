@@ -1,12 +1,26 @@
 import React from 'react';
-import { Text, Image } from 'react-native';
+import { Text } from 'react-native';
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
-import SignButton from '../../components/SignButton'
+import { StackNavigationProp } from '@react-navigation/stack'
+import { AuthStackParamList } from '../../navigator/AuthNavigation'
 
+import SignButton from '../../components/SignButton'
 import { RootState } from '../../reducers'
 import * as loginAction from '../../reducers/login'
 import MainImg from '../../../assets/CreditCards.svg'
+
+type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Signup'>;
+
+type Props = {
+  Data: {
+    email: string;
+    password: string;
+  };
+  navigation: AuthHomeNavigationProp;
+};
+
+
 
 const Container = styled.SafeAreaView`
   flex: 1;
@@ -35,18 +49,14 @@ const SkipWrapper = styled.View`
   align-items:center;
 `;
 
-type Props = {
-  Data: {
-    email: string;
-    password: string;
-  };
-};
-
-function Home(props: Props) {
+function Home({ navigation }: Props) {
   const isLogin = useSelector((state: RootState) => state.login)
   const dispatch = useDispatch();
   const onSignin = () => {
     dispatch({ type: loginAction.LOGIN_REQUESTED })
+  }
+  const onSignup = () => {
+    navigation.navigate('Signup');
   }
   return (
     <Container>
@@ -57,7 +67,7 @@ function Home(props: Props) {
       <ButtonWrapper>
         <SignButtonWrapper>
           <SignButton title="Login" onPress={() => onSignin()} />
-          <SignButton title="Signup" onPress={() => onSignin()} />
+          <SignButton title="Signup" onPress={() => onSignup()} />
         </SignButtonWrapper>
         <SkipWrapper>
           <Text>SKIP NOW</Text>
