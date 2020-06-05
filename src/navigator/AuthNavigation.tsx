@@ -5,9 +5,9 @@ import Home from '../screens/auth/Home';
 
 const Stack = createStackNavigator();
 
-export default function() {
+export default function () {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator headerMode="none">
       <Stack.Screen name="Home" component={Home} />
     </Stack.Navigator>
   );
