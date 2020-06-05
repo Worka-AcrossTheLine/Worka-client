@@ -1,17 +1,38 @@
 import React from 'react';
-import { Text, Button } from 'react-native';
+import { Text, Image } from 'react-native';
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
-import { combineReducers, bindActionCreators } from 'redux'
+import SignButton from '../../components/SignButton'
 
 import { RootState } from '../../reducers'
 import * as loginAction from '../../reducers/login'
+import MainImg from '../../../assets/CreditCards.svg'
 
-const Container = styled.View`
+const Container = styled.SafeAreaView`
   flex: 1;
   background-color: #fff;
   align-items: center;
   justify-content: center;
+`;
+
+const ImageWrapper = styled.View`
+  flex:3;
+  justify-content:center;
+  align-items:center;
+`
+
+const ButtonWrapper = styled.View`
+  flex:1;
+  
+`;
+const SignButtonWrapper = styled.View`
+  flex:1;
+  flex-direction:row;
+`;
+
+const SkipWrapper = styled.View`
+  flex:1;
+  align-items:center;
 `;
 
 type Props = {
@@ -29,11 +50,19 @@ function Home(props: Props) {
   }
   return (
     <Container>
-      {isLogin.pending && <Text>로딩중...</Text>}
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <Button title="Login Btn" onPress={() => onSignin()}>
-        Login btn
-      </Button>
+      <ImageWrapper>
+        <MainImg />
+        {isLogin.pending && <Text>로딩중...</Text>}
+      </ImageWrapper>
+      <ButtonWrapper>
+        <SignButtonWrapper>
+          <SignButton title="Login" onPress={() => onSignin()} />
+          <SignButton title="Signup" onPress={() => onSignin()} />
+        </SignButtonWrapper>
+        <SkipWrapper>
+          <Text>SKIP NOW</Text>
+        </SkipWrapper>
+      </ButtonWrapper>
     </Container>
   );
 }

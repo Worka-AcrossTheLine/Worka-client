@@ -1,10 +1,10 @@
-import React, {useState, useEffect} from 'react';
-import AuthNavigation from './navigator/AuthNavigation';
+import React, { useState, useEffect } from 'react';
+import AuthNavigation from './src/navigator/AuthNavigation';
 import AsyncStorage from '@react-native-community/async-storage';
-import {NavigationContainer} from '@react-navigation/native';
-import {Provider} from 'react-redux';
+import { NavigationContainer } from '@react-navigation/native';
+import { Provider } from 'react-redux';
 
-import store from './store';
+import store from './src/store';
 
 export default function App() {
   const [islogIn, setIslogin] = useState(false);
