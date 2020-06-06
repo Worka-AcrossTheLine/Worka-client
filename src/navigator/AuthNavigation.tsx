@@ -11,11 +11,31 @@ export type AuthStackParamList = {
 
 const Stack = createStackNavigator<AuthStackParamList>();
 
+const signupHeaderStyle = {
+  backgroundColor: '#fff',
+  shadowColor: 'transparent',
+  elevation: 0,
+}
+
+const signupTitleStyle = {
+  textAlign: 'center',
+  fontSize: 24,
+  color: '#35749F'
+}
+
 export default function () {
   return (
-    <Stack.Navigator headerMode="none">
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Signup" component={Signup} />
+    <Stack.Navigator>
+      <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+      <Stack.Screen
+        name="Signup"
+        component={Signup}
+        options={{
+          headerStyle: signupHeaderStyle,
+          headerTitleAlign: 'center',
+          headerTitle: 'CREATE AN ACOUNT',
+          headerTitleStyle: signupTitleStyle,
+        }} />
     </Stack.Navigator>
   );
 }
