@@ -30,23 +30,28 @@ const Container = styled.SafeAreaView`
 `;
 
 const ImageWrapper = styled.View`
-  flex:3;
-  justify-content:center;
-  align-items:center;
+  flex:2;
+  justify-content:flex-end;
 `
 
 const ButtonWrapper = styled.View`
   flex:1;
-  
 `;
 const SignButtonWrapper = styled.View`
-  flex:1;
+  flex:2;
   flex-direction:row;
+  align-items:center;
 `;
 
 const SkipWrapper = styled.View`
   flex:1;
   align-items:center;
+`;
+
+const SkipText = styled.Text`
+  font-size:28px;
+  color:#286E9F;
+  font-weight:700;
 `;
 
 function Home({ navigation }: Props) {
@@ -62,15 +67,14 @@ function Home({ navigation }: Props) {
     <Container>
       <ImageWrapper>
         <MainImg />
-        {isLogin.pending && <Text>로딩중...</Text>}
       </ImageWrapper>
       <ButtonWrapper>
         <SignButtonWrapper>
-          <SignButton title="Login" onPress={() => onSignin()} />
+          <SignButton title="Login" onPress={() => onSignin()} color="#81B9E0" />
           <SignButton title="Signup" onPress={() => onSignup()} />
         </SignButtonWrapper>
         <SkipWrapper>
-          <Text>SKIP NOW</Text>
+          <SkipText>SKIP NOW</SkipText>
         </SkipWrapper>
       </ButtonWrapper>
     </Container>
