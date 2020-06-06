@@ -5,6 +5,7 @@ type Props = {
     title: string;
     onPress: Function;
     children?: ReactChildren;
+    color?: string;
 }
 
 const SignBtn = styled.TouchableOpacity`
@@ -18,15 +19,14 @@ const SignBtn = styled.TouchableOpacity`
 `;
 
 const SignText = styled.Text`
-    color:#81B9E0;
-    font-size:20px;
-    font-weight:900;
+    font-size:28px;
+    font-weight:700;
 `
 
-function SignButton({ title, onPress, children }: Props) {
+function SignButton({ title, onPress, children, color = "#2999E5" }: Props) {
     return (
-        <SignBtn onPress={() => onPress()}>
-            <SignText>{title}</SignText>
+        <SignBtn onPress={() => onPress()} style={{ borderColor: color }}>
+            <SignText style={{ color }}>{title}</SignText>
         </SignBtn>
     )
 }
