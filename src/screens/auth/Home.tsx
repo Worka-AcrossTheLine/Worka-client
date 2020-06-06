@@ -1,5 +1,4 @@
 import React from 'react';
-import { Text } from 'react-native';
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack'
