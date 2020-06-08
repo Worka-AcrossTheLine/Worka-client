@@ -11,11 +11,13 @@ const Wrapper = styled.SafeAreaView`
   background-color:#ffffff;
   height:${height}px;
   border-width:0px;
+  padding:0px 33px;
 `;
 
 const InputWrapper = styled.View`
   flex:4;
   justify-content:center;
+  padding:0px 20px;
 `;
 
 const BirthInputWrapper = styled.View`
@@ -48,14 +50,14 @@ function Signup() {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Wrapper>
         <InputWrapper>
-          <SignInput placeholder="email" value={email} onChange={handleInput(setEmail)} />
+          <SignInput placeholder="email" value={email} onChange={handleInput(setEmail)} keyboardType="email-address" />
           <SignInput placeholder="username" value={username} onChange={handleInput(setUsername)} />
-          <SignInput placeholder="password" value={password} onChange={handleInput(setPassword)} />
+          <SignInput placeholder="password" value={password} onChange={handleInput(setPassword)} isPassword={true} />
         </InputWrapper>
         <BirthInputWrapper>
-          <SignInput placeholder="year" value={year} onChange={handleInput(setYear)} fontSize={20} />
-          <SignInput placeholder="month" value={month} onChange={handleInput(setMonth)} fontSize={20} />
-          <SignInput placeholder="day" value={day} onChange={handleInput(setDay)} fontSize={20} />
+          <SignInput placeholder="year" value={year} onChange={handleInput(setYear)} fontSize={20} keyboardType="number-pad" />
+          <SignInput placeholder="month" value={month} onChange={handleInput(setMonth)} fontSize={20} keyboardType="number-pad" />
+          <SignInput placeholder="day" value={day} onChange={handleInput(setDay)} fontSize={20} keyboardType="number-pad" />
         </BirthInputWrapper>
         <TermsWrapper>
           <SignupText />
