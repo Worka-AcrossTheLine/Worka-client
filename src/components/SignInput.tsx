@@ -1,5 +1,4 @@
-import React from 'react'
-import { Text, View } from 'react-native'
+import React, { useState } from 'react'
 import styled from 'styled-components/native';
 
 type Props = {
@@ -9,7 +8,8 @@ type Props = {
   fontSize?: number;
   autoFocus?: boolean;
   keyboardType?: 'default' | 'number-pad' | 'email-address';
-  isPassword?: boolean
+  isPassword?: boolean;
+  type?: 'email'
 }
 
 const Input = styled.TextInput`
@@ -29,21 +29,41 @@ const InputWrapper = styled.View`
 `;
 
 
-const SignInput = ({ placeholder, value, onChange, fontSize = 28, autoFocus = false, keyboardType = "default", isPassword = false }: Props) => {
+const SignInput = ({
+  placeholder,
+  value,
+  onChange,
+  fontSize = 28,
+  autoFocus = false,
+  keyboardType = "default",
+  isPassword = false,
+  type
+}: Props) => {
+  const [isValid, setIsValid] = useState(true);
   let textAlign: 'center' | 'left' = 'center';
   if (value.length > 0) {
     textAlign = 'left';
   }
+
+  const handleValidEmail = () => {
+    if (type === 'email') {
+      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      re.test(String(value).toLowerCase()) ? setIsValid(true) : setIsValid(false);
+    }
+  }
+
   return (
     <InputWrapper>
       <Input
         placeholder={placeholder}
         value={value}
         onChangeText={(e) => onChange(e)}
-        style={{ fontSize, textAlign }}
+        style={{ fontSize, textAlign, color: (isValid ? 'black' : 'red') }}
         autoFocus={autoFocus}
         keyboardType={keyboardType}
         secureTextEntry={isPassword}
+        onBlur={handleValidEmail}
+        onFocus={() => setIsValid(true)}
       />
     </InputWrapper>
   )

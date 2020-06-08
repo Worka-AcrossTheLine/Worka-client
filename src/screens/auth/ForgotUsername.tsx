@@ -25,7 +25,15 @@ const ForgotEmail = () => {
     return (
         <Wrapper>
             <InputWrapper>
-                <SignInput placeholder="Email address for your account" fontSize={15} value={email} onChange={handleInput} autoFocus={true} keyboardType="email-address" />
+                <SignInput
+                    placeholder="Email address for your account"
+                    fontSize={15}
+                    value={email}
+                    onChange={handleInput}
+                    autoFocus={true}
+                    keyboardType="email-address"
+                    type="email"
+                />
                 <Text>Unfortunately, if you have never given us your email, we will not be able to reset your password.</Text>
             </InputWrapper>
             <SubmitButton title="REQUEST USERNAME RECOVERY EMAIL" fontSize={14} />

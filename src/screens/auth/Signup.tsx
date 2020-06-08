@@ -50,7 +50,7 @@ function Signup() {
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
       <Wrapper>
         <InputWrapper>
-          <SignInput placeholder="email" value={email} onChange={handleInput(setEmail)} keyboardType="email-address" />
+          <SignInput placeholder="email" value={email} onChange={handleInput(setEmail)} keyboardType="email-address" type="email" />
           <SignInput placeholder="username" value={username} onChange={handleInput(setUsername)} />
           <SignInput placeholder="password" value={password} onChange={handleInput(setPassword)} isPassword={true} />
         </InputWrapper>
