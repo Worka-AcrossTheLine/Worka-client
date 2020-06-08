@@ -15,6 +15,12 @@ const InputWrapper = styled.View`
     padding:33px;
 `;
 
+const ButtonWrapper = styled.View`
+    flex:1;
+    justify-content:flex-end;
+    align-items:center;
+`;
+
 const ForgotEmail = () => {
     const [email, setEmail] = useState('');
 
@@ -36,7 +42,9 @@ const ForgotEmail = () => {
                 />
                 <Text>Unfortunately, if you have never given us your email, we will not be able to reset your password.</Text>
             </InputWrapper>
-            <SubmitButton title="REQUEST USERNAME RECOVERY EMAIL" fontSize={14} />
+            <ButtonWrapper>
+                <SubmitButton title="REQUEST USERNAME RECOVERY EMAIL" fontSize={14} />
+            </ButtonWrapper>
         </Wrapper>
     )
 }

@@ -8,6 +8,7 @@ import MiddleButton from '../../components/MiddleButton'
 import { TouchableNativeFeedback, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { AuthStackParamList } from '../../navigator/AuthNavigation'
 import { StackNavigationProp } from '@react-navigation/stack'
+import { HEIGHT } from '../../constant/dimensions'
 
 type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Signin'>;
 
@@ -16,7 +17,7 @@ type Props = {
 };
 
 const Wrapper = styled.SafeAreaView`
-    height:${Math.floor(Dimensions.get('screen').height)}px;
+    height:${HEIGHT}px;
     padding:20px 33px;
 `;
 
@@ -48,7 +49,9 @@ const FindText = styled.Text`
 `;
 
 const ButtonWrapper = styled.View`
-    flex:1.5;
+    flex:1;
+    justify-content:flex-end;
+    align-items:center;
     margin-bottom:56px;
 `;
 

@@ -33,6 +33,12 @@ const InputWrapper = styled.View`
     padding:0px 47px;
 `;
 
+const ButtonWrapper = styled.View`
+    flex:1;
+    justify-content:flex-end;
+    align-items:center;
+`;
+
 const ForgotUsername = ({ navigation }: Props) => {
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -51,7 +57,9 @@ const ForgotUsername = ({ navigation }: Props) => {
                 <SignInput placeholder="Email address" value={email} onChange={handleInput(setEmail)} type="email" />
                 <Text>Unfortunately, if you have never given us your email, we will not be able to reset your password.</Text>
             </InputWrapper>
-            <SubmitButton title="REQUEST USERNAME RECOVERY EMAIL" fontSize={14} />
+            <ButtonWrapper>
+                <SubmitButton title="REQUEST USERNAME RECOVERY EMAIL" fontSize={14} />
+            </ButtonWrapper>
         </Wrapper>
     )
 }

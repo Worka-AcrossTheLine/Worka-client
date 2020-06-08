@@ -1,5 +1,4 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
 import styled from 'styled-components/native';
 
 type Props = {
@@ -18,12 +17,6 @@ const Button = styled.TouchableOpacity`
     width:80%;
 `;
 
-const Wrapper = styled.View`
-  flex:1;
-  justify-content:flex-end;
-  align-items:center;
-`;
-
 const Title = styled.Text`
   color:#FFFFFF;
   font-weight:700;
@@ -32,11 +25,9 @@ const Title = styled.Text`
 
 const MiddleButton = ({ title, fontSize = 28 }: Props) => {
     return (
-        <Wrapper>
-            <Button>
-                <Title style={{ fontSize }}>{title}</Title>
-            </Button>
-        </Wrapper>
+        <Button>
+            <Title style={{ fontSize }}>{title}</Title>
+        </Button>
     )
 }
 

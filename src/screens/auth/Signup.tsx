@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import { TouchableWithoutFeedback, Keyboard } from 'react-native'
+import { TouchableWithoutFeedback, Keyboard, StatusBar } from 'react-native'
 import styled from 'styled-components/native'
 
 import SignInput from '../../components/SignInput';
 import SignupText from '../../components/SignupText';
 import MiddleButton from '../../components/MiddleButton';
-import { height } from '../../constant/dimensions';
+import { HEIGHT } from '../../constant/dimensions';
+import { useHeaderHeight } from '@react-navigation/stack'
 
 const Wrapper = styled.SafeAreaView`
   background-color:#ffffff;
-  height:${height}px;
   border-width:0px;
   padding:0px 33px;
 `;
 
 const InputWrapper = styled.View`
-  flex:4;
+  flex:3;
   justify-content:center;
   padding:0px 20px;
 `;
@@ -32,7 +32,10 @@ const TermsWrapper = styled.View`
 `
 
 const ButtonWrapper = styled.View`
-  flex:3;
+  flex:2;
+  justify-content:flex-end;
+  align-items:center;
+  margin-bottom:56px;
 `;
 
 function Signup() {
@@ -43,12 +46,14 @@ function Signup() {
   const [month, setMonth] = useState('');
   const [day, setDay] = useState('');
 
+  const headerHeight = useHeaderHeight();
+
   const handleInput = (setState: Function) => (e: string) => {
     setState(e);
   }
   return (
-    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-      <Wrapper>
+    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} style={{}}>
+      <Wrapper style={{ height: HEIGHT - headerHeight }}>
         <InputWrapper>
           <SignInput placeholder="email" value={email} onChange={handleInput(setEmail)} keyboardType="email-address" type="email" />
           <SignInput placeholder="username" value={username} onChange={handleInput(setUsername)} />

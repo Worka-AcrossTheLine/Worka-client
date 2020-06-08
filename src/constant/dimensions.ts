@@ -1,4 +1,5 @@
-import { Dimensions } from 'react-native';
+import { Dimensions, Platform, StatusBar } from 'react-native';
 
-export const { height, width } = Dimensions.get('screen');
+const { height, width } = Dimensions.get('screen');
+export const HEIGHT: number = height - (StatusBar.currentHeight || 0);
 
