@@ -3,7 +3,6 @@ import styled from 'styled-components/native';
 import { View, Text } from 'react-native'
 
 const Wrapper = styled.View`
-    padding:33px;
 `;
 
 const BlackText = styled.Text`

@@ -3,14 +3,15 @@ import { StyleSheet, Text, View } from 'react-native'
 import styled from 'styled-components/native';
 
 type Props = {
-    title: string
+    title: string;
+    fontSize?: number;
 }
 
 const Button = styled.TouchableOpacity`
     background:#3C99E5;
     height:50px;
     border-radius:30px;
-    margin-bottom:50px;
+    margin-bottom:10px;
     justify-content:center;
     align-items:center;
     min-width:300px;
@@ -25,16 +26,15 @@ const Wrapper = styled.View`
 
 const Title = styled.Text`
   color:#FFFFFF;
-  font-size:28px;
   font-weight:700;
 `;
 
 
-const MiddleButton = ({ title }: Props) => {
+const MiddleButton = ({ title, fontSize = 28 }: Props) => {
     return (
         <Wrapper>
             <Button>
-                <Title>{title}</Title>
+                <Title style={{ fontSize }}>{title}</Title>
             </Button>
         </Wrapper>
     )
