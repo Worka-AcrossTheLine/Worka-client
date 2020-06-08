@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, Keyboard } from 'react-native'
 import styled from 'styled-components/native'
 
 
 import SignInput from '../../components/SignInput'
 import MiddleButton from '../../components/MiddleButton'
+import { TouchableNativeFeedback, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 const Wrapper = styled.SafeAreaView`
     height:${Math.floor(Dimensions.get('screen').height)}px;
@@ -51,21 +52,23 @@ const Signin = () => {
     }
 
     return (
-        <Wrapper>
-            <TitleWrapper>
-                <HeaderTitle>Worka!</HeaderTitle>
-            </TitleWrapper>
-            <InputWrapper>
-                <SignInput placeholder="username" value={username} onChange={handleInput(setUsername)} />
-                <SignInput placeholder="password" value={password} onChange={handleInput(setPassword)} />
-                <FindWrapper>
-                    <FindText>FORGOT PASSWORD</FindText>
-                </FindWrapper>
-            </InputWrapper>
-            <ButtonWrapper>
-                <MiddleButton title="LOG IN" />
-            </ButtonWrapper>
-        </Wrapper>
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} >
+            <Wrapper>
+                <TitleWrapper>
+                    <HeaderTitle>Worka!</HeaderTitle>
+                </TitleWrapper>
+                <InputWrapper>
+                    <SignInput placeholder="username" value={username} onChange={handleInput(setUsername)} />
+                    <SignInput placeholder="password" value={password} onChange={handleInput(setPassword)} />
+                    <FindWrapper>
+                        <FindText>FORGOT PASSWORD</FindText>
+                    </FindWrapper>
+                </InputWrapper>
+                <ButtonWrapper>
+                    <MiddleButton title="LOG IN" />
+                </ButtonWrapper>
+            </Wrapper>
+        </TouchableWithoutFeedback>
     )
 }
 

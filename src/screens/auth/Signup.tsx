@@ -5,10 +5,11 @@ import styled from 'styled-components/native'
 import SignInput from '../../components/SignInput';
 import SignupText from '../../components/SignupText';
 import MiddleButton from '../../components/MiddleButton';
+import { height } from '../../constant/dimensions';
 
 const Wrapper = styled.SafeAreaView`
   background-color:#ffffff;
-  flex:1;
+  height:${height}px;
   border-width:0px;
 `;
 
