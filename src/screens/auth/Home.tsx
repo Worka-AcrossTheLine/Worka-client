@@ -10,7 +10,7 @@ import { RootState } from '../../reducers'
 import * as loginAction from '../../reducers/login'
 import MainImg from '../../../assets/CreditCards.svg'
 
-type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Signup'>;
+type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Home'>;
 
 type Props = {
   Data: {
@@ -58,7 +58,7 @@ function Home({ navigation }: Props) {
   const isLogin = useSelector((state: RootState) => state.login)
   const dispatch = useDispatch();
   const onSignin = () => {
-    dispatch({ type: loginAction.LOGIN_REQUESTED })
+    navigation.navigate('Signin');
   }
   const onSignup = () => {
     navigation.navigate('Signup');

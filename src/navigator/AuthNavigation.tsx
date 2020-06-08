@@ -2,11 +2,13 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
 import Home from '../screens/auth/Home';
-import Signup from '../screens/auth/Signup'
+import Signup from '../screens/auth/Signup';
+import Signin from '../screens/auth/Signin';
 
 export type AuthStackParamList = {
   Home: undefined;
   Signup: undefined;
+  Signin: undefined;
 }
 
 const Stack = createStackNavigator<AuthStackParamList>();
@@ -36,6 +38,9 @@ export default function () {
           headerTitle: 'CREATE AN ACOUNT',
           headerTitleStyle: signupTitleStyle,
         }} />
+      <Stack.Screen name="Signin" component={Signin} options={{
+        headerShown: false
+      }} />
     </Stack.Navigator>
   );
 }
