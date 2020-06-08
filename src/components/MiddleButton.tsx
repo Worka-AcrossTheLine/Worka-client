@@ -2,6 +2,10 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import styled from 'styled-components/native';
 
+type Props = {
+    title: string
+}
+
 const Button = styled.TouchableOpacity`
     background:#3C99E5;
     height:50px;
@@ -26,11 +30,11 @@ const Title = styled.Text`
 `;
 
 
-const MiddleButton = () => {
+const MiddleButton = ({ title }: Props) => {
     return (
         <Wrapper>
             <Button>
-                <Title>CREATE ACCOUNT</Title>
+                <Title>{title}</Title>
             </Button>
         </Wrapper>
     )
