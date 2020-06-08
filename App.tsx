@@ -9,7 +9,7 @@ import Loading from './src/components/Loading'
 
 export default function App() {
   const [islogIn, setIslogin] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const setLogin = async () => {
     const login = await AsyncStorage.getItem('isLogin');
     if (login === 'true') {
