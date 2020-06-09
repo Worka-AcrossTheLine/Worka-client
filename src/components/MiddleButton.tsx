@@ -4,6 +4,7 @@ import styled from 'styled-components/native';
 type Props = {
     title: string;
     fontSize?: number;
+    onPress: Function;
 }
 
 const Button = styled.TouchableOpacity`
@@ -23,9 +24,9 @@ const Title = styled.Text`
 `;
 
 
-const MiddleButton = ({ title, fontSize = 28 }: Props) => {
+const MiddleButton = ({ title, fontSize = 28, onPress }: Props) => {
     return (
-        <Button>
+        <Button onPress={() => onPress()}>
             <Title style={{ fontSize }}>{title}</Title>
         </Button>
     )

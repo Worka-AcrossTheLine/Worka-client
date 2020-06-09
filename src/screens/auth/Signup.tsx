@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import { TouchableWithoutFeedback, Keyboard } from 'react-native'
 import styled from 'styled-components/native'
+import { useHeaderHeight, StackNavigationProp } from '@react-navigation/stack'
 
+import { AuthStackParamList } from '../../navigator/AuthNavigation'
 import SignInput from '../../components/SignInput';
 import SignupText from '../../components/SignupText';
 import MiddleButton from '../../components/MiddleButton';
 import { HEIGHT } from '../../constant/dimensions';
-import { useHeaderHeight } from '@react-navigation/stack'
+
+type AuthHomeNavigationProps = StackNavigationProp<AuthStackParamList, 'Signup'>
+
+type Props = {
+  navigation: AuthHomeNavigationProps
+}
 
 const Wrapper = styled.SafeAreaView`
   background-color:#ffffff;
@@ -38,7 +45,7 @@ const ButtonWrapper = styled.View`
   margin-bottom:56px;
 `;
 
-function Signup() {
+function Signup({ navigation }: Props) {
   const [email, setEmail] = useState('');
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -51,6 +58,11 @@ function Signup() {
   const handleInput = (setState: Function) => (e: string) => {
     setState(e);
   }
+
+  const handleSignup = () => {
+    navigation.navigate('Tendency');
+  }
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} style={{}}>
       <Wrapper style={{ height: HEIGHT - headerHeight }}>
@@ -68,7 +80,7 @@ function Signup() {
           <SignupText />
         </TermsWrapper>
         <ButtonWrapper>
-          <MiddleButton title="CREATE ACCOUNT" />
+          <MiddleButton title="CREATE ACCOUNT" onPress={handleSignup} />
         </ButtonWrapper>
       </Wrapper>
     </TouchableWithoutFeedback>
