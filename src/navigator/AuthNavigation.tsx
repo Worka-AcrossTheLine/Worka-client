@@ -1,12 +1,12 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import Home from '../screens/auth/Home';
-import Signup from '../screens/auth/Signup';
-import Signin from '../screens/auth/Signin';
-import ForgotUsername from '../screens/auth/ForgotUsername';
-import ForgotPassword from '../screens/auth/ForgotPassword';
-import Tendency from '../screens/tendency'
+import Home from '../screens/Auth/Home';
+import Signup from '../screens/Auth/Signup';
+import Signin from '../screens/Auth/Signin';
+import ForgotUsername from '../screens/Auth/ForgotUsername';
+import ForgotPassword from '../screens/Auth/ForgotPassword';
+import Tendency from '../screens/Tendency/Select'
 
 export type AuthStackParamList = {
   Home: undefined;
