@@ -63,6 +63,10 @@ const Signin = ({ navigation }: Props) => {
         setInput(e);
     }
 
+    const handleLogin = () => {
+        console.log("LOGIN");
+    }
+
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} >
             <Wrapper>
@@ -77,7 +81,7 @@ const Signin = ({ navigation }: Props) => {
                     </FindWrapper>
                 </InputWrapper>
                 <ButtonWrapper>
-                    <MiddleButton title="LOG IN" />
+                    <MiddleButton title="LOG IN" onPress={handleLogin} />
                 </ButtonWrapper>
             </Wrapper>
         </TouchableWithoutFeedback>

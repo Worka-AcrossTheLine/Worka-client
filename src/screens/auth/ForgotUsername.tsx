@@ -28,6 +28,10 @@ const ForgotEmail = () => {
         setEmail(e);
     };
 
+    const handleSubmit = () => {
+        console.log("SUBMIT")
+    }
+
     return (
         <Wrapper>
             <InputWrapper>
@@ -43,7 +47,7 @@ const ForgotEmail = () => {
                 <Text>Unfortunately, if you have never given us your email, we will not be able to reset your password.</Text>
             </InputWrapper>
             <ButtonWrapper>
-                <SubmitButton title="REQUEST USERNAME RECOVERY EMAIL" fontSize={14} />
+                <SubmitButton title="REQUEST USERNAME RECOVERY EMAIL" fontSize={14} onPress={handleSubmit} />
             </ButtonWrapper>
         </Wrapper>
     )
