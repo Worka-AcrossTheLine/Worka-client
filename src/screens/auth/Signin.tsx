@@ -8,7 +8,7 @@ import MiddleButton from '../../components/MiddleButton'
 import { TouchableNativeFeedback, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { AuthStackParamList } from '../../navigator/AuthNavigation'
 import { StackNavigationProp } from '@react-navigation/stack'
-import { HEIGHT } from '../../constant/dimensions'
+import { HEIGHT } from '../../constants/dimensions'
 
 type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Signin'>;
 
