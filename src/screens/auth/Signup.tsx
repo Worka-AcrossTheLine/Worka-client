@@ -7,7 +7,7 @@ import { AuthStackParamList } from '../../navigator/AuthNavigation'
 import SignInput from '../../components/SignInput';
 import SignupText from '../../components/SignupText';
 import MiddleButton from '../../components/MiddleButton';
-import { HEIGHT } from '../../constant/dimensions';
+import { HEIGHT } from '../../constants/dimensions';
 
 type AuthHomeNavigationProps = StackNavigationProp<AuthStackParamList, 'Signup'>
 
