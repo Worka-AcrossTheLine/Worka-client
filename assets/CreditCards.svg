@@ -22,5 +22,5 @@
   <rect id="Discover" width="339.101" height="214.436" rx="12" transform="translate(10 123.957)" fill="url(#pattern-4)"/>
   <rect id="Capital_One" data-name="Capital One" width="359.101" height="226.436" rx="12" transform="translate(0 170.586)" fill="url(#pattern-5)"/>
   <text id="엄카_No_아카_No_" data-name="엄카 No!
-아카 No!" transform="translate(118.051 241.997)" fill="#fff" font-size="14" font-family="AppleSDGothicNeo-SemiBold, Apple SD Gothic Neo" font-weight="600" opacity="0.675"><tspan x="0" y="0">엄카</tspan><tspan y="0" xml:space="preserve" font-family="Poppins-SemiBold, Poppins"> No!</tspan><tspan x="0" y="25">아카</tspan><tspan y="25" xml:space="preserve" font-family="Poppins-SemiBold, Poppins"> No!</tspan></text>
+아카 No!" transform="translate(118.051 241.997)" fill="#fff" font-size="14" font-family="AppleSDGothicNeo-SemiBold, Apple SD Gothic Neo" font-weight="600" opacity="0.675"><tspan x="0" y="0">엄카</tspan><tspan y="0" xml:space="preserve" font-family="AppleSDGothicNeo-Bold, Poppins"> No!</tspan><tspan x="0" y="25">아카</tspan><tspan y="25" xml:space="preserve" font-family="AppleSDGothicNeo-Bold, Poppins"> No!</tspan></text>
 </svg>
