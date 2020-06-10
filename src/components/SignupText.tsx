@@ -1,6 +1,5 @@
 import React from 'react'
 import styled from 'styled-components/native';
-import { View, Text } from 'react-native'
 
 const Wrapper = styled.View`
 `;
@@ -14,18 +13,18 @@ const BlueText = styled.Text`
 `;
 
 const SignupText = () => {
-    return (
-        <Wrapper>
-            <BlackText>By signing up, you agree to our
+  return (
+    <Wrapper>
+      <BlackText>By signing up, you agree to our
                 <BlueText> Terms </BlueText>
-                and that you have read our
+        and that you have read our
                 <BlueText> Privacy Policy </BlueText>
-                and
+        and
                 <BlueText> Content Policy</BlueText>
-                .
+        .
             </BlackText>
-        </Wrapper>
-    )
+    </Wrapper>
+  )
 }
 
 export default SignupText

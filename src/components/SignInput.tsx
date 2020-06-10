@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 type Props = {
   placeholder: string;
   value: string;
-  onChange: Function;
+  onChange: (e: string) => void;
   fontSize?: number;
   autoFocus?: boolean;
   keyboardType?: 'default' | 'number-pad' | 'email-address';

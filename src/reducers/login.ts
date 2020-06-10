@@ -24,9 +24,9 @@ type LoginActionTypes = {
 };
 
 export type LoginState = {
-  pending: Boolean;
-  isLogin: Boolean;
-  isSkip: Boolean;
+  pending: boolean;
+  isLogin: boolean;
+  isSkip: boolean;
   token: string;
 };
 

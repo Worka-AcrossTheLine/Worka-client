@@ -3,7 +3,7 @@ import styled from 'styled-components/native';
 
 type Props = {
     title: string;
-    onPress: Function;
+    onPress: () => void;
 }
 
 const Button = styled.TouchableHighlight`
