@@ -15,16 +15,15 @@ type Props = {
   navigation: AuthHomeNavigationProps
 }
 
-const Wrapper = styled.SafeAreaView`
+const Wrapper = styled.View`
   background-color:#ffffff;
-  border-width:0px;
   padding:0px 33px;
 `;
 
 const InputWrapper = styled.View`
   flex:3;
   justify-content:center;
-  padding:0px 20px;
+  padding:0px 33px;
 `;
 
 const BirthInputWrapper = styled.View`
@@ -34,9 +33,7 @@ const BirthInputWrapper = styled.View`
   flex-direction:row;
 `;
 
-const TermsWrapper = styled.View`
-  flex:1;
-`
+const TermsWrapper = styled.View``
 
 const ButtonWrapper = styled.View`
   flex:2;
@@ -80,7 +77,7 @@ function Signup({ navigation }: Props) {
           <SignupText />
         </TermsWrapper>
         <ButtonWrapper>
-          <MiddleButton title="CREATE ACCOUNT" onPress={handleSignup} />
+          <MiddleButton title="CREATE ACCOUNT" onPress={handleSignup} isPending={false} />
         </ButtonWrapper>
       </Wrapper>
     </TouchableWithoutFeedback>

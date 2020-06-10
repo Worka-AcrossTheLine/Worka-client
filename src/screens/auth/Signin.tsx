@@ -1,11 +1,12 @@
 import React, { useState } from 'react'
-import { StyleSheet, Text, View, Dimensions, Keyboard } from 'react-native'
+import { Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/native'
 
-
+import { RootState } from '../../reducers'
+import { LOGIN_REQUESTED } from '../../reducers/login'
 import SignInput from '../../components/SignInput'
 import MiddleButton from '../../components/MiddleButton'
-import { TouchableNativeFeedback, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { AuthStackParamList } from '../../navigator/AuthNavigation'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { HEIGHT } from '../../constants/dimensions'
@@ -58,12 +59,16 @@ const ButtonWrapper = styled.View`
 const Signin = ({ navigation }: Props) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const loginState = useSelector((state: RootState) => state.login)
+    const dispatch = useDispatch();
+    console.log(loginState)
 
     const handleInput = (setInput: React.Dispatch<string>) => (e: string) => {
         setInput(e);
     }
 
     const handleLogin = () => {
+        dispatch({ type: LOGIN_REQUESTED, data: { username, password } })
         console.log("LOGIN");
     }
 
@@ -81,7 +86,7 @@ const Signin = ({ navigation }: Props) => {
                     </FindWrapper>
                 </InputWrapper>
                 <ButtonWrapper>
-                    <MiddleButton title="LOG IN" onPress={handleLogin} />
+                    <MiddleButton title="LOG IN" onPress={handleLogin} isPending={loginState.pending} />
                 </ButtonWrapper>
             </Wrapper>
         </TouchableWithoutFeedback>
