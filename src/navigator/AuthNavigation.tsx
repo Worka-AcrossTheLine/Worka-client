@@ -7,6 +7,7 @@ import Signin from '../screens/Auth/Signin';
 import ForgotUsername from '../screens/Auth/ForgotUsername';
 import ForgotPassword from '../screens/Auth/ForgotPassword';
 import Tendency from '../screens/Tendency/Select'
+// import FeedHome from '../screens/Feed/FeedHome'
 
 export type AuthStackParamList = {
   Home: undefined;
@@ -15,6 +16,7 @@ export type AuthStackParamList = {
   ForgotPassword: undefined;
   ForgotUsername: undefined;
   Tendency: undefined;
+  // FeedHome: undefined;
 }
 
 const Stack = createStackNavigator<AuthStackParamList>();
@@ -60,6 +62,9 @@ export default function () {
         headerTitleStyle: titleStyle
       }} />
       <Stack.Screen name="Tendency" component={Tendency} options={{ headerShown: false }} />
+      {/* <Stack.Screen name="FeedHome" component={FeedHome} options={{
+        headerShown: false
+        }} /> */}
     </Stack.Navigator>
   );
 }
