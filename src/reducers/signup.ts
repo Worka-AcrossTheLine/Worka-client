@@ -5,6 +5,7 @@ import * as Api from '../Api/login';
 
 import LOGIN_SUCCESS from './login';
 
+export const SIGNUP_INIT = 'SIGNUP_INIT' as const;
 export const SIGNUP_REQUESTED = 'SIGNUP_REQUESTED' as const;
 export const SIGNUP_SUCCESS = 'SIGNUPSUCCESS' as const;
 export const SIGNUP_FAILURE = 'SIGNUPFAILURE' as const;
@@ -33,10 +34,21 @@ export type SignupResponse = {
     }
 }
 
+export type SignupError = {
+    data: {
+        email?: string[];
+        username?: string[];
+    };
+    status: number;
+}
+
 export type SignupState = {
     pending: boolean;
     isSignup: boolean;
+    isError: boolean;
     token: string;
+    email: string;
+    username: string;
 };
 
 export const requestLogin = () =>
@@ -47,21 +59,36 @@ export const requestLogin = () =>
 export function* signupUser(action: SignupActionTypes) {
     try {
         const user: SignupResponse = yield call(Api.signup, action.payload);
+        console.log("USERS", user);
         yield put({ type: SIGNUP_SUCCESS, payload: user.data });
         yield put({ type: LOGIN_SUCCESS });
-    } catch (err) {
-        yield put({ type: SIGNUP_FAILURE })
+    } catch (_error) {
+        let { data }: SignupError = _error;
+        const email = data.email ? (data.email[0]) : '';
+        const username = data.username ? (data.username[0]) : '';
+        yield put({ type: SIGNUP_FAILURE, payload: { email, username } })
     }
 }
 
 const initialState: SignupState = {
     pending: false,
     isSignup: false,
+    isError: false,
     token: '',
+    email: '',
+    username: '',
 };
 
 const reducer = handleActions(
     {
+        [SIGNUP_INIT]: () => ({
+            pending: false,
+            isSignup: false,
+            isError: false,
+            token: '',
+            email: '',
+            username: '',
+        }),
         [SIGNUP_REQUESTED]: (state) => ({
             ...state,
             pending: true,
@@ -72,10 +99,13 @@ const reducer = handleActions(
             isSignup: true,
             token: payload.token,
         }),
-        [SIGNUP_FAILURE]: (state) => ({
+        [SIGNUP_FAILURE]: (state, { payload }) => ({
             ...state,
             pending: false,
             isSignup: false,
+            isError: true,
+            email: payload.email,
+            username: payload.username,
         }),
     },
     initialState,
