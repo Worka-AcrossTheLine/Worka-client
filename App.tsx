@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import AuthNavigation from './src/navigator/AuthNavigation';
 import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
 
 import store from './src/store';
-import Loading from './src/components/Loading'
+import NavController from './src/components/NavController'
 
 export default function App() {
-  const [islogIn, setIslogin] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLogin, setIsLogin] = useState(false);
+
   const setLogin = async () => {
-    const login = await AsyncStorage.getItem('isLogin');
-    if (login === 'true') {
-      setIslogin(true);
+    AsyncStorage.removeItem('token');
+    // testing 을 위한 토큰 삭제
+    const login = await AsyncStorage.getItem('token');
+    // token 여부 확인 ( 로그인 여부 확인 );
+    if (typeof login === 'string') {
+      setIsLogin(true)
     }
   };
   useEffect(() => {
@@ -22,8 +24,7 @@ export default function App() {
   return (
     <Provider store={store}>
       <NavigationContainer>
-        {islogIn ? <AuthNavigation /> : <AuthNavigation />}
-        {isLoading && <Loading />}
+        <NavController isLogin={isLogin} setIsLogin={setIsLogin} />
       </NavigationContainer>
     </Provider>
   );

@@ -1,30 +1,29 @@
-import axios, {AxiosPromise} from 'axios';
+import axios, { AxiosPromise } from 'axios';
 
-type LoginPayload = {
-  email: string;
-  password: string;
-};
-
-type UserResponse = {
-  data: User;
-};
-
-type User = {
-  id: number;
-  email: string;
-  first_name: string;
-  last_name: string;
-  avatar: string;
-};
+import { LoginPayload, LoginResponse } from '../reducers/login'
+import { SignupPayload, SignupResponse } from '../reducers/signup';
 
 const reqresApi = axios.create({
-  baseURL: 'https://reqres.in',
+  baseURL: 'http://127.0.0.1:8000/api/v1/accounts',
 });
 
 export const login = (
   loginPayload: LoginPayload,
-): AxiosPromise<UserResponse> => {
-  const {email, password} = loginPayload;
-  console.log(email, password);
-  return reqresApi.get(`/api/users/${password}`);
+): AxiosPromise<LoginResponse> => {
+  const { username, password } = loginPayload;
+  return reqresApi.post(`/login/`, {
+    username,
+    password
+  });
 };
+
+export const signup = (
+  signupPayload: SignupPayload): AxiosPromise<SignupResponse> => {
+  const { email, username, password, year, month, day } = signupPayload;
+  return reqresApi.post('/signup/', {
+    email,
+    username,
+    password,
+    birth_date: `${year}-${month}-${day}`
+  })
+}
