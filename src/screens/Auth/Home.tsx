@@ -5,8 +5,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { AuthStackParamList } from '../../navigator/AuthNavigation'
 
 import SignButton from '../../components/SignButton'
-import { RootState } from '../../reducers'
-import * as loginAction from '../../reducers/login'
+import { LOGIN_SKIP } from '../../reducers/login'
 import MainImg from '../../../assets/CreditCards.svg'
 
 type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Home'>;
@@ -42,7 +41,7 @@ const SignButtonWrapper = styled.View`
   align-items:center;
 `;
 
-const SkipWrapper = styled.View`
+const SkipWrapper = styled.TouchableOpacity`
   flex:1;
   align-items:center;
 `;
@@ -54,12 +53,21 @@ const SkipText = styled.Text`
 `;
 
 function Home({ navigation }: Props) {
+
+  const dispatch = useDispatch();
+
   const onSignin = () => {
     navigation.navigate('Signin');
   }
+
   const onSignup = () => {
     navigation.navigate('Signup');
   }
+
+  const onSkip = () => {
+    dispatch({ type: LOGIN_SKIP })
+  }
+
   return (
     <Container>
       <ImageWrapper>
@@ -70,7 +78,7 @@ function Home({ navigation }: Props) {
           <SignButton title="Login" onPress={() => onSignin()} color="#81B9E0" />
           <SignButton title="Signup" onPress={() => onSignup()} />
         </SignButtonWrapper>
-        <SkipWrapper>
+        <SkipWrapper onPress={() => onSkip()}>
           <SkipText>SKIP NOW</SkipText>
         </SkipWrapper>
       </ButtonWrapper>
