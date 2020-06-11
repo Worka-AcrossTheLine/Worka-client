@@ -14,6 +14,8 @@ export const login = (
   return reqresApi.post(`/login/`, {
     username,
     password
+  }).catch((error: AxiosError) => {
+    throw error.response
   });
 };
 
