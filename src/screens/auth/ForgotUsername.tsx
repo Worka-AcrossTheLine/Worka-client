@@ -47,7 +47,7 @@ const ForgotEmail = () => {
                 <Text>Unfortunately, if you have never given us your email, we will not be able to reset your password.</Text>
             </InputWrapper>
             <ButtonWrapper>
-                <SubmitButton title="REQUEST USERNAME RECOVERY EMAIL" fontSize={14} onPress={handleSubmit} />
+                <SubmitButton title="REQUEST USERNAME RECOVERY EMAIL" fontSize={14} onPress={handleSubmit} isPending={false} />
             </ButtonWrapper>
         </Wrapper>
     )

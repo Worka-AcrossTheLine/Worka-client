@@ -58,7 +58,7 @@ const ForgotUsername = ({ navigation }: Props) => {
                 <Text>Unfortunately, if you have never given us your email, we will not be able to reset your password.</Text>
             </InputWrapper>
             <ButtonWrapper>
-                <SubmitButton title="REQUEST USERNAME RECOVERY EMAIL" fontSize={14} />
+                <SubmitButton title="REQUEST USERNAME RECOVERY EMAIL" fontSize={14} onPress={() => console.log("asd")} isPending={false} />
             </ButtonWrapper>
         </Wrapper>
     )
