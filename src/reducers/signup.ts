@@ -5,6 +5,7 @@ import * as Api from '../Api/login';
 
 import LOGIN_SUCCESS from './login';
 
+export const SIGNUP_INIT = 'SIGNUP_INIT' as const;
 export const SIGNUP_REQUESTED = 'SIGNUP_REQUESTED' as const;
 export const SIGNUP_SUCCESS = 'SIGNUPSUCCESS' as const;
 export const SIGNUP_FAILURE = 'SIGNUPFAILURE' as const;
@@ -44,6 +45,7 @@ export type SignupError = {
 export type SignupState = {
     pending: boolean;
     isSignup: boolean;
+    isError: boolean;
     token: string;
     email: string;
     username: string;
@@ -71,6 +73,7 @@ export function* signupUser(action: SignupActionTypes) {
 const initialState: SignupState = {
     pending: false,
     isSignup: false,
+    isError: false,
     token: '',
     email: '',
     username: '',
@@ -78,6 +81,14 @@ const initialState: SignupState = {
 
 const reducer = handleActions(
     {
+        [SIGNUP_INIT]: () => ({
+            pending: false,
+            isSignup: false,
+            isError: false,
+            token: '',
+            email: '',
+            username: '',
+        }),
         [SIGNUP_REQUESTED]: (state) => ({
             ...state,
             pending: true,
@@ -92,6 +103,7 @@ const reducer = handleActions(
             ...state,
             pending: false,
             isSignup: false,
+            isError: true,
             email: payload.email,
             username: payload.username,
         }),
