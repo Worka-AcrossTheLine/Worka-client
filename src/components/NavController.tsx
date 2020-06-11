@@ -11,7 +11,8 @@ type Props = {
 }
 
 export default function NavController({ isLogin, setIsLogin }: Props) {
-    setIsLogin(useSelector((state: RootState) => state.login.isLogin))
+    const loginState = useSelector((state: RootState) => state.login)
+    setIsLogin(loginState.isSkip || loginState.isLogin);
     return (
         <>
             {!isLogin ?
