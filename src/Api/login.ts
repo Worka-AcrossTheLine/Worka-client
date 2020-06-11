@@ -1,4 +1,4 @@
-import axios, { AxiosPromise } from 'axios';
+import axios, { AxiosPromise, AxiosError } from 'axios';
 
 import { LoginPayload, LoginResponse } from '../reducers/login'
 import { SignupPayload, SignupResponse } from '../reducers/signup';
@@ -25,5 +25,7 @@ export const signup = (
     username,
     password,
     birth_date: `${year}-${month}-${day}`
+  }).catch((error: AxiosError) => {
+    throw error.response;
   })
 }
