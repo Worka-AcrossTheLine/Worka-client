@@ -1,15 +1,19 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/native'
 
+import { StackNavigationProp } from '@react-navigation/stack'
+import { AuthStackParamList } from '../../navigator/AuthNavigation'
+
 import { RootState } from '../../reducers'
 import { LOGIN_REQUESTED } from '../../reducers/login'
+
 import SignInput from '../../components/SignInput'
 import MiddleButton from '../../components/MiddleButton'
-import { AuthStackParamList } from '../../navigator/AuthNavigation'
-import { StackNavigationProp } from '@react-navigation/stack'
+
 import { HEIGHT } from '../../constants/dimensions'
+import validCheck from '../../constants/validCheck'
 
 type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Signin'>;
 
@@ -57,20 +61,36 @@ const ButtonWrapper = styled.View`
 `;
 
 const Signin = ({ navigation }: Props) => {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState('test12');
+    const [usernameValid, setUsernameValid] = useState('');
+    const [password, setPassword] = useState('12345678');
+    const [passwordValid, setPasswordValid] = useState('');
+    const [isSubmit, setIsSubmit] = useState(false);
     const loginState = useSelector((state: RootState) => state.login)
     const dispatch = useDispatch();
-    console.log(loginState)
 
     const handleInput = (setInput: React.Dispatch<string>) => (e: string) => {
         setInput(e);
     }
 
     const handleLogin = () => {
-        dispatch({ type: LOGIN_REQUESTED, data: { username, password } })
-        console.log("LOGIN");
+        Keyboard.dismiss();
+        //signup 과 동일
+        setTimeout(() => {
+            setIsSubmit(true);
+        }, 50);
     }
+
+    useEffect(() => {
+        setIsSubmit(false);
+        if (isSubmit) {
+            if (!usernameValid && !passwordValid) {
+                console.log("VLIAD")
+                dispatch({ type: LOGIN_REQUESTED, payload: { username, password } });
+                // 로그인에 성공할경우 components/NavController 에서 감지해서 메인 nav 로 분기
+            }
+        }
+    }, [isSubmit]);
 
     return (
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} >
@@ -79,8 +99,21 @@ const Signin = ({ navigation }: Props) => {
                     <HeaderTitle>Worka!</HeaderTitle>
                 </TitleWrapper>
                 <InputWrapper>
-                    <SignInput placeholder="username" value={username} onChange={handleInput(setUsername)} />
-                    <SignInput placeholder="password" value={password} onChange={handleInput(setPassword)} isPassword={true} />
+                    <SignInput
+                        placeholder="username"
+                        value={username}
+                        valid={usernameValid}
+                        onChange={handleInput(setUsername)}
+                        onBlur={() => validCheck('username')(username, setUsernameValid)}
+                    />
+                    <SignInput
+                        placeholder="password"
+                        value={password}
+                        isPassword={true}
+                        valid={passwordValid}
+                        onChange={handleInput(setPassword)}
+                        onBlur={() => validCheck('password')(password, setPasswordValid)}
+                    />
                     <FindWrapper onPress={() => navigation.navigate("ForgotPassword")}>
                         <FindText>FORGOT PASSWORD</FindText>
                     </FindWrapper>
