@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import TendencyButton from '../../components/TendencyButton';
 import { TENDENCYQUESTIONS } from '../../constants/tendencyQ';
+import { RootState } from '../../reducers';
+import { TENDENCY } from '../../reducers/login'
 
 
 const Wrapper = styled.SafeAreaView`
@@ -49,24 +51,20 @@ const BottomButtonWrapper = styled.View`
 const Select = () => {
     const [mbtiIndex, setMbtiIndex] = useState(0);
     const [mbti, setMbti] = useState('');
-    let result = '';
 
-    const chooseQ1 = () => {
-        setMbti(mbti + q1.type)
-        if (mbtiIndex > 2) {
-            console.log(mbti);
-            return;
-        }
-        setMbtiIndex(mbtiIndex + 1);
-    }
+    const dispatch = useDispatch();
+    const loginState = useSelector((state: RootState) => state.login)
 
-    const chooseQ2 = () => {
-        setMbti(mbti + q2.type);
-        if (mbtiIndex > 2) {
-            console.log(mbti);
-            return;
+
+    const chooseQ = (quest: { type: string, q: string }) => () => {
+        if (!loginState.pending) {
+            setMbti(mbti + quest.type)
+            if (mbtiIndex > 2) {
+                dispatch({ type: TENDENCY, payload: { mbti: mbti + quest.type, token: loginState.token } })
+                return;
+            }
+            setMbtiIndex(mbtiIndex + 1);
         }
-        setMbtiIndex(mbtiIndex + 1);
     }
 
     const [q1, q2] = TENDENCYQUESTIONS[mbtiIndex];
@@ -80,10 +78,10 @@ const Select = () => {
             </TitleWrapper>
             <BodyWrapper>
                 <TopButtonWrapper>
-                    <TendencyButton title={q1.q} onPress={chooseQ1} />
+                    <TendencyButton title={q1.q} onPress={chooseQ(q1)} />
                 </TopButtonWrapper>
                 <BottomButtonWrapper>
-                    <TendencyButton title={q2.q} onPress={chooseQ2} />
+                    <TendencyButton title={q2.q} onPress={chooseQ(q2)} />
                 </BottomButtonWrapper>
             </BodyWrapper>
         </Wrapper>

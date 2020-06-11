@@ -11,6 +11,9 @@ export const LOGIN_REQUESTED = 'LOGIN_REQUESTED' as const;
 export const LOGIN_SUCCESS = 'LOGINSUCCESS' as const;
 export const LOGIN_FAILURE = 'LOGINFAILURE' as const;
 
+export const TENDENCY_REQUEST = 'TENDENCY_REQUEST' as const;
+export const TENDENCY = 'TENDENCY' as const;
+
 export type GetLoginAction = {
   type: typeof LOGIN_REQUESTED;
 }
@@ -24,6 +27,14 @@ type LoginActionTypes = {
   type: string;
   payload: LoginPayload;
 };
+
+type TendencyActionTypes = {
+  type: string;
+  payload: {
+    mbti: string;
+    token: string;
+  }
+}
 
 type User = {
   pk: number;
@@ -45,7 +56,7 @@ export type LoginState = {
   isError: boolean;
   isSkip: boolean;
   mbti: string;
-  token: string;
+  token?: string;
 };
 
 export const requestLogin = () =>
@@ -62,6 +73,24 @@ export function* loginUser(action: LoginActionTypes) {
   }
 }
 
+export function* tendencyUser(action: TendencyActionTypes) {
+  try {
+    yield call(Api.tendency, action.payload);
+  } catch (err) {
+    AsyncStorage.setItem('mbti', action.payload.mbti);
+  } finally {
+    yield put({
+      type: LOGIN_SUCCESS, payload: {
+        data: {
+          user: {
+            mbti: action.payload
+          }
+        }
+      }
+    })
+  }
+}
+
 const initialState: LoginState = {
   pending: false,
   isLogin: false,
@@ -73,7 +102,8 @@ const initialState: LoginState = {
 
 const reducer = handleActions(
   {
-    [LOGIN_INIT]: () => ({
+    [LOGIN_INIT]: (state) => ({
+      ...state,
       pending: false,
       isLogin: false,
       isError: false,
@@ -91,13 +121,15 @@ const reducer = handleActions(
       isSkip: true,
     }),
     [LOGIN_SUCCESS]: (state, { payload }: { type: string, payload: LoginResponse }) => {
-      AsyncStorage.setItem('token', payload.data.token);
+      if (payload.data.token) {
+        AsyncStorage.setItem('token', payload.data.token);
+      }
       return ({
         ...state,
         pending: false,
         isLogin: true,
-        token: payload.data.token,
-        mbti: payload.data.user.mbti ? payload.data.user.mbti : ''
+        token: payload.data.token || state.token,
+        mbti: payload.data.user.mbti || ''
       })
     },
     [LOGIN_FAILURE]: (state) => ({
@@ -105,6 +137,10 @@ const reducer = handleActions(
       pending: false,
       isError: true,
       isLogin: false,
+    }),
+    [TENDENCY]: (state) => ({
+      ...state,
+      pending: true,
     }),
   },
   initialState,

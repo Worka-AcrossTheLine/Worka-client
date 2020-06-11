@@ -8,7 +8,6 @@ import Tendency from '../screens/Tendency/Select'
 import { RootState } from '../reducers';
 
 type TendencyProps = {
-    isSignup: boolean;
     mbti: string;
     isSkip: boolean;
 }
@@ -18,10 +17,10 @@ type Props = {
     setIsLogin: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-function TendencyController({ isSignup, mbti, isSkip }: TendencyProps) {
+function TendencyController({ mbti, isSkip }: TendencyProps) {
     return (
         <>
-            {!isSkip && (isSignup || mbti === "") ? <Tendency /> : <BottomNavigation />}
+            {!isSkip && mbti === "" ? <Tendency /> : <BottomNavigation />}
         </>
     )
 }
@@ -29,14 +28,13 @@ function TendencyController({ isSignup, mbti, isSkip }: TendencyProps) {
 export default function NavController({ isLogin, setIsLogin }: Props) {
     const rootState = useSelector((state: RootState) => state)
     const loginState = rootState.login;
-    const signupState = rootState.signup;
     setIsLogin(loginState.isSkip || loginState.isLogin);
     return (
         <>
             {!isLogin ?
                 <AuthNavigation />
                 :
-                <TendencyController isSignup={signupState.isSignup} mbti={loginState.mbti} isSkip={loginState.isSkip} />
+                <TendencyController mbti={loginState.mbti} isSkip={loginState.isSkip} />
             }
         </>
     )

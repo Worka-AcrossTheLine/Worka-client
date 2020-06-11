@@ -31,3 +31,10 @@ export const signup = (
     throw error.response;
   })
 }
+
+export const tendency = ({ token, mbti }: { token: string, mbti: string }): AxiosPromise<void> => {
+  console.log(token, mbti);
+  return reqresApi.patch('/tendency/', { mbti }, { headers: { Authorization: `JWT ${token}` } }).catch((error: AxiosError) => {
+    throw error.response;
+  })
+}
