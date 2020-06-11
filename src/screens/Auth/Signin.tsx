@@ -7,7 +7,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { AuthStackParamList } from '../../navigator/AuthNavigation'
 
 import { RootState } from '../../reducers'
-import { LOGIN_REQUESTED } from '../../reducers/login'
+import { LOGIN_INIT, LOGIN_REQUESTED } from '../../reducers/login'
 
 import SignInput from '../../components/SignInput'
 import MiddleButton from '../../components/MiddleButton'
@@ -66,8 +66,14 @@ const Signin = ({ navigation }: Props) => {
     const [password, setPassword] = useState('12345678');
     const [passwordValid, setPasswordValid] = useState('');
     const [isSubmit, setIsSubmit] = useState(false);
+
     const loginState = useSelector((state: RootState) => state.login)
     const dispatch = useDispatch();
+
+    if(loginState.isError) {
+        alert("정보가 틀림 ㅠㅠ");
+        dispatch({type:LOGIN_INIT});
+    }
 
     const handleInput = (setInput: React.Dispatch<string>) => (e: string) => {
         setInput(e);

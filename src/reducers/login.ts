@@ -5,6 +5,7 @@ import AsyncStorage from '@react-native-community/async-storage';
 import * as Api from '../Api/login';
 import { ActionCreatorsMapObject, Dispatch } from 'redux';
 
+export const LOGIN_INIT = "LOGIN_INIT" as const;
 export const LOGIN_SKIP = 'SKIP' as const;
 export const LOGIN_REQUESTED = 'LOGIN_REQUESTED' as const;
 export const LOGIN_SUCCESS = 'LOGINSUCCESS' as const;
@@ -41,6 +42,7 @@ export type LoginResponse = {
 export type LoginState = {
   pending: boolean;
   isLogin: boolean;
+  isError: boolean;
   isSkip: boolean;
   mbti: string;
   token: string;
@@ -63,6 +65,7 @@ export function* loginUser(action: LoginActionTypes) {
 const initialState: LoginState = {
   pending: false,
   isLogin: false,
+  isError: false,
   isSkip: false,
   mbti: '',
   token: '',
@@ -70,6 +73,13 @@ const initialState: LoginState = {
 
 const reducer = handleActions(
   {
+    [LOGIN_INIT]: () => ({
+      pending: false,
+      isLogin: false,
+      isError: false,
+      isSkip: false,
+      token: ''
+    }),
     [LOGIN_REQUESTED]: (state) => ({
       ...state,
       pending: true,
@@ -93,6 +103,7 @@ const reducer = handleActions(
     [LOGIN_FAILURE]: (state) => ({
       ...state,
       pending: false,
+      isError: true,
       isLogin: false,
     }),
   },
@@ -100,3 +111,18 @@ const reducer = handleActions(
 );
 
 export default reducer;
+
+
+
+// { "message": "Request failed with status code 400", 
+// "name": "Error", 
+// "stack": "createError@http://172.30.1.59:19001/node_modules/expo/AppEntry.bundle?platform=ios&dev=true&minify=false&hot=false:140518:26\nsettle@http://172.30.1.59:19001/node_modules/expo/AppEntry.bundle?platform=ios&dev=true&minify=false&hot=false:140508:25\nhandleLoad@http://172.30.1.59:19001/node_modules/expo/AppEntry.bundle?platform=ios&dev=true&minify=false&hot=false:140406:15\ndispatchEvent@http://172.30.1.59:19001/node_modules/expo/AppEntry.bundle?platform=ios&dev=true&minify=false&hot=false:32785:31\nsetReadyState@http://172.30.1.59:19001/node_modules/expo/AppEntry.bundle?platform=ios&dev=true&minify=false&hot=false:31854:27\n__didCompleteResponse@http://172.30.1.59:19001/node_modules/expo/AppEntry.bundle?platform=ios&dev=true&minify=false&hot=false:31696:29\nemit@http://172.30.1.59:19001/node_modules/expo/AppEntry.bundle?platform=ios&dev=true&minify=false&hot=false:7450:42\n__callFunction@http://172.30.1.59:19001/node_modules/expo/AppEntry.bundle?platform=ios&dev=true&minify=false&hot=false:3225:49\nhttp://172.30.1.59:19001/node_modules/expo/AppEntry.bundle?platform=ios&dev=true&minify=false&hot=false:2938:31\n__guard@http://172.30.1.59:19001/node_modules/expo/AppEntry.bundle?platform=ios&dev=true&minify=false&hot=false:3179:15\ncallFunctionReturnFlushedQueue@http://172.30.1.59:19001/node_modules/expo/AppEntry.bundle?platform=ios&dev=true&minify=false&hot=false:2937:21\ncallFunctionReturnFlushedQueue@[native code]", "config": { "url": "/signup/", "method": "post", "data": "{\"email\":\"test1@email.com\",\"username\":\"test12\",\"password\":\"12345678\",\"birth_date\":\"2000-10-01\"}", 
+// "headers": { "Accept": "application/json, text/plain, */*", "Content-Type": "application/json;charset=utf-8" }, 
+// "baseURL": "http://127.0.0.1:8000/api/v1/accounts", 
+// "transformRequest": [null], 
+// "transformResponse": [null],
+//  "timeout": 0,
+//   "xsrfCookieName": "XSRF-TOKEN",
+//    "xsrfHeaderName": "X-XSRF-TOKEN", 
+//    "maxContentLength": -1 } 
+//   }

@@ -4,7 +4,7 @@ import styled from 'styled-components/native'
 import { useHeaderHeight, StackNavigationProp } from '@react-navigation/stack'
 import { useSelector, useDispatch } from 'react-redux';
 
-import { SIGNUP_REQUESTED } from '../../reducers/signup'
+import { SIGNUP_REQUESTED, SIGNUP_INIT } from '../../reducers/signup'
 import { AuthStackParamList } from '../../navigator/AuthNavigation'
 import SignInput from '../../components/SignInput';
 import SignupText from '../../components/SignupText';
@@ -72,6 +72,11 @@ function Signup({ navigation }: Props) {
     dispatch({ type: LOGIN_SUCCESS, payload: { token: signup.token } });
     // 회원가입에 성공할경우 바로 로그인 시켜준다.
   }
+  if (signup.isError) {
+    setUsernameValid(signup.username);
+    setEmailValid(signup.email);
+    dispatch({ type: SIGNUP_INIT });
+  }
 
   const handleInput = (setState: Function) => (e: string) => {
     setState(e);
@@ -91,10 +96,12 @@ function Signup({ navigation }: Props) {
       setIsSubmit(false);
       if (!emailValid && !usernameValid && !passwordValid && !yearValid && !monthValid && !dayValid) {
         dispatch({ type: SIGNUP_REQUESTED, payload: { email, username, password, year, month, day } });
+        console.log("SIGNUP", signup);
         // create 성공할 경우 state (signup.isSignup --> true );
       }
     }
   }, [isSubmit])
+
   return (
     <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()} style={{}}>
       <Wrapper style={{ height: HEIGHT - headerHeight }}>
