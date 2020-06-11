@@ -81,7 +81,7 @@ const initialState: SignupState = {
 
 const reducer = handleActions(
     {
-        [SIGNUP_INIT]: () => ({
+        [SIGNUP_INIT]: (state) => ({
             pending: false,
             isSignup: false,
             isError: false,

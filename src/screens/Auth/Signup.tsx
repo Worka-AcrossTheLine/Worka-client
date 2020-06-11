@@ -69,7 +69,7 @@ function Signup({ navigation }: Props) {
   const headerHeight = useHeaderHeight();
 
   if (signup.isSignup) {
-    dispatch({ type: LOGIN_SUCCESS, payload: { token: signup.token } });
+    dispatch({ type: LOGIN_SUCCESS, payload: { data: { token: signup.token, user: { mbti: null } } } });
     // 회원가입에 성공할경우 바로 로그인 시켜준다.
   }
   if (signup.isError) {
