@@ -1,5 +1,5 @@
 import React from 'react'
-import { ActivityIndicator, GestureResponderEvent } from 'react-native'
+import { ActivityIndicator, GestureResponderEvent, View } from 'react-native'
 import styled from 'styled-components/native';
 
 type Props = {
