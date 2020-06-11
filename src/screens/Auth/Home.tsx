@@ -54,8 +54,6 @@ const SkipText = styled.Text`
 `;
 
 function Home({ navigation }: Props) {
-  const isLogin = useSelector((state: RootState) => state.login)
-  const dispatch = useDispatch();
   const onSignin = () => {
     navigation.navigate('Signin');
   }

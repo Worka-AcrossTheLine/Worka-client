@@ -1,5 +1,6 @@
 import { call, put, takeEvery, takeLatest, delay } from 'redux-saga/effects';
 import { handleActions } from 'redux-actions';
+import AsyncStorage from '@react-native-community/async-storage';
 
 import * as Api from '../Api/login';
 import { ActionCreatorsMapObject, Dispatch } from 'redux';
@@ -13,8 +14,8 @@ export type GetLoginAction = {
   type: typeof LOGIN_REQUESTED;
 }
 
-type LoginPayload = {
-  email: string;
+export type LoginPayload = {
+  username: string;
   password: string;
 };
 
@@ -23,10 +24,24 @@ type LoginActionTypes = {
   payload: LoginPayload;
 };
 
+type User = {
+  pk: number;
+  username: string;
+  point: number;
+  mbti: string | null;
+};
+
+export type LoginResponse = {
+  data: {
+    token: string;
+    user: User;
+  }
+};
+
 export type LoginState = {
-  pending: Boolean;
-  isLogin: Boolean;
-  isSkip: Boolean;
+  pending: boolean;
+  isLogin: boolean;
+  isSkip: boolean;
   token: string;
 };
 
@@ -37,10 +52,8 @@ export const requestLogin = () =>
 
 export function* loginUser(action: LoginActionTypes) {
   try {
-    const user = { token: "asdefgh" };
-    // const user = yield call(Api.login, action.payload);
-    yield delay(1000)
-    yield put({ type: LOGIN_SUCCESS, payload: user });
+    const user: LoginResponse = yield call(Api.login, action.payload);
+    yield put({ type: LOGIN_SUCCESS, payload: user.data });
   } catch (err) {
     yield put({ type: LOGIN_FAILURE })
   }
@@ -65,12 +78,15 @@ const reducer = handleActions(
       isLogin: false,
       isSkip: true,
     }),
-    [LOGIN_SUCCESS]: (state, { payload }) => ({
-      ...state,
-      pending: false,
-      isLogin: true,
-      token: payload.token,
-    }),
+    [LOGIN_SUCCESS]: (state, { payload }) => {
+      AsyncStorage.setItem('token', payload.token);
+      return ({
+        ...state,
+        pending: false,
+        isLogin: true,
+        token: payload.token,
+      })
+    },
     [LOGIN_FAILURE]: (state) => ({
       ...state,
       pending: false,

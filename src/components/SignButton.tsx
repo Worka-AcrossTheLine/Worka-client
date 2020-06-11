@@ -3,8 +3,7 @@ import styled from 'styled-components/native';
 
 type Props = {
     title: string;
-    onPress: Function;
-    children?: ReactChildren;
+    onPress: () => void;
     color?: string;
 }
 
@@ -23,7 +22,7 @@ const SignText = styled.Text`
     font-weight:700;
 `
 
-function SignButton({ title, onPress, children, color = "#2999E5" }: Props) {
+function SignButton({ title, onPress, color = "#2999E5" }: Props) {
     return (
         <SignBtn onPress={() => onPress()} style={{ borderColor: color }}>
             <SignText style={{ color }}>{title}</SignText>

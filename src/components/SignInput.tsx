@@ -1,16 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, SetStateAction } from 'react'
 import styled from 'styled-components/native';
 
 type Props = {
   placeholder: string;
   value: string;
-  onChange: Function;
+  onChange: (e: string) => void;
   fontSize?: number;
   autoFocus?: boolean;
   keyboardType?: 'default' | 'number-pad' | 'email-address';
   isPassword?: boolean;
-  type?: 'email'
+  type?: 'email';
+  valid: string;
+  onBlur: () => void
 }
+
+const InputWrapper = styled.View`
+  margin:15px 5px;
+  justify-content:center;
+`;
 
 const Input = styled.TextInput`
   border-bottom-width:3px;
@@ -19,37 +26,30 @@ const Input = styled.TextInput`
   width:100%;
   min-width:90px;
   padding-left:5px;
+  align-self:center;
 `;
 
-
-const InputWrapper = styled.View`
-  margin:15px 5px;
-  justify-content:center;
-  align-items:center;
+const ValidText = styled.Text`
+  color:red;
 `;
 
 
 const SignInput = ({
   placeholder,
   value,
+  type,
+  valid,
+  onBlur,
   onChange,
-  fontSize = 28,
   autoFocus = false,
-  keyboardType = "default",
+  fontSize = 28,
   isPassword = false,
-  type
+  keyboardType = "default",
 }: Props) => {
   const [isValid, setIsValid] = useState(true);
   let textAlign: 'center' | 'left' = 'center';
   if (value.length > 0) {
     textAlign = 'left';
-  }
-
-  const handleValidEmail = () => {
-    if (type === 'email') {
-      const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      re.test(String(value).toLowerCase()) ? setIsValid(true) : setIsValid(false);
-    }
   }
 
   return (
@@ -62,9 +62,10 @@ const SignInput = ({
         autoFocus={autoFocus}
         keyboardType={keyboardType}
         secureTextEntry={isPassword}
-        onBlur={handleValidEmail}
+        onBlur={onBlur}
         onFocus={() => setIsValid(true)}
       />
+      <ValidText>{valid}</ValidText>
     </InputWrapper>
   )
 }

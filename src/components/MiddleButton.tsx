@@ -1,10 +1,12 @@
 import React from 'react'
+import { ActivityIndicator, GestureResponderEvent, View } from 'react-native'
 import styled from 'styled-components/native';
 
 type Props = {
     title: string;
     fontSize?: number;
-    onPress: Function;
+    onPress: () => void;
+    isPending: boolean;
 }
 
 const Button = styled.TouchableOpacity`
@@ -24,10 +26,10 @@ const Title = styled.Text`
 `;
 
 
-const MiddleButton = ({ title, fontSize = 28, onPress }: Props) => {
+const MiddleButton = ({ title, fontSize = 28, onPress, isPending }: Props) => {
     return (
         <Button onPress={() => onPress()}>
-            <Title style={{ fontSize }}>{title}</Title>
+            {!isPending ? <Title style={{ fontSize }}>{title}</Title> : <ActivityIndicator size="large" color="#FFFFFF" />}
         </Button>
     )
 }
