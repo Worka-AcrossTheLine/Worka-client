@@ -87,8 +87,8 @@ function Signup({ navigation }: Props) {
   }
 
   useEffect(() => {
-    setIsSubmit(false);
     if (isSubmit) {
+      setIsSubmit(false);
       if (!emailValid && !usernameValid && !passwordValid && !yearValid && !monthValid && !dayValid) {
         dispatch({ type: SIGNUP_REQUESTED, payload: { email, username, password, year, month, day } });
         // create 성공할 경우 state (signup.isSignup --> true );

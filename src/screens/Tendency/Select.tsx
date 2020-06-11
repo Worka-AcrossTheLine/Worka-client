@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 import styled from 'styled-components/native';
+import { useDispatch, useSelector } from 'react-redux';
 
-import TendencyButton from '../../components/TendencyButton'
+import TendencyButton from '../../components/TendencyButton';
 import { TENDENCYQUESTIONS } from '../../constants/tendencyQ';
 
 

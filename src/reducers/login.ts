@@ -42,6 +42,7 @@ export type LoginState = {
   pending: boolean;
   isLogin: boolean;
   isSkip: boolean;
+  mbti: string;
   token: string;
 };
 
@@ -53,7 +54,7 @@ export const requestLogin = () =>
 export function* loginUser(action: LoginActionTypes) {
   try {
     const user: LoginResponse = yield call(Api.login, action.payload);
-    yield put({ type: LOGIN_SUCCESS, payload: user.data });
+    yield put({ type: LOGIN_SUCCESS, payload: user });
   } catch (err) {
     yield put({ type: LOGIN_FAILURE })
   }
@@ -63,6 +64,7 @@ const initialState: LoginState = {
   pending: false,
   isLogin: false,
   isSkip: false,
+  mbti: '',
   token: '',
 };
 
@@ -78,13 +80,14 @@ const reducer = handleActions(
       isLogin: false,
       isSkip: true,
     }),
-    [LOGIN_SUCCESS]: (state, { payload }) => {
-      AsyncStorage.setItem('token', payload.token);
+    [LOGIN_SUCCESS]: (state, { payload }: { type: string, payload: LoginResponse }) => {
+      AsyncStorage.setItem('token', payload.data.token);
       return ({
         ...state,
         pending: false,
         isLogin: true,
-        token: payload.token,
+        token: payload.data.token,
+        mbti: payload.data.user.mbti ? payload.data.user.mbti : ''
       })
     },
     [LOGIN_FAILURE]: (state) => ({

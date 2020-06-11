@@ -82,8 +82,8 @@ const Signin = ({ navigation }: Props) => {
     }
 
     useEffect(() => {
-        setIsSubmit(false);
         if (isSubmit) {
+            setIsSubmit(false);
             if (!usernameValid && !passwordValid) {
                 console.log("VLIAD")
                 dispatch({ type: LOGIN_REQUESTED, payload: { username, password } });
