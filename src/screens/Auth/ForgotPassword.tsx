@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { Text } from 'react-native'
 import styled from 'styled-components/native'
+import { StackNavigationProp } from '@react-navigation/stack'
 
+import { AuthStackParamList } from '../../navigator/AuthNavigation'
 import SignInput from '../../components/SignInput'
 import SubmitButton from '../../components/MiddleButton';
-import { AuthStackParamList } from '../../navigator/AuthNavigation'
-import { StackNavigationProp } from '@react-navigation/stack'
+
+import validCheck from '../../constants/validCheck'
 
 type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Signin'>;
 
@@ -41,7 +43,9 @@ const ButtonWrapper = styled.View`
 
 const ForgotUsername = ({ navigation }: Props) => {
     const [username, setUsername] = useState('');
+    const [usernameValid, setUsernameValid] = useState('');
     const [email, setEmail] = useState('');
+    const [emailValid, setEmailValid] = useState('');
 
     const handleInput = (setFunction: React.Dispatch<React.SetStateAction<string>>) => (e: string) => {
         setFunction(e);
@@ -50,11 +54,23 @@ const ForgotUsername = ({ navigation }: Props) => {
     return (
         <Wrapper>
             <InputWrapper>
-                <SignInput placeholder="username" value={username} onChange={handleInput(setUsername)} autoFocus={true} />
+                <SignInput
+                    placeholder="username"
+                    value={username}
+                    valid={usernameValid}
+                    onChange={handleInput(setUsername)}
+                    onBlur={() => validCheck('username')(username, setUsernameValid)}
+                    autoFocus={true} />
                 <Touch onPress={() => navigation.navigate('ForgotUsername')}>
                     <Password>FORGOT USERNAME</Password>
                 </Touch>
-                <SignInput placeholder="Email address" value={email} onChange={handleInput(setEmail)} type="email" />
+                <SignInput
+                    placeholder="Email address"
+                    value={email}
+                    valid={emailValid}
+                    onChange={handleInput(setEmail)}
+                    onBlur={() => validCheck('email')(email, setEmailValid)}
+                    type="email" />
                 <Text>Unfortunately, if you have never given us your email, we will not be able to reset your password.</Text>
             </InputWrapper>
             <ButtonWrapper>

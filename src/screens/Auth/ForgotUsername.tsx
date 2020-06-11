@@ -5,6 +5,8 @@ import styled from 'styled-components/native'
 import SignInput from '../../components/SignInput'
 import SubmitButton from '../../components/MiddleButton';
 
+import validCheck from '../../constants/validCheck'
+
 const Wrapper = styled.View`
     flex:1;
     background-color:#FFFFFF;
@@ -23,6 +25,7 @@ const ButtonWrapper = styled.View`
 
 const ForgotEmail = () => {
     const [email, setEmail] = useState('');
+    const [emailValid, setEmailValid] = useState('');
 
     const handleInput = (e: string) => {
         setEmail(e);
@@ -39,7 +42,9 @@ const ForgotEmail = () => {
                     placeholder="Email address for your account"
                     fontSize={15}
                     value={email}
+                    valid={emailValid}
                     onChange={handleInput}
+                    onBlur={() => validCheck('email')(email, setEmailValid)}
                     autoFocus={true}
                     keyboardType="email-address"
                     type="email"
