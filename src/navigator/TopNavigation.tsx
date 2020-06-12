@@ -10,27 +10,25 @@ import QuestionFeed from '../screens/Feed/QuestionFeed/QuestionFeed'
 import PopularFeed from '../screens/Feed/PopularFeed/PopularFeed'
 
 export type TopTapParamList = {
-    News: undefined;
-    Questions: undefined;
-    Populars: undefined;
+  News: undefined;
+  Questions: undefined;
+  Populars: undefined;
 }
 
 const Tab = createMaterialTopTabNavigator<TopTapParamList>();
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-      },
+  container: {
+    flex: 1,
+  },
 })
 
-export default function() {
+export default function () {
   return (
-    <SafeAreaView style={styles.container}>
-        <Tab.Navigator>
-            <Tab.Screen name="News" component={NewsFeed} />
-            <Tab.Screen name="Questions" component={QuestionFeed} />
-            <Tab.Screen name="Populars" component={PopularFeed} />
-        </Tab.Navigator>
-        </SafeAreaView>
+    <Tab.Navigator>
+      <Tab.Screen name="News" component={NewsFeed} />
+      <Tab.Screen name="Questions" component={QuestionFeed} />
+      <Tab.Screen name="Populars" component={PopularFeed} />
+    </Tab.Navigator>
   );
 }
