@@ -1,26 +1,40 @@
 import React from 'react'
-import { Text, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import AuthNavigation from '../navigator/AuthNavigation';
+import BottomNavigation from '../navigator/BottomNavigation'
+import Tendency from '../screens/Tendency/Select'
+
 import { RootState } from '../reducers';
+
+type TendencyProps = {
+    mbti: string;
+    isSkip: boolean;
+}
 
 type Props = {
     isLogin: boolean;
     setIsLogin: React.Dispatch<React.SetStateAction<boolean>>
 }
 
+function TendencyController({ mbti, isSkip }: TendencyProps) {
+    return (
+        <>
+            {!isSkip && mbti === "" ? <Tendency /> : <BottomNavigation />}
+        </>
+    )
+}
+
 export default function NavController({ isLogin, setIsLogin }: Props) {
-    const loginState = useSelector((state: RootState) => state.login)
+    const rootState = useSelector((state: RootState) => state)
+    const loginState = rootState.login;
     setIsLogin(loginState.isSkip || loginState.isLogin);
     return (
         <>
             {!isLogin ?
                 <AuthNavigation />
                 :
-                <View>
-                    <Text>매인페이지</Text>
-                </View>
+                <TendencyController mbti={loginState.mbti} isSkip={loginState.isSkip} />
             }
         </>
     )
