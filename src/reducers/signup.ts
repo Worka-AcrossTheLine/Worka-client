@@ -59,7 +59,6 @@ export const requestLogin = () =>
 export function* signupUser(action: SignupActionTypes) {
     try {
         const user: SignupResponse = yield call(Api.signup, action.payload);
-        console.log("USERS", user);
         yield put({ type: SIGNUP_SUCCESS, payload: user.data });
         yield put({ type: LOGIN_SUCCESS });
     } catch (_error) {
