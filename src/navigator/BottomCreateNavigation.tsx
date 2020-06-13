@@ -18,17 +18,7 @@ export type BottomCreateNavigationParamList = {
 
 const Tab = createBottomTabNavigator<BottomCreateNavigationParamList>();
 
-const styles = StyleSheet.create({
-    blurView: {
-      position: 'absolute',
-      bottom: 0,
-      left: 0,
-      right: 0,
-    },
-    bottomTabBar: {
-      backgroundColor: 'transparent',
-    },
-  });
+
 
 
 export default function() {
