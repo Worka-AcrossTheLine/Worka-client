@@ -27,7 +27,7 @@ const AndoroidWrapper = styled.View`
      align-items:center;
     justify-content:center;
     width:100%;
-    padding-top:${currentHeight > 25 ? 46 : 0}px;
+    padding:${currentHeight > 25 ? 46 : 0}px 0px 30px 0px;
     background-color:white;
 `;
 
@@ -39,6 +39,11 @@ const InputWrapper = styled.View`
     align-items:center;
     padding:0px 10px;
     flex-direction:row;
+`;
+
+const GoBackWrapper = styled.TouchableOpacity`
+    background-color:black;
+
 `;
 
 const Input = styled.TextInput`
@@ -53,15 +58,14 @@ function Search({ navigation }: Props) {
         setValue(e);
     }
 
-
     return (
         <>
             <InputWrapper>
                 <Input value={value} onChangeText={handleInput} autoFocus={true} />
             </InputWrapper>
-            <TouchableOpacity onPress={() => navigation.goBack()} >
+            <GoBackWrapper onPress={() => navigation.goBack()} >
                 <Text> CANCEL</Text>
-            </TouchableOpacity>
+            </GoBackWrapper>
         </>
     )
 }
