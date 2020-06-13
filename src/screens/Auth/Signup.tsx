@@ -96,7 +96,6 @@ function Signup({ navigation }: Props) {
       setIsSubmit(false);
       if (!emailValid && !usernameValid && !passwordValid && !yearValid && !monthValid && !dayValid) {
         dispatch({ type: SIGNUP_REQUESTED, payload: { email, username, password, year, month, day } });
-        console.log("SIGNUP", signup);
         // create 성공할 경우 state (signup.isSignup --> true );
       }
     }

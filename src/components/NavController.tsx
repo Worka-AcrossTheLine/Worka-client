@@ -28,10 +28,14 @@ function TendencyController({ mbti, isSkip }: TendencyProps) {
 export default function NavController({ isLogin, setIsLogin }: Props) {
     const rootState = useSelector((state: RootState) => state)
     const loginState = rootState.login;
-    setIsLogin(loginState.isSkip || loginState.isLogin);
+    // if (!isLogin) {
+    //     setIsLogin(loginState.isSkip || loginState.isLogin);
+    // }
+
+    const loginController = isLogin || loginState.isSkip || loginState.isLogin
     return (
         <>
-            {!isLogin ?
+            {!loginController ?
                 <AuthNavigation />
                 :
                 <TendencyController mbti={loginState.mbti} isSkip={loginState.isSkip} />

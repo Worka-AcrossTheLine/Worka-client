@@ -68,7 +68,6 @@ const Select = () => {
     }
 
     const [q1, q2] = TENDENCYQUESTIONS[mbtiIndex];
-    console.log(mbti)
     return (
         <Wrapper>
             <TitleWrapper>

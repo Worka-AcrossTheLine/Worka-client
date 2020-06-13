@@ -46,11 +46,11 @@ const SignInput = ({
   isPassword = false,
   keyboardType = "default",
 }: Props) => {
-  const [isValid, setIsValid] = useState(true);
   let textAlign: 'center' | 'left' = 'center';
   if (value.length > 0) {
     textAlign = 'left';
   }
+
 
   return (
     <InputWrapper>
@@ -58,12 +58,11 @@ const SignInput = ({
         placeholder={placeholder}
         value={value}
         onChangeText={(e) => onChange(e)}
-        style={{ fontSize, textAlign, color: (isValid ? 'black' : 'red') }}
+        style={{ fontSize, textAlign }}
         autoFocus={autoFocus}
         keyboardType={keyboardType}
         secureTextEntry={isPassword}
         onBlur={onBlur}
-        onFocus={() => setIsValid(true)}
       />
       <ValidText>{valid}</ValidText>
     </InputWrapper>
