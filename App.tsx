@@ -17,8 +17,9 @@ export default function App() {
     if (typeof login === 'string') {
       setIsLogin(true)
     }
-  };
+  }
   useEffect(() => {
+    console.log("SIGNUP")
     setLogin();
   }, []);
   return (
