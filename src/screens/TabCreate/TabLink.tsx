@@ -11,9 +11,11 @@ const Text = styled.Text`
 
 const TabLink = () => {
     return (
-        <Text>TabLink</Text>
-        <MakeJobTagInput placeholder={placeholder} value={value} />
-            
+        <>
+            <Text>TabLink</Text>
+            {/* <MakeJobTagInput placeholder={placeholder} value={value} /> */}
+        </>
+
     )
 }
 

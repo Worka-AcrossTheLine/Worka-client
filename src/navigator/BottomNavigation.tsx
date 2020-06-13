@@ -3,7 +3,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import Profile from '../screens/Profile';
 import Coin from '../screens/Coin';
-import TopNavigation from './TopNavigation';
+import SeachNavigation from './SeachNavigation';
 import BottomCreateNavigation from './BottomCreateNavigation';
 
 
@@ -24,7 +24,7 @@ const Tab = createBottomTabNavigator<BottomTapParamList>();
 export default function () {
   return (
     <Tab.Navigator>
-      <Tab.Screen name="Home" component={TopNavigation} />
+      <Tab.Screen name="Home" component={SeachNavigation} />
       <Tab.Screen name="Create" component={BottomCreateNavigation} />
       <Tab.Screen name="Profile" component={Profile} />
       <Tab.Screen name="Coin" component={Coin} />
