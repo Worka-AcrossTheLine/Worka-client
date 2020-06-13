@@ -6,11 +6,11 @@ const Text = styled.Text`
     align-items: center;
 `
 
-const Search = () => {
+const TabCard = () => {
     return (
-        <Text>Search</Text>
+        <Text>TabCard</Text>
     )
 }
 
 
-export default Search
+export default TabCard
