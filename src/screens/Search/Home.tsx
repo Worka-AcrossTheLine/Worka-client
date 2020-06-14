@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native';
+import OsView from '../../components/OsView'
 import { StatusBar, Platform, TouchableWithoutFeedback } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack'
 
@@ -11,22 +12,6 @@ type Props = {
     navigation: AuthHomeNavigationProps
 }
 
-const currentHeight = StatusBar.currentHeight || 0;
-
-const IosWrapper = styled.SafeAreaView`
-    align-items:center;
-    justify-content:center;
-    width:100%;
-    background-color:white;
-`;
-
-const AndoroidWrapper = styled.View`
-     align-items:center;
-    justify-content:center;
-    width:100%;
-    padding-top:${currentHeight > 25 ? 46 : 0}px;
-    background-color:white;
-`;
 
 const InputWrapper = styled.View`
     width:70%;
@@ -57,22 +42,24 @@ const SearchWrapper = styled.ScrollView`
 `;
 
 
-function Search() {
-
-    return (
-        <>
-            <InputWrapper>
-                <InputImage source={require('../../../assets/search_btn.png')} />
-                <Input />
-            </InputWrapper>
-        </>
-    )
-}
-
 export default function ({ navigation }: Props) {
+    console.log("HOOME")
     return (
-        <TouchableWithoutFeedback onPress={() => navigation.navigate('Search')}>
-            {Platform.OS === 'ios' ? (<IosWrapper><Search /></IosWrapper>) : <AndoroidWrapper><Search /></AndoroidWrapper>}
-        </TouchableWithoutFeedback>
+        <OsView style={{ width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' }}>
+            <TouchableWithoutFeedback onPress={() => navigation.navigate('Search')} style={{ backgroundColor: 'black' }}>
+                <InputWrapper>
+                    <InputImage source={require('../../../assets/search_btn.png')} />
+                    <Input />
+                </InputWrapper>
+            </TouchableWithoutFeedback>
+        </OsView>
     )
 }
+
+// export default function ({ navigation }: Props) {
+//     return (
+//         <TouchableWithoutFeedback onPress={() => navigation.navigate('Search')}>
+//             {Platform.OS === 'ios' ? (<IosWrapper><Search /></IosWrapper>) : <AndoroidWrapper><Search /></AndoroidWrapper>}
+//         </TouchableWithoutFeedback>
+//     )
+// }

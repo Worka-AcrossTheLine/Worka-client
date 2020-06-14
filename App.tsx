@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import { Provider } from 'react-redux';
+import { ThemeProvider } from 'styled-components'
 
 import store from './src/store';
 import NavController from './src/components/NavController'
+import theme from './src/style/theme'
 
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -23,9 +25,11 @@ export default function App() {
   }, []);
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <NavController isLogin={isLogin} setIsLogin={setIsLogin} />
-      </NavigationContainer>
+      <ThemeProvider theme={theme} >
+        <NavigationContainer>
+          <NavController isLogin={isLogin} setIsLogin={setIsLogin} />
+        </NavigationContainer>
+      </ThemeProvider>
     </Provider>
   );
 }
