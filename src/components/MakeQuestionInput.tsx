@@ -14,24 +14,22 @@ type Props = {
 }
 
 
-const MakeJobTagInput = ({
-    placeholder, value, onChange, onBlur, fontSize, autoFocus = false, keyboardType, onPress
+const MakeQuestionInput = ({
+    placeholder, value, onChange, autoFocus = false, keyboardType,
 }:Props) => {
     let textAlign: 'left'
     if(value.length>0) {
         textAlign = 'left'
     }
     return (
-            <InputWrapper>
-                <Input 
-                    placeholder={placeholder}
-                    value = {value}
-                    onChangeText={(e) => onChange(e)}
-                    autoFocus={autoFocus}
-                    keyboardType={keyboardType}
-                    onBlur = {onBlur}
-                />
-            </InputWrapper>
+        <InputWrapper>
+            <Input 
+                placeholder={placeholder}
+                onChangeText={(e) => onChange(e)}
+                value = {value}
+            />
+        </InputWrapper>
+    
     )
 }
 
@@ -40,6 +38,9 @@ const InputWrapper = styled.View`
     font-size: 16px;
     margin-bottom: 5px;
     
+    
+    
+
 `
 
 const Input = styled.TextInput`
@@ -50,4 +51,4 @@ const Input = styled.TextInput`
 
 
 
-export default MakeJobTagInput
+export default MakeQuestionInput
