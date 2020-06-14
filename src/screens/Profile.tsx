@@ -1,5 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
-import { FlatList, View } from 'react-native'
+import React, { useState } from 'react';
 import styled from 'styled-components/native';
 
 import OsView from '../components/OsView';
@@ -147,10 +146,6 @@ const Profile = () => {
         </OsView>
     )
 }
-// .map((item: any): any =>
-{/* <QuestionCardWrapper key={item.id}>
-    <QuestionCard {...item} />
-</QuestionCardWrapper> */}
 
 
 export default Profile
