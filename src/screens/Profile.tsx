@@ -1,11 +1,71 @@
-import React from 'react'
-import styled from 'styled-components/native'
+import React, { useState, Dispatch, SetStateAction } from 'react';
+import { FlatList, View } from 'react-native'
+import styled from 'styled-components/native';
 
-import OsView from '../components/OsView'
-import ShadowBox from '../components/ShadowBox'
-import Tag from '../components/Tag';
+import OsView from '../components/OsView';
+import UserCard from '../components/UserCard';
+import QuestionCard from '../components/QuestionCard'
 
-import { ThemeProps } from '../style/theme'
+import theme, { ThemeProps } from '../style/theme'
+import { ScrollView } from 'react-native';
+
+type select = 'card' | 'question'
+
+type card = {
+    id: string;
+    desc: string;
+    question_count: number;
+    image: string;
+    tags: string[];
+    username: string;
+}
+
+const FAKEDATA = {
+    username: "Kimjoobin",
+    mento: 3,
+    mentiee: 4,
+    tag: ["IT", "font-end", "back-end", "full-stack"],
+    comment: "한줄로 적을수 있을만큼 열심히 하겠습니다."
+}
+
+const FAKEDATA_1 = {
+    card: [
+        {
+            id: "1",
+            desc: "Tongji Architectural Design And Research Institute: The Latest Architecture and News",
+            question_count: 8,
+            image: "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg",
+            tags: ["architecture", "interior design"],
+            username: "hwan"
+        },
+        {
+            id: "2",
+            desc: "IT 최고액 연봉 프로그래밍 언어는?",
+            question_count: 4,
+            image: "https://lh3.googleusercontent.com/dt7eyYhUAwoOn6V_CrmQuNbITswpJf8k8oJuyNUEggZGD35kA4qnxTFigt78HgMtiJ0sHl0zynRXySVfGTXXNmocrSGPttVyChn2fPXp4ZU5OpWfQvz4HNkJ0rsGCxKXwhs0o6Go",
+            tags: ["IT", "front-end"],
+            username: "joo"
+        },
+        {
+            id: "3",
+            desc: "Tongji Architectural Design And Research Institute: The Latest Architecture and News",
+            question_count: 8,
+            image: "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg",
+            tags: ["architecture", "interior design"],
+            username: "hwan"
+        },
+        {
+            id: "4",
+            desc: "Tongji Architectural Design And Research Institute: The Latest Architecture and News",
+            question_count: 8,
+            image: "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg",
+            tags: ["architecture", "interior design"],
+            username: "hwan"
+        }
+    ],
+    question: [
+    ]
+}
 
 const TitleView = styled.View`  
     justify-content:center;
@@ -22,90 +82,75 @@ const BodyWrapper = styled.View`
     padding:20px 0px;
 `;
 
-const ProfileWrapper = styled.View`
+const SelectWrapper = styled.View`
     flex-direction:row;
-    margin-bottom:10px;
 `;
 
-const AvatarWrapper = styled.View`
-    width:40px;
-    height:40px;
-    border-radius:800px;
-    border:1px solid black;
-`
-
-const InfoWrapper = styled.View`
+const Select = styled.TouchableOpacity`
     flex:1;
-    padding:0px 14px;
+    padding:30px;
+    align-items:center;
 `;
 
-const NameText = styled.Text`
-    font-size:${({ theme }: ThemeProps): number => theme.lgFont}px;
-    color:${({ theme }: ThemeProps): string => theme.textColor};
-    font-weight:700;
+const SelectView = styled.View`
+    align-items:center;
+    padding:0px 10px;
+    border:0px solid ${({ theme }: ThemeProps): string => theme.textColor};
+    border-bottom-width:0px;
 `;
 
-const DescText = styled.Text`
-    font-size:${({ theme }: ThemeProps): number => theme.mdFont}px;
-    color:${({ theme }: ThemeProps): string => theme.textColor};
-    margin-right:14px;
+const SelectText = styled.Text`
+    font-size:20px;
 `;
 
-const SemiTitle = styled.Text`
-    font-size:${({ theme }: ThemeProps): number => theme.mdFont}px;
-    color:${({ theme }: ThemeProps): string => theme.textColor};
-    font-weight:700;
+const QuestionCardWrapper = styled.View`
+    padding:10px 0px;
 `;
 
-const TendencyWrapper = styled.View`
-    flex-direction:row;
-    margin:3px 0px;
-`;
-
-const Comment = styled.Text`
-    font-size:${({ theme }: ThemeProps): number => theme.smFont}px;
-    color:${({ theme }: ThemeProps): string => theme.textColor};
-`;
-
-
-
-const Text = styled.Text`
-    font-size: ${({ theme }: ThemeProps): number => theme.smFont}px;
-    align-items: center;
-`
-
-const Button = styled.Button``;
 
 const Profile = () => {
+    const [select, setSelect] = useState<select>("card");
+
+    const handleSelect = (text: select) => () => {
+        setSelect(text);
+    }
+
+    const cards: card[] | [] = FAKEDATA_1[select];
+
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-            <TitleView>
-                <Title>Question</Title>
-            </TitleView>
-            <BodyWrapper>
-                <ShadowBox >
-                    <>
-                        <ProfileWrapper>
-                            <AvatarWrapper></AvatarWrapper>
-                            <InfoWrapper>
-                                <NameText>username</NameText>
-                                <NameText><DescText>Mento: {3}  </DescText><DescText>  Mentiee: {3}</DescText></NameText>
-                            </InfoWrapper>
-                            <Button title="Setting" onPress={() => console.log("PRESS SETTING")} />
-                        </ProfileWrapper>
-                        <SemiTitle>Tendency</SemiTitle>
-                        <TendencyWrapper>
-                            <Tag text="architecture" />
-                            <Tag text="interior design" fontColor="white" />
-                        </TendencyWrapper>
-                        <SemiTitle>Comment</SemiTitle>
-                        <Comment>비록 삶이 그대를 속일지라도 슬퍼하지 말라,</Comment>
-                    </>
-                </ShadowBox>
-            </BodyWrapper>
+            <ScrollView>
+                <TitleView>
+                    <Title>Question</Title>
+                </TitleView>
+                <BodyWrapper>
+                    <UserCard {...FAKEDATA} />
+                    <SelectWrapper>
+                        <Select onPress={() => handleSelect('card')()}>
+                            <SelectView style={{ borderBottomWidth: (select === "card" ? 3 : 0) }}>
+                                <SelectText style={{ color: (select === "card" ? theme.textColor : "black") }}>Card</SelectText>
+                            </SelectView>
+                        </Select>
+                        <Select onPress={() => handleSelect('question')()}>
+                            <SelectView style={{ borderBottomWidth: (select === "question" ? 3 : 0) }}>
+                                <SelectText style={{ color: (select === "question" ? theme.textColor : "black") }}>Question</SelectText>
+                            </SelectView>
+                        </Select>
+                    </SelectWrapper>
+                    {cards.map((item) =>
+                        <QuestionCardWrapper key={item.id}>
+                            <QuestionCard {...item} />
+                        </QuestionCardWrapper>
+                    )}
+                </BodyWrapper>
+            </ScrollView>
         </OsView>
     )
 }
+// .map((item: any): any =>
+{/* <QuestionCardWrapper key={item.id}>
+    <QuestionCard {...item} />
+</QuestionCardWrapper> */}
 
 
 export default Profile
