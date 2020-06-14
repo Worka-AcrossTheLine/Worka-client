@@ -63,6 +63,7 @@ type Props = {
     mentiee: number;
     tag: string[];
     comment: string;
+    onPress: () => void;
 }
 
 const Profile = ({
@@ -70,7 +71,8 @@ const Profile = ({
     mento,
     mentiee,
     tag,
-    comment
+    comment,
+    onPress
 }: Props) => {
     return (
         <ShadowBox>
@@ -81,7 +83,7 @@ const Profile = ({
                         <NameText>{username}</NameText>
                         <NameText><DescText>Mento: {mento}  </DescText><DescText>  Mentiee: {mentiee}</DescText></NameText>
                     </InfoWrapper>
-                    <Button title="Setting" onPress={() => console.log("PRESS SETTING")} />
+                    <Button title="Setting" onPress={() => onPress()} />
                 </ProfileWrapper>
                 <SemiTitle>Tendency</SemiTitle>
                 <TendencyWrapper>
