@@ -19,7 +19,8 @@ const Wrapper = styled.View`
     height:250px;
     padding:5px;
     box-shadow:0px 3px 6px #000;
-    elevation:6;
+    border-radius:8px;
+    elevation:15;
 `;
 
 const ImageWrapper = styled.View`
@@ -27,7 +28,7 @@ const ImageWrapper = styled.View`
     background-color:white;
     border-top-left-radius:8px;
     border-top-right-radius:8px;
-    border-bottom-width:1px;
+    elevation:1;
 `;
 
 const Image = styled.Image`
