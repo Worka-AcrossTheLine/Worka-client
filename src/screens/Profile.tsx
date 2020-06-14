@@ -4,14 +4,28 @@ import styled from 'styled-components/native';
 
 import OsView from '../components/OsView';
 import UserCard from '../components/UserCard';
+import MentoCard from '../components/MentoCard';
 import QuestionCard from '../components/QuestionCard'
 
 import theme, { ThemeProps } from '../style/theme'
 import { ScrollView } from 'react-native';
 
+const a = [];
+
+
 type select = 'card' | 'question'
 
-type card = {
+type mentoCard = {
+    id: string;
+    image: string | null;
+    title: string;
+    desc: string;
+    tags: string[];
+    username: string;
+    company: string;
+}
+
+type questionCard = {
     id: string;
     desc: string;
     question_count: number;
@@ -28,8 +42,31 @@ const FAKEDATA = {
     comment: "한줄로 적을수 있을만큼 열심히 하겠습니다."
 }
 
-const FAKEDATA_1 = {
+const FAKEDATA_1: {
+    card: mentoCard[];
+    question: questionCard[];
+} = {
     card: [
+        {
+            id: "1",
+            image: null,
+            title: "CodeStates 에서 살아남기",
+            desc: "1. 열심히 공부한다. \n 2. 프리코스를 수강한다. \n 3. 이머시브를 졸업한다 \n 4. CSE에 들어간다. \n 5. 후배양성을 잘한다. \n 6. 대표님과 면접에서 포부를 설명한다. \n 7. CODESTATE 에 들어간다.",
+            tags: ["IT", "front-end", "back-end", "education-end", "engineer"],
+            username: "김주빈",
+            company: "codestate"
+        },
+        {
+            id: "2",
+            image: "https://miro.medium.com/max/1400/1*x9kUnyASEa_Ke21yQ9gBPw.png",
+            title: "CodeStates",
+            desc: "1. 열심히 공부한다. \n 2. 프리코스를 수강한다. \n 3. 이머시브를 졸업한다 \n 4. CSE에 들어간다. \n 5. 후배양성을 잘한다. \n 6. 대표님과 면접에서 포부를 설명한다. \n 7. CODESTATE 에 들어간다.",
+            tags: ["IT", "front-end", "back-end", "education-end", "engineer"],
+            username: "any",
+            company: "codestate"
+        },
+    ],
+    question: [
         {
             id: "1",
             desc: "Tongji Architectural Design And Research Institute: The Latest Architecture and News",
@@ -62,8 +99,6 @@ const FAKEDATA_1 = {
             tags: ["architecture", "interior design"],
             username: "hwan"
         }
-    ],
-    question: [
     ]
 }
 
@@ -161,7 +196,8 @@ const Profile = () => {
         setModal(!modal);
     }
 
-    const cards: card[] | [] = FAKEDATA_1[select];
+    const mentoCard: mentoCard[] = FAKEDATA_1.card;
+    const questionCard: questionCard[] = FAKEDATA_1.question;
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
@@ -207,11 +243,19 @@ const Profile = () => {
                                 </SelectView>
                             </Select>
                         </SelectWrapper>
-                        {cards.map((item) =>
-                            <QuestionCardWrapper key={item.id}>
-                                <QuestionCard {...item} />
-                            </QuestionCardWrapper>
-                        )}
+                        {select === 'card' ?
+                            mentoCard.map((item) =>
+                                <QuestionCardWrapper key={item.id}>
+                                    <MentoCard {...item} />
+                                </QuestionCardWrapper>
+                            )
+                            :
+                            questionCard.map((item) =>
+                                <QuestionCardWrapper key={item.id}>
+                                    <QuestionCard {...item} />
+                                </QuestionCardWrapper>
+                            )
+                        }
                     </BodyWrapper>
                 </ScrollView>
             </Wrapper>
