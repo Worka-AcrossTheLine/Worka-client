@@ -10,9 +10,8 @@ type Props = {
 }
 
 const Button = styled.TouchableOpacity`
-    padding-right: 10px;
-    
-    
+  padding-left: 10px;
+  
 `;
 
 const Title = styled.Text`
@@ -21,7 +20,8 @@ const Title = styled.Text`
 `;
 
 
-const MakeButton = ({ title, fontSize = 12, onPress, isPending }: Props) => {
+
+const CancerButton = ({ title, fontSize = 12, onPress, isPending }: Props) => {
     return (
         <Button onPress={() => onPress()}>
             {!isPending ? <Title style={{ fontSize }}>{title}</Title> : <ActivityIndicator size="large" color="#FFFFFF" />}
@@ -29,4 +29,4 @@ const MakeButton = ({ title, fontSize = 12, onPress, isPending }: Props) => {
     )
 }
 
-export default MakeButton
+export default CancerButton

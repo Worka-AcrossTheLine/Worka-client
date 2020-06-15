@@ -6,11 +6,11 @@ const Text = styled.Text`
     align-items: center;
 `
 
-const Search = () => {
+const Create = () => {
     return (
         <Text>Create</Text>
     )
 }
 
 
-export default Search
+export default Create
