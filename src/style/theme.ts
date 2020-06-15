@@ -11,6 +11,7 @@ type Theme = {
     blue: string;
     sky: string;
     gray: string;
+    detailBg: string;
     textColor: string;
     smFont: number;
     mdFont: number;
@@ -21,6 +22,7 @@ const theme = {
     blue: "#2999E5",
     sky: "#88C3FC",
     gray: "#7B7B7B",
+    detailBg: "#4F79A2",
     textColor: "#F85281",
     smFont: 8,
     mdFont: 10,

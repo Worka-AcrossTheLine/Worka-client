@@ -65,7 +65,6 @@ const BodyWrapper = styled.View`
 const TagWrapper = styled.View`
     width:100%;
     padding:0px 15px;
-    margin-bottom:5px;
     flex-wrap:wrap;
     flex-direction:row;
 `;
@@ -100,7 +99,7 @@ export default function DetailModal({ visible, image, title = "타이틀 테스�
                             <ScrollWrapper onStartShouldSetResponder={() => true}>
                                 {image ? <ImageWrapper><Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} /></ImageWrapper> : <TitleView><Title>{title}</Title></TitleView>}
                                 <BodyWrapper>
-                                    <TagWrapper>
+                                    <TagWrapper >
                                         {tags.map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FFFFFF" />)}
                                     </TagWrapper>
                                     <TagWrapper style={{ justifyContent: "space-between" }}>

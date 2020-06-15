@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import { Modal, View, TouchableWithoutFeedback } from 'react-native';
+import { Modal, View, TouchableWithoutFeedback, ScrollView, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
+
+import theme, { ThemeProps } from '../style/theme'
 
 import OsView from '../components/OsView';
 import UserCard from '../components/UserCard';
 import MentoCard from '../components/MentoCard';
 import QuestionCard from '../components/QuestionCard'
 import SettingTab from '../components/SettingTab'
+import DetailModal from '../components/DetailModal';
 
-import theme, { ThemeProps } from '../style/theme'
-import { ScrollView } from 'react-native';
 
 const a = [];
 
@@ -172,14 +173,26 @@ const ModalTitle = styled.Text`
 
 const Profile = () => {
     const [select, setSelect] = useState<select>("card");
-    const [modal, setModal] = useState<boolean>(false);
+    const [settingModal, setSettingModal] = useState<boolean>(false);
+    const [detailModal, setDetailModal] = useState<boolean>(false);
+    const [detail, setDetail] = useState<mentoCard>();
 
     const handleSelect = (text: select) => () => {
         setSelect(text);
     }
 
     const handleModal = () => {
-        setModal(!modal);
+        setSettingModal(!settingModal);
+    }
+
+    const handelDetail = (detailCard: mentoCard) => {
+        setDetailModal(true);
+        setDetail(detailCard);
+    }
+
+    const handelDetailClose = () => {
+        console.log("HANDLE")
+        setDetailModal(false);
     }
 
     const mentoCard: mentoCard[] = FAKEDATA_1.card;
@@ -188,17 +201,17 @@ const Profile = () => {
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
-                <Modal visible={modal} transparent={true} >
-                    <TouchableWithoutFeedback onPress={() => setModal(false)}>
+                <Modal visible={settingModal} transparent={true} >
+                    <TouchableWithoutFeedback onPress={() => setSettingModal(false)}>
                         <ModalWrapper >
                             <TouchableWithoutFeedback>
                                 <ModalLayout onStartShouldSetResponder={() => true}>
                                     <ScrollView style={{ width: '100%', padding: 18 }}>
                                         <ModalTitle>Helle {FAKEDATA.username}</ModalTitle>
-                                        <SettingTab text="username"></SettingTab>
-                                        <SettingTab text="password"></SettingTab>
-                                        <SettingTab text="font size"></SettingTab>
-                                        <SettingTab text="dark theme"></SettingTab>
+                                        <SettingTab text="username" />
+                                        <SettingTab text="password" />
+                                        <SettingTab text="font size" />
+                                        <SettingTab text="dark theme" />
                                         <View style={{ height: 50 }}></View>
                                     </ScrollView>
                                 </ModalLayout>
@@ -226,9 +239,11 @@ const Profile = () => {
                         </SelectWrapper>
                         {select === 'card' ?
                             mentoCard.map((item) =>
-                                <QuestionCardWrapper key={item.id}>
-                                    <MentoCard {...item} />
-                                </QuestionCardWrapper>
+                                <TouchableOpacity onPress={() => handelDetail(item)} key={item.id}>
+                                    <QuestionCardWrapper >
+                                        <MentoCard {...item} />
+                                    </QuestionCardWrapper>
+                                </TouchableOpacity>
                             )
                             :
                             questionCard.map((item) =>
@@ -239,6 +254,9 @@ const Profile = () => {
                         }
                     </BodyWrapper>
                 </ScrollView>
+                {detail &&
+                    <DetailModal visible={detailModal} onPress={handelDetailClose} {...detail} />
+                }
             </Wrapper>
         </OsView>
     )
