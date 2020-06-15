@@ -10,4 +10,4 @@ export type RootState = {
     feed: FeedState
 }
 
-export default combineReducers({ login, signup, getFeed });
+export default combineReducers({ login, signup, feed: getFeed });

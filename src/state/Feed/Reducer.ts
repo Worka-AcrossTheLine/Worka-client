@@ -1,4 +1,10 @@
-import {GET_FEED_FAIL, GET_FEED_REQUEST, GET_FEED_SUCCESS} from './Action';
+import {
+  GET_FEED_DETAIL_FAIL,
+  GET_FEED_DETAIL_REQUEST, GET_FEED_DETAIL_SUCCESS,
+  GET_FEED_FAIL,
+  GET_FEED_REQUEST,
+  GET_FEED_SUCCESS
+} from './Action';
 import {Action} from '../../sagas/index';
 
 export interface FeedState {
@@ -24,6 +30,24 @@ export const getFeed = (state: FeedState = initialState, action: Action) => {
         err: null,
       };
     case GET_FEED_FAIL:
+      return {
+        fetching: false,
+        data: null,
+        err: action.payload.err,
+      };
+    case GET_FEED_DETAIL_REQUEST:
+      return {
+        fetching: true,
+        data: null,
+        err: null,
+      };
+    case GET_FEED_DETAIL_SUCCESS:
+      return {
+        fetching: false,
+        data: action.payload.data,
+        err: null,
+      };
+    case GET_FEED_DETAIL_FAIL:
       return {
         fetching: false,
         data: null,
