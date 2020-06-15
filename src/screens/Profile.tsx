@@ -1,17 +1,33 @@
 import React, { useState } from 'react';
-import { Modal, Button, TouchableWithoutFeedback } from 'react-native';
+import { Modal, View, TouchableWithoutFeedback, ScrollView, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
+
+import theme, { ThemeProps } from '../style/theme'
 
 import OsView from '../components/OsView';
 import UserCard from '../components/UserCard';
+import MentoCard from '../components/MentoCard';
 import QuestionCard from '../components/QuestionCard'
+import SettingTab from '../components/SettingTab'
+import DetailModal from '../components/DetailModal';
 
-import theme, { ThemeProps } from '../style/theme'
-import { ScrollView } from 'react-native';
+
+const a = [];
+
 
 type select = 'card' | 'question'
 
-type card = {
+type mentoCard = {
+    id: string;
+    image: string | null;
+    title: string;
+    desc: string;
+    tags: string[];
+    username: string;
+    company: string;
+}
+
+type questionCard = {
     id: string;
     desc: string;
     question_count: number;
@@ -28,8 +44,31 @@ const FAKEDATA = {
     comment: "한줄로 적을수 있을만큼 열심히 하겠습니다."
 }
 
-const FAKEDATA_1 = {
+const FAKEDATA_1: {
+    card: mentoCard[];
+    question: questionCard[];
+} = {
     card: [
+        {
+            id: "1",
+            image: null,
+            title: "CodeStates 에서 살아남기",
+            desc: "1. 열심히 공부한다. \n 2. 프리코스를 수강한다. \n 3. 이머시브를 졸업한다 \n 4. CSE에 들어간다. \n 5. 후배양성을 잘한다. \n 6. 대표님과 면접에서 포부를 설명한다. \n 7. CODESTATE 에 들어간다.",
+            tags: ["IT", "front-end", "back-end", "education-end", "engineer"],
+            username: "김주빈",
+            company: "codestate"
+        },
+        {
+            id: "2",
+            image: "https://miro.medium.com/max/1400/1*x9kUnyASEa_Ke21yQ9gBPw.png",
+            title: "CodeStates",
+            desc: "1. 열심히 공부한다. \n 2. 프리코스를 수강한다. \n 3. 이머시브를 졸업한다 \n 4. CSE에 들어간다. \n 5. 후배양성을 잘한다. \n 6. 대표님과 면접에서 포부를 설명한다. \n 7. CODESTATE 에 들어간다.",
+            tags: ["IT", "front-end", "back-end", "education-end", "engineer"],
+            username: "any",
+            company: "codestate"
+        },
+    ],
+    question: [
         {
             id: "1",
             desc: "Tongji Architectural Design And Research Institute: The Latest Architecture and News",
@@ -62,8 +101,6 @@ const FAKEDATA_1 = {
             tags: ["architecture", "interior design"],
             username: "hwan"
         }
-    ],
-    question: [
     ]
 }
 
@@ -122,68 +159,61 @@ const ModalWrapper = styled.View`
 const ModalLayout = styled.View`
     background-color:${({ theme }: ThemeProps): string => theme.white};
     align-items:center;
-    padding:18px;
     width:100%;
     height:70%;
 `;
 
 const ModalTitle = styled.Text`
+    text-align:center;
     font-size:20px;
     color:#DEE53A;
     margin-bottom:25px;
 `;
 
-const ModalTab = styled.View`
-    width:100%;
-    height:64px;
-    padding-left:16px;
-    justify-content:center;
-    box-shadow:0px 3px 6px #000;
-    background-color:white;
-    elevation:6;
-    margin-bottom:7px;
-`;
-
-const ModalTabText = styled.Text`
-    font-size:12px;
-    color:${({ theme }: ThemeProps): string => theme.textColor};
-`;
 
 const Profile = () => {
     const [select, setSelect] = useState<select>("card");
-    const [modal, setModal] = useState<boolean>(false);
+    const [settingModal, setSettingModal] = useState<boolean>(false);
+    const [detailModal, setDetailModal] = useState<boolean>(false);
+    const [detail, setDetail] = useState<mentoCard>();
 
     const handleSelect = (text: select) => () => {
         setSelect(text);
     }
 
     const handleModal = () => {
-        setModal(!modal);
+        setSettingModal(!settingModal);
     }
 
-    const cards: card[] | [] = FAKEDATA_1[select];
+    const handelDetail = (detailCard: mentoCard) => {
+        setDetailModal(true);
+        setDetail(detailCard);
+    }
+
+    const handelDetailClose = () => {
+        console.log("HANDLE")
+        setDetailModal(false);
+    }
+
+    const mentoCard: mentoCard[] = FAKEDATA_1.card;
+    const questionCard: questionCard[] = FAKEDATA_1.question;
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
-                <Modal visible={modal} transparent={true} >
-                    <TouchableWithoutFeedback onPress={() => setModal(false)}>
-                        <ModalWrapper>
+                <Modal visible={settingModal} transparent={true} >
+                    <TouchableWithoutFeedback onPress={() => setSettingModal(false)}>
+                        <ModalWrapper >
                             <TouchableWithoutFeedback>
-                                <ModalLayout>
-                                    <ModalTitle>Helle {FAKEDATA.username}</ModalTitle>
-                                    <ModalTab>
-                                        <ModalTabText>Username</ModalTabText>
-                                    </ModalTab>
-                                    <ModalTab>
-                                        <ModalTabText>Password</ModalTabText>
-                                    </ModalTab>
-                                    <ModalTab>
-                                        <ModalTabText>Text size</ModalTabText>
-                                    </ModalTab>
-                                    <ModalTab>
-                                        <ModalTabText>Dark theme</ModalTabText>
-                                    </ModalTab>
+                                <ModalLayout onStartShouldSetResponder={() => true}>
+                                    <ScrollView style={{ width: '100%', padding: 18 }}>
+                                        <ModalTitle>Helle {FAKEDATA.username}</ModalTitle>
+                                        <SettingTab text="username" />
+                                        <SettingTab text="password" />
+                                        <SettingTab text="font size" />
+                                        <SettingTab text="dark theme" />
+                                        <View style={{ height: 50 }}></View>
+                                    </ScrollView>
                                 </ModalLayout>
                             </TouchableWithoutFeedback>
                         </ModalWrapper>
@@ -207,13 +237,26 @@ const Profile = () => {
                                 </SelectView>
                             </Select>
                         </SelectWrapper>
-                        {cards.map((item) =>
-                            <QuestionCardWrapper key={item.id}>
-                                <QuestionCard {...item} />
-                            </QuestionCardWrapper>
-                        )}
+                        {select === 'card' ?
+                            mentoCard.map((item) =>
+                                <TouchableOpacity onPress={() => handelDetail(item)} key={item.id}>
+                                    <QuestionCardWrapper >
+                                        <MentoCard {...item} />
+                                    </QuestionCardWrapper>
+                                </TouchableOpacity>
+                            )
+                            :
+                            questionCard.map((item) =>
+                                <QuestionCardWrapper key={item.id}>
+                                    <QuestionCard {...item} />
+                                </QuestionCardWrapper>
+                            )
+                        }
                     </BodyWrapper>
                 </ScrollView>
+                {detail &&
+                    <DetailModal visible={detailModal} onPress={handelDetailClose} {...detail} />
+                }
             </Wrapper>
         </OsView>
     )

@@ -3,10 +3,12 @@ import { takeLatest } from 'redux-saga/effects';
 
 import login, { LoginState } from './login';
 import signup, { SignupState } from './signup'
+import setting, { SettingState } from './setting'
 
 export type RootState = {
     login: LoginState,
-    signup: SignupState
+    signup: SignupState,
+    setting: SettingState
 }
 
-export default combineReducers({ login, signup });
+export default combineReducers({ login, signup, setting });

@@ -16,7 +16,7 @@ const Wrapper = styled.View`
     border-radius:10px;
     background-color:${({ theme }: ThemeProps): string => theme.sky};
     padding:2px 8px;
-    margin-left:8px;
+    margin:3px;
 `;
 
 const Text = styled.Text`
@@ -28,7 +28,7 @@ export default function Tag({ fontColor, text }: Props) {
     const textStyle: TextStyle = {};
     fontColor && (textStyle.color = fontColor);
     return (
-        <Wrapper>
+        <Wrapper onStartShouldSetResponder={() => true}>
             <Text style={textStyle}>{text}</Text>
         </Wrapper>
     )

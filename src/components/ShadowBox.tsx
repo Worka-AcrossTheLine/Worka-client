@@ -13,7 +13,7 @@ const Wrapper = styled.View`
     border-radius:8px;
     background-color:#FFFFFF
     box-shadow:0px 3px 6px #000;
-    elevation:6;
+    elevation:15;
 `;
 
 export default function ShadowBox({ semi, children }: Props) {
