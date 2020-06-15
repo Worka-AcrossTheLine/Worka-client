@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Modal, Button, TouchableWithoutFeedback } from 'react-native';
+import { Modal, View, TouchableWithoutFeedback } from 'react-native';
 import styled from 'styled-components/native';
 
 import OsView from '../components/OsView';
 import UserCard from '../components/UserCard';
 import MentoCard from '../components/MentoCard';
 import QuestionCard from '../components/QuestionCard'
+import SettingTab from '../components/SettingTab'
 
 import theme, { ThemeProps } from '../style/theme'
 import { ScrollView } from 'react-native';
@@ -157,32 +158,17 @@ const ModalWrapper = styled.View`
 const ModalLayout = styled.View`
     background-color:${({ theme }: ThemeProps): string => theme.white};
     align-items:center;
-    padding:18px;
     width:100%;
     height:70%;
 `;
 
 const ModalTitle = styled.Text`
+    text-align:center;
     font-size:20px;
     color:#DEE53A;
     margin-bottom:25px;
 `;
 
-const ModalTab = styled.View`
-    width:100%;
-    height:64px;
-    padding-left:16px;
-    justify-content:center;
-    box-shadow:0px 3px 6px #000;
-    background-color:white;
-    elevation:6;
-    margin-bottom:7px;
-`;
-
-const ModalTabText = styled.Text`
-    font-size:12px;
-    color:${({ theme }: ThemeProps): string => theme.textColor};
-`;
 
 const Profile = () => {
     const [select, setSelect] = useState<select>("card");
@@ -204,22 +190,17 @@ const Profile = () => {
             <Wrapper>
                 <Modal visible={modal} transparent={true} >
                     <TouchableWithoutFeedback onPress={() => setModal(false)}>
-                        <ModalWrapper>
+                        <ModalWrapper >
                             <TouchableWithoutFeedback>
-                                <ModalLayout>
-                                    <ModalTitle>Helle {FAKEDATA.username}</ModalTitle>
-                                    <ModalTab>
-                                        <ModalTabText>Username</ModalTabText>
-                                    </ModalTab>
-                                    <ModalTab>
-                                        <ModalTabText>Password</ModalTabText>
-                                    </ModalTab>
-                                    <ModalTab>
-                                        <ModalTabText>Text size</ModalTabText>
-                                    </ModalTab>
-                                    <ModalTab>
-                                        <ModalTabText>Dark theme</ModalTabText>
-                                    </ModalTab>
+                                <ModalLayout onStartShouldSetResponder={() => true}>
+                                    <ScrollView style={{ width: '100%', padding: 18 }}>
+                                        <ModalTitle>Helle {FAKEDATA.username}</ModalTitle>
+                                        <SettingTab text="username"></SettingTab>
+                                        <SettingTab text="password"></SettingTab>
+                                        <SettingTab text="font size"></SettingTab>
+                                        <SettingTab text="dark theme"></SettingTab>
+                                        <View style={{ height: 50 }}></View>
+                                    </ScrollView>
                                 </ModalLayout>
                             </TouchableWithoutFeedback>
                         </ModalWrapper>
