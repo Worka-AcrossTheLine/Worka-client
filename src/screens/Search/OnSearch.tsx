@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native';
-import { StatusBar, Platform, TouchableWithoutFeedback, Text } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack'
 
+import OsView from '../../components/OsView';
 import { SearchStackParamList } from '../../navigator/SeachNavigation'
-import { TouchableOpacity } from 'react-native-gesture-handler';
 
 type AuthHomeNavigationProps = StackNavigationProp<SearchStackParamList, 'Search'>
 
@@ -12,23 +11,12 @@ type Props = {
     navigation: AuthHomeNavigationProps
 }
 
-const currentHeight = StatusBar.currentHeight || 0;
-
-const IosWrapper = styled.SafeAreaView`
-    flex-direction:row;
-    align-items:center;
-    justify-content:center;
-    width:100%;
-    background-color:white;
-`;
-
-const AndoroidWrapper = styled.View`
-    flex-direction:row;
-     align-items:center;
-    justify-content:center;
-    width:100%;
-    padding:${currentHeight > 25 ? 46 : 0}px 0px 30px 0px;
-    background-color:white;
+const SearchWrapper = styled.View`
+    width:100%
+    justify-content: center;
+    align-items : center;
+    flex-direction : row;
+    background-color : #FFFFFF
 `;
 
 const InputWrapper = styled.View`
@@ -43,15 +31,19 @@ const InputWrapper = styled.View`
 
 const GoBackWrapper = styled.TouchableOpacity`
     background-color:black;
-
 `;
 
-const Input = styled.TextInput`
-    flex:1;
+const BackText = styled.Text``;
+
+const Input = styled.TextInput``;
+
+const BodyWrapper = styled.View`
+    background-color:white;
+    height:100%;
 `;
 
 
-function Search({ navigation }: Props) {
+export default function ({ navigation }: Props) {
     const [value, setValue] = useState('');
 
     const handleInput = (e: string): void => {
@@ -59,21 +51,17 @@ function Search({ navigation }: Props) {
     }
 
     return (
-        <>
-            <InputWrapper>
-                <Input value={value} onChangeText={handleInput} autoFocus={true} />
-            </InputWrapper>
-            <GoBackWrapper onPress={() => navigation.goBack()} >
-                <Text> CANCEL</Text>
-            </GoBackWrapper>
-        </>
-    )
-}
-
-export default function ({ navigation }: Props) {
-    return (
-        <TouchableWithoutFeedback>
-            {Platform.OS === 'ios' ? (<IosWrapper><Search navigation={navigation} /></IosWrapper>) : <AndoroidWrapper><Search navigation={navigation} /></AndoroidWrapper>}
-        </TouchableWithoutFeedback >
+        <OsView style={{}}>
+            <SearchWrapper>
+                <InputWrapper>
+                    <Input value={value} onChangeText={handleInput} autoFocus={true} />
+                </InputWrapper>
+                <GoBackWrapper onPress={() => navigation.goBack()} >
+                    <BackText> CANCEL</BackText>
+                </GoBackWrapper>
+            </SearchWrapper>
+            <BodyWrapper>
+            </BodyWrapper>
+        </OsView>
     )
 }
