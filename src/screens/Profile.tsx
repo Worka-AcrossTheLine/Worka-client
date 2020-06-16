@@ -173,10 +173,11 @@ const ModalTitle = styled.Text`
 const Profile = () => {
     const [select, setSelect] = useState<select>("card");
     const [modal, setModal] = useState<ModalType>('none');
-    const [detail, setDetail] = useState<mentoCard | questionCard>();
+    const [detail, setDetail] = useState<mentoCard>();
+    const [questionCard, setQuestionCard] = useState<questionCard>();
 
-    const mentoCard: mentoCard[] = FAKEDATA_1.card;
-    const questionCard: questionCard[] = FAKEDATA_1.question;
+    const mentoCards: mentoCard[] = FAKEDATA_1.card;
+    const questionCards: questionCard[] = FAKEDATA_1.question;
 
     const handleSelect = (text: select) => () => {
         setSelect(text);
@@ -186,11 +187,18 @@ const Profile = () => {
         setModal('none');
     }
 
-    const handelDetail = (text: ModalType) => (detailCard?: mentoCard | questionCard) => {
-        setModal(text);
-        if (detailCard) {
-            setDetail(detailCard);
-        }
+    const handleSetting = () => {
+        setModal('setting');
+    }
+
+    const handelDetail = (card?: mentoCard) => {
+        setModal('detail');
+        setDetail(card);
+    }
+
+    const handleQuestion = (card: questionCard) => {
+        setModal('question');
+        setQuestionCard(card);
     }
 
     const handelClose = () => {
@@ -223,7 +231,7 @@ const Profile = () => {
                         <Title>Question</Title>
                     </TitleView>
                     <BodyWrapper>
-                        <UserCard {...FAKEDATA} onPress={handelDetail('setting')} />
+                        <UserCard {...FAKEDATA} onPress={handleSetting} />
                         <SelectWrapper>
                             <Select onPress={() => handleSelect('card')()}>
                                 <SelectView style={{ borderBottomWidth: (select === "card" ? 3 : 0) }}>
@@ -237,16 +245,16 @@ const Profile = () => {
                             </Select>
                         </SelectWrapper>
                         {select === 'card' ?
-                            mentoCard.map((item) =>
-                                <TouchableOpacity onPress={() => handelDetail('detail')(item)} key={item.id}>
+                            mentoCards.map((item) =>
+                                <TouchableOpacity onPress={() => handelDetail(item)} key={item.id}>
                                     <QuestionCardWrapper >
                                         <MentoCard {...item} />
                                     </QuestionCardWrapper>
                                 </TouchableOpacity>
                             )
                             :
-                            questionCard.map((item) =>
-                                <TouchableOpacity onPress={() => handelDetail('question')(item)} key={item.id}>
+                            questionCards.map((item) =>
+                                <TouchableOpacity onPress={() => handleQuestion(item)} key={item.id}>
                                     <QuestionCardWrapper>
                                         <QuestionCard {...item} />
                                     </QuestionCardWrapper>
@@ -255,16 +263,19 @@ const Profile = () => {
                         }
                     </BodyWrapper>
                 </ScrollView>
-                {detail && modal !== 'none' && (
-                    "title" in detail ?
-                        <DetailModal visible={true} onPress={handelClose} {...detail} />
-                        :
-                        <QuestionModal visible={true} onPress={handelClose} {...detail} />
-                )}
+                {detail && modal === 'detail' &&
+                    <DetailModal visible={true} onPress={handelClose} {...detail} />
+                }
+                {questionCard && modal === 'question' &&
+                    <QuestionModal visible={true} onPress={handelClose} {...questionCard} />
+                }
             </Wrapper>
         </OsView>
     )
 }
+
+//타입으로 체킹해서 분기처리하는건 위험하다.
+//
 
 
 export default Profile
