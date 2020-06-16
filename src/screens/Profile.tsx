@@ -223,7 +223,7 @@ const Profile = () => {
                         <Title>Question</Title>
                     </TitleView>
                     <BodyWrapper>
-                        <UserCard {...FAKEDATA} onPress={handleModal} />
+                        <UserCard {...FAKEDATA} onPress={handelDetail('setting')} />
                         <SelectWrapper>
                             <Select onPress={() => handleSelect('card')()}>
                                 <SelectView style={{ borderBottomWidth: (select === "card" ? 3 : 0) }}>
