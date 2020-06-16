@@ -1,5 +1,3 @@
-import { RootState } from '../reducers';
-
 import store from '../store';
 
 export type ThemeProps = {
