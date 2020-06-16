@@ -6,7 +6,7 @@ import { ThemeProps } from '../style/theme';
 import DownArrow from '../../assets/DownArrow.svg';
 import UpArrow from '../../assets/UpArrow.svg';
 import ThumpsUp from '../../assets/ThumpsUp.svg';
-import ThumpsDown from '../../assets/ThumpsDown';
+import ThumpsDown from '../../assets/ThumpsDown.svg';
 
 type Props = {
     visible: boolean;
