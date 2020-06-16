@@ -1,5 +1,5 @@
 import React from 'react'
-import { ActivityIndicator } from 'react-native'
+import { ActivityIndicator, Alert } from 'react-native'
 import styled from 'styled-components/native';
 
 type Props = {
@@ -23,7 +23,7 @@ const Title = styled.Text`
 
 const CancerButton = ({ title, fontSize = 12, onPress, isPending }: Props) => {
     return (
-        <Button onPress={() => onPress()}>
+        <Button onPress={() => Alert.alert('Cancer')}>
             {!isPending ? <Title style={{ fontSize }}>{title}</Title> : <ActivityIndicator size="large" color="#FFFFFF" />}
         </Button>
     )

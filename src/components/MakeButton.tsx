@@ -1,5 +1,5 @@
 import React from 'react'
-import { ActivityIndicator } from 'react-native'
+import { ActivityIndicator, Alert } from 'react-native'
 import styled from 'styled-components/native';
 
 type Props = {
@@ -11,8 +11,6 @@ type Props = {
 
 const Button = styled.TouchableOpacity`
     padding-right: 10px;
-    
-    
 `;
 
 const Title = styled.Text`
@@ -23,7 +21,7 @@ const Title = styled.Text`
 
 const MakeButton = ({ title, fontSize = 12, onPress, isPending }: Props) => {
     return (
-        <Button onPress={() => onPress()}>
+        <Button onPress={() => Alert.alert('is Posted')}>
             {!isPending ? <Title style={{ fontSize }}>{title}</Title> : <ActivityIndicator size="large" color="#FFFFFF" />}
         </Button>
     )
