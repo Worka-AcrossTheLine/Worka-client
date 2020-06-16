@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { TouchableWithoutFeedback, TouchableOpacity, ScrollView } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { TouchableWithoutFeedback, TouchableOpacity, ScrollView, BackHandler } from 'react-native'
 import styled from 'styled-components/native';
 import Tag from './Tag';
 import { ThemeProps } from '../style/theme';
@@ -156,7 +156,7 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
         )
     }
 
-    const CloseModal = () => {
+    const closeModal = () => {
         setDetailIndex(undefined);
         onPress();
     }
@@ -164,15 +164,16 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
     const handleDetail = (index: number) => {
         index === detailIndex ? setDetailIndex(undefined) : setDetailIndex(index)
     }
+
     return (
-        <ModalWrapper visible={visible} transparent={true} >
-            <TouchableWithoutFeedback onPress={CloseModal}>
+        <ModalWrapper visible={visible} transparent={true} onRequestClose={closeModal} >
+            <TouchableWithoutFeedback onPress={closeModal}>
                 <Wrapper>
-                    <QuestionWrapper>
+                    <QuestionWrapper onStartShouldSetResponder={() => true}>
                         <ScrollView>
-                            <ScrollWrapper onStartShouldSetResponder={() => true}>
+                            <ScrollWrapper>
                                 <ModalTabWrapper>
-                                    <TileWrapper>
+                                    <TileWrapper onStartShouldSetResponder={() => true}>
                                         <TextWrapper style={{ flex: 1 }}>
                                             <Desc>{desc}</Desc>
                                         </TextWrapper>
@@ -182,7 +183,7 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
                                 <BodyWrapper>
                                     {QUESTIONS && (
                                         QUESTIONS.map((qs, index) =>
-                                            <ModalTabWrapper key={`q-${index}`} style={setDetailStyle(index)}>
+                                            <ModalTabWrapper key={`q-${index}`} style={setDetailStyle(index)} onStartShouldSetResponder={() => true}>
                                                 <TextWrapper>
                                                     <QuestionText>Q{index + 1}.{qs.q}</QuestionText>
                                                 </TextWrapper>
@@ -200,7 +201,7 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
                                                         )
                                                     )}
                                                 </DetailWrapper>
-                                                <DropDownWrapper>
+                                                <DropDownWrapper >
                                                     <TouchableOpacity onPress={() => handleDetail(index)} style={{ padding: 5 }}>
                                                         {detailIndex === index ? <UpArrow /> : <DownArrow />}
                                                     </TouchableOpacity>
@@ -211,7 +212,7 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
                                 </BodyWrapper>
                             </ScrollWrapper>
                         </ScrollView>
-                        <TagWrapper>
+                        <TagWrapper >
                             <TendencyTagWrapper>
                                 {tags.map((tag, tagIndex) => <Tag key={`tag-${tagIndex}`} text={tag} fontColor="#FFFFFF" />)}
                             </TendencyTagWrapper>

@@ -86,7 +86,7 @@ const Desc = styled.Text`
 export default function DetailModal({ visible, image, title = "타이틀 테스트", tags, username, company, desc, onPress }: Props) {
     console.log(visible, image);
     return (
-        <ModalWrapper visible={visible} transparent={true} >
+        <ModalWrapper visible={visible} transparent={true} onRequestClose={onPress} >
             <Wrapper>
                 <CloseWrapper>
                     <TouchableOpacity onPress={onPress} style={{}}>
