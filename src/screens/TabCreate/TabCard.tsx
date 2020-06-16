@@ -60,8 +60,7 @@ const TabCard: React.FC = (props) => {
     const onFocus = () => {
 
     }
-
-    const camera = async (arg:void) => {
+    const camera = async () => {
         try {
             if (Constants.platform.ios) {
                 const { status } = await Permissions.askAsync(Permissions.CAMERA);
@@ -81,7 +80,7 @@ const TabCard: React.FC = (props) => {
         }
     }
 
-    const pickImage = async (arg:void) => {
+    const pickImage = async () => {
         try {
             if (Constants.platform.ios) {
                 const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -104,7 +103,7 @@ const TabCard: React.FC = (props) => {
     }
 
 
-    const Upload = (arg:void) => {
+    const Upload = () => {
         const token = AsyncStorage.getItem('token')
         if(token) {
             dispatch({
