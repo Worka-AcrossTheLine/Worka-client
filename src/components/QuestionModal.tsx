@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { TouchableWithoutFeedback, TouchableOpacity, ScrollView, BackHandler } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
+import { TouchableWithoutFeedback, TouchableOpacity, ScrollView, Animated } from 'react-native'
 import styled from 'styled-components/native';
 import Tag from './Tag';
 import { ThemeProps } from '../style/theme';
@@ -50,13 +50,12 @@ const Wrapper = styled.View`
     background-color:rgba(112,112,112,0.9);
     justify-content:center;
     align-items:center;
-    padding:0px 30px;
+    padding:0px 10px;
 `;
 
 const QuestionWrapper = styled.View`
     width:100%;
-    max-width:320px;
-    max-height:50%;
+    height:70%;
     background-color:${({ theme }: ThemeProps): string => theme.detailBg};
 `;
 
@@ -146,13 +145,15 @@ const AnswerUsername = styled.Text`
 
 export default function QuestionModal({ visible, desc, image, question_count, tags, username, onPress }: Props) {
     const [detailIndex, setDetailIndex] = useState<number>();
+    const [animationOn, setAnimationOn] = useState<boolean>(false);
+    const slideToggle = useRef(new Animated.Value(0)).current;
 
-    const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: number, flex?: number } => {
+    const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number } => {
         return (
             typeof detailIndex === 'number' && detailIndex === index ?
-                { display: 'flex', height: 300, flex: 1 }
+                { height: slideToggle }
                 :
-                {}
+                { display: 'none' }
         )
     }
 
@@ -162,9 +163,37 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
     }
 
     const handleDetail = (index: number) => {
-        index === detailIndex ? setDetailIndex(undefined) : setDetailIndex(index)
+        if (animationOn) {
+            Animated.timing(slideToggle, {
+                toValue: 0,
+                duration: 1000
+            }).start(() => {
+                setAnimationOn(false);
+                index === detailIndex ? setDetailIndex(undefined) : setDetailIndex(index)
+            });
+        } else {
+            index === detailIndex ? setDetailIndex(undefined) : setDetailIndex(index)
+        }
+
     }
 
+    useEffect(() => {
+        if (typeof detailIndex === 'number') {
+            setAnimationOn(true)
+        } else {
+            setAnimationOn(false);
+        }
+    }, [detailIndex])
+
+    useEffect(() => {
+        if (animationOn) {
+            Animated.timing(slideToggle, {
+                toValue: 300,
+                duration: 1000
+            }).start();
+        }
+
+    }, [animationOn])
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={closeModal} >
             <TouchableWithoutFeedback onPress={closeModal}>
@@ -183,11 +212,11 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
                                 <BodyWrapper>
                                     {QUESTIONS && (
                                         QUESTIONS.map((qs, index) =>
-                                            <ModalTabWrapper key={`q-${index}`} style={setDetailStyle(index)} onStartShouldSetResponder={() => true}>
+                                            <ModalTabWrapper key={`q-${index}`} onStartShouldSetResponder={() => true}>
                                                 <TextWrapper>
                                                     <QuestionText>Q{index + 1}.{qs.q}</QuestionText>
                                                 </TextWrapper>
-                                                <DetailWrapper style={{ display: index === detailIndex ? 'flex' : 'none' }}>
+                                                <Animated.View style={setDetailStyle(index)}>
                                                     {qs.as && (
                                                         qs.as.map((answer, idx) =>
                                                             <AnswerWrapper key={`answer-${idx}`}>
@@ -200,7 +229,7 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
                                                             </AnswerWrapper>
                                                         )
                                                     )}
-                                                </DetailWrapper>
+                                                </Animated.View>
                                                 <DropDownWrapper >
                                                     <TouchableOpacity onPress={() => handleDetail(index)} style={{ padding: 5 }}>
                                                         {detailIndex === index ? <UpArrow /> : <DownArrow />}
