@@ -1,3 +1,7 @@
+interface makeCard {
+  title: string, tags: string, text: string, images : any, token: string
+}
+
 
 export const GET_FEED_REQUEST = 'GET_FEED_REQUEST';
 export const GET_FEED_SUCCESS = 'GET_FEED_SUCCESS';
@@ -6,6 +10,11 @@ export const GET_FEED_FAIL = 'GET_FEED_FAIL';
 export const GET_FEED_DETAIL_REQUEST = 'GET_FEED_DETAIL_REQUEST'
 export const GET_FEED_DETAIL_SUCCESS = 'GET_FEED_DETAIL_SUCCESS'
 export const GET_FEED_DETAIL_FAIL = 'GET_FEED_DETAIL_FAIL'
+//makd Feed
+export const MAKE_FEED_REQUEST = 'MAKE_FEED_REQUEST';
+export const MAKE_FEED_SUCCESS = 'MAKE_FEED_SUCCESS';
+export const MAKE_FEED_FAIL = 'MAKE_FEED_FAIL';
+
 
 export const getFeedRequest = () => {
   return {type: GET_FEED_REQUEST};
@@ -16,6 +25,7 @@ export const getFeedSuccess = (data: any) => {
 export const getFeedFail = (err: any) => {
   return {type: GET_FEED_FAIL, payload: {err}};
 };
+
 export const getFeedDetailRequest = (id: string) => {
   return {type: GET_FEED_DETAIL_REQUEST, payload: {id}}
 }
@@ -25,3 +35,15 @@ export const getFeedDetailSuccess = (detail: any) => {
 export const getFeedDetailFail = (err: any) => {
   return {type: GET_FEED_DETAIL_FAIL, payload: {err}}
 }
+
+export const makeFeedRequest = (data:makeCard) => {
+  return {type: MAKE_FEED_REQUEST, payload : {data}}
+}
+export const makeFeedSuccess = (data:any) => {
+  return {type: MAKE_FEED_SUCCESS, payload : {data}}
+}
+export const makeFeedFail = (err : any) => {
+  return {type : MAKE_FEED_FAIL, payload: {err}}
+}
+
+
