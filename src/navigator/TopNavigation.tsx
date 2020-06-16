@@ -5,7 +5,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 
 
 
-import NewsFeed from '../screens/Feed/NewsFeed/NewsFeed'
+import NewsFeed from '../screens/Feed/FeedHome'
 import QuestionFeed from '../screens/Feed/QuestionFeed/QuestionFeed'
 import PopularFeed from '../screens/Feed/PopularFeed/PopularFeed'
 
