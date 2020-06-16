@@ -43,7 +43,6 @@ const SearchWrapper = styled.ScrollView`
 
 
 export default function ({ navigation }: Props) {
-    console.log("HOOME")
     return (
         <OsView style={{ width: '100%', justifyContent: 'center', alignItems: 'center', backgroundColor: '#FFFFFF' }}>
             <TouchableWithoutFeedback onPress={() => navigation.navigate('Search')} style={{ backgroundColor: 'black' }}>
