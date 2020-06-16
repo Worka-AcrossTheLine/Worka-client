@@ -1,8 +1,10 @@
 import { takeEvery, takeLatest, all } from 'redux-saga/effects';
 import { LOGIN_REQUESTED, TENDENCY, loginUser, tendencyUser } from '../reducers/login';
 import { SIGNUP_REQUESTED, signupUser } from '../reducers/signup'
-import {GET_FEED_DETAIL_REQUEST, GET_FEED_REQUEST} from "../state/Feed/Action";
-import {handleGetFeed, handleGetFeedDetail} from "../state/Feed/Saga"
+import {GET_FEED_DETAIL_REQUEST, GET_FEED_REQUEST} from "./Feed/Action";
+import {handleGetFeed, handleGetFeedDetail} from "./Feed/Saga"
+import {handleQuestion} from "./Question/saga"
+import {MAKE_QUESTION_REQUEST} from "./Question/action";
 
 
 
@@ -18,6 +20,7 @@ function* watchLoginRequested() {
   yield takeLatest(TENDENCY, tendencyUser);
   yield takeLatest(GET_FEED_REQUEST, handleGetFeed);
   yield takeLatest(GET_FEED_DETAIL_REQUEST, handleGetFeedDetail)
+  yield takeLatest(MAKE_QUESTION_REQUEST, handleQuestion)
 }
 
 export default function* rootSaga() {

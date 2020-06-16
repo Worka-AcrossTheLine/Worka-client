@@ -1,4 +1,4 @@
-import React, { useState }from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components/native'
 
 import MakeJobTagInput from "../../components/MakeJobTagInput"
@@ -9,6 +9,9 @@ import CancerButton from '../../components/CancerButton'
 import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
 import { Keyboard } from 'react-native'
+import {useDispatch} from "react-redux";
+import {GET_FEED_REQUEST} from "../../state/Feed/Action";
+import { MAKE_QUESTION_REQUEST } from '../../state/Question/Action'
 
 
 
@@ -33,11 +36,18 @@ const InputWrapper = styled.View`
     flex-direction:column;
 `
 const TabQuestion = () => {
-    
+    //질문지를 만들고 송
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState('');
     const [quetion, setQuestion] = useState('');
-    
+    const dispatch = useDispatch()
+
+
+    const Upload = () => {
+        const tags = tapTag.split(',')
+        dispatch ({ type : MAKE_QUESTION_REQUEST, payload : {tags : tags, title : InterestingTitle, question: quetion} })
+    }
+
     const handleKeyboard  = () => {
         Keyboard.dismiss();
     }
@@ -49,7 +59,7 @@ const TabQuestion = () => {
                     <FlexWrapper>
                         <Title>Link Question</Title>
                     </FlexWrapper>
-                    <MakeButton title="MAKE"></MakeButton>
+                    <MakeButton title="MAKE" onpress={() => Upload()}></MakeButton>
                 </TitleWrapper>
                 
                 <InputWrapper>

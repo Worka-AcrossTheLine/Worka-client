@@ -1,7 +1,7 @@
 import {call, put, takeLatest} from 'redux-saga/effects';
 import {getFeed, getFeedDetail} from '../../Api/Feed';
 import {GET_FEED_DETAIL_FAIL, GET_FEED_FAIL, getFeedDetailSuccess, getFeedSuccess} from './Action';
-import {Action} from '../../sagas/index'
+import {Action} from '../index'
 
 
 export function* handleGetFeed() {
