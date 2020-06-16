@@ -22,7 +22,7 @@ const ModalWrapper = styled.Modal``;
 const Wrapper = styled.View`
     width:100%;
     height:100%;
-    background-color:rgba(112,112,112,0.5);
+    background-color:rgba(112,112,112,0.9);
     justify-content:center;
     align-items:center;
     padding:0px 30px;

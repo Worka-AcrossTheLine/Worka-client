@@ -39,7 +39,7 @@ const SettingTab = ({ text, children }: Props) => {
         setDisplay(!display)
     }
     useEffect(() => {
-        let toValue = display ? 0 : 200;
+        let toValue = display ? 200 : 0;
         Animated.timing(toggle, {
             toValue,
             duration: 300
