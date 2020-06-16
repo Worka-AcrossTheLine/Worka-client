@@ -81,7 +81,7 @@ const TabCard: React.FC = (props) => {
         }
     }
 
-    const pickImage = async () => {
+    const pickImage = async (arg:void) => {
         try {
             if (Constants.platform.ios) {
                 const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -104,7 +104,7 @@ const TabCard: React.FC = (props) => {
     }
 
 
-    const Upload = () => {
+    const Upload = (arg:void) => {
         const token = AsyncStorage.getItem('token')
         if(token) {
             dispatch({
