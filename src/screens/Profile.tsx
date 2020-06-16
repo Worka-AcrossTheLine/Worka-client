@@ -10,12 +10,11 @@ import MentoCard from '../components/MentoCard';
 import QuestionCard from '../components/QuestionCard'
 import SettingTab from '../components/SettingTab'
 import DetailModal from '../components/DetailModal';
+import QuestionModal from '../components/QuestionModal';
 
+type select = 'card' | 'question';
 
-const a = [];
-
-
-type select = 'card' | 'question'
+type ModalType = 'setting' | 'detail' | 'question' | 'none';
 
 type mentoCard = {
     id: string;
@@ -29,9 +28,9 @@ type mentoCard = {
 
 type questionCard = {
     id: string;
+    image: string;
     desc: string;
     question_count: number;
-    image: string;
     tags: string[];
     username: string;
 }
@@ -173,36 +172,36 @@ const ModalTitle = styled.Text`
 
 const Profile = () => {
     const [select, setSelect] = useState<select>("card");
-    const [settingModal, setSettingModal] = useState<boolean>(false);
-    const [detailModal, setDetailModal] = useState<boolean>(false);
-    const [detail, setDetail] = useState<mentoCard>();
+    const [modal, setModal] = useState<ModalType>('none');
+    const [detail, setDetail] = useState<mentoCard | questionCard>();
+
+    const mentoCard: mentoCard[] = FAKEDATA_1.card;
+    const questionCard: questionCard[] = FAKEDATA_1.question;
 
     const handleSelect = (text: select) => () => {
         setSelect(text);
     }
 
     const handleModal = () => {
-        setSettingModal(!settingModal);
+        setModal('none');
     }
 
-    const handelDetail = (detailCard: mentoCard) => {
-        setDetailModal(true);
-        setDetail(detailCard);
+    const handelDetail = (text: ModalType) => (detailCard?: mentoCard | questionCard) => {
+        setModal(text);
+        if (detailCard) {
+            setDetail(detailCard);
+        }
     }
 
-    const handelDetailClose = () => {
-        console.log("HANDLE")
-        setDetailModal(false);
+    const handelClose = () => {
+        setModal('none');
     }
-
-    const mentoCard: mentoCard[] = FAKEDATA_1.card;
-    const questionCard: questionCard[] = FAKEDATA_1.question;
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
-                <Modal visible={settingModal} transparent={true} >
-                    <TouchableWithoutFeedback onPress={() => setSettingModal(false)}>
+                <Modal visible={modal === 'setting'} transparent={true} >
+                    <TouchableWithoutFeedback onPress={handleModal}>
                         <ModalWrapper >
                             <TouchableWithoutFeedback>
                                 <ModalLayout onStartShouldSetResponder={() => true}>
@@ -239,7 +238,7 @@ const Profile = () => {
                         </SelectWrapper>
                         {select === 'card' ?
                             mentoCard.map((item) =>
-                                <TouchableOpacity onPress={() => handelDetail(item)} key={item.id}>
+                                <TouchableOpacity onPress={() => handelDetail('detail')(item)} key={item.id}>
                                     <QuestionCardWrapper >
                                         <MentoCard {...item} />
                                     </QuestionCardWrapper>
@@ -247,16 +246,21 @@ const Profile = () => {
                             )
                             :
                             questionCard.map((item) =>
-                                <QuestionCardWrapper key={item.id}>
-                                    <QuestionCard {...item} />
-                                </QuestionCardWrapper>
+                                <TouchableOpacity onPress={() => handelDetail('question')(item)} key={item.id}>
+                                    <QuestionCardWrapper>
+                                        <QuestionCard {...item} />
+                                    </QuestionCardWrapper>
+                                </TouchableOpacity>
                             )
                         }
                     </BodyWrapper>
                 </ScrollView>
-                {detail &&
-                    <DetailModal visible={detailModal} onPress={handelDetailClose} {...detail} />
-                }
+                {detail && modal !== 'none' && (
+                    "title" in detail ?
+                        <DetailModal visible={true} onPress={handelClose} {...detail} />
+                        :
+                        <QuestionModal visible={true} onPress={handelClose} {...detail} />
+                )}
             </Wrapper>
         </OsView>
     )
