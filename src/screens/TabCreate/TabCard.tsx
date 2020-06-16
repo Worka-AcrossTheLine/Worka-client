@@ -1,18 +1,26 @@
 import React, { useState }from 'react'
-import { Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { Keyboard, TouchableWithoutFeedback, Text, View, Image } from 'react-native'
 import styled from 'styled-components/native'
+import Constants from 'expo-constants';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 
 import MakeJobTagInput from "../../components/MakeJobTagInput"
+import MakeCardDescriptionInput from "../../components/MakeCardDescriptionInput";
 import MakeInterestingInput from "../../components/MakeInterestingInput"
 import MakeButton from "../../components/MakeButton"
 import CancerButton from '../../components/CancerButton'
 import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
+import {Avatar} from "react-native-elements";
+import {useDispatch} from "react-redux";
+import {RootState} from "../../reducers";
+import {MAKE_FEED_REQUEST} from "../../state/Feed/Action";
+import AsyncStorage from "@react-native-community/async-storage";
 
 
 const Wrapper = styled.SafeAreaView`
     flex:1;
-    
 `;
 
 const TitleWrapper = styled.View`
@@ -32,14 +40,81 @@ const InputWrapper = styled.View`
   flex-direction:column;
 `
 
-const TabCard = () => {
+
+
+
+const TabCard: React.FC = (props) => {
 
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState('');
-    
+    const [image, setImage] = useState('');
+    const [Description, setDescription] = useState('');
+    const dispatch = useDispatch();
+
     const handleKeyboard  = () => {
         Keyboard.dismiss();
     }
+    const onBlur = () => {
+
+    }
+    const onFocus = () => {
+
+    }
+    const camera = async () => {
+        try {
+            if (Constants.platform.ios) {
+                const { status } = await Permissions.askAsync(Permissions.CAMERA);
+                if (status !== 'granted') {
+                    alert("카메라 허가 필요");
+                    return;
+                }
+            }
+
+            const result = await ImagePicker.launchCameraAsync();
+            if (!result.cancelled) {
+                setImage(result.uri)
+            }
+        } catch (e) {
+            console.log(e);
+            alert("카메라 에러");
+        }
+    }
+
+    const pickImage = async () => {
+        try {
+            if (Constants.platform.ios) {
+                const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+                if (status !== 'granted') {
+                    alert("카메라 허가 필요");
+                    return;
+                }
+            }
+            let result = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                aspect: [4, 3],
+            });
+            if (!result.cancelled) {
+                setImage(result.uri)
+            }
+        }catch(e){
+            console.log(e);
+            alert("카메라 라이브러리 에러");
+        }
+    }
+
+
+    const Upload = () => {
+        const token = AsyncStorage.getItem('token')
+        if(token) {
+            dispatch({
+                type: MAKE_FEED_REQUEST,
+                payload: {title: InterestingTitle, tags: tapTag, text: Description, images : image, token: token}
+            })
+        }else{
+            console.log('토큰이 존재하지 않음')
+        }
+    }
+
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
@@ -48,16 +123,15 @@ const TabCard = () => {
                     <FlexWrapper>
                         <Title>Card Worka</Title>
                     </FlexWrapper>
-                    <MakeButton title="MAKE"></MakeButton>
+                    <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
                 </TitleWrapper>
                 <InputWrapper>
-                    <MakeJobTagInput 
+                    <MakeJobTagInput
                         placeholder="Make Job Tag"
                         value={tapTag}
                         onChange = {addTap(setTaptag)}
                         autoFocus = { true }
                         onPress={handleKeyboard}
-                        
                     />
                     <MakeInterestingInput
                         placeholder="Make Interesting Title"
@@ -65,14 +139,31 @@ const TabCard = () => {
                         onChange={addTap(setInterestingTitle)}
                         autoFocus = {true}
                     />
-            </InputWrapper>
-        </Wrapper>
-    </OsView>
+                        <View style={{ margin: 20 }}>
+                            <Avatar
+                                size="medium"
+                                title="C"
+                                onPress={camera}
+                                source={{ }}
+                            />
+                            <Avatar
+                                size="medium"
+                                title="D"
+                                onPress={pickImage}
+                                source={{ }}
+                            />
+                            <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />
+                        </View>
+                    <MakeCardDescriptionInput placeholder="Make Card Description" value={Description} onChange={addTap(setDescription)} onBlur={() => onBlur()}/>
+                </InputWrapper>
+            </Wrapper>
+        </OsView>
     )
 }
 const FlexWrapper = styled.View`
     flex: 1;
     align-items: center;
 `;
+
 
 export default TabCard
