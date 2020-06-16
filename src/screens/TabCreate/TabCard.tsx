@@ -41,8 +41,6 @@ const InputWrapper = styled.View`
 `
 
 
-
-
 const TabCard: React.FC = (props) => {
 
     const [tapTag, setTaptag] = useState('');
@@ -50,6 +48,7 @@ const TabCard: React.FC = (props) => {
     const [image, setImage] = useState('');
     const [Description, setDescription] = useState('');
     const dispatch = useDispatch();
+    const isIos = Platform.OS === 'ios';
 
     const handleKeyboard  = () => {
         Keyboard.dismiss();
@@ -119,7 +118,6 @@ const TabCard: React.FC = (props) => {
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
                 <TitleWrapper>
-                    <CancerButton title="CANCER"></CancerButton>
                     <FlexWrapper>
                         <Title>Card Worka</Title>
                     </FlexWrapper>
@@ -139,22 +137,29 @@ const TabCard: React.FC = (props) => {
                         onChange={addTap(setInterestingTitle)}
                         autoFocus = {true}
                     />
-                        <View style={{ margin: 20 }}>
-                            <Avatar
-                                size="medium"
-                                title="C"
-                                onPress={camera}
-                                source={{ }}
-                            />
-                            <Avatar
-                                size="medium"
-                                title="D"
-                                onPress={pickImage}
-                                source={{ }}
-                            />
-                            <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />
-                        </View>
-                    <MakeCardDescriptionInput placeholder="Make Card Description" value={Description} onChange={addTap(setDescription)} onBlur={() => onBlur()}/>
+                    <MakeCameraInput>
+                        <Avatar
+                            size="medium"
+                            title="C"
+                            onPress={camera}
+                            source={{ }}   
+                        />
+                        <Avatar
+                            size="medium"
+                            title="D"
+                            onPress={pickImage}
+                            source={{ }}
+                        />
+                        {image !== '' && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
+                    
+                    </MakeCameraInput>
+                    <MakeCardDescriptionInput 
+                        multiline
+                        numberOfLines={4}
+                        placeholder="Make Card Description" 
+                        value={Description} 
+                        onChange={addTap(setDescription)} 
+                        onBlur={() => onBlur()}/>
                 </InputWrapper>
             </Wrapper>
         </OsView>
@@ -164,6 +169,7 @@ const FlexWrapper = styled.View`
     flex: 1;
     align-items: center;
 `;
-
+const MakeCameraInput = styled.View`
+`
 
 export default TabCard

@@ -10,10 +10,12 @@ type Props = {
     onBlur:() => void;
     onFocus:() => void;
     keyboardType?: 'default';
+    multiline: true;
+    numberOfLines: {}
 }
 
 const MakeCardDescriptionInput = ({
-                                  placeholder, value, onChange, autoFocus = false, keyboardType, onBlur, onFocus
+                                  placeholder, value, onChange, autoFocus = false, keyboardType, onBlur, onFocus, multiline, numberOfLines
                               }:Props) => {
     let textAlign: 'left'
     if(value.length>0) {
@@ -22,6 +24,8 @@ const MakeCardDescriptionInput = ({
     return (
         <InputWrapper>
             <Input
+                multiline = {multiline}
+                numberOfLines = {4}
                 placeholder={placeholder}
                 onChangeText={(e) => onChange(e)}
                 value = {value}
