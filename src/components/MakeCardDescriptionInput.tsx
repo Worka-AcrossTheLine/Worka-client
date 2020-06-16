@@ -8,11 +8,12 @@ type Props = {
     onChange: (e: string) => void;
     autoFocus?: boolean;
     onBlur:() => void;
+    onFocus:() => void;
     keyboardType?: 'default';
 }
 
 const MakeCardDescriptionInput = ({
-                                  placeholder, value, onChange, autoFocus = false, keyboardType, onBlur
+                                  placeholder, value, onChange, autoFocus = false, keyboardType, onBlur, onFocus
                               }:Props) => {
     let textAlign: 'left'
     if(value.length>0) {
@@ -25,6 +26,7 @@ const MakeCardDescriptionInput = ({
                 onChangeText={(e) => onChange(e)}
                 value = {value}
                 onBlur = {onBlur}
+                onFocus = {onFocus}
             >
             </Input>
 

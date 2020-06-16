@@ -1,5 +1,5 @@
 import {call, put, takeLatest} from 'redux-saga/effects';
-import {getFeed, getFeedDetail} from '../../Api/Feed';
+import {getFeed, getFeedDetail, makeFeed} from '../../Api/Feed';
 import {
   GET_FEED_DETAIL_FAIL,
   GET_FEED_FAIL,
@@ -31,7 +31,7 @@ export function* handleGetFeedDetail(action : Action) {
 
 export function* handleMakeFeed(action : Action) {
   try{
-    yield call( getFeedDetail, action.payload  );
+    yield call( makeFeed, action.payload  );
     yield put(makeFeedSuccess('success'));
   } catch (err) {
     yield put({ type: MAKE_FEED_FAIL, payload: err })
