@@ -1,5 +1,9 @@
 import React, { useState }from 'react'
 import styled from 'styled-components/native'
+import { CommonActions } from '@react-navigation/native';
+
+import { AuthStackParamList } from '../../navigator/AuthNavigation'
+import { }
 
 import MakeJobTagInput from "../../components/MakeJobTagInput"
 import MakeInterestingInput from "../../components/MakeInterestingInput"
@@ -11,6 +15,10 @@ import addTap from "../../constants/addTap"
 import { Keyboard } from 'react-native'
 
 
+type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Home'>;
+type Props = {
+    navigation: AuthHomeNavigationProp;
+}
 
 const Wrapper = styled.SafeAreaView`
     flex:1
@@ -32,7 +40,7 @@ const Title = styled.Text`
 const InputWrapper = styled.View`
     flex-direction:column;
 `
-const TabQuestion = () => {
+const TabQuestion = ({navigation} :Props) => {
     
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState('');
@@ -45,6 +53,10 @@ const TabQuestion = () => {
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
                 <TitleWrapper>
+                    <CancerButton
+                        title="CANCER"
+                        onPress={() => navigation.dispatch(CommonActions.goBack())}
+                        ></CancerButton>
                     <FlexWrapper>
                         <Title>Link Question</Title>
                     </FlexWrapper>
