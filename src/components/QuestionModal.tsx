@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { TouchableWithoutFeedback, TouchableOpacity, ScrollView } from 'react-native'
+import React, { useState, useEffect, useRef } from 'react'
+import { TouchableWithoutFeedback, TouchableOpacity, ScrollView, Animated } from 'react-native'
 import styled from 'styled-components/native';
 import Tag from './Tag';
 import { ThemeProps } from '../style/theme';
@@ -50,13 +50,12 @@ const Wrapper = styled.View`
     background-color:rgba(112,112,112,0.9);
     justify-content:center;
     align-items:center;
-    padding:0px 30px;
+    padding:0px 10px;
 `;
 
 const QuestionWrapper = styled.View`
     width:100%;
-    max-width:320px;
-    max-height:50%;
+    height:70%;
     background-color:${({ theme }: ThemeProps): string => theme.detailBg};
 `;
 
@@ -67,6 +66,7 @@ const ModalTabWrapper = styled.View`
     width:100%;
     background-color:${({ theme }: ThemeProps): string => theme.white};
     margin-bottom:5px;
+    overflow:hidden;
 `;
 
 const TileWrapper = styled.View`
@@ -96,7 +96,9 @@ const DropDownWrapper = styled.View`
 
 const AnswerWrapper = styled.View`
     width:100%;
+    height:30px;
     margin-top:10px;
+    padding:0px 10px;
 `;
 
 const RatingWrapper = styled.View`
@@ -142,37 +144,74 @@ const QuestionText = styled.Text`
 const AnswerUsername = styled.Text`
     color:${({ theme }: ThemeProps): string => theme.textColor};
     font-size:${({ theme }: ThemeProps): number => theme.smFont}px;
+    margin-bottom:4px;
 `;
 
-export default function QuestionModal({ visible, desc, image, question_count, tags, username, onPress }: Props) {
-    const [detailIndex, setDetailIndex] = useState<number>();
+type animationState = {
+    detailIndex?: number;
+    animationOn: boolean;
+}
 
-    const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: number, flex?: number } => {
+export default function QuestionModal({ visible, desc, image, question_count, tags, username, onPress }: Props) {
+    const [animationState, setAnimationState] = useState<animationState>({
+        detailIndex: undefined,
+        animationOn: false
+    })
+    const { detailIndex, animationOn } = animationState;
+    const slideToggle = useRef(new Animated.Value(0)).current;
+
+    const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number, overFlow?: string } => {
         return (
             typeof detailIndex === 'number' && detailIndex === index ?
-                { display: 'flex', height: 300, flex: 1 }
+                { height: slideToggle, overFlow: 'hidden' }
                 :
-                {}
+                { display: 'none' }
         )
     }
 
-    const CloseModal = () => {
-        setDetailIndex(undefined);
+    const closeModal = () => {
         onPress();
     }
 
     const handleDetail = (index: number) => {
-        index === detailIndex ? setDetailIndex(undefined) : setDetailIndex(index)
+        const isClose = index === detailIndex
+        if (animationOn) {
+            Animated.timing(slideToggle, {
+                toValue: 0,
+                duration: 1000
+            }).start(() => {
+                setAnimationState({
+                    detailIndex: isClose ? undefined : index,
+                    animationOn: isClose ? false : true
+                })
+            });
+        } else {
+            setAnimationState({
+                detailIndex: index === detailIndex ? undefined : index,
+                animationOn: true
+            })
+        }
+
     }
+
+    useEffect(() => {
+        if (animationOn) {
+            Animated.timing(slideToggle, {
+                toValue: 300,
+                duration: 1000
+            }).start();
+        }
+
+    }, [animationState])
     return (
-        <ModalWrapper visible={visible} transparent={true} >
-            <TouchableWithoutFeedback onPress={CloseModal}>
+        <ModalWrapper visible={visible} transparent={true} onRequestClose={closeModal} >
+            <TouchableWithoutFeedback onPress={closeModal}>
                 <Wrapper>
-                    <QuestionWrapper>
+                    <QuestionWrapper onStartShouldSetResponder={() => true}>
                         <ScrollView>
-                            <ScrollWrapper onStartShouldSetResponder={() => true}>
+                            <ScrollWrapper>
                                 <ModalTabWrapper>
-                                    <TileWrapper>
+                                    <TileWrapper onStartShouldSetResponder={() => true}>
                                         <TextWrapper style={{ flex: 1 }}>
                                             <Desc>{desc}</Desc>
                                         </TextWrapper>
@@ -182,11 +221,11 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
                                 <BodyWrapper>
                                     {QUESTIONS && (
                                         QUESTIONS.map((qs, index) =>
-                                            <ModalTabWrapper key={`q-${index}`} style={setDetailStyle(index)}>
+                                            <ModalTabWrapper key={`q-${index}`} onStartShouldSetResponder={() => true}>
                                                 <TextWrapper>
                                                     <QuestionText>Q{index + 1}.{qs.q}</QuestionText>
                                                 </TextWrapper>
-                                                <DetailWrapper style={{ display: index === detailIndex ? 'flex' : 'none' }}>
+                                                <Animated.View style={setDetailStyle(index)}>
                                                     {qs.as && (
                                                         qs.as.map((answer, idx) =>
                                                             <AnswerWrapper key={`answer-${idx}`}>
@@ -199,8 +238,8 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
                                                             </AnswerWrapper>
                                                         )
                                                     )}
-                                                </DetailWrapper>
-                                                <DropDownWrapper>
+                                                </Animated.View>
+                                                <DropDownWrapper >
                                                     <TouchableOpacity onPress={() => handleDetail(index)} style={{ padding: 5 }}>
                                                         {detailIndex === index ? <UpArrow /> : <DownArrow />}
                                                     </TouchableOpacity>
@@ -211,7 +250,7 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
                                 </BodyWrapper>
                             </ScrollWrapper>
                         </ScrollView>
-                        <TagWrapper>
+                        <TagWrapper >
                             <TendencyTagWrapper>
                                 {tags.map((tag, tagIndex) => <Tag key={`tag-${tagIndex}`} text={tag} fontColor="#FFFFFF" />)}
                             </TendencyTagWrapper>
