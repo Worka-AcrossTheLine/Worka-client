@@ -55,7 +55,7 @@ const Wrapper = styled.View`
 
 const QuestionWrapper = styled.View`
     width:100%;
-    max-width:320px;
+    max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     max-height:50%;
     background-color:${({ theme }: ThemeProps): string => theme.detailBg};
 `;
@@ -201,7 +201,7 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
                                                     )}
                                                 </DetailWrapper>
                                                 <DropDownWrapper>
-                                                    <TouchableOpacity onPress={() => handleDetail(index)} style={{ padding: 5 }}>
+                                                    <TouchableOpacity onPress={() => handleDetail(index)} style={{ width: 20, height: 20, padding: 10 }}>
                                                         {detailIndex === index ? <UpArrow /> : <DownArrow />}
                                                     </TouchableOpacity>
                                                 </DropDownWrapper>

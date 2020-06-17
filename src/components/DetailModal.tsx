@@ -30,7 +30,7 @@ const Wrapper = styled.View`
 
 const CloseWrapper = styled.View`
     width:100%;
-    max-width:320px;
+    max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     align-items:flex-end;
     padding:2px;
 `;
@@ -38,7 +38,7 @@ const CloseWrapper = styled.View`
 const DetailWrapper = styled.View`
     width:100%;
     max-height:50%;
-    max-width:320px;
+    max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     background-color:${({ theme }: ThemeProps): string => theme.detailBg}
     padding:2px;
 `;
