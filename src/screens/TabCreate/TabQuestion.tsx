@@ -1,5 +1,7 @@
 import React, { useState }from 'react'
 import styled from 'styled-components/native'
+import { Keyboard } from 'react-native'
+import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 
 import MakeJobTagInput from "../../components/MakeJobTagInput"
 import MakeInterestingInput from "../../components/MakeInterestingInput"
@@ -8,9 +10,14 @@ import MakeButton from "../../components/MakeButton"
 import CancerButton from '../../components/CancerButton'
 import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
-import { Keyboard } from 'react-native'
 
 
+
+type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
+
+type Props = {
+    navigation: TopNewsNavigationProp;
+}
 
 const Wrapper = styled.SafeAreaView`
     flex:1
@@ -32,11 +39,15 @@ const Title = styled.Text`
 const InputWrapper = styled.View`
     flex-direction:column;
 `
-const TabQuestion = () => {
+const TabQuestion = ({navigation} :Props) => {
     
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState('');
     const [quetion, setQuestion] = useState('');
+
+    const onCancer = () => {
+        navigation.navigate('News');
+    }
     
     const handleKeyboard  = () => {
         Keyboard.dismiss();
@@ -45,6 +56,10 @@ const TabQuestion = () => {
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
                 <TitleWrapper>
+                    <CancerButton
+                        title="CANCER"
+                        onPress={() => onCancer()}
+                    />
                     <FlexWrapper>
                         <Title>Link Question</Title>
                     </FlexWrapper>

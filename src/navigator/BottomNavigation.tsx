@@ -27,7 +27,6 @@ const Tab = createBottomTabNavigator<BottomTapParamList>();
 export default function () {
   return (
     <Tab.Navigator>
-      {/* <Tab.Screen name="Home" component={SeachNavigation} /> */}
       <Tab.Screen name="Home"
         options={{
             tabBarLabel: 'Home',

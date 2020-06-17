@@ -2,16 +2,21 @@ import React, { useState }from 'react'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native';
 
+import CancerButton from '../../components/CancerButton'
 import MakeJobTagInput from "../../components/MakeJobTagInput"
 import MakeInterestingInput from "../../components/MakeInterestingInput"
 import MakeEmbed from "../../components/MakeEmbed"
 import MakeButton from "../../components/MakeButton"
 import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
+import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
+
+type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
 
 type Props = {
     onPress:() => void;
-    keyboardType?: 'default';
+    keyboardType?: 'url';
+    navigation: TopNewsNavigationProp;
 }
 
 const Wrapper = styled.SafeAreaView`
@@ -37,9 +42,13 @@ const InputWrapper = styled.View`
 `
 
 
+
 const TabLink = ({
-    onPress, keyboardType
-}:Props) => {
+    onPress, keyboardType, navigation
+    }:Props) => {
+    
+
+
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState<string>('');
     const [tapUrl, setTapUrl] = useState<string>('')
@@ -47,7 +56,9 @@ const TabLink = ({
     const handleKeyboard  = () => {
         Keyboard.dismiss();
     }
-
+    const onCancer = () => {
+        navigation.navigate('News');
+    }
     
 
 
@@ -56,6 +67,10 @@ const TabLink = ({
             <TouchableWithoutFeedback onPress={handleKeyboard}>
                 <Wrapper>
                     <TitleWrapper>
+                        <CancerButton 
+                            title="CANCER"
+                            onPress={() => onCancer()}
+                        />
                         <FlexWrapper>
                             <Title>Link Worka</Title>
                         </FlexWrapper>
@@ -77,7 +92,7 @@ const TabLink = ({
                         <MakeEmbed
                             placeholder="http://"    
                             value={tapUrl}
-                            keyboardType = {"url"}
+                            keyboardType = {keyboardType}
                             onChange={addTap(setTapUrl)}
                         />
                     </InputWrapper>
