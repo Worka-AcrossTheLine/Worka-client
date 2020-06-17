@@ -14,6 +14,12 @@ type Props = {
     username: string;
 }
 
+const Wrapper = styled.View`
+    width:100%;
+    max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
+    align-self:center;
+`;
+
 const HeaderWrapper = styled.View`
     flex-direction:row;
     flex:1;
@@ -55,7 +61,7 @@ export default function QuestionCard({
     username
 }: Props) {
     return (
-        <>
+        <Wrapper>
             <ShadowBox semi={"top"}>
                 <HeaderWrapper>
                     <DescWrapper>
@@ -75,7 +81,7 @@ export default function QuestionCard({
                     </TagWrapper>
                 </BottomWrapper>
             </ShadowBox>
-        </>
+        </Wrapper>
     )
 }
 

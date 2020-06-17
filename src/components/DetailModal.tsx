@@ -25,14 +25,21 @@ const Wrapper = styled.View`
     background-color:rgba(112,112,112,0.9);
     justify-content:center;
     align-items:center;
-    padding:0px 30px;
+    padding:0px 15px;
 `;
 
 const CloseWrapper = styled.View`
     width:100%;
     max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     align-items:flex-end;
+`;
+
+const CloseView = styled.View`
+    width:40px;
+    height:40px;
     padding:2px;
+    align-items:flex-end;
+    justify-content:flex-end;
 `;
 
 const DetailWrapper = styled.View`
@@ -58,7 +65,7 @@ const Image = styled.Image`
 `;
 
 const BodyWrapper = styled.View`
-    margin-top:5px;
+    margin-top:20px;
     width:100%;
 `;
 
@@ -67,6 +74,10 @@ const TagWrapper = styled.View`
     padding:0px 15px;
     flex-wrap:wrap;
     flex-direction:row;
+`;
+
+const TextWrapper = styled.View`
+    padding:15px;
 `;
 
 const TitleView = styled.View`
@@ -86,11 +97,13 @@ const Desc = styled.Text`
 export default function DetailModal({ visible, image, title = "타이틀 테스트", tags, username, company, desc, onPress }: Props) {
     console.log(visible, image);
     return (
-        <ModalWrapper visible={visible} transparent={true} >
+        <ModalWrapper visible={visible} transparent={true} onRequestClose={onPress} >
             <Wrapper>
                 <CloseWrapper>
                     <TouchableOpacity onPress={onPress} style={{}}>
-                        <Xsvg />
+                        <CloseView>
+                            <Xsvg style={{}} />
+                        </CloseView>
                     </TouchableOpacity>
                 </CloseWrapper>
                 <DetailWrapper>
@@ -105,8 +118,10 @@ export default function DetailModal({ visible, image, title = "타이틀 테스�
                                     <Tag text={username} fontColor="#FFFFFF" />
                                     <Tag text={company} fontColor="#FFFFFF" />
                                 </TagWrapper>
-                                {image && <TitleView><Title>{title}</Title></TitleView>}
-                                <Desc>{desc}</Desc>
+                                <TextWrapper>
+                                    {image && <TitleView><Title>{title}</Title></TitleView>}
+                                    <Desc>{desc}</Desc>
+                                </TextWrapper>
                             </BodyWrapper>
                         </ScrollWrapper>
                     </ScrollView>

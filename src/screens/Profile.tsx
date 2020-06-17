@@ -210,7 +210,7 @@ const Profile = () => {
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
-                <Modal visible={modal === 'setting'} transparent={true} >
+                <Modal visible={modal === 'setting'} transparent={true} onRequestClose={handleModal} >
                     <TouchableWithoutFeedback onPress={handleModal}>
                         <ModalWrapper >
                             <ModalLayout onStartShouldSetResponder={() => true}>
