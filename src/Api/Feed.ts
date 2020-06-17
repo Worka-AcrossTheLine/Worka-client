@@ -20,3 +20,10 @@ export const getFeedDetail = (body: string) => {
         });
 };
 
+export const makeFeed = (body: any) => {
+    return reqresApi.post(`/feed/`, body, { headers: { Authorization: `JWT ${body.token}` } })
+        .catch((error: AxiosError) => {
+            throw error.response
+        });
+};
+

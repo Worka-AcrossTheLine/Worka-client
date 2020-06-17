@@ -12,11 +12,11 @@ import SettingTab from '../components/SettingTab'
 import DetailModal from '../components/DetailModal';
 import {useDispatch, useSelector} from "react-redux";
 
+import QuestionModal from '../components/QuestionModal';
 
-const a = [];
+type select = 'card' | 'question';
 
-
-type select = 'card' | 'question'
+type ModalType = 'setting' | 'detail' | 'question' | 'none';
 
 type mentoCard = {
     id: string;
@@ -174,9 +174,12 @@ const ModalTitle = styled.Text`
 
 const Profile = () => {
     const [select, setSelect] = useState<select>("card");
-    const [settingModal, setSettingModal] = useState<boolean>(false);
-    const [detailModal, setDetailModal] = useState<boolean>(false);
+    const [modal, setModal] = useState<ModalType>('none');
     const [detail, setDetail] = useState<mentoCard>();
+    const [questionCard, setQuestionCard] = useState<questionCard>();
+
+    const mentoCards: mentoCard[] = FAKEDATA_1.card;
+    const questionCards: questionCard[] = FAKEDATA_1.question;
     const dispatch = useDispatch()
     const logininfo = useSelector(state => state.login)
 
@@ -186,27 +189,32 @@ const Profile = () => {
     }
 
     const handleModal = () => {
-        setSettingModal(!settingModal);
+        setModal('none');
     }
 
-    const handelDetail = (detailCard: mentoCard) => {
-        setDetailModal(true);
-        setDetail(detailCard);
+    const handleSetting = () => {
+        setModal('setting');
     }
 
-    const handelDetailClose = () => {
-        console.log("HANDLE")
-        setDetailModal(false);
+    const handelDetail = (card?: mentoCard) => {
+        setModal('detail');
+        setDetail(card);
     }
 
-    const mentoCard: mentoCard[] = FAKEDATA_1.card;
-    const questionCard: questionCard[] = FAKEDATA_1.question;
+    const handleQuestion = (card: questionCard) => {
+        setModal('question');
+        setQuestionCard(card);
+    }
+
+    const handelClose = () => {
+        setModal('none');
+    }
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
-                <Modal visible={settingModal} transparent={true} >
-                    <TouchableWithoutFeedback onPress={() => setSettingModal(false)}>
+                <Modal visible={modal === 'setting'} transparent={true} onRequestClose={handleModal} >
+                    <TouchableWithoutFeedback onPress={handleModal}>
                         <ModalWrapper >
                             <TouchableWithoutFeedback>
                                 <ModalLayout onStartShouldSetResponder={() => true}>
@@ -228,7 +236,7 @@ const Profile = () => {
                         <Title>Question</Title>
                     </TitleView>
                     <BodyWrapper>
-                        <UserCard {...FAKEDATA} onPress={handleModal} />
+                        <UserCard {...FAKEDATA} onPress={handleSetting} />
                         <SelectWrapper>
                             <Select onPress={() => handleSelect('card')()}>
                                 <SelectView style={{ borderBottomWidth: (select === "card" ? 3 : 0) }}>
@@ -242,7 +250,7 @@ const Profile = () => {
                             </Select>
                         </SelectWrapper>
                         {select === 'card' ?
-                            mentoCard.map((item) =>
+                            mentoCards.map((item) =>
                                 <TouchableOpacity onPress={() => handelDetail(item)} key={item.id}>
                                     <QuestionCardWrapper >
                                         <MentoCard {...item} />
@@ -250,21 +258,29 @@ const Profile = () => {
                                 </TouchableOpacity>
                             )
                             :
-                            questionCard.map((item) =>
-                                <QuestionCardWrapper key={item.id}>
-                                    <QuestionCard {...item} />
-                                </QuestionCardWrapper>
+                            questionCards.map((item) =>
+                                <TouchableOpacity onPress={() => handleQuestion(item)} key={item.id}>
+                                    <QuestionCardWrapper>
+                                        <QuestionCard {...item} />
+                                    </QuestionCardWrapper>
+                                </TouchableOpacity>
                             )
                         }
                     </BodyWrapper>
                 </ScrollView>
-                {detail &&
-                    <DetailModal visible={detailModal} onPress={handelDetailClose} {...detail} />
+                {detail && modal === 'detail' &&
+                    <DetailModal visible={true} onPress={handelClose} {...detail} />
+                }
+                {questionCard && modal === 'question' &&
+                    <QuestionModal visible={true} onPress={handelClose} {...questionCard} />
                 }
             </Wrapper>
         </OsView>
     )
 }
+
+//타입으로 체킹해서 분기처리하는건 위험하다.
+//
 
 
 export default Profile

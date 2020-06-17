@@ -11,23 +11,31 @@ import TabQuestion from '../screens/TabCreate/TabQuestion'
 
 
 export type BottomCreateNavigationParamList = {
-    TabLink: undefined;
-    TabCard: undefined;
-    TabQuestion: undefined;
-  }
+  TabLink: undefined;
+  TabCard: undefined;
+  TabQuestion: undefined;
+}
+
+const barStyle = {
+  justifyContent: "center",
+  alignItems: "center",
+  textAlign: "center"
+}
 
 const Tab = createBottomTabNavigator<BottomCreateNavigationParamList>();
 
 
 
 
-export default function() {
-    return (
-      <Tab.Navigator>
-        <Tab.Screen name="TabCard" component={TabCard} />
-        <Tab.Screen name="TabLink" component={TabLink} />
-        <Tab.Screen name="TabQuestion" component={TabQuestion} />
-      </Tab.Navigator>
-    );
-  }
+export default function () {
+  return (
+    <Tab.Navigator tabBarOptions={{
+      tabStyle: barStyle
+    }}>
+      <Tab.Screen name="TabCard" component={TabCard} />
+      <Tab.Screen name="TabLink" component={TabLink} />
+      <Tab.Screen name="TabQuestion" component={TabQuestion} />
+    </Tab.Navigator>
+  );
+}
 
