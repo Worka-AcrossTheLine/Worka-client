@@ -7,7 +7,13 @@ import Tag from '../components/Tag';
 import { ThemeProps } from '../style/theme'
 
 const Wrapper = styled.View`
-    padding:20px 26px;
+    width:100%;
+    max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
+    align-self:center;
+`;
+
+const WrapperPadding = styled.View`
+   padding:20px 26px;
 `;
 
 const ProfileWrapper = styled.View`
@@ -75,26 +81,28 @@ const Profile = ({
     onPress
 }: Props) => {
     return (
-        <ShadowBox>
-            <Wrapper>
-                <ProfileWrapper>
-                    <AvatarWrapper></AvatarWrapper>
-                    <InfoWrapper>
-                        <NameText>{username}</NameText>
-                        <NameText><DescText>Mento: {mento}  </DescText><DescText>  Mentiee: {mentiee}</DescText></NameText>
-                    </InfoWrapper>
-                    <Button title="Setting" onPress={() => onPress()} />
-                </ProfileWrapper>
-                <SemiTitle>Tendency</SemiTitle>
-                <TendencyWrapper>
-                    {tag.map((el: string, index: number) =>
-                        <Tag key={el} text={el} fontColor={index ? "white" : ""} />
-                    )}
-                </TendencyWrapper>
-                <SemiTitle>Comment</SemiTitle>
-                <Comment>{comment}</Comment>
-            </Wrapper>
-        </ShadowBox>
+        <Wrapper>
+            <ShadowBox>
+                <WrapperPadding>
+                    <ProfileWrapper>
+                        <AvatarWrapper></AvatarWrapper>
+                        <InfoWrapper>
+                            <NameText>{username}</NameText>
+                            <NameText><DescText>Mento: {mento}  </DescText><DescText>  Mentiee: {mentiee}</DescText></NameText>
+                        </InfoWrapper>
+                        <Button title="Setting" onPress={() => onPress()} />
+                    </ProfileWrapper>
+                    <SemiTitle>Tendency</SemiTitle>
+                    <TendencyWrapper>
+                        {tag.map((el: string, index: number) =>
+                            <Tag key={el} text={el} fontColor={index ? "white" : ""} />
+                        )}
+                    </TendencyWrapper>
+                    <SemiTitle>Comment</SemiTitle>
+                    <Comment>{comment}</Comment>
+                </WrapperPadding>
+            </ShadowBox>
+        </Wrapper>
     )
 }
 

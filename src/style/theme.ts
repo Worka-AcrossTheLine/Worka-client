@@ -11,6 +11,7 @@ type Theme = {
     gray: string;
     detailBg: string;
     textColor: string;
+    maxWidth: number;
     smFont: number;
     mdFont: number;
     lgFont: number;
@@ -22,6 +23,7 @@ const theme = {
     gray: "#7B7B7B",
     detailBg: "#4F79A2",
     textColor: "#F85281",
+    maxWidth: 800,
     smFont: 8,
     mdFont: 10,
     lgFont: 12,

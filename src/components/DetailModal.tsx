@@ -30,14 +30,22 @@ const Wrapper = styled.View`
 
 const CloseWrapper = styled.View`
     width:100%;
-    max-width:320px;
+    max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     align-items:flex-end;
+`;
+
+const CloseView = styled.View`
+    width:40px;
+    height:40px;
     padding:2px;
+    align-items:flex-end;
+    justify-content:flex-end;
 `;
 
 const DetailWrapper = styled.View`
     width:100%;
     max-height:50%;
+    max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     background-color:${({ theme }: ThemeProps): string => theme.detailBg}
     padding:2px;
 `;
@@ -93,31 +101,31 @@ export default function DetailModal({ visible, image, title = "타이틀 테스�
             <Wrapper>
                 <CloseWrapper>
                     <TouchableOpacity onPress={onPress} style={{}}>
-                        <Xsvg />
+                        <CloseView>
+                            <Xsvg style={{}} />
+                        </CloseView>
                     </TouchableOpacity>
                 </CloseWrapper>
-                <TouchableWithoutFeedback>
-                    <DetailWrapper>
-                        <ScrollView>
-                            <ScrollWrapper onStartShouldSetResponder={() => true}>
-                                {image ? <ImageWrapper><Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} /></ImageWrapper> : <TitleView><Title>{title}</Title></TitleView>}
-                                <BodyWrapper>
-                                    <TagWrapper >
-                                        {tags.map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FFFFFF" />)}
-                                    </TagWrapper>
-                                    <TagWrapper style={{ justifyContent: "space-between" }}>
-                                        <Tag text={username} fontColor="#FFFFFF" />
-                                        <Tag text={company} fontColor="#FFFFFF" />
-                                    </TagWrapper>
-                                    <TextWrapper>
-                                        {image && <TitleView><Title>{title}</Title></TitleView>}
-                                        <Desc>{desc}</Desc>
-                                    </TextWrapper>
-                                </BodyWrapper>
-                            </ScrollWrapper>
-                        </ScrollView>
-                    </DetailWrapper>
-                </TouchableWithoutFeedback>
+                <DetailWrapper>
+                    <ScrollView>
+                        <ScrollWrapper onStartShouldSetResponder={() => true}>
+                            {image ? <ImageWrapper><Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} /></ImageWrapper> : <TitleView><Title>{title}</Title></TitleView>}
+                            <BodyWrapper>
+                                <TagWrapper >
+                                    {tags.map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FFFFFF" />)}
+                                </TagWrapper>
+                                <TagWrapper style={{ justifyContent: "space-between" }}>
+                                    <Tag text={username} fontColor="#FFFFFF" />
+                                    <Tag text={company} fontColor="#FFFFFF" />
+                                </TagWrapper>
+                                <TextWrapper>
+                                    {image && <TitleView><Title>{title}</Title></TitleView>}
+                                    <Desc>{desc}</Desc>
+                                </TextWrapper>
+                            </BodyWrapper>
+                        </ScrollWrapper>
+                    </ScrollView>
+                </DetailWrapper>
             </Wrapper>
         </ModalWrapper>
     )
