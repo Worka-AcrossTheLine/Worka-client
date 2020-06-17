@@ -161,7 +161,9 @@ const ModalLayout = styled.View`
     background-color:${({ theme }: ThemeProps): string => theme.white};
     align-items:center;
     width:100%;
+    max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     height:70%;
+    border-radius:8px;
 `;
 
 const ModalTitle = styled.Text`
@@ -216,18 +218,16 @@ const Profile = () => {
                 <Modal visible={modal === 'setting'} transparent={true} onRequestClose={handleModal} >
                     <TouchableWithoutFeedback onPress={handleModal}>
                         <ModalWrapper >
-                            <TouchableWithoutFeedback>
-                                <ModalLayout onStartShouldSetResponder={() => true}>
-                                    <ScrollView style={{ width: '100%', padding: 18 }}>
-                                        <ModalTitle>Helle {logininfo.data.username}</ModalTitle>
-                                        <SettingTab text="username" />
-                                        <SettingTab text="password" />
-                                        <SettingTab text="font size" />
-                                        <SettingTab text="dark theme" />
-                                        <View style={{ height: 50 }}></View>
-                                    </ScrollView>
-                                </ModalLayout>
-                            </TouchableWithoutFeedback>
+                            <ModalLayout onStartShouldSetResponder={() => true}>
+                                <ScrollView style={{ width: '100%', padding: 18 }}>
+                                    <ModalTitle>Helle {FAKEDATA.username}</ModalTitle>
+                                    <SettingTab text="username" />
+                                    <SettingTab text="password" />
+                                    <SettingTab text="font size" />
+                                    <SettingTab text="dark theme" />
+                                    <View style={{ height: 50 }}></View>
+                                </ScrollView>
+                            </ModalLayout>
                         </ModalWrapper>
                     </TouchableWithoutFeedback>
                 </Modal>

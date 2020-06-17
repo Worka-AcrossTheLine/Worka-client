@@ -17,7 +17,8 @@ const ModalTab = styled.View`
     height:64px;
     padding-left:16px;
     justify-content:center;
-    box-shadow:0px 3px 6px #000;
+    box-shadow:0px 1px 2px #000;
+    border-radius:8px;
     background-color:white;
     elevation:6;
     margin-bottom:7px;
@@ -53,9 +54,7 @@ const SettingTab = ({ text, children }: Props) => {
                 </ModalTab>
             </TouchableOpacity>
             <SettingWrapper>
-                <Animated.View onStartShouldSetResponder={() => true} style={{ width: '100%', height: toggle, backgroundColor: '#88C3FC' }}>
-
-                </Animated.View>
+                <Animated.View onStartShouldSetResponder={() => true} style={{ width: '100%', height: toggle, backgroundColor: '#88C3FC', marginBottom: 8, }} />
             </SettingWrapper>
         </>
     )
