@@ -1,5 +1,12 @@
-import React, {useEffect, useState} from 'react';
-import { Modal, View, TouchableWithoutFeedback, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+    Modal,
+    View,
+    TouchableWithoutFeedback,
+    ScrollView,
+    TouchableOpacity,
+    ActivityIndicator
+} from 'react-native';
 import styled from 'styled-components/native';
 
 import theme, { ThemeProps } from '../style/theme'
@@ -10,14 +17,21 @@ import MentoCard from '../components/MentoCard';
 import QuestionCard from '../components/QuestionCard'
 import SettingTab from '../components/SettingTab'
 import DetailModal from '../components/DetailModal';
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import QuestionModal from '../components/QuestionModal';
-import {PROFILE_QUESTION_REQUEST, PROFILE_REQUEST} from "../state/Profile/Action";
+import { PROFILE_QUESTION_REQUEST, PROFILE_REQUEST } from "../state/Profile/Action";
+import { RootState } from '../reducers';
 
 type select = 'card' | 'question';
 
 type ModalType = 'setting' | 'detail' | 'question' | 'none';
+
+type modal = {
+    type: ModalType;
+    detail: mentoCard | {};
+    question: questionCard | {};
+}
 
 type mentoCard = {
     id: string;
@@ -32,17 +46,13 @@ type mentoCard = {
 type questionCard = {
     id: string;
     desc: string;
-    question_count: number;
     image: string;
     tags: string[];
-    username: string;
+    questions: string[];
+    author: {
+        username: string;
+    }
 }
-
-type questioninit = [{
-    title : string
-    author : string
-    questions : string
-}]
 
 const FAKEDATA = {
     username: "Kimjoobin",
@@ -54,7 +64,6 @@ const FAKEDATA = {
 
 const FAKEDATA_1: {
     card: mentoCard[];
-    question: questionCard[];
 } = {
     card: [
         {
@@ -76,40 +85,6 @@ const FAKEDATA_1: {
             company: "codestate"
         },
     ],
-    question: [
-        {
-            id: "1",
-            desc: "Tongji Architectural Design And Research Institute: The Latest Architecture and News",
-            question_count: 8,
-            image: "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg",
-            tags: ["architecture", "interior design"],
-            username: "hwan"
-        },
-        {
-            id: "2",
-            desc: "IT 최고액 연봉 프로그래밍 언어는?",
-            question_count: 4,
-            image: "https://lh3.googleusercontent.com/dt7eyYhUAwoOn6V_CrmQuNbITswpJf8k8oJuyNUEggZGD35kA4qnxTFigt78HgMtiJ0sHl0zynRXySVfGTXXNmocrSGPttVyChn2fPXp4ZU5OpWfQvz4HNkJ0rsGCxKXwhs0o6Go",
-            tags: ["IT", "front-end"],
-            username: "joo"
-        },
-        {
-            id: "3",
-            desc: "Tongji Architectural Design And Research Institute: The Latest Architecture and News",
-            question_count: 8,
-            image: "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg",
-            tags: ["architecture", "interior design"],
-            username: "hwan"
-        },
-        {
-            id: "4",
-            desc: "Tongji Architectural Design And Research Institute: The Latest Architecture and News",
-            question_count: 8,
-            image: "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg",
-            tags: ["architecture", "interior design"],
-            username: "hwan"
-        }
-    ]
 }
 
 const Wrapper = styled.View`
@@ -182,26 +157,38 @@ const ModalTitle = styled.Text`
     margin-bottom:25px;
 `;
 
+type myprofile = {
+    username: string;
+    mento: string;
+    mentiee: string;
+    tag: string[];
+    comment: string;
+}
+
 
 const Profile = () => {
     const [select, setSelect] = useState<select>("card");
-    const [modal, setModal] = useState<ModalType>('none');
-    const [detail, setDetail] = useState<mentoCard>();
+    const [modal, setModal] = useState<modal>({
+        type: 'none',
+        detail: {},
+        question: {}
+    });
+    const [detail, setDetail] = useState<mentoCard[]>([]);
     const [questionCard, setQuestionCard] = useState<questionCard>();
-    const [myprofile, setMyprofile] = useState<object>({username : '', mento: '0', mentiee: '0', tag: [], comment: 'init'});
-    const [question, setQuestion] = useState<questioninit>([{questions : 'init',author : 'init',title: 'init'}])
+    const [myprofile, setMyprofile] = useState<myprofile>();
+    const [question, setQuestion] = useState<questionCard[]>([])
     const [questionComment, setQuestionComment] = useState<[string]>(['riri']);
 
 
     const mentoCards: mentoCard[] = FAKEDATA_1.card;
     const dispatch = useDispatch()
-    const logininfo = useSelector(state => state.login)
-    const profileinfo = useSelector(state => state.profile)
-    const questionState = useSelector(state => state.profileQuestion)
-    const faketags = ['kim','park']
+    const logininfo = useSelector((state: RootState) => state.login)
+    const profileinfo = useSelector((state: RootState) => state.profile)
+    const questionState = useSelector((state: RootState) => state.profileQuestion)
+    const faketags = ['kim', 'park']
 
-    if(myprofile.username.length === 0){
-        dispatch({type:PROFILE_REQUEST, payload: {pk: logininfo.data.pk, token: logininfo.token}})
+    if (!myprofile) {
+        dispatch({ type: PROFILE_REQUEST, payload: { pk: logininfo.data.pk, token: logininfo.token } })
         setMyprofile({
             username: logininfo.data.username,
             mento: logininfo.data.mento,
@@ -212,7 +199,7 @@ const Profile = () => {
     }
 
     useEffect(() => {
-        if(profileinfo.data) {
+        if (profileinfo.data) {
             setQuestion(profileinfo.data.pages)
         }
     })
@@ -223,33 +210,49 @@ const Profile = () => {
     }
 
     const handleModal = () => {
-        setModal('none');
+        setModal({
+            ...modal,
+            type: 'none'
+        });
     }
 
     const handleSetting = () => {
-        setModal('setting');
+        setModal({
+            ...modal,
+            type: 'setting'
+        });
     }
 
-    const handelDetail = (card?: mentoCard) => {
-        setModal('detail');
-        setDetail(card);
+    const handelDetail = (card: mentoCard) => {
+        setModal({
+            ...modal,
+            type: 'detail',
+            detail: card
+        })
     }
 
     const handleQuestion = (card: questionCard) => {
-        dispatch({type: PROFILE_QUESTION_REQUEST, payload : {token : logininfo.token, pk : card.id}})
-        setModal('question');
-        setQuestionCard(card);
+        dispatch({ type: PROFILE_QUESTION_REQUEST, payload: { token: logininfo.token, pk: card.id } })
+
+        setModal({
+            ...modal,
+            type: "question",
+            question: card
+        });
         setQuestionComment(questionState.data.results)
     }
 
     const handelClose = () => {
-        setModal('none');
+        setModal({
+            ...modal,
+            type: 'none'
+        });
     }
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
-                <Modal visible={modal === 'setting'} transparent={true} onRequestClose={handleModal} >
+                <Modal visible={modal.type === 'setting'} transparent={true} onRequestClose={handleModal} >
                     <TouchableWithoutFeedback onPress={handleModal}>
                         <ModalWrapper >
                             <ModalLayout onStartShouldSetResponder={() => true}>
@@ -270,7 +273,7 @@ const Profile = () => {
                         <Title>Question</Title>
                     </TitleView>
                     <BodyWrapper>
-                        <UserCard {...myprofile} onPress={handleSetting} />
+                        {myprofile ? <UserCard {...myprofile} onPress={handleSetting} /> : <ActivityIndicator />}
                         <SelectWrapper>
                             <Select onPress={() => handleSelect('card')()}>
                                 <SelectView style={{ borderBottomWidth: (select === "card" ? 3 : 0) }}>
@@ -292,21 +295,41 @@ const Profile = () => {
                                 </TouchableOpacity>
                             )
                             :
-                            question.map((item) =>
+                            question.map((item: questionCard) =>
                                 <TouchableOpacity onPress={() => handleQuestion(item)} key={item.id}>
                                     <QuestionCardWrapper>
-                                        <QuestionCard  desc = {item.title} image = "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg" question_count = {item.questions} username = {item.author.username} tags= {faketags} />
+                                        <QuestionCard
+                                            desc={item.desc}
+                                            image="https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg"
+                                            question_count={item.questions.length}
+                                            username={item.author.username}
+                                            tags={faketags}
+                                        />
                                     </QuestionCardWrapper>
                                 </TouchableOpacity>
                             )
                         }
                     </BodyWrapper>
                 </ScrollView>
-                {detail && modal === 'detail' &&
-                    <DetailModal visible={true} onPress={handelClose} {...detail} />
+                {'id' in modal.detail && modal.type === 'detail' &&
+                    <DetailModal
+                        visible={true}
+                        onPress={handelClose}
+                        {...modal.detail}
+                    />
                 }
-                {questionCard && modal === 'question' &&
-                    <QuestionModal visible={true} onPress={handelClose} desc = {questionCard.title} image = "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg" question_count = {questionCard.questions} username = {questionCard.author.username} tags= {faketags} questionsArr = {questionComment} id = {questionCard.id} />
+                {'id' in modal.question && modal.type === 'question' &&
+                    <QuestionModal
+                        visible={true}
+                        onPress={handelClose}
+                        id={modal.question.id}
+                        desc={modal.question.desc}
+                        image="https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg"
+                        question_count={modal.question.questions.length}
+                        username={modal.question.author.username}
+                        tags={faketags}
+                        questionsArr={questionComment}
+                    />
                 }
             </Wrapper>
         </OsView>
