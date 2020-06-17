@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Modal, View, TouchableWithoutFeedback, ScrollView, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -10,7 +10,10 @@ import MentoCard from '../components/MentoCard';
 import QuestionCard from '../components/QuestionCard'
 import SettingTab from '../components/SettingTab'
 import DetailModal from '../components/DetailModal';
+import {useDispatch, useSelector} from "react-redux";
+
 import QuestionModal from '../components/QuestionModal';
+import {PROFILE_QUESTION_REQUEST, PROFILE_REQUEST} from "../state/Profile/Action";
 
 type select = 'card' | 'question';
 
@@ -28,12 +31,18 @@ type mentoCard = {
 
 type questionCard = {
     id: string;
-    image: string;
     desc: string;
     question_count: number;
+    image: string;
     tags: string[];
     username: string;
 }
+
+type questioninit = [{
+    title : string
+    author : string
+    questions : string
+}]
 
 const FAKEDATA = {
     username: "Kimjoobin",
@@ -179,9 +188,35 @@ const Profile = () => {
     const [modal, setModal] = useState<ModalType>('none');
     const [detail, setDetail] = useState<mentoCard>();
     const [questionCard, setQuestionCard] = useState<questionCard>();
+    const [myprofile, setMyprofile] = useState<object>({username : '', mento: '0', mentiee: '0', tag: [], comment: 'init'});
+    const [question, setQuestion] = useState<questioninit>([{questions : 'init',author : 'init',title: 'init'}])
+    const [questionComment, setQuestionComment] = useState<[string]>(['riri']);
+
 
     const mentoCards: mentoCard[] = FAKEDATA_1.card;
-    const questionCards: questionCard[] = FAKEDATA_1.question;
+    const dispatch = useDispatch()
+    const logininfo = useSelector(state => state.login)
+    const profileinfo = useSelector(state => state.profile)
+    const questionState = useSelector(state => state.profileQuestion)
+    const faketags = ['kim','park']
+
+    if(myprofile.username.length === 0){
+        dispatch({type:PROFILE_REQUEST, payload: {pk: logininfo.data.pk, token: logininfo.token}})
+        setMyprofile({
+            username: logininfo.data.username,
+            mento: logininfo.data.mento,
+            mentiee: logininfo.data.mentiee,
+            tag: ["IT", "font-end", "back-end", "full-stack"],
+            comment: "한줄로 적을수 있을만큼 열심히 하겠습니다."
+        })
+    }
+
+    useEffect(() => {
+        if(profileinfo.data) {
+            setQuestion(profileinfo.data.pages)
+        }
+    })
+
 
     const handleSelect = (text: select) => () => {
         setSelect(text);
@@ -201,8 +236,10 @@ const Profile = () => {
     }
 
     const handleQuestion = (card: questionCard) => {
+        dispatch({type: PROFILE_QUESTION_REQUEST, payload : {token : logininfo.token, pk : card.id}})
         setModal('question');
         setQuestionCard(card);
+        setQuestionComment(questionState.data.results)
     }
 
     const handelClose = () => {
@@ -233,7 +270,7 @@ const Profile = () => {
                         <Title>Question</Title>
                     </TitleView>
                     <BodyWrapper>
-                        <UserCard {...FAKEDATA} onPress={handleSetting} />
+                        <UserCard {...myprofile} onPress={handleSetting} />
                         <SelectWrapper>
                             <Select onPress={() => handleSelect('card')()}>
                                 <SelectView style={{ borderBottomWidth: (select === "card" ? 3 : 0) }}>
@@ -255,10 +292,10 @@ const Profile = () => {
                                 </TouchableOpacity>
                             )
                             :
-                            questionCards.map((item) =>
+                            question.map((item) =>
                                 <TouchableOpacity onPress={() => handleQuestion(item)} key={item.id}>
                                     <QuestionCardWrapper>
-                                        <QuestionCard {...item} />
+                                        <QuestionCard  desc = {item.title} image = "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg" question_count = {item.questions} username = {item.author.username} tags= {faketags} />
                                     </QuestionCardWrapper>
                                 </TouchableOpacity>
                             )
@@ -269,7 +306,7 @@ const Profile = () => {
                     <DetailModal visible={true} onPress={handelClose} {...detail} />
                 }
                 {questionCard && modal === 'question' &&
-                    <QuestionModal visible={true} onPress={handelClose} {...questionCard} />
+                    <QuestionModal visible={true} onPress={handelClose} desc = {questionCard.title} image = "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg" question_count = {questionCard.questions} username = {questionCard.author.username} tags= {faketags} questionsArr = {questionComment} id = {questionCard.id} />
                 }
             </Wrapper>
         </OsView>

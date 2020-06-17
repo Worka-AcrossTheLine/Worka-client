@@ -5,7 +5,7 @@ import {
   GET_FEED_REQUEST,
   GET_FEED_SUCCESS, MAKE_FEED_FAIL, MAKE_FEED_REQUEST, MAKE_FEED_SUCCESS
 } from './Action';
-import {Action} from '../../sagas/index';
+import {Action} from '../index';
 
 export interface FeedState {
   fetching: boolean;

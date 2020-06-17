@@ -1,6 +1,5 @@
-import React, { useState }from 'react'
+import React, {useEffect, useState} from 'react'
 import styled from 'styled-components/native'
-import { Keyboard } from 'react-native'
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 
 import MakeJobTagInput from "../../components/MakeJobTagInput"
@@ -10,6 +9,9 @@ import MakeButton from "../../components/MakeButton"
 import CancerButton from '../../components/CancerButton'
 import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
+import { Keyboard } from 'react-native'
+import {useDispatch, useSelector} from "react-redux";
+import { MAKE_QUESTION_REQUEST } from '../../state/Question/Action'
 
 
 
@@ -44,11 +46,22 @@ const TabQuestion = ({navigation} :Props) => {
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState('');
     const [quetion, setQuestion] = useState('');
+    const dispatch = useDispatch()
+    const isLogin = useSelector(state => state.login)
+
+
+    const Upload = () => {
+        const tags = tapTag.split(',')
+        if(isLogin.isLogin && isLogin.token) {
+            dispatch({type: MAKE_QUESTION_REQUEST, payload: {tags: tags, title: InterestingTitle, question: quetion,token: isLogin.token}})
+        }
+    }
+
 
     const onCancer = () => {
         navigation.navigate('News');
     }
-    
+
     const handleKeyboard  = () => {
         Keyboard.dismiss();
     }
@@ -63,7 +76,7 @@ const TabQuestion = ({navigation} :Props) => {
                     <FlexWrapper>
                         <Title>Link Question</Title>
                     </FlexWrapper>
-                    <MakeButton title="MAKE"></MakeButton>
+                    <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
                 </TitleWrapper>
                 
                 <InputWrapper>

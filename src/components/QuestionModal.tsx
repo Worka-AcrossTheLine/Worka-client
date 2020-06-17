@@ -7,6 +7,8 @@ import DownArrow from '../../assets/DownArrow.svg';
 import UpArrow from '../../assets/UpArrow.svg';
 import ThumpsUp from '../../assets/ThumpsUp.svg';
 import ThumpsDown from '../../assets/ThumpsDown.svg';
+import {useDispatch, useSelector} from "react-redux";
+import {QUESTION_COMMENTS_REQUEST} from "../state/Profile/Action";
 
 type Props = {
     visible: boolean;
@@ -153,13 +155,20 @@ type animationState = {
     animationOn: boolean;
 }
 
-export default function QuestionModal({ visible, desc, image, question_count, tags, username, onPress }: Props) {
+export default function QuestionModal({ visible, desc, image, question_count, tags, username, onPress, id, questionsArr }: Props) {
     const [animationState, setAnimationState] = useState<animationState>({
         detailIndex: undefined,
         animationOn: false
     })
     const { detailIndex, animationOn } = animationState;
     const slideToggle = useRef(new Animated.Value(0)).current;
+    const dispatch = useDispatch()
+    const QuestionDetail = useSelector(state => state.profileQuestion)
+    const Logininfo = useSelector(state => state.login)
+    const QuestionComment = useSelector(state => state.questionComment)
+    console.log(QuestionDetail.data + questionsArr[0])
+
+
 
     const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number, overFlow?: string } => {
         return (
@@ -196,6 +205,7 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
     }
 
     useEffect(() => {
+
         if (animationOn) {
             Animated.timing(slideToggle, {
                 toValue: 300,
@@ -220,18 +230,18 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
                                     </TileWrapper>
                                 </ModalTabWrapper>
                                 <BodyWrapper>
-                                    {QUESTIONS && (
-                                        QUESTIONS.map((qs, index) =>
-                                            <ModalTabWrapper key={`q-${index}`} onStartShouldSetResponder={() => true}>
+                                    {QuestionDetail.data.results && (
+                                        QuestionDetail.data.results.map((item) =>
+                                            <ModalTabWrapper key={`q-${item.id}`} onStartShouldSetResponder={() => true}>
                                                 <TextWrapper>
-                                                    <QuestionText>Q{index + 1}.{qs.q}</QuestionText>
+                                                    <QuestionText>Q{item.id + 1}.{item.content}</QuestionText>
                                                 </TextWrapper>
-                                                <Animated.View style={setDetailStyle(index)}>
-                                                    {qs.as && (
-                                                        qs.as.map((answer, idx) =>
-                                                            <AnswerWrapper key={`answer-${idx}`}>
-                                                                <AnswerUsername style={{ opacity: 0.6 }}>{answer.u}</AnswerUsername>
-                                                                <AnswerUsername>{answer.a}</AnswerUsername>
+                                                <Animated.View style={setDetailStyle(item.id)}>
+                                                    {questionsArr && (
+                                                        questionsArr.map((answer) =>
+                                                            <AnswerWrapper key={`answer-${answer.id}`}>
+                                                                <AnswerUsername style={{ opacity: 0.6 }}>'kim'</AnswerUsername>
+                                                                <AnswerUsername>'kim'</AnswerUsername>
                                                                 <RatingWrapper>
                                                                     <ThumpsUp style={{ marginRight: 7 }} />
                                                                     <ThumpsDown style={{ marginRight: 5 }} />
@@ -241,8 +251,8 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
                                                     )}
                                                 </Animated.View>
                                                 <DropDownWrapper >
-                                                    <TouchableOpacity onPress={() => handleDetail(index)} style={{ padding: 5 }}>
-                                                        {detailIndex === index ? <UpArrow /> : <DownArrow />}
+                                                    <TouchableOpacity onPress={() => handleDetail(1)} style={{ padding: 5 }}>
+                                                        {detailIndex === 1 ? <UpArrow /> : <DownArrow />}
                                                     </TouchableOpacity>
                                                 </DropDownWrapper>
                                             </ModalTabWrapper>
