@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Modal, View, TouchableWithoutFeedback, ScrollView, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 
@@ -10,6 +10,7 @@ import MentoCard from '../components/MentoCard';
 import QuestionCard from '../components/QuestionCard'
 import SettingTab from '../components/SettingTab'
 import DetailModal from '../components/DetailModal';
+import {useDispatch, useSelector} from "react-redux";
 
 
 const a = [];
@@ -176,6 +177,9 @@ const Profile = () => {
     const [settingModal, setSettingModal] = useState<boolean>(false);
     const [detailModal, setDetailModal] = useState<boolean>(false);
     const [detail, setDetail] = useState<mentoCard>();
+    const dispatch = useDispatch()
+    const logininfo = useSelector(state => state.login)
+
 
     const handleSelect = (text: select) => () => {
         setSelect(text);

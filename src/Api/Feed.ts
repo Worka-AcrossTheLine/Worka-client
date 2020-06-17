@@ -1,11 +1,12 @@
 import axios, {AxiosError, AxiosPromise} from "axios";
+import base from './baseURL.json'
 
 const reqresApi = axios.create({
-    baseURL: 'http://172.30.1.13:8000/api/v1/post',
+    baseURL: base.baseURL
 });
 
 export const getFeed = () => {
-    return reqresApi.get(`/all/`)
+    return reqresApi.get(`post/all/`)
     .catch((error: AxiosError) => {
         throw error.response
     });
@@ -13,7 +14,7 @@ export const getFeed = () => {
 
 
 export const getFeedDetail = (body: string) => {
-    return reqresApi.get(`/detail/${body}/`)
+    return reqresApi.get(`post/detail/${body}/`)
         .catch((error: AxiosError) => {
             throw error.response
         });

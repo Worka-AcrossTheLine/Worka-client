@@ -1,6 +1,6 @@
-export const MAKE_QUESTION_REQUEST = 'MAKE_QUESTION_REQUEST' as const;
-export const MAKE_QUESTION_SUCCESS = 'MAKE_QUESTION_SUCCESS' as const;
-export const MAKE_QUESTION_FAIL = 'MAKE_QUESTION_FAIL' as const;
+export const MAKE_QUESTION_REQUEST = 'MAKE_QUESTION_REQUEST'
+export const MAKE_QUESTION_SUCCESS = 'MAKE_QUESTION_SUCCESS'
+export const MAKE_QUESTION_FAIL = 'MAKE_QUESTION_FAIL'
 
 
 export const makeQuestionRequest = (data : any) => {

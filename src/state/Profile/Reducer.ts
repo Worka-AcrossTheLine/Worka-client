@@ -1,29 +1,29 @@
 import {Action} from "../index";
-import {MAKE_QUESTION_FAIL, MAKE_QUESTION_REQUEST, MAKE_QUESTION_SUCCESS} from "./Action";
+import {PROFILE_SUCCESS, PROFILE_FAIL, PROFILE_REQUEST} from "./Action";
 
-export interface QuestionState {
+export interface ProfileState {
     fetching: boolean;
     data: any;
     err: any;
 }
 
-const initialState: QuestionState = {fetching: false, data: null, err: null};
+const initialState: ProfileState = {fetching: false, data: null, err: null};
 
-export const questionFeed = (state: QuestionState = initialState, action: Action) => {
+export const ProfileFeed = (state: ProfileState = initialState, action: Action) => {
     switch (action.type) {
-        case MAKE_QUESTION_REQUEST:
+        case PROFILE_REQUEST:
             return {
                 fetching: true,
                 data: null,
                 err: null,
             };
-        case MAKE_QUESTION_SUCCESS:
+        case PROFILE_SUCCESS:
             return {
                 fetching: false,
                 data: action.payload.data,
                 err: null,
             };
-        case MAKE_QUESTION_FAIL:
+        case PROFILE_FAIL:
             return {
                 fetching: false,
                 data: null,
