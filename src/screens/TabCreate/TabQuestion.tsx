@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import styled from 'styled-components/native'
+import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 
 import MakeJobTagInput from "../../components/MakeJobTagInput"
 import MakeInterestingInput from "../../components/MakeInterestingInput"
@@ -13,6 +14,12 @@ import {useDispatch, useSelector} from "react-redux";
 import { MAKE_QUESTION_REQUEST } from '../../state/Question/Action'
 
 
+
+type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
+
+type Props = {
+    navigation: TopNewsNavigationProp;
+}
 
 const Wrapper = styled.SafeAreaView`
     flex:1
@@ -34,8 +41,8 @@ const Title = styled.Text`
 const InputWrapper = styled.View`
     flex-direction:column;
 `
-const TabQuestion = () => {
-    //질문지를 만들고 송
+const TabQuestion = ({navigation} :Props) => {
+    
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState('');
     const [quetion, setQuestion] = useState('');
@@ -50,6 +57,11 @@ const TabQuestion = () => {
         }
     }
 
+
+    const onCancer = () => {
+        navigation.navigate('News');
+    }
+
     const handleKeyboard  = () => {
         Keyboard.dismiss();
     }
@@ -57,7 +69,10 @@ const TabQuestion = () => {
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
                 <TitleWrapper>
-                    <CancerButton title="CANCER"></CancerButton>
+                    <CancerButton
+                        title="CANCER"
+                        onPress={() => onCancer()}
+                    />
                     <FlexWrapper>
                         <Title>Link Question</Title>
                     </FlexWrapper>

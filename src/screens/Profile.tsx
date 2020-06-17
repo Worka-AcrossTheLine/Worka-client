@@ -132,8 +132,10 @@ const BodyWrapper = styled.View`
 `;
 
 const SelectWrapper = styled.View`
+    max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
+    align-self:center;
     flex-direction:row;
-`;
+    `;
 
 const Select = styled.TouchableOpacity`
     flex:1;

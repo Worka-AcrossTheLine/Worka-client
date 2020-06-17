@@ -6,7 +6,6 @@ type Props = {
     title: string;
     fontSize?: number;
     onPress: () => void;
-    isPending: boolean;
 }
 
 const Button = styled.TouchableOpacity`
@@ -19,10 +18,11 @@ const Title = styled.Text`
 `;
 
 
-const MakeButton = ({ title, fontSize = 12, onPress, isPending }: Props) => {
+const MakeButton = ({ title, fontSize = 12, onPress }: Props) => {
     return (
-        <Button onPress={() => Alert.alert('is Posted')}>
-            {!isPending ? <Title style={{ fontSize }}>{title}</Title> : <ActivityIndicator size="large" color="#FFFFFF" />}
+        // <Button onPress={() => Alert.alert('is Posted')}>
+        <Button onPress={() => onPress}>
+            <Title style={{ fontSize }}>{title}</Title> 
         </Button>
     )
 }
