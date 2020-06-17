@@ -161,12 +161,12 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
         animationOn: false
     })
     const { detailIndex, animationOn } = animationState;
-    const [comments, setComments] = useState<[]>([{id: 'kiki', username: 'fefe'}]);
     const slideToggle = useRef(new Animated.Value(0)).current;
     const dispatch = useDispatch()
     const QuestionDetail = useSelector(state => state.profileQuestion)
     const Logininfo = useSelector(state => state.login)
     const QuestionComment = useSelector(state => state.questionComment)
+    console.log(QuestionDetail.data + questionsArr[0])
 
 
 
@@ -205,16 +205,13 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
     }
 
     useEffect(() => {
-        console.log('test')
+
         if (animationOn) {
             Animated.timing(slideToggle, {
                 toValue: 300,
                 duration: 1000
             }).start();
         }
-        let arr = []
-            dispatch({type:QUESTION_COMMENTS_REQUEST, payload : {pk : id, token : Logininfo.token, account_pk : Logininfo.data.pk, question_id : questionsArr}})
-
 
     }, [animationState])
     return (
@@ -233,15 +230,15 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
                                     </TileWrapper>
                                 </ModalTabWrapper>
                                 <BodyWrapper>
-                                    {QUESTIONS && (
-                                        QUESTIONS.map((item) =>
+                                    {QuestionDetail.data.results && (
+                                        QuestionDetail.data.results.map((item) =>
                                             <ModalTabWrapper key={`q-${item.id}`} onStartShouldSetResponder={() => true}>
                                                 <TextWrapper>
                                                     <QuestionText>Q{item.id + 1}.{item.content}</QuestionText>
                                                 </TextWrapper>
                                                 <Animated.View style={setDetailStyle(item.id)}>
-                                                    {comments && (
-                                                        comments.map((answer) =>
+                                                    {questionsArr && (
+                                                        questionsArr.map((answer) =>
                                                             <AnswerWrapper key={`answer-${answer.id}`}>
                                                                 <AnswerUsername style={{ opacity: 0.6 }}>'kim'</AnswerUsername>
                                                                 <AnswerUsername>'kim'</AnswerUsername>

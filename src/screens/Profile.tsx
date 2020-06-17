@@ -197,6 +197,7 @@ const Profile = () => {
     const profileinfo = useSelector(state => state.profile)
     const questionState = useSelector(state => state.profileQuestion)
     const faketags = ['kim','park']
+
     if(myprofile.username.length === 0){
         dispatch({type:PROFILE_REQUEST, payload: {pk: logininfo.data.pk, token: logininfo.token}})
         setMyprofile({
@@ -209,7 +210,6 @@ const Profile = () => {
     }
 
     useEffect(() => {
-
         if(profileinfo.data) {
             setQuestion(profileinfo.data.pages)
         }
