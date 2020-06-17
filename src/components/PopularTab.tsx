@@ -8,6 +8,7 @@ type Props = {
 
 const Wrapper = styled.View`
     width:100%;
+    max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     height:40px;
     justify-content:center;
     align-items:center;

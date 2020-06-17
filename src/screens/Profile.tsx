@@ -159,7 +159,9 @@ const ModalLayout = styled.View`
     background-color:${({ theme }: ThemeProps): string => theme.white};
     align-items:center;
     width:100%;
+    max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     height:70%;
+    border-radius:8px;
 `;
 
 const ModalTitle = styled.Text`
