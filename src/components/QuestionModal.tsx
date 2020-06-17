@@ -66,6 +66,7 @@ const ModalTabWrapper = styled.View`
     width:100%;
     background-color:${({ theme }: ThemeProps): string => theme.white};
     margin-bottom:5px;
+    overflow:hidden;
 `;
 
 const TileWrapper = styled.View`
@@ -95,7 +96,9 @@ const DropDownWrapper = styled.View`
 
 const AnswerWrapper = styled.View`
     width:100%;
+    height:30px;
     margin-top:10px;
+    padding:0px 10px;
 `;
 
 const RatingWrapper = styled.View`
@@ -141,49 +144,55 @@ const QuestionText = styled.Text`
 const AnswerUsername = styled.Text`
     color:${({ theme }: ThemeProps): string => theme.textColor};
     font-size:${({ theme }: ThemeProps): number => theme.smFont}px;
+    margin-bottom:4px;
 `;
 
+type animationState = {
+    detailIndex?: number;
+    animationOn: boolean;
+}
+
 export default function QuestionModal({ visible, desc, image, question_count, tags, username, onPress }: Props) {
-    const [detailIndex, setDetailIndex] = useState<number>();
-    const [animationOn, setAnimationOn] = useState<boolean>(false);
+    const [animationState, setAnimationState] = useState<animationState>({
+        detailIndex: undefined,
+        animationOn: false
+    })
+    const { detailIndex, animationOn } = animationState;
     const slideToggle = useRef(new Animated.Value(0)).current;
 
-    const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number } => {
+    const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number, overFlow?: string } => {
         return (
             typeof detailIndex === 'number' && detailIndex === index ?
-                { height: slideToggle }
+                { height: slideToggle, overFlow: 'hidden' }
                 :
                 { display: 'none' }
         )
     }
 
     const closeModal = () => {
-        setDetailIndex(undefined);
         onPress();
     }
 
     const handleDetail = (index: number) => {
+        const isClose = index === detailIndex
         if (animationOn) {
             Animated.timing(slideToggle, {
                 toValue: 0,
                 duration: 1000
             }).start(() => {
-                setAnimationOn(false);
-                index === detailIndex ? setDetailIndex(undefined) : setDetailIndex(index)
+                setAnimationState({
+                    detailIndex: isClose ? undefined : index,
+                    animationOn: isClose ? false : true
+                })
             });
         } else {
-            index === detailIndex ? setDetailIndex(undefined) : setDetailIndex(index)
+            setAnimationState({
+                detailIndex: index === detailIndex ? undefined : index,
+                animationOn: true
+            })
         }
 
     }
-
-    useEffect(() => {
-        if (typeof detailIndex === 'number') {
-            setAnimationOn(true)
-        } else {
-            setAnimationOn(false);
-        }
-    }, [detailIndex])
 
     useEffect(() => {
         if (animationOn) {
@@ -193,7 +202,7 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
             }).start();
         }
 
-    }, [animationOn])
+    }, [animationState])
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={closeModal} >
             <TouchableWithoutFeedback onPress={closeModal}>
