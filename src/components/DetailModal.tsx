@@ -57,7 +57,7 @@ const Image = styled.Image`
 `;
 
 const BodyWrapper = styled.View`
-    margin-top:5px;
+    margin-top:20px;
     width:100%;
 `;
 
