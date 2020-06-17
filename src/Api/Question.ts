@@ -18,3 +18,11 @@ export const makeQuestion = ({id, question, token}:{id:string, question:string, 
             throw error.response
         });
 };
+
+
+export const getQuestion = () => {
+    return reqresApi.get(`pages/`)
+        .catch((error: AxiosError) => {
+            throw error.response
+        });
+};

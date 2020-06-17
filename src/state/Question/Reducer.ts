@@ -1,5 +1,12 @@
 import {Action} from "../index";
-import {MAKE_QUESTION_FAIL, MAKE_QUESTION_REQUEST, MAKE_QUESTION_SUCCESS} from "./Action";
+import {
+    GET_QUESTION_FAIL,
+    GET_QUESTION_REQUEST,
+    GET_QUESTION_SUCCESS,
+    MAKE_QUESTION_FAIL,
+    MAKE_QUESTION_REQUEST,
+    MAKE_QUESTION_SUCCESS
+} from "./Action";
 
 export interface QuestionState {
     fetching: boolean;
@@ -24,6 +31,24 @@ export const questionFeed = (state: QuestionState = initialState, action: Action
                 err: null,
             };
         case MAKE_QUESTION_FAIL:
+            return {
+                fetching: false,
+                data: null,
+                err: action.payload.err,
+            };
+        case GET_QUESTION_REQUEST:
+            return {
+                fetching: true,
+                data: null,
+                err: null,
+            };
+        case GET_QUESTION_SUCCESS:
+            return {
+                fetching: false,
+                data: action.payload.data,
+                err: null,
+            };
+        case GET_QUESTION_FAIL:
             return {
                 fetching: false,
                 data: null,
