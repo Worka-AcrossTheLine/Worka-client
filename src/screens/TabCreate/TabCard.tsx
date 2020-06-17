@@ -5,6 +5,7 @@ import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
+
 import MakeJobTagInput from "../../components/MakeJobTagInput"
 import MakeCardDescriptionInput from "../../components/MakeCardDescriptionInput";
 import MakeInterestingInput from "../../components/MakeInterestingInput"
@@ -14,10 +15,15 @@ import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
 import {Avatar} from "react-native-elements";
 import {useDispatch} from "react-redux";
-import {RootState} from "../../reducers";
 import {MAKE_FEED_REQUEST} from "../../state/Feed/Action";
 import AsyncStorage from "@react-native-community/async-storage";
+import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 
+type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
+
+type Props = {
+    navigation: TopNewsNavigationProp;
+}
 
 const Wrapper = styled.SafeAreaView`
     flex:1;
@@ -41,7 +47,7 @@ const InputWrapper = styled.View`
 `
 
 
-const TabCard: React.FC = (props) => {
+const TabCard: React.FC = ({navigation}:Props) => {
 
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState('');
@@ -49,6 +55,10 @@ const TabCard: React.FC = (props) => {
     const [Description, setDescription] = useState('');
     const dispatch = useDispatch();
     const isIos = Platform.OS === 'ios';
+
+    const onCancer = () => {
+        navigation.navigate('News');
+    }
 
     const handleKeyboard  = () => {
         Keyboard.dismiss();
@@ -113,11 +123,16 @@ const TabCard: React.FC = (props) => {
             console.log('토큰이 존재하지 않음')
         }
     }
+    
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
                 <TitleWrapper>
+                    <CancerButton 
+                        title="CANCER"
+                        onPress={() => onCancer()}
+                    />
                     <FlexWrapper>
                         <Title>Card Worka</Title>
                     </FlexWrapper>
@@ -170,6 +185,9 @@ const FlexWrapper = styled.View`
     align-items: center;
 `;
 const MakeCameraInput = styled.View`
+    flex-direction: row;
+    align-content: center;
+
 `
 
 export default TabCard

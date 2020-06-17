@@ -1,9 +1,7 @@
 import React, { useState }from 'react'
 import styled from 'styled-components/native'
-import { CommonActions } from '@react-navigation/native';
-
-import { AuthStackParamList } from '../../navigator/AuthNavigation'
-import { }
+import { Keyboard } from 'react-native'
+import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 
 import MakeJobTagInput from "../../components/MakeJobTagInput"
 import MakeInterestingInput from "../../components/MakeInterestingInput"
@@ -12,12 +10,13 @@ import MakeButton from "../../components/MakeButton"
 import CancerButton from '../../components/CancerButton'
 import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
-import { Keyboard } from 'react-native'
 
 
-type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Home'>;
+
+type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
+
 type Props = {
-    navigation: AuthHomeNavigationProp;
+    navigation: TopNewsNavigationProp;
 }
 
 const Wrapper = styled.SafeAreaView`
@@ -45,6 +44,10 @@ const TabQuestion = ({navigation} :Props) => {
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState('');
     const [quetion, setQuestion] = useState('');
+
+    const onCancer = () => {
+        navigation.navigate('News');
+    }
     
     const handleKeyboard  = () => {
         Keyboard.dismiss();
@@ -55,8 +58,8 @@ const TabQuestion = ({navigation} :Props) => {
                 <TitleWrapper>
                     <CancerButton
                         title="CANCER"
-                        onPress={() => navigation.dispatch(CommonActions.goBack())}
-                        ></CancerButton>
+                        onPress={() => onCancer()}
+                    />
                     <FlexWrapper>
                         <Title>Link Question</Title>
                     </FlexWrapper>
