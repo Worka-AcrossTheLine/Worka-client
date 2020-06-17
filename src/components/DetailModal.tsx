@@ -25,7 +25,7 @@ const Wrapper = styled.View`
     background-color:rgba(112,112,112,0.9);
     justify-content:center;
     align-items:center;
-    padding:0px 30px;
+    padding:0px 15px;
 `;
 
 const CloseWrapper = styled.View`
@@ -38,7 +38,6 @@ const CloseWrapper = styled.View`
 const DetailWrapper = styled.View`
     width:100%;
     max-height:50%;
-    max-width:320px;
     background-color:${({ theme }: ThemeProps): string => theme.detailBg}
     padding:2px;
 `;
@@ -67,6 +66,10 @@ const TagWrapper = styled.View`
     padding:0px 15px;
     flex-wrap:wrap;
     flex-direction:row;
+`;
+
+const TextWrapper = styled.View`
+    padding:15px;
 `;
 
 const TitleView = styled.View`
@@ -106,8 +109,10 @@ export default function DetailModal({ visible, image, title = "타이틀 테스�
                                         <Tag text={username} fontColor="#FFFFFF" />
                                         <Tag text={company} fontColor="#FFFFFF" />
                                     </TagWrapper>
-                                    {image && <TitleView><Title>{title}</Title></TitleView>}
-                                    <Desc>{desc}</Desc>
+                                    <TextWrapper>
+                                        {image && <TitleView><Title>{title}</Title></TitleView>}
+                                        <Desc>{desc}</Desc>
+                                    </TextWrapper>
                                 </BodyWrapper>
                             </ScrollWrapper>
                         </ScrollView>
