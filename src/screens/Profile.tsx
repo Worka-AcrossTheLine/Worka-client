@@ -219,7 +219,7 @@ const Profile = () => {
                             <TouchableWithoutFeedback>
                                 <ModalLayout onStartShouldSetResponder={() => true}>
                                     <ScrollView style={{ width: '100%', padding: 18 }}>
-                                        <ModalTitle>Helle {FAKEDATA.username}</ModalTitle>
+                                        <ModalTitle>Helle {logininfo.data.username}</ModalTitle>
                                         <SettingTab text="username" />
                                         <SettingTab text="password" />
                                         <SettingTab text="font size" />
@@ -236,7 +236,7 @@ const Profile = () => {
                         <Title>Question</Title>
                     </TitleView>
                     <BodyWrapper>
-                        <UserCard {...FAKEDATA} onPress={handleSetting} />
+                        <UserCard {...logininfo.data} onPress={handleSetting} />
                         <SelectWrapper>
                             <Select onPress={() => handleSelect('card')()}>
                                 <SelectView style={{ borderBottomWidth: (select === "card" ? 3 : 0) }}>
