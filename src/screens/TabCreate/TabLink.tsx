@@ -4,15 +4,18 @@ import styled from 'styled-components/native';
 
 import MakeJobTagInput from "../../components/MakeJobTagInput"
 import MakeInterestingInput from "../../components/MakeInterestingInput"
+import MakeEmbed from "../../components/MakeEmbed"
 import MakeButton from "../../components/MakeButton"
-import CancerButton from '../../components/CancerButton'
 import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
 
+type Props = {
+    onPress:() => void;
+    keyboardType?: 'default';
+}
 
 const Wrapper = styled.SafeAreaView`
     flex:1
-    
 `;
 
 const TitleWrapper = styled.View`
@@ -34,10 +37,12 @@ const InputWrapper = styled.View`
 `
 
 
-const TabLink = () => {
-    
+const TabLink = ({
+    onPress, keyboardType
+}:Props) => {
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState<string>('');
+    const [tapUrl, setTapUrl] = useState<string>('')
     
     const handleKeyboard  = () => {
         Keyboard.dismiss();
@@ -48,31 +53,37 @@ const TabLink = () => {
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-            <Wrapper>
-                <TitleWrapper>
-                    <CancerButton title="CANCER"></CancerButton>
-                    <FlexWrapper>
-                        <Title>Link Worka</Title>
-                    </FlexWrapper>
-                    <MakeButton title="MAKE"></MakeButton>
-                </TitleWrapper>
-                <InputWrapper>
-                    <MakeJobTagInput 
-                        placeholder="Make Job Tag"
-                        value={tapTag}
-                        onChange = {addTap(setTaptag)}
-                        autoFocus = { true }
-                        onPress={handleKeyboard}
-                        
-                    />
-                    <MakeInterestingInput
-                        placeholder="Make Interesting Title"
-                        value={InterestingTitle}
-                        onChange={addTap(setInterestingTitle)}
-                        autoFocus = {true}
-                    />
-                </InputWrapper>
-            </Wrapper>
+            <TouchableWithoutFeedback onPress={handleKeyboard}>
+                <Wrapper>
+                    <TitleWrapper>
+                        <FlexWrapper>
+                            <Title>Link Worka</Title>
+                        </FlexWrapper>
+                        <MakeButton title="MAKE" onPress={() => onPress()}></MakeButton>
+                    </TitleWrapper>
+                    <InputWrapper >
+                        <MakeJobTagInput 
+                            placeholder="Make Job Tag"
+                            value={tapTag}
+                            onChange = {addTap(setTaptag)}
+                            autoFocus = { true }
+                        />
+                        <MakeInterestingInput
+                            placeholder="Make Interesting Title"
+                            value={InterestingTitle}
+                            onChange={addTap(setInterestingTitle)}
+                            autoFocus = {true}
+                        />
+                        <MakeEmbed
+                            placeholder="http://"    
+                            value={tapUrl}
+                            keyboardType = {"url"}
+                            onChange={addTap(setTapUrl)}
+                        />
+                    </InputWrapper>
+
+                </Wrapper>
+            </TouchableWithoutFeedback>
         </OsView>
     )
 }

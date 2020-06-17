@@ -45,7 +45,6 @@ const TabQuestion = () => {
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
                 <TitleWrapper>
-                    <CancerButton title="CANCER"></CancerButton>
                     <FlexWrapper>
                         <Title>Link Question</Title>
                     </FlexWrapper>
