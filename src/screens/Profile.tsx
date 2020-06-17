@@ -211,18 +211,16 @@ const Profile = () => {
                 <Modal visible={modal === 'setting'} transparent={true} >
                     <TouchableWithoutFeedback onPress={handleModal}>
                         <ModalWrapper >
-                            <TouchableWithoutFeedback>
-                                <ModalLayout onStartShouldSetResponder={() => true}>
-                                    <ScrollView style={{ width: '100%', padding: 18 }}>
-                                        <ModalTitle>Helle {FAKEDATA.username}</ModalTitle>
-                                        <SettingTab text="username" />
-                                        <SettingTab text="password" />
-                                        <SettingTab text="font size" />
-                                        <SettingTab text="dark theme" />
-                                        <View style={{ height: 50 }}></View>
-                                    </ScrollView>
-                                </ModalLayout>
-                            </TouchableWithoutFeedback>
+                            <ModalLayout onStartShouldSetResponder={() => true}>
+                                <ScrollView style={{ width: '100%', padding: 18 }}>
+                                    <ModalTitle>Helle {FAKEDATA.username}</ModalTitle>
+                                    <SettingTab text="username" />
+                                    <SettingTab text="password" />
+                                    <SettingTab text="font size" />
+                                    <SettingTab text="dark theme" />
+                                    <View style={{ height: 50 }}></View>
+                                </ScrollView>
+                            </ModalLayout>
                         </ModalWrapper>
                     </TouchableWithoutFeedback>
                 </Modal>

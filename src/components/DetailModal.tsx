@@ -93,26 +93,24 @@ export default function DetailModal({ visible, image, title = "타이틀 테스�
                         <Xsvg />
                     </TouchableOpacity>
                 </CloseWrapper>
-                <TouchableWithoutFeedback>
-                    <DetailWrapper>
-                        <ScrollView>
-                            <ScrollWrapper onStartShouldSetResponder={() => true}>
-                                {image ? <ImageWrapper><Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} /></ImageWrapper> : <TitleView><Title>{title}</Title></TitleView>}
-                                <BodyWrapper>
-                                    <TagWrapper >
-                                        {tags.map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FFFFFF" />)}
-                                    </TagWrapper>
-                                    <TagWrapper style={{ justifyContent: "space-between" }}>
-                                        <Tag text={username} fontColor="#FFFFFF" />
-                                        <Tag text={company} fontColor="#FFFFFF" />
-                                    </TagWrapper>
-                                    {image && <TitleView><Title>{title}</Title></TitleView>}
-                                    <Desc>{desc}</Desc>
-                                </BodyWrapper>
-                            </ScrollWrapper>
-                        </ScrollView>
-                    </DetailWrapper>
-                </TouchableWithoutFeedback>
+                <DetailWrapper>
+                    <ScrollView>
+                        <ScrollWrapper onStartShouldSetResponder={() => true}>
+                            {image ? <ImageWrapper><Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} /></ImageWrapper> : <TitleView><Title>{title}</Title></TitleView>}
+                            <BodyWrapper>
+                                <TagWrapper >
+                                    {tags.map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FFFFFF" />)}
+                                </TagWrapper>
+                                <TagWrapper style={{ justifyContent: "space-between" }}>
+                                    <Tag text={username} fontColor="#FFFFFF" />
+                                    <Tag text={company} fontColor="#FFFFFF" />
+                                </TagWrapper>
+                                {image && <TitleView><Title>{title}</Title></TitleView>}
+                                <Desc>{desc}</Desc>
+                            </BodyWrapper>
+                        </ScrollWrapper>
+                    </ScrollView>
+                </DetailWrapper>
             </Wrapper>
         </ModalWrapper>
     )
