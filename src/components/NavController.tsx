@@ -38,7 +38,7 @@ export default function NavController({ isLogin, setIsLogin }: Props) {
             {!loginController ?
                 <AuthNavigation />
                 :
-                <TendencyController mbti={loginState.mbti} isSkip={loginState.isSkip} />
+                <TendencyController mbti={"mbti"} isSkip={loginState.isSkip} />
             }
         </>
     )

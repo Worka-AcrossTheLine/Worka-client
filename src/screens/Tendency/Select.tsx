@@ -57,14 +57,14 @@ const Select = () => {
 
 
     const chooseQ = (quest: { type: string, q: string }) => () => {
-        if (!loginState.pending) {
-            setMbti(mbti + quest.type)
-            if (mbtiIndex > 2) {
-                dispatch({ type: TENDENCY, payload: { mbti: mbti + quest.type, token: loginState.token } })
-                return;
-            }
+        // if (!loginState.pending) {
+        //     setMbti(mbti + quest.type)
+        //     if (mbtiIndex > 2) {
+        //         dispatch({ type: TENDENCY, payload: { mbti: mbti + quest.type, token: loginState.token } })
+        //         return;
+        //     }
             setMbtiIndex(mbtiIndex + 1);
-        }
+        // }
     }
 
     const [q1, q2] = TENDENCYQUESTIONS[mbtiIndex];

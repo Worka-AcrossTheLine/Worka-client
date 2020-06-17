@@ -22,6 +22,7 @@ export const login = (
 export const signup = (
   signupPayload: SignupPayload): AxiosPromise<SignupResponse> => {
   const { email, username, password, year, month, day } = signupPayload;
+  console.log(base.baseURL)
   return reqresApi.post('accounts/signup/', {
     email,
     username,

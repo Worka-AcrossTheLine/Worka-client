@@ -11,7 +11,7 @@ export const LOGIN_REQUESTED = 'LOGIN_REQUESTED' as const;
 export const LOGIN_SUCCESS = 'LOGINSUCCESS' as const;
 export const LOGIN_FAILURE = 'LOGINFAILURE' as const;
 
-export const TENDENCY_REQUEST = 'TENDENCY_REQUEST' as const;
+export const TENDENCY_SUCSSES = 'TENDENCY_SUCSSES' as const;
 export const TENDENCY = 'TENDENCY' as const;
 
 export type GetLoginAction = {
@@ -55,6 +55,7 @@ export type LoginState = {
   isLogin: boolean;
   isError: boolean;
   isSkip: boolean;
+  data: any;
   mbti: string;
   token?: string;
 };
@@ -96,6 +97,7 @@ const initialState: LoginState = {
   isLogin: false,
   isError: false,
   isSkip: false,
+  data: {},
   mbti: '',
   token: '',
 };
@@ -129,6 +131,7 @@ const reducer = handleActions(
         pending: false,
         isLogin: true,
         token: payload.data.token || state.token,
+        data: payload.data.user,
         mbti: payload.data.user.mbti || ''
       })
     },
