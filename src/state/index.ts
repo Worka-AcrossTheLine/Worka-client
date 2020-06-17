@@ -5,6 +5,8 @@ import {GET_FEED_DETAIL_REQUEST, GET_FEED_REQUEST,MAKE_FEED_REQUEST} from "./Fee
 import {handleGetFeed, handleGetFeedDetail, handleMakeFeed} from "./Feed/Saga"
 import {handleQuestion} from "./Question/Saga"
 import {MAKE_QUESTION_REQUEST} from "./Question/Action";
+import {PROFILE_QUESTION_REQUEST, PROFILE_REQUEST, QUESTION_COMMENTS_REQUEST} from "./Profile/Action";
+import {handleProfile, handleProfileQuestion, handleQuestionComments} from "./Profile/Saga";
 
 
 
@@ -22,6 +24,9 @@ function* watchLoginRequested() {
   yield takeLatest(GET_FEED_DETAIL_REQUEST, handleGetFeedDetail)
   yield takeLatest(MAKE_QUESTION_REQUEST, handleQuestion)
   yield takeLatest(MAKE_FEED_REQUEST, handleMakeFeed)
+  yield takeLatest(PROFILE_REQUEST, handleProfile)
+  yield takeLatest(PROFILE_QUESTION_REQUEST, handleProfileQuestion)
+  yield takeLatest(QUESTION_COMMENTS_REQUEST, handleQuestionComments)
 }
 
 export default function* rootSaga() {

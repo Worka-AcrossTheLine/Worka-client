@@ -45,7 +45,6 @@ const BodyWrapper = styled.View`
 
 export default function ({ navigation }: Props) {
     const [value, setValue] = useState('');
-
     const handleInput = (e: string): void => {
         setValue(e);
     }

@@ -14,6 +14,10 @@ export const GET_FEED_DETAIL_FAIL = 'GET_FEED_DETAIL_FAIL'
 export const MAKE_FEED_REQUEST = 'MAKE_FEED_REQUEST';
 export const MAKE_FEED_SUCCESS = 'MAKE_FEED_SUCCESS';
 export const MAKE_FEED_FAIL = 'MAKE_FEED_FAIL';
+//get Tag
+export const GET_TAG_REQUEST = 'GET_TAG_REQUEST';
+export const GET_TAG_SUCCESS = 'GET_TAG_SUCCESS';
+export const GET_TAG_FAIL = 'GET_TAG_FAIL';
 
 
 export const getFeedRequest = () => {
@@ -45,5 +49,4 @@ export const makeFeedSuccess = (data:any) => {
 export const makeFeedFail = (err : any) => {
   return {type : MAKE_FEED_FAIL, payload: {err}}
 }
-
 

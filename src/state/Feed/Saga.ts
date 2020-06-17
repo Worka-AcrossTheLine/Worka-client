@@ -8,7 +8,7 @@ import {
   MAKE_FEED_SUCCESS,
   makeFeedSuccess
 } from './Action';
-import {Action} from '../../sagas/index'
+import {Action} from '../index'
 
 
 export function* handleGetFeed() {

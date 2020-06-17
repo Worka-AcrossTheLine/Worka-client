@@ -4,18 +4,24 @@ const reqresApi = axios.create({
     baseURL: base.baseURL,
 });
 
-export const makeQuestionCard = ({tags, title, token}:  {token: string, title: string, tags:[] }) => {
-    console.log(tags+"dd")
-    return reqresApi.post(`pages/`, {title: title, tags: tags}, { headers: { Authorization: `JWT ${token}` } })
+export const getProfile = ({pk, token}:  {token: string, pk: string} ) => {
+    return reqresApi.get(`profile/${pk}/`, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
             throw error.response
         });
 };
 
-export const makeQuestion = ({id, question, token}:{id:string, question:string, token:string}) => {
-    console.log(question)
-    return reqresApi.post(`pages/${id}/questions/`, {content: question, title: 'kim'},{ headers: { Authorization: `JWT ${token}` } })
+export const getQuestion = ({pk, token}:{pk:string, token:string}) => {
+    return reqresApi.get(`pages/${pk}/questions/`,{ headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
             throw error.response
         });
 };
+
+export const getQuestionComment = ({account_pk,pk,question_id,token}:{account_pk:string, pk:string, question_id:string, token:string}) => {
+    return reqresApi.get(`/profile/${account_pk}/pages/${pk}/questions/${question_id}/comments/`,{ headers: { Authorization: `JWT ${token}` } })
+        .catch((error: AxiosError) => {
+            throw error.response
+        });
+};
+
