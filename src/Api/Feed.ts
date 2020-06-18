@@ -36,7 +36,7 @@ export const makeFeed = (body: any) => {
     // form.append('images', "unnamed.jpg");
     // form.append('text', "unnamed.jpg");
     console.log(form);
-    return reqresApi.post(`post/feed/`, form, { headers: { Authorization: `JWT ${body.token}`, 'Content-Type': 'multipart/form-data' } })
+    return reqresApi.post(`post/feed/`, form, { headers: { Authorization: `JWT ${body.token}`, 'Content-Type': 'application/x-www-form-urlencoded' } })
         .catch((error: AxiosError) => {
             console.log(error.response);
             throw error.response
