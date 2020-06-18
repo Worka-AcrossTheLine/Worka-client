@@ -60,6 +60,7 @@ const ImageToggleWrapper = styled.View`
     justify-content:center;
     align-items:center;
     box-shadow:0px 3px 6px #000;
+    elevation:6;
     background-color:${({ theme }: ThemeProps): string => theme.white};
 `;
 
@@ -77,7 +78,7 @@ const TabCard = ({ navigation }: Props) => {
     const [focusDesc, setFocusDesc] = useState(false);
 
     const slideIn = useRef(new Animated.Value(0)).current;
-    const descSlide = useRef(new Animated.Value(60)).current;
+    const descSlide = useRef(new Animated.Value(70)).current;
 
     const dispatch = useDispatch();
     const login = useSelector((state: RootState) => state.login);
@@ -229,7 +230,7 @@ const TabCard = ({ navigation }: Props) => {
                             {animationOn ? <UpArrow /> : <DownArrow />}
                         </ImageToggleWrapper>
                     </TouchableOpacity>
-                    <Animated.View style={{ height: descSlide }}>
+                    <Animated.View style={{ height: descSlide, elevation: 6 }}>
                         <MakeCardDescriptionInput
                             multiline
                             numberOfLines={4}

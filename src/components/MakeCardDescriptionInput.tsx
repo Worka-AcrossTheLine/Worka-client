@@ -15,15 +15,20 @@ type Props = {
 }
 
 const InputWrapper = styled.View`
+    height:100%;
     box-shadow:0px 3px 6px #000;
+    background-color:white;
     font-size: 16px;
     margin-bottom: 5px;
 `
 
 const Input = styled.TextInput`
     height:100%;
-    background-color:white;
+    width:100%;    
     padding: 21px 10px 21px 43px;
+    align-items:flex-start;
+    justify-content:flex-start;
+    text-align-vertical: top;
 `
 
 const MakeCardDescriptionInput = ({
