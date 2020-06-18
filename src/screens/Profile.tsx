@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
+    Alert,
     Modal,
     View,
     TouchableWithoutFeedback,
@@ -21,11 +22,20 @@ import { useDispatch, useSelector } from "react-redux";
 
 import QuestionModal from '../components/QuestionModal';
 import { PROFILE_QUESTION_REQUEST, PROFILE_REQUEST } from "../state/Profile/Action";
+import { LOGOUT, WITHDRAWAL } from '../reducers/login'
 import { RootState } from '../reducers';
 
 type select = 'card' | 'question';
 
 type ModalType = 'setting' | 'detail' | 'question' | 'none';
+
+type myprofile = {
+    username: string;
+    mento: string;
+    mentiee: string;
+    tag: string[];
+    comment: string;
+}
 
 type modal = {
     type: ModalType;
@@ -97,11 +107,6 @@ const TitleView = styled.View`
     margin:10px 0px;
 `;
 
-const Title = styled.Text`
-    font-size:20px;
-    color:${({ theme }: ThemeProps): string => theme.textColor};
-`;
-
 const BodyWrapper = styled.View`
     padding:20px 0px;
 `;
@@ -125,11 +130,7 @@ const SelectView = styled.View`
     border-bottom-width:0px;
 `;
 
-const SelectText = styled.Text`
-    font-size:20px;
-`;
-
-const QuestionCardWrapper = styled.View`
+const PaddingHeight = styled.View`
     padding:10px 0px;
 `;
 
@@ -150,6 +151,16 @@ const ModalLayout = styled.View`
     border-radius:8px;
 `;
 
+const SettingChlidWrapper = styled.View`
+    width:90%;
+    align-self:center;
+    border:1px solid black;
+    border-radius:8px;
+    background-color:${({ theme }: ThemeProps): string => theme.white};
+    padding:5px 3px;
+    margin-top:5px;
+
+`;
 const ModalTitle = styled.Text`
     text-align:center;
     font-size:20px;
@@ -157,14 +168,14 @@ const ModalTitle = styled.Text`
     margin-bottom:25px;
 `;
 
-type myprofile = {
-    username: string;
-    mento: string;
-    mentiee: string;
-    tag: string[];
-    comment: string;
-}
+const Title = styled.Text`
+    font-size:20px;
+    color:${({ theme }: ThemeProps): string => theme.textColor};
+`;
 
+const SelectText = styled.Text`
+    font-size:20px;
+`;
 
 const Profile = () => {
     const [select, setSelect] = useState<select>("card");
@@ -249,6 +260,28 @@ const Profile = () => {
         });
     }
 
+    const handleLogout = () => {
+        dispatch({ type: LOGOUT })
+    }
+
+    const handleWithdrawal = () => {
+        Alert.alert(
+            "회원탈퇴",
+            `회원탈퇴를 이후에는 Worka 의 서비스를 이용하실수 없습니다. 회원탈퇴를 진행하시겠습니까 ?`,
+            [
+                {
+                    text: "회원탈퇴",
+                    onPress: () => dispatch({ type: WITHDRAWAL, payload: { token: logininfo.token } })
+                },
+                {
+                    text: "취소",
+                    style: "cancel"
+                }
+            ],
+            { cancelable: true }
+        )
+    }
+
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
@@ -258,10 +291,22 @@ const Profile = () => {
                             <ModalLayout onStartShouldSetResponder={() => true}>
                                 <ScrollView style={{ width: '100%', padding: 18 }}>
                                     <ModalTitle>Helle {FAKEDATA.username}</ModalTitle>
-                                    <SettingTab text="username" />
+                                    {/* <SettingTab text="username" />
                                     <SettingTab text="password" />
                                     <SettingTab text="font size" />
-                                    <SettingTab text="dark theme" />
+                                    <SettingTab text="dark theme" /> */}
+                                    <SettingTab text="account">
+                                        <TouchableOpacity onPress={handleLogout}>
+                                            <SettingChlidWrapper>
+                                                <SelectText>로그아웃</SelectText>
+                                            </SettingChlidWrapper>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={handleWithdrawal}>
+                                            <SettingChlidWrapper>
+                                                <SelectText>회원탈퇴</SelectText>
+                                            </SettingChlidWrapper>
+                                        </TouchableOpacity>
+                                    </SettingTab>
                                     <View style={{ height: 50 }}></View>
                                 </ScrollView>
                             </ModalLayout>
@@ -289,15 +334,15 @@ const Profile = () => {
                         {select === 'card' ?
                             mentoCards.map((item) =>
                                 <TouchableOpacity onPress={() => handelDetail(item)} key={item.id}>
-                                    <QuestionCardWrapper >
+                                    <PaddingHeight >
                                         <MentoCard {...item} />
-                                    </QuestionCardWrapper>
+                                    </PaddingHeight>
                                 </TouchableOpacity>
                             )
                             :
                             question.map((item: questionCard) =>
                                 <TouchableOpacity onPress={() => handleQuestion(item)} key={item.id}>
-                                    <QuestionCardWrapper>
+                                    <PaddingHeight>
                                         <QuestionCard
                                             desc={item.desc}
                                             image="https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg"
@@ -305,7 +350,7 @@ const Profile = () => {
                                             username={item.author.username}
                                             tags={faketags}
                                         />
-                                    </QuestionCardWrapper>
+                                    </PaddingHeight>
                                 </TouchableOpacity>
                             )
                         }
