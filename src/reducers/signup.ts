@@ -18,9 +18,6 @@ export type SignupPayload = {
     email: string;
     username: string;
     password: string;
-    year: number;
-    month: number;
-    day: number;
 };
 
 type SignupActionTypes = {
