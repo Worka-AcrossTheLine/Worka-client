@@ -22,7 +22,7 @@ const ModalBackground = styled.View`
 const ModalWrapper = styled.View`
     width:100%;
     max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
-    height:80%;
+    height:60%;
     background-color:${({ theme }: ThemeProps): string => theme.white};
     align-items:center;
 `;
