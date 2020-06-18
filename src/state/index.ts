@@ -1,12 +1,12 @@
 import { takeEvery, takeLatest, all } from 'redux-saga/effects';
-import { LOGIN_REQUESTED, TENDENCY, loginUser, tendencyUser } from '../reducers/login';
+import { LOGIN_REQUESTED, TENDENCY, WITHDRAWAL, loginUser, tendencyUser, withdrawal } from '../reducers/login';
 import { SIGNUP_REQUESTED, signupUser } from '../reducers/signup'
-import {GET_FEED_DETAIL_REQUEST, GET_FEED_REQUEST,MAKE_FEED_REQUEST} from "./Feed/Action";
-import {handleGetFeed, handleGetFeedDetail, handleMakeFeed} from "./Feed/Saga"
-import {handleQuestion, handleGetQuestion} from "./Question/Saga"
-import {GET_QUESTION_REQUEST, MAKE_QUESTION_REQUEST} from "./Question/Action";
-import {PROFILE_QUESTION_REQUEST, PROFILE_REQUEST, QUESTION_COMMENTS_REQUEST} from "./Profile/Action";
-import {handleProfile, handleProfileQuestion, handleQuestionComments} from "./Profile/Saga";
+import { GET_FEED_DETAIL_REQUEST, GET_FEED_REQUEST, MAKE_FEED_REQUEST } from "./Feed/Action";
+import { handleGetFeed, handleGetFeedDetail, handleMakeFeed } from "./Feed/Saga"
+import { handleQuestion, handleGetQuestion } from "./Question/Saga"
+import { GET_QUESTION_REQUEST, MAKE_QUESTION_REQUEST } from "./Question/Action";
+import { PROFILE_QUESTION_REQUEST, PROFILE_REQUEST, QUESTION_COMMENTS_REQUEST } from "./Profile/Action";
+import { handleProfile, handleProfileQuestion, handleQuestionComments } from "./Profile/Saga";
 
 
 
@@ -17,9 +17,13 @@ export interface Action {
 
 
 function* watchLoginRequested() {
-  yield takeLatest(LOGIN_REQUESTED, loginUser);
+  // signup
   yield takeLatest(SIGNUP_REQUESTED, signupUser);
+  //login
+  yield takeLatest(LOGIN_REQUESTED, loginUser);
   yield takeLatest(TENDENCY, tendencyUser);
+  yield takeLatest(WITHDRAWAL, withdrawal)
+  // feed
   yield takeLatest(GET_FEED_REQUEST, handleGetFeed);
   yield takeLatest(GET_FEED_DETAIL_REQUEST, handleGetFeedDetail)
   yield takeLatest(MAKE_QUESTION_REQUEST, handleQuestion)

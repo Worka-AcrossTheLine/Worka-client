@@ -21,8 +21,8 @@ const Title = styled.Text`
 const MakeButton = ({ title, fontSize = 12, onPress }: Props) => {
     return (
         // <Button onPress={() => Alert.alert('is Posted')}>
-        <Button onPress={() => onPress}>
-            <Title style={{ fontSize }}>{title}</Title> 
+        <Button onPress={onPress}>
+            <Title style={{ fontSize }}>{title}</Title>
         </Button>
     )
 }

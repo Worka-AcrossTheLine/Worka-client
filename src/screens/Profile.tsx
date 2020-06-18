@@ -1,5 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import { Modal, View, TouchableWithoutFeedback, ScrollView, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import {
+    Alert,
+    Modal,
+    View,
+    TouchableWithoutFeedback,
+    ScrollView,
+    TouchableOpacity,
+    ActivityIndicator
+} from 'react-native';
 import styled from 'styled-components/native';
 
 import theme, { ThemeProps } from '../style/theme'
@@ -10,14 +18,30 @@ import MentoCard from '../components/MentoCard';
 import QuestionCard from '../components/QuestionCard'
 import SettingTab from '../components/SettingTab'
 import DetailModal from '../components/DetailModal';
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import QuestionModal from '../components/QuestionModal';
-import {PROFILE_QUESTION_REQUEST, PROFILE_REQUEST} from "../state/Profile/Action";
+import { PROFILE_QUESTION_REQUEST, PROFILE_REQUEST } from "../state/Profile/Action";
+import { LOGOUT, WITHDRAWAL } from '../reducers/login'
+import { RootState } from '../reducers';
 
 type select = 'card' | 'question';
 
 type ModalType = 'setting' | 'detail' | 'question' | 'none';
+
+type myprofile = {
+    username: string;
+    mento: string;
+    mentiee: string;
+    tag: string[];
+    comment: string;
+}
+
+type modal = {
+    type: ModalType;
+    detail: mentoCard | {};
+    question: questionCard | {};
+}
 
 type mentoCard = {
     id: string;
@@ -32,17 +56,13 @@ type mentoCard = {
 type questionCard = {
     id: string;
     desc: string;
-    question_count: number;
     image: string;
     tags: string[];
-    username: string;
+    questions: string[];
+    author: {
+        username: string;
+    }
 }
-
-type questioninit = [{
-    title : string
-    author : string
-    questions : string
-}]
 
 const FAKEDATA = {
     username: "Kimjoobin",
@@ -54,7 +74,6 @@ const FAKEDATA = {
 
 const FAKEDATA_1: {
     card: mentoCard[];
-    question: questionCard[];
 } = {
     card: [
         {
@@ -76,40 +95,6 @@ const FAKEDATA_1: {
             company: "codestate"
         },
     ],
-    question: [
-        {
-            id: "1",
-            desc: "Tongji Architectural Design And Research Institute: The Latest Architecture and News",
-            question_count: 8,
-            image: "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg",
-            tags: ["architecture", "interior design"],
-            username: "hwan"
-        },
-        {
-            id: "2",
-            desc: "IT 최고액 연봉 프로그래밍 언어는?",
-            question_count: 4,
-            image: "https://lh3.googleusercontent.com/dt7eyYhUAwoOn6V_CrmQuNbITswpJf8k8oJuyNUEggZGD35kA4qnxTFigt78HgMtiJ0sHl0zynRXySVfGTXXNmocrSGPttVyChn2fPXp4ZU5OpWfQvz4HNkJ0rsGCxKXwhs0o6Go",
-            tags: ["IT", "front-end"],
-            username: "joo"
-        },
-        {
-            id: "3",
-            desc: "Tongji Architectural Design And Research Institute: The Latest Architecture and News",
-            question_count: 8,
-            image: "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg",
-            tags: ["architecture", "interior design"],
-            username: "hwan"
-        },
-        {
-            id: "4",
-            desc: "Tongji Architectural Design And Research Institute: The Latest Architecture and News",
-            question_count: 8,
-            image: "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg",
-            tags: ["architecture", "interior design"],
-            username: "hwan"
-        }
-    ]
 }
 
 const Wrapper = styled.View`
@@ -120,11 +105,6 @@ const TitleView = styled.View`
     justify-content:center;
     align-items:center;
     margin:10px 0px;
-`;
-
-const Title = styled.Text`
-    font-size:20px;
-    color:${({ theme }: ThemeProps): string => theme.textColor};
 `;
 
 const BodyWrapper = styled.View`
@@ -150,11 +130,7 @@ const SelectView = styled.View`
     border-bottom-width:0px;
 `;
 
-const SelectText = styled.Text`
-    font-size:20px;
-`;
-
-const QuestionCardWrapper = styled.View`
+const PaddingHeight = styled.View`
     padding:10px 0px;
 `;
 
@@ -175,6 +151,16 @@ const ModalLayout = styled.View`
     border-radius:8px;
 `;
 
+const SettingChlidWrapper = styled.View`
+    width:90%;
+    align-self:center;
+    border:1px solid black;
+    border-radius:8px;
+    background-color:${({ theme }: ThemeProps): string => theme.white};
+    padding:5px 3px;
+    margin-top:5px;
+
+`;
 const ModalTitle = styled.Text`
     text-align:center;
     font-size:20px;
@@ -182,26 +168,38 @@ const ModalTitle = styled.Text`
     margin-bottom:25px;
 `;
 
+const Title = styled.Text`
+    font-size:20px;
+    color:${({ theme }: ThemeProps): string => theme.textColor};
+`;
+
+const SelectText = styled.Text`
+    font-size:20px;
+`;
 
 const Profile = () => {
     const [select, setSelect] = useState<select>("card");
-    const [modal, setModal] = useState<ModalType>('none');
-    const [detail, setDetail] = useState<mentoCard>();
+    const [modal, setModal] = useState<modal>({
+        type: 'none',
+        detail: {},
+        question: {}
+    });
+    const [detail, setDetail] = useState<mentoCard[]>([]);
     const [questionCard, setQuestionCard] = useState<questionCard>();
-    const [myprofile, setMyprofile] = useState<object>({username : '', mento: '0', mentiee: '0', tag: [], comment: 'init'});
-    const [question, setQuestion] = useState<questioninit>([{questions : 'init',author : 'init',title: 'init'}])
+    const [myprofile, setMyprofile] = useState<myprofile>();
+    const [question, setQuestion] = useState<questionCard[]>([])
     const [questionComment, setQuestionComment] = useState<[string]>(['riri']);
 
 
     const mentoCards: mentoCard[] = FAKEDATA_1.card;
     const dispatch = useDispatch()
-    const logininfo = useSelector(state => state.login)
-    const profileinfo = useSelector(state => state.profile)
-    const questionState = useSelector(state => state.profileQuestion)
-    const faketags = ['kim','park']
+    const logininfo = useSelector((state: RootState) => state.login)
+    const profileinfo = useSelector((state: RootState) => state.profile)
+    const questionState = useSelector((state: RootState) => state.profileQuestion)
+    const faketags = ['kim', 'park']
 
-    if(myprofile.username.length === 0){
-        dispatch({type:PROFILE_REQUEST, payload: {pk: logininfo.data.pk, token: logininfo.token}})
+    if (!myprofile) {
+        dispatch({ type: PROFILE_REQUEST, payload: { pk: logininfo.data.pk, token: logininfo.token } })
         setMyprofile({
             username: logininfo.data.username,
             mento: logininfo.data.mento,
@@ -212,7 +210,7 @@ const Profile = () => {
     }
 
     useEffect(() => {
-        if(profileinfo.data) {
+        if (profileinfo.data) {
             setQuestion(profileinfo.data.pages)
         }
     })
@@ -223,42 +221,92 @@ const Profile = () => {
     }
 
     const handleModal = () => {
-        setModal('none');
+        setModal({
+            ...modal,
+            type: 'none'
+        });
     }
 
     const handleSetting = () => {
-        setModal('setting');
+        setModal({
+            ...modal,
+            type: 'setting'
+        });
     }
 
-    const handelDetail = (card?: mentoCard) => {
-        setModal('detail');
-        setDetail(card);
+    const handelDetail = (card: mentoCard) => {
+        setModal({
+            ...modal,
+            type: 'detail',
+            detail: card
+        })
     }
 
     const handleQuestion = (card: questionCard) => {
-        dispatch({type: PROFILE_QUESTION_REQUEST, payload : {token : logininfo.token, pk : card.id}})
-        setModal('question');
-        setQuestionCard(card);
+        dispatch({ type: PROFILE_QUESTION_REQUEST, payload: { token: logininfo.token, pk: card.id } })
+
+        setModal({
+            ...modal,
+            type: "question",
+            question: card
+        });
         setQuestionComment(questionState.data.results)
     }
 
     const handelClose = () => {
-        setModal('none');
+        setModal({
+            ...modal,
+            type: 'none'
+        });
+    }
+
+    const handleLogout = () => {
+        dispatch({ type: LOGOUT })
+    }
+
+    const handleWithdrawal = () => {
+        Alert.alert(
+            "회원탈퇴",
+            `회원탈퇴를 이후에는 Worka 의 서비스를 이용하실수 없습니다. 회원탈퇴를 진행하시겠습니까 ?`,
+            [
+                {
+                    text: "회원탈퇴",
+                    onPress: () => dispatch({ type: WITHDRAWAL, payload: { token: logininfo.token } })
+                },
+                {
+                    text: "취소",
+                    style: "cancel"
+                }
+            ],
+            { cancelable: true }
+        )
     }
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
-                <Modal visible={modal === 'setting'} transparent={true} onRequestClose={handleModal} >
+                <Modal visible={modal.type === 'setting'} transparent={true} onRequestClose={handleModal} >
                     <TouchableWithoutFeedback onPress={handleModal}>
                         <ModalWrapper >
                             <ModalLayout onStartShouldSetResponder={() => true}>
                                 <ScrollView style={{ width: '100%', padding: 18 }}>
                                     <ModalTitle>Helle {FAKEDATA.username}</ModalTitle>
-                                    <SettingTab text="username" />
+                                    {/* <SettingTab text="username" />
                                     <SettingTab text="password" />
                                     <SettingTab text="font size" />
-                                    <SettingTab text="dark theme" />
+                                    <SettingTab text="dark theme" /> */}
+                                    <SettingTab text="account">
+                                        <TouchableOpacity onPress={handleLogout}>
+                                            <SettingChlidWrapper>
+                                                <SelectText>로그아웃</SelectText>
+                                            </SettingChlidWrapper>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity onPress={handleWithdrawal}>
+                                            <SettingChlidWrapper>
+                                                <SelectText>회원탈퇴</SelectText>
+                                            </SettingChlidWrapper>
+                                        </TouchableOpacity>
+                                    </SettingTab>
                                     <View style={{ height: 50 }}></View>
                                 </ScrollView>
                             </ModalLayout>
@@ -270,7 +318,7 @@ const Profile = () => {
                         <Title>Question</Title>
                     </TitleView>
                     <BodyWrapper>
-                        <UserCard {...myprofile} onPress={handleSetting} />
+                        {myprofile ? <UserCard {...myprofile} onPress={handleSetting} /> : <ActivityIndicator />}
                         <SelectWrapper>
                             <Select onPress={() => handleSelect('card')()}>
                                 <SelectView style={{ borderBottomWidth: (select === "card" ? 3 : 0) }}>
@@ -286,27 +334,47 @@ const Profile = () => {
                         {select === 'card' ?
                             mentoCards.map((item) =>
                                 <TouchableOpacity onPress={() => handelDetail(item)} key={item.id}>
-                                    <QuestionCardWrapper >
+                                    <PaddingHeight >
                                         <MentoCard {...item} />
-                                    </QuestionCardWrapper>
+                                    </PaddingHeight>
                                 </TouchableOpacity>
                             )
                             :
-                            question.map((item) =>
+                            question.map((item: questionCard) =>
                                 <TouchableOpacity onPress={() => handleQuestion(item)} key={item.id}>
-                                    <QuestionCardWrapper>
-                                        <QuestionCard  desc = {item.title} image = "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg" question_count = {item.questions} username = {item.author.username} tags= {faketags} />
-                                    </QuestionCardWrapper>
+                                    <PaddingHeight>
+                                        <QuestionCard
+                                            desc={item.desc}
+                                            image="https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg"
+                                            question_count={item.questions.length}
+                                            username={item.author.username}
+                                            tags={faketags}
+                                        />
+                                    </PaddingHeight>
                                 </TouchableOpacity>
                             )
                         }
                     </BodyWrapper>
                 </ScrollView>
-                {detail && modal === 'detail' &&
-                    <DetailModal visible={true} onPress={handelClose} {...detail} />
+                {'id' in modal.detail && modal.type === 'detail' &&
+                    <DetailModal
+                        visible={true}
+                        onPress={handelClose}
+                        {...modal.detail}
+                    />
                 }
-                {questionCard && modal === 'question' &&
-                    <QuestionModal visible={true} onPress={handelClose} desc = {questionCard.title} image = "https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg" question_count = {questionCard.questions} username = {questionCard.author.username} tags= {faketags} questionsArr = {questionComment} id = {questionCard.id} />
+                {'id' in modal.question && modal.type === 'question' &&
+                    <QuestionModal
+                        visible={true}
+                        onPress={handelClose}
+                        id={modal.question.id}
+                        desc={modal.question.desc}
+                        image="https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg"
+                        question_count={modal.question.questions.length}
+                        username={modal.question.author.username}
+                        tags={faketags}
+                        questionsArr={questionComment}
+                    />
                 }
             </Wrapper>
         </OsView>
