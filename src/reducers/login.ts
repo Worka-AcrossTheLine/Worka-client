@@ -11,6 +11,10 @@ export const LOGIN_REQUESTED = 'LOGIN_REQUESTED' as const;
 export const LOGIN_SUCCESS = 'LOGINSUCCESS' as const;
 export const LOGIN_FAILURE = 'LOGINFAILURE' as const;
 
+export const WITHDRAWAL = 'WITHDRAWAL' as const;
+
+export const LOGOUT = 'LOGOUT' as const;
+
 export const TENDENCY_SUCSSES = 'TENDENCY_SUCSSES' as const;
 export const TENDENCY = 'TENDENCY' as const;
 
@@ -39,7 +43,6 @@ type TendencyActionTypes = {
 type User = {
   pk: number;
   username: string;
-  point: number;
   mbti: string | null;
 };
 
@@ -50,6 +53,13 @@ export type LoginResponse = {
   }
 };
 
+type withdrawal = {
+  type: string;
+  payload: {
+    token: string;
+  }
+}
+
 export type LoginState = {
   pending: boolean;
   isLogin: boolean;
@@ -57,7 +67,7 @@ export type LoginState = {
   isSkip: boolean;
   data: any;
   mbti: string;
-  token?: string;
+  token: string;
 };
 
 export const requestLogin = () =>
@@ -78,7 +88,6 @@ export function* tendencyUser(action: TendencyActionTypes) {
   try {
     yield call(Api.tendency, action.payload);
   } catch (err) {
-    AsyncStorage.setItem('mbti', action.payload.mbti);
   } finally {
     yield put({
       type: LOGIN_SUCCESS, payload: {
@@ -89,6 +98,16 @@ export function* tendencyUser(action: TendencyActionTypes) {
         }
       }
     })
+  }
+}
+
+
+export function* withdrawal({ payload: { token } }: withdrawal) {
+  try {
+    yield call(Api.withdrawal, { token });
+    yield put({ type: LOGOUT })
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -145,6 +164,17 @@ const reducer = handleActions(
       ...state,
       pending: true,
     }),
+    [LOGOUT]: (state) => {
+      AsyncStorage.clear();
+      return ({
+        ...state,
+        isLogin: false,
+        isSkip: false,
+        data: {},
+        mbti: '',
+        token: '',
+      })
+    },
   },
   initialState,
 );
