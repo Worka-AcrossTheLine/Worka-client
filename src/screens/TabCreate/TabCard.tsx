@@ -1,7 +1,7 @@
-import React, { useState }from 'react'
-import { Keyboard, TouchableWithoutFeedback, Text, View, Image } from 'react-native'
+import React, { useState } from 'react'
+import { Keyboard, TouchableWithoutFeedback, Text, View, Image, Platform } from 'react-native'
+import { useSelector } from 'react-redux'
 import styled from 'styled-components/native'
-import Constants from 'expo-constants';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
@@ -13,11 +13,12 @@ import MakeButton from "../../components/MakeButton"
 import CancerButton from '../../components/CancerButton'
 import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
-import {Avatar} from "react-native-elements";
-import {useDispatch} from "react-redux";
-import {MAKE_FEED_REQUEST} from "../../state/Feed/Action";
+import { Avatar } from "react-native-elements";
+import { useDispatch } from "react-redux";
+import { MAKE_FEED_REQUEST } from "../../state/Feed/Action";
 import AsyncStorage from "@react-native-community/async-storage";
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
+import { RootState } from '../../reducers';
 
 type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
 
@@ -47,7 +48,7 @@ const InputWrapper = styled.View`
 `
 
 
-const TabCard: React.FC = ({navigation}:Props) => {
+const TabCard: React.FC = ({ navigation }: Props) => {
 
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState('');
@@ -56,11 +57,13 @@ const TabCard: React.FC = ({navigation}:Props) => {
     const dispatch = useDispatch();
     const isIos = Platform.OS === 'ios';
 
+    const login = useSelector((state: RootState) => state.login);
+
     const onCancer = () => {
         navigation.navigate('News');
     }
 
-    const handleKeyboard  = () => {
+    const handleKeyboard = () => {
         Keyboard.dismiss();
     }
     const onBlur = () => {
@@ -71,7 +74,7 @@ const TabCard: React.FC = ({navigation}:Props) => {
     }
     const camera = async () => {
         try {
-            if (Constants.platform.ios) {
+            if (isIos) {
                 const { status } = await Permissions.askAsync(Permissions.CAMERA);
                 if (status !== 'granted') {
                     alert("카메라 허가 필요");
@@ -91,8 +94,8 @@ const TabCard: React.FC = ({navigation}:Props) => {
 
     const pickImage = async () => {
         try {
-            if (Constants.platform.ios) {
-                const {status} = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            if (isIos) {
+                const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
                 if (status !== 'granted') {
                     alert("카메라 허가 필요");
                     return;
@@ -105,7 +108,7 @@ const TabCard: React.FC = ({navigation}:Props) => {
             if (!result.cancelled) {
                 setImage(result.uri)
             }
-        }catch(e){
+        } catch (e) {
             console.log(e);
             alert("카메라 라이브러리 에러");
         }
@@ -113,23 +116,24 @@ const TabCard: React.FC = ({navigation}:Props) => {
 
 
     const Upload = () => {
-        const token = AsyncStorage.getItem('token')
-        if(token) {
+        const token = login.token;
+        console.log("TAB CARD TOKEN IS ", token);
+        if (token) {
             dispatch({
                 type: MAKE_FEED_REQUEST,
-                payload: {title: InterestingTitle, tags: tapTag, text: Description, images : image, token: token}
+                payload: { title: InterestingTitle, tags: tapTag, text: Description, images: image, token: token }
             })
-        }else{
+        } else {
             console.log('토큰이 존재하지 않음')
         }
     }
-    
+
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <Wrapper>
                 <TitleWrapper>
-                    <CancerButton 
+                    <CancerButton
                         title="CANCER"
                         onPress={() => onCancer()}
                     />
@@ -142,39 +146,39 @@ const TabCard: React.FC = ({navigation}:Props) => {
                     <MakeJobTagInput
                         placeholder="Make Job Tag"
                         value={tapTag}
-                        onChange = {addTap(setTaptag)}
-                        autoFocus = { true }
+                        onChange={addTap(setTaptag)}
+                        autoFocus={true}
                         onPress={handleKeyboard}
                     />
                     <MakeInterestingInput
                         placeholder="Make Interesting Title"
                         value={InterestingTitle}
                         onChange={addTap(setInterestingTitle)}
-                        autoFocus = {true}
+                        autoFocus={true}
                     />
                     <MakeCameraInput>
                         <Avatar
                             size="medium"
                             title="C"
                             onPress={camera}
-                            source={{ }}   
+                            source={{}}
                         />
                         <Avatar
                             size="medium"
                             title="D"
                             onPress={pickImage}
-                            source={{ }}
+                            source={{}}
                         />
                         {image !== '' && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
-                    
+
                     </MakeCameraInput>
-                    <MakeCardDescriptionInput 
+                    <MakeCardDescriptionInput
                         multiline
                         numberOfLines={4}
-                        placeholder="Make Card Description" 
-                        value={Description} 
-                        onChange={addTap(setDescription)} 
-                        onBlur={() => onBlur()}/>
+                        placeholder="Make Card Description"
+                        value={Description}
+                        onChange={addTap(setDescription)}
+                        onBlur={() => onBlur()} />
                 </InputWrapper>
             </Wrapper>
         </OsView>
