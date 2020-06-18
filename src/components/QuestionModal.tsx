@@ -7,42 +7,21 @@ import DownArrow from '../../assets/DownArrow.svg';
 import UpArrow from '../../assets/UpArrow.svg';
 import ThumpsUp from '../../assets/ThumpsUp.svg';
 import ThumpsDown from '../../assets/ThumpsDown.svg';
-import {useDispatch, useSelector} from "react-redux";
-import {QUESTION_COMMENTS_REQUEST} from "../state/Profile/Action";
+import { useDispatch, useSelector } from "react-redux";
+import { QUESTION_COMMENTS_REQUEST } from "../state/Profile/Action";
+import { RootState } from '../reducers';
 
 type Props = {
-    visible: boolean;
     id: string;
+    visible: boolean;
     image: string;
     desc: string;
     question_count: number;
     tags: string[];
+    questionsArr: string[];
     username: string;
     onPress: () => void;
 }
-
-const QUESTIONS =
-    [
-        {
-            q: "HELLOW",
-            as: [{ u: "kimjoobin", a: "worlds??", }]
-        },
-        {
-            q: "WORLD!",
-            as: [{ u: "whan", a: "HELLO WORLD ^_^" }]
-        },
-        {
-            q: "NO JAVA, IT'S SCRIPT!",
-            as: [
-                { u: "java_man", a: "JAVA IS BEST L" },
-                { u: "py", a: "NO py IS BEST ^_^" },
-                { u: "an", a: "파이썬은 최고의 언어입니다. 자바 달라요" }
-            ]
-        },
-        {
-            q: "WHO HAS BEST PERPOMENTS IN IMERSIVE 19"
-        }
-    ]
 
 const ModalWrapper = styled.Modal``;
 
@@ -163,9 +142,9 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
     const { detailIndex, animationOn } = animationState;
     const slideToggle = useRef(new Animated.Value(0)).current;
     const dispatch = useDispatch()
-    const QuestionDetail = useSelector(state => state.profileQuestion)
-    const Logininfo = useSelector(state => state.login)
-    const QuestionComment = useSelector(state => state.questionComment)
+    const QuestionDetail = useSelector((state: RootState) => state.profileQuestion)
+    const Logininfo = useSelector((state: RootState) => state.login)
+    const QuestionComment = useSelector((state: RootState) => state.questionComment)
     console.log(QuestionDetail.data + questionsArr[0])
 
 

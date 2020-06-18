@@ -65,8 +65,8 @@ const Button = styled.Button``;
 
 type Props = {
     username: string;
-    mento: number;
-    mentiee: number;
+    mento: string;
+    mentiee: string;
     tag: string[];
     comment: string;
     onPress: () => void;

@@ -36,9 +36,18 @@ const SettingWrapper = styled.View`
 const SettingTab = ({ text, children }: Props) => {
     const toggle = useRef(new Animated.Value(0)).current;
     const [display, setDisplay] = useState<boolean>(false);
+
+    const animationStyle = {
+        width: '100%',
+        height: toggle,
+        backgroundColor: '#88C3FC',
+        overflow: 'hidden'
+    }
+
     const toggleTab = () => {
         setDisplay(!display)
     }
+
     useEffect(() => {
         let toValue = display ? 200 : 0;
         Animated.timing(toggle, {
@@ -54,7 +63,9 @@ const SettingTab = ({ text, children }: Props) => {
                 </ModalTab>
             </TouchableOpacity>
             <SettingWrapper>
-                <Animated.View onStartShouldSetResponder={() => true} style={{ width: '100%', height: toggle, backgroundColor: '#88C3FC', marginBottom: 8, }} />
+                <Animated.View onStartShouldSetResponder={() => true} style={animationStyle} >
+                    {children && children}
+                </Animated.View>
             </SettingWrapper>
         </>
     )
