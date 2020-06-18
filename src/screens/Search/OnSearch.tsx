@@ -1,9 +1,14 @@
 import React, { useState } from 'react'
 import styled from 'styled-components/native';
 import { StackNavigationProp } from '@react-navigation/stack'
+import { useSelector, useDispatch } from 'react-redux'
+
+import { SEARCH_REQUEST } from '../../state/Search/Action'
+import { SearchStackParamList } from '../../navigator/SeachNavigation'
 
 import OsView from '../../components/OsView';
-import { SearchStackParamList } from '../../navigator/SeachNavigation'
+import { RootState } from '../../reducers';
+import { Text } from 'react-native';
 
 type AuthHomeNavigationProps = StackNavigationProp<SearchStackParamList, 'Search'>
 
@@ -44,22 +49,43 @@ const BodyWrapper = styled.View`
 
 
 export default function ({ navigation }: Props) {
-    const [value, setValue] = useState('');
+    const [searchState, setSearchState] = useState({
+        temp: '',
+        searchE: 0,
+    })
+    const { temp, searchE } = searchState;
+
+    const state = useSelector((state: RootState) => state);
+    const dispatch = useDispatch();
+
+    const token = state.login.token;
+    const search = state.search
+
     const handleInput = (e: string): void => {
-        setValue(e);
+        clearTimeout(searchState.searchE);
+        const searchE = setTimeout(() => {
+            console.log("SEARCH!!", e);
+            dispatch({ type: SEARCH_REQUEST, payload: { token, temp: e } })
+        }, 600);
+
+        setSearchState({
+            temp: e,
+            searchE: searchE
+        })
     }
 
     return (
         <OsView style={{}}>
             <SearchWrapper>
                 <InputWrapper>
-                    <Input value={value} onChangeText={handleInput} autoFocus={true} />
+                    <Input value={temp} onChangeText={handleInput} autoFocus={true} />
                 </InputWrapper>
                 <GoBackWrapper onPress={() => navigation.goBack()} >
                     <BackText> CANCEL</BackText>
                 </GoBackWrapper>
             </SearchWrapper>
             <BodyWrapper>
+                <Text>SEARCHED THE </Text>
             </BodyWrapper>
         </OsView>
     )

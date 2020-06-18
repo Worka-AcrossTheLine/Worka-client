@@ -7,6 +7,8 @@ import { handleQuestion, handleGetQuestion } from "./Question/Saga"
 import { GET_QUESTION_REQUEST, MAKE_QUESTION_REQUEST } from "./Question/Action";
 import { PROFILE_QUESTION_REQUEST, PROFILE_REQUEST, QUESTION_COMMENTS_REQUEST } from "./Profile/Action";
 import { handleProfile, handleProfileQuestion, handleQuestionComments } from "./Profile/Saga";
+import { SEARCH_REQUEST } from './Search/Action';
+import { handleSearch } from './Search/Saga';
 
 
 
@@ -22,16 +24,18 @@ function* watchLoginRequested() {
   //login
   yield takeLatest(LOGIN_REQUESTED, loginUser);
   yield takeLatest(TENDENCY, tendencyUser);
-  yield takeLatest(WITHDRAWAL, withdrawal)
+  yield takeLatest(WITHDRAWAL, withdrawal);
   // feed
   yield takeLatest(GET_FEED_REQUEST, handleGetFeed);
-  yield takeLatest(GET_FEED_DETAIL_REQUEST, handleGetFeedDetail)
-  yield takeLatest(MAKE_QUESTION_REQUEST, handleQuestion)
-  yield takeLatest(MAKE_FEED_REQUEST, handleMakeFeed)
-  yield takeLatest(PROFILE_REQUEST, handleProfile)
-  yield takeLatest(PROFILE_QUESTION_REQUEST, handleProfileQuestion)
-  yield takeLatest(QUESTION_COMMENTS_REQUEST, handleQuestionComments)
-  yield takeLatest(GET_QUESTION_REQUEST, handleGetQuestion)
+  yield takeLatest(GET_FEED_DETAIL_REQUEST, handleGetFeedDetail);
+  yield takeLatest(MAKE_QUESTION_REQUEST, handleQuestion);
+  yield takeLatest(MAKE_FEED_REQUEST, handleMakeFeed);
+  yield takeLatest(PROFILE_REQUEST, handleProfile);
+  yield takeLatest(PROFILE_QUESTION_REQUEST, handleProfileQuestion);
+  yield takeLatest(QUESTION_COMMENTS_REQUEST, handleQuestionComments);
+  yield takeLatest(GET_QUESTION_REQUEST, handleGetQuestion);
+  // search
+  yield takeLatest(SEARCH_REQUEST, handleSearch);
 }
 
 export default function* rootSaga() {
