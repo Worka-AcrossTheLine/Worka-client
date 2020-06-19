@@ -1,15 +1,10 @@
-import React, { useState } from 'react'
+import React from 'react'
 import styled from 'styled-components/native';
 import OsView from '../../components/OsView'
-import { StatusBar, Platform, TouchableWithoutFeedback } from 'react-native';
-import { StackNavigationProp } from '@react-navigation/stack'
-
-import { SearchStackParamList } from '../../navigator/SeachNavigation'
-
-type AuthHomeNavigationProps = StackNavigationProp<SearchStackParamList, 'Home'>
+import { TouchableWithoutFeedback } from 'react-native';
 
 type Props = {
-    navigation: AuthHomeNavigationProps
+    navigation: any
 }
 
 
