@@ -64,9 +64,9 @@ function Home({ navigation }: Props) {
     navigation.navigate('Signup');
   }
 
-  const onSkip = () => {
-    dispatch({ type: LOGIN_SKIP })
-  }
+  // const onSkip = () => {
+  //   dispatch({ type: LOGIN_SKIP })
+  // }
 
   return (
     <Container>
@@ -78,11 +78,11 @@ function Home({ navigation }: Props) {
           <SignButton title="Login" onPress={() => onSignin()} color="#81B9E0" />
           <SignButton title="Signup" onPress={() => onSignup()} />
         </SignButtonWrapper>
-        <SkipWrapper onPress={() => onSkip()}>
-          <SkipText>SKIP NOW</SkipText>
-        </SkipWrapper>
+        {/* <SkipWrapper onPress={() => onSkip()}> */}
+        {/* <SkipText>SKIP NOW</SkipText> */}
+        {/* </SkipWrapper> */}
       </ButtonWrapper>
-    </Container>
+    </Container >
   );
 }
 
