@@ -16,8 +16,8 @@ import {
     QuestionCommentFeed, 
 
 } from "../state/Profile/Reducer";
-import { LinkState } from "../state/Link/Reducer";
-import { getLink } from '../Api/Link';
+import { LinkState, GetLinkState } from "../state/Link/Reducer";
+
 
 export type RootState = {
     login: LoginState,
@@ -42,5 +42,5 @@ export default combineReducers({
     profile: ProfileFeed,
     profileQuestion: ProfileQuestionFeed,
     questionComment: QuestionCommentFeed,
-    link: getLink
+    link: GetLinkState,
 });
