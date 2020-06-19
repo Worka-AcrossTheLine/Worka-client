@@ -7,9 +7,10 @@ export interface LinkState {
     err: boolean;
 }
 
+
 const initialState: LinkState = {fetching: false, data: null, err: false};
 
-export const getLink = (state: LinkState = initialState, action: Action) => {
+export const GetLinkState = (state: LinkState = initialState, action: Action) => {
     switch (action.type) {
         case GET_LINK_REQUEST:
             return {

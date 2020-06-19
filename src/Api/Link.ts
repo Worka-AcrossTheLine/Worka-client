@@ -5,16 +5,16 @@ const reqresApi = axios.create({
     baseURL: base.baseURL
 });
 
-export const postLink = ({id, tags, title, token, url}: {id: number, token: string, title: string, tags:[], url: webkitURL}) => {
-    return reqresApi.post(`links/${id}`, {tags, title, url}, { headers: { Authorization: `JWT${ token }`} })
+export const postLink = ({tag, title, token, url}: {token: string, title: string, tag:[], url: string}) => {
+    console.log(token)
+    return reqresApi.post(`post/links/`, {tag:tag, title:title, url:url}, { headers: { Authorization: `JWT ${ token }`} })
         .catch((error: AxiosError) => {
             throw error.response
         });
 };
 
-export const getLink = ({id,  token}: {id: number, token:string}) => {
-    console.log(token)
-    return reqresApi.get(`links/${id}/`, { headers: { Authorization: `JWT${token}`} })
+export const getLink = ({token}: {token:string}) => {
+    return reqresApi.get(`links/`, { headers: { Authorization: `JWT ${token}`} })
         .catch((error: AxiosError) => {
             throw error.response
         });
