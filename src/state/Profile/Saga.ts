@@ -3,11 +3,10 @@ import {
     PROFILE_FAIL,
     PROFILE_QUESTION_FAIL,
     ProfileSuccess,
-    QUESTION_COMMENTS_FAIL, QuestionCommentSuccess,
     QuestionSuccess
 } from "../Profile/Action";
-import {getProfile, getQuestion, getQuestionComment} from "../../Api/Profile";
-import {Action} from "../index";
+import {getProfile, getQuestion} from "../../Api/Profile";
+import {Action} from "./Reducer";
 
 export function* handleProfile(action : Action) {
     try{
@@ -28,16 +27,12 @@ export function* handleProfileQuestion(action : Action) {
     }
 }
 
-export function* handleQuestionComments(action : Action) {
-    try{
-        let arr = []
-        for (let i = 0; i < action.payload.question_id.length; i++) {
-            let response = yield call( getQuestionComment, action.payload.question_id[i].id);
-            arr.push(response.data)
-        }
-
-        yield put(QuestionCommentSuccess(arr));
-    } catch (err) {
-        yield put({ type: QUESTION_COMMENTS_FAIL , payload: err })
-    }
-}
+// export function* handleQuestionComments(action : Action) {
+//     try{
+//         let arr = []
+//
+//         yield put(QuestionCommentSuccess(arr));
+//     } catch (err) {
+//         yield put({ type: QUESTION_COMMENTS_FAIL , payload: err })
+//     }
+// }

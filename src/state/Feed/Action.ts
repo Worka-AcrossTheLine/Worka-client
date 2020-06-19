@@ -1,6 +1,22 @@
 interface makeCard {
   title: string, tags: string, text: string, images : any, token: string
 }
+export interface Feeds {
+  id: string,
+  author: {
+    username : string;
+    user_image : string;
+  },
+  title:string,
+  images: string,
+  text: string,
+  created_at: string,
+  updated_at: string,
+  number_of_likes: string,
+  number_of_comments: string,
+  post_comments: string,
+  tags: string
+}
 
 
 export const GET_FEED_REQUEST = 'GET_FEED_REQUEST';
@@ -23,30 +39,20 @@ export const GET_TAG_FAIL = 'GET_TAG_FAIL';
 export const getFeedRequest = () => {
   return {type: GET_FEED_REQUEST};
 };
-export const getFeedSuccess = (data: any) => {
+export const getFeedSuccess = (data: Feeds[]) => {
   return {type: GET_FEED_SUCCESS, payload: {data}};
 };
-export const getFeedFail = (err: any) => {
+export const getFeedFail = (err: boolean) => {
   return {type: GET_FEED_FAIL, payload: {err}};
 };
-
-export const getFeedDetailRequest = (id: string) => {
-  return {type: GET_FEED_DETAIL_REQUEST, payload: {id}}
-}
-export const getFeedDetailSuccess = (detail: any) => {
-  return {type: GET_FEED_DETAIL_SUCCESS, payload: {detail}}
-}
-export const getFeedDetailFail = (err: any) => {
-  return {type: GET_FEED_DETAIL_FAIL, payload: {err}}
-}
 
 export const makeFeedRequest = (data:makeCard) => {
   return {type: MAKE_FEED_REQUEST, payload : {data}}
 }
-export const makeFeedSuccess = (data:any) => {
+export const makeFeedSuccess = (data:Feeds) => {
   return {type: MAKE_FEED_SUCCESS, payload : {data}}
 }
-export const makeFeedFail = (err : any) => {
+export const makeFeedFail = (err : boolean) => {
   return {type : MAKE_FEED_FAIL, payload: {err}}
 }
 

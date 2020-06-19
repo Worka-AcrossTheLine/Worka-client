@@ -1,11 +1,12 @@
 import axios, { AxiosError, AxiosPromise } from "axios";
 import base from './baseURL.json'
+import { data } from "../state/Feed/Reducer";
 
 const reqresApi = axios.create({
     baseURL: base.baseURL
 });
 
-export const getFeed = () => {
+export const getFeed = ():AxiosPromise<data> => {
     return reqresApi.get(`post/all/`)
         .catch((error: AxiosError) => {
             throw error.response
@@ -22,7 +23,6 @@ export const getFeedDetail = (body: string) => {
 
 export const makeFeed = (body: any) => {
     const form = new FormData();
-    // console.log(body);
     for (let key in body) {
         if (key === 'images') {
             let match = /\.(\w+)$/.exec(body[key]);
@@ -35,7 +35,6 @@ export const makeFeed = (body: any) => {
     // form.append('tag', "your,like,tag");
     // form.append('images', "unnamed.jpg");
     // form.append('text', "unnamed.jpg");
-    console.log(form);
     return reqresApi.post(`post/feed/`, form, { headers: { Authorization: `JWT ${body.token}`, 'Content-Type': 'application/x-www-form-urlencoded' } })
         .catch((error: AxiosError) => {
             console.log(error.response);
