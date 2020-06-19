@@ -2,12 +2,10 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-
 import Profile from '../screens/Profile';
 import Coin from '../screens/Coin';
 import BottomCreateNavigation from './BottomCreateNavigation';
 import SearchNavigation from './SeachNavigation';
-import { color } from 'react-native-reanimated';
 
 
 

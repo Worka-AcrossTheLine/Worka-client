@@ -1,12 +1,13 @@
 import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackNavigationProp, StackHeaderProps } from '@react-navigation/stack';
 
 import TopNavigation from './TopNavigation';
 import Home from '../screens/Search/Home'
 import Search from '../screens/Search/OnSearch';
+import { ParamListBase } from '@react-navigation/core';
 
 export type SearchStackParamList = {
-    Home: undefined;
+    Home: { navigation: any };
     Search: undefined;
 }
 
@@ -26,16 +27,11 @@ const titleStyle = {
 
 export default function () {
     return (
-        <Stack.Navigator mode="none" animationEnabled={false} transitionConfig={() => ({
-            transitionSpec: {
-                duration: 0,
-            },
-        })}>
+        <Stack.Navigator>
             <Stack.Screen name="Home" component={TopNavigation}
                 options={{
                     animationEnabled: false,
-                    header: (({ navigation }) => <Home navigation={navigation} />),
-
+                    header: ({ navigation }) => <Home navigation={navigation} />
                 }} />
             <Stack.Screen name="Search" component={Search} options={{
                 animationEnabled: false,

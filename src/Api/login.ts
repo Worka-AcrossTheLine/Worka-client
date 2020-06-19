@@ -21,13 +21,11 @@ export const login = (
 
 export const signup = (
   signupPayload: SignupPayload): AxiosPromise<SignupResponse> => {
-  const { email, username, password, year, month, day } = signupPayload;
-  console.log(base.baseURL)
+  const { email, username, password } = signupPayload;
   return reqresApi.post('accounts/signup/', {
     email,
     username,
     password,
-    birth_date: `${year}-${month}-${day}`
   }).catch((error: AxiosError) => {
     throw error.response;
   })
