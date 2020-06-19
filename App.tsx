@@ -7,6 +7,7 @@ import { ThemeProvider } from 'styled-components'
 import store from './src/state/store';
 import NavController from './src/components/NavController'
 import theme from './src/style/theme'
+import { View } from 'react-native';
 
 export default function App() {
   const [isLogin, setIsLogin] = useState(false);
@@ -27,7 +28,11 @@ export default function App() {
     <Provider store={store}>
       <ThemeProvider theme={theme} >
         <NavigationContainer>
-          <NavController isLogin={isLogin} setIsLogin={setIsLogin} />
+          <View style={{ width: "100%", height: "100%", backgroundColor: 'black', alignItems: 'center' }}>
+            <View style={{ height: "100%", width: "100%", maxWidth: 800 }}>
+              <NavController isLogin={isLogin} setIsLogin={setIsLogin} />
+            </View>
+          </View>
         </NavigationContainer>
       </ThemeProvider>
     </Provider>
