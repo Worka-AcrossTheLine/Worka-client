@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Animated, Keyboard, Image, Platform, TouchableOpacity } from 'react-native'
+import { Animated, Keyboard, Image, Platform, TouchableOpacity , TouchableWithoutFeedback} from 'react-native'
 import styled from 'styled-components/native'
 
 import * as ImagePicker from 'expo-image-picker';
@@ -88,6 +88,9 @@ const TabCard = ({ navigation }: Props) => {
     const onCancer = () => {
         navigation.navigate('News');
     }
+    const handleKeyboard  = () => {
+        Keyboard.dismiss();
+    }
 
     const handleCameraWrapper = () => {
         setAnimationOn(!animationOn);
@@ -172,6 +175,7 @@ const TabCard = ({ navigation }: Props) => {
     }, [focusDesc])
 
     const Upload = () => {
+        Keyboard.dismiss();
         const token = login.token;
         console.log("TAB CARD TOKEN IS ", token);
         if (token) {
@@ -186,64 +190,65 @@ const TabCard = ({ navigation }: Props) => {
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-            <Wrapper>
-                <TitleWrapper>
-                    <CancerButton
-                        title="CANCER"
-                        onPress={() => onCancer()}
-                    />
-                    <FlexWrapper>
-                        <Title>Card Worka</Title>
-                    </FlexWrapper>
-                    <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
-                </TitleWrapper>
-                <InputWrapper>
-                    <MakeJobTagInput
-                        placeholder="Make Job Tag"
-                        value={tapTag}
-                        onChange={addTap(setTaptag)}
-                        autoFocus={true}
-                    />
-                    <MakeInterestingInput
-                        placeholder="Make Interesting Title"
-                        value={InterestingTitle}
-                        onChange={addTap(setInterestingTitle)}
-                        autoFocus={true}
-                    />
-                    <Animated.View style={{ height: slideIn, overflow: 'hidden' }}>
-                        <MakeCameraInput>
-                            <TouchableOpacity onPress={camera}>
-                                <Iconwrapper >
-                                    <Title>카메라</Title>
-                                </Iconwrapper>
-                            </TouchableOpacity>
-                            <TouchableOpacity onPress={pickImage}>
-                                <Iconwrapper>
-                                    <Title>갤러리</Title>
-                                </Iconwrapper>
-                            </TouchableOpacity>
-                            {image !== '' && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
-                        </MakeCameraInput>
-                    </Animated.View>
-                    <TouchableOpacity onPress={handleCameraWrapper}>
-                        <ImageToggleWrapper>
-                            {animationOn ? <UpArrow /> : <DownArrow />}
-                        </ImageToggleWrapper>
-                    </TouchableOpacity>
-                    <Animated.View style={{ height: descSlide, elevation: 6 }}>
-                        <MakeCardDescriptionInput
-                            multiline
-                            numberOfLines={4}
-                            placeholder="Make Card Description"
-                            value={Description}
-                            onChange={addTap(setDescription)}
-                            onBlur={() => setFocusDesc(false)}
-                            onFocus={handleDescInput}
+            <TouchableWithoutFeedback onPress={handleKeyboard}>
+                <Wrapper>
+                    <TitleWrapper>
+                        <CancerButton
+                            title="CANCER"
+                            onPress={() => onCancer()}
                         />
-                    </Animated.View>
-                </InputWrapper>
-
-            </Wrapper>
+                        <FlexWrapper>
+                            <Title>Card Worka</Title>
+                        </FlexWrapper>
+                        <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
+                    </TitleWrapper>
+                    <InputWrapper>
+                        <MakeJobTagInput
+                            placeholder="Make Job Tag"
+                            value={tapTag}
+                            onChange={addTap(setTaptag)}
+                            autoFocus={true}
+                        />
+                        <MakeInterestingInput
+                            placeholder="Make Interesting Title"
+                            value={InterestingTitle}
+                            onChange={addTap(setInterestingTitle)}
+                            autoFocus={true}
+                        />
+                        <Animated.View style={{ height: slideIn, overflow: 'hidden' }}>
+                            <MakeCameraInput>
+                                <TouchableOpacity onPress={camera}>
+                                    <Iconwrapper >
+                                        <Title>카메라</Title>
+                                    </Iconwrapper>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={pickImage}>
+                                    <Iconwrapper>
+                                        <Title>갤러리</Title>
+                                    </Iconwrapper>
+                                </TouchableOpacity>
+                                {image !== '' && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
+                            </MakeCameraInput>
+                        </Animated.View>
+                        <TouchableOpacity onPress={handleCameraWrapper}>
+                            <ImageToggleWrapper>
+                                {animationOn ? <UpArrow /> : <DownArrow />}
+                            </ImageToggleWrapper>
+                        </TouchableOpacity>
+                        <Animated.View style={{ height: descSlide, elevation: 6 }}>
+                            <MakeCardDescriptionInput
+                                multiline
+                                numberOfLines={4}
+                                placeholder="Make Card Description"
+                                value={Description}
+                                onChange={addTap(setDescription)}
+                                onBlur={() => setFocusDesc(false)}
+                                onFocus={handleDescInput}
+                            />
+                        </Animated.View>
+                    </InputWrapper>
+                </Wrapper>
+            </TouchableWithoutFeedback>
         </OsView>
     )
 }

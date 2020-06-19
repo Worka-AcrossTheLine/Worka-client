@@ -1,4 +1,4 @@
-import React, { useState }from 'react'
+import React, { useState, useEffect }from 'react'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -14,6 +14,8 @@ import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tab
 import { MAKE_LINK_REQUEST } from '../../state/Link/Action';
 import { RootState } from '../../reducers';
 import { TopTapParamList } from '../../navigator/TopNavigation'
+
+import validCheck from '../../constants/validCheck'
 
 type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
 
@@ -55,8 +57,9 @@ const TabLink = ({
 
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState<string>('');
-    const [tapUrl, setTapUrl] = useState<string>('')
-    
+    const [tapUrl, setTapUrl] = useState<string>('');
+    const [urlValid, setUrlValid] = useState('');
+    const [isMake, setIsMake] = useState(false);
 
     const login = useSelector((state: RootState) => state.login);
     
@@ -68,14 +71,26 @@ const TabLink = ({
     }
     const dispatch = useDispatch();
 
+    useEffect(()=> {
+        if(isMake) {
+            setIsMake(false);
+        }else if(!urlValid) {
+            dispatch({ type: MAKE_LINK_REQUEST })
+        }
+    })
 
     const Upload = () => {
+        Keyboard.dismiss();
+        setTimeout(() => {
+            setIsMake(true);
+        }, 50);
         const token = login.token;
+        const tags = tapTag.split(',')
         console.log("TAB LINK TOKEN IS", token);
         if(token) {
             dispatch({
                 type: MAKE_LINK_REQUEST,
-                payload: { title: InterestingTitle, tag: tapTag, token: token, url:tapUrl  }
+                payload: { title: InterestingTitle, tag: tags, token: token, url:tapUrl  }
             })
         } else { 
             console.log("Does not exist Token")
@@ -115,9 +130,10 @@ const TabLink = ({
                             value={tapUrl}
                             keyboardType = {keyboardType}
                             onChange={addTap(setTapUrl)}
+                            onBlur={() => validCheck('url')(tapUrl, setUrlValid)}
+                            valid = {urlValid}
                         />
                     </InputWrapper>
-
                 </Wrapper>
             </TouchableWithoutFeedback>
         </OsView>
