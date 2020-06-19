@@ -1,5 +1,9 @@
-interface makeCard {
-  title: string, tags: string, text: string, images : any, token: string
+export interface makeCard {
+  title: string,
+  tags: string,
+  text: string,
+  images: string,
+  token: string
 }
 export interface Feeds {
   id: string,
@@ -44,7 +48,7 @@ export const GET_TAG_FAIL = 'GET_TAG_FAIL';
 
 
 export const getFeedRequest = () => {
-  return {type: GET_FEED_REQUEST};
+  return { type: GET_FEED_REQUEST };
 };
 export const getFeedSuccess = (data: Feeds[]) => {
   return {type: GET_FEED_SUCCESS, payload: {data}};

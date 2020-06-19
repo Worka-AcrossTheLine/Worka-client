@@ -2,6 +2,9 @@ import axios, { AxiosError, AxiosPromise } from "axios";
 import base from './baseURL.json'
 import {responseFeeds} from "../state/Feed/Action";
 
+import { makeCard } from '../state/Feed/Action'
+import { string } from "prop-types";
+
 const reqresApi = axios.create({
     baseURL: base.baseURL
 });
@@ -21,22 +24,40 @@ export const getFeedDetail = (body: string) => {
         });
 };
 
-export const makeFeed = (body: any) => {
-    const form = new FormData();
-    for (let key in body) {
-        if (key === 'images') {
-            let match = /\.(\w+)$/.exec(body[key]);
-            let type = match ? `image/${match[1]}` : `image`;
-            form.append(key, { uri: body[key], name: body[key].split('/').pop(), type })
+interface Form extends FormData {
+    append(name: string,
+        value: string | Blob | {
+            uri: string;
+            name?: string;
+            type: string
+        }): void;
+}
+
+export const makeFeed = ({ title,
+    tags,
+    text,
+    images,
+    token
+}: makeCard) => {
+    const form: Form = new FormData();
+    // console.log(body);
+    form.append("title", title);
+    form.append("tags", tags);
+    form.append("text", text);
+    form.append("token", token);
+    let match = /\.(\w+)$/.exec(images);
+    let type = match ? `image/${match[1]}` : `image`;
+    const blob = new Blob([JSON.stringify({ uri: images, name: images.split('/').pop(), type }, null, 2)]);
+    // form.append('images', JSON.stringify({ uri: images, name: images.split('/').pop(), type }));
+    form.append('images', { uri: images, name: images.split('/').pop(), type });
+    console.log(form);
+    return reqresApi.post(`post/feed/`, form, {
+        headers: {
+            Authorization: `JWT ${token}`, 'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'
         }
-        form.append(key, body[key]);
-    }
-    // form.append('title', "test title");
-    // form.append('tag', "your,like,tag");
-    // form.append('images', "unnamed.jpg");
-    // form.append('text', "unnamed.jpg");
-    return reqresApi.post(`post/feed/`, form, { headers: { Authorization: `JWT ${body.token}`, 'Content-Type': 'application/x-www-form-urlencoded' } })
+    })
         .catch((error: AxiosError) => {
+            console.log(error);
             console.log(error.response);
             throw error.response
         });

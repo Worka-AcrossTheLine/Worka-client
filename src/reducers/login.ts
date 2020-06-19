@@ -1,9 +1,8 @@
-import { call, put, takeEvery, takeLatest, delay } from 'redux-saga/effects';
+import { call, put } from 'redux-saga/effects';
 import { handleActions } from 'redux-actions';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import * as Api from '../Api/login';
-import { ActionCreatorsMapObject, Dispatch } from 'redux';
 
 export const LOGIN_INIT = "LOGIN_INIT" as const;
 export const LOGIN_SKIP = 'SKIP' as const;
@@ -80,6 +79,7 @@ export function* loginUser(action: LoginActionTypes) {
     const user: LoginResponse = yield call(Api.login, action.payload);
     yield put({ type: LOGIN_SUCCESS, payload: user });
   } catch (err) {
+    console.log(err);
     yield put({ type: LOGIN_FAILURE })
   }
 }
@@ -88,6 +88,7 @@ export function* tendencyUser(action: TendencyActionTypes) {
   try {
     yield call(Api.tendency, action.payload);
   } catch (err) {
+    console.log(err);
   } finally {
     yield put({
       type: LOGIN_SUCCESS, payload: {

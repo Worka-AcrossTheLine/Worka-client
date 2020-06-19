@@ -1,15 +1,18 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { TouchableWithoutFeedback, TouchableOpacity, ScrollView, Animated } from 'react-native'
 import styled from 'styled-components/native';
-import Tag from './Tag';
+
 import { ThemeProps } from '../style/theme';
+import { useDispatch, useSelector } from "react-redux";
+import { QUESTION_COMMENTS_REQUEST } from "../state/Profile/Action";
+import { RootState } from '../reducers';
+
 import DownArrow from '../../assets/DownArrow.svg';
 import UpArrow from '../../assets/UpArrow.svg';
 import ThumpsUp from '../../assets/ThumpsUp.svg';
 import ThumpsDown from '../../assets/ThumpsDown.svg';
-import { useDispatch, useSelector } from "react-redux";
-import { QUESTION_COMMENTS_REQUEST } from "../state/Profile/Action";
-import { RootState } from '../reducers';
+import Tag from './Tag';
+
 
 type Props = {
     id: string;
