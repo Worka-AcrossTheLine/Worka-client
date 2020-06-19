@@ -9,7 +9,7 @@ import { PROFILE_QUESTION_REQUEST, PROFILE_REQUEST, QUESTION_COMMENTS_REQUEST } 
 import { handleProfile, handleProfileQuestion, handleQuestionComments } from "./Profile/Saga";
 import { SEARCH_REQUEST } from './Search/Action';
 import { handleSearch } from './Search/Saga';
-
+import { GET_LINK_REQUEST, MAKE_LINK_REQUEST } from "./Link/Action"
 
 
 export interface Action {
@@ -36,7 +36,10 @@ function* watchLoginRequested() {
   yield takeLatest(GET_QUESTION_REQUEST, handleGetQuestion);
   // search
   yield takeLatest(SEARCH_REQUEST, handleSearch);
+  // link
+  // yield takeLastest(GET_LINK_REQUEST, handleLink);
 }
+
 
 export default function* rootSaga() {
   yield all([
