@@ -15,7 +15,7 @@ type Props = {
 
 
 const MakeEmbed = ({
-    placeholder, value, onChange, autoFocus = false, keyboardType, onBlur, valid, isUrl = false,
+    placeholder, value, onChange, autoFocus = false, keyboardType, onBlur, valid, 
 }:Props) => {
     return (
         <InputWrapper>
