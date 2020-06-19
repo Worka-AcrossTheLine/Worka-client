@@ -22,5 +22,3 @@ const CancerButton = ({ title, onPress, fontSize = 12 }: Props) =>
     </Button>
 
 export default CancerButton;
-
-

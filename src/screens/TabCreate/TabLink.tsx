@@ -1,6 +1,7 @@
 import React, { useState }from 'react'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native';
+import { useSelector, useDispatch } from 'react-redux';
 
 import CancerButton from '../../components/CancerButton'
 import MakeJobTagInput from "../../components/MakeJobTagInput"
@@ -10,6 +11,9 @@ import MakeButton from "../../components/MakeButton"
 import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
+import { MAKE_LINK_REQUEST } from '../../state/Link/Action';
+import { RootState } from '../../reducers';
+import { TopTapParamList } from '../../navigator/TopNavigation'
 
 type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
 
@@ -52,6 +56,8 @@ const TabLink = ({
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState<string>('');
     const [tapUrl, setTapUrl] = useState<string>('')
+
+    const login = useSelector((state: RootState) => state.login);
     
     const handleKeyboard  = () => {
         Keyboard.dismiss();
@@ -59,7 +65,21 @@ const TabLink = ({
     const onCancer = () => {
         navigation.navigate('News');
     }
-    
+    const dispatch = useDispatch();
+
+
+    const Upload = () => {
+        const token = login.token;
+        console.log("TAB CARD TOKEN IS", token);
+        if(token) {
+            dispatch({
+                type: MAKE_LINK_REQUEST,
+                payload: { title: InterestingTitle, tags: tapTag, token: token }
+            })
+        } else { 
+            console.log("Does not exist Token")
+        }
+    }
 
 
     return (
@@ -74,7 +94,7 @@ const TabLink = ({
                         <FlexWrapper>
                             <Title>Link Worka</Title>
                         </FlexWrapper>
-                        <MakeButton title="MAKE" onPress={() => onPress()}></MakeButton>
+                        <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
                     </TitleWrapper>
                     <InputWrapper >
                         <MakeJobTagInput 
