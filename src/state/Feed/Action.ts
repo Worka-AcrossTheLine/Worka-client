@@ -14,8 +14,15 @@ export interface Feeds {
   updated_at: string,
   number_of_likes: string,
   number_of_comments: string,
-  post_comments: string,
-  tags: string
+  post_comments: string[],
+  tags: string[]
+}
+
+export interface responseFeeds {
+  count: number,
+  next: string,
+  previous: string,
+  results : Feeds[]
 }
 
 

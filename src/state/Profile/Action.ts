@@ -22,12 +22,9 @@ interface page {
     created_at: string,
 }
 
-interface card  {
+interface card {
     id: string,
-    author: {
-        username: string,
-        user_image: string
-    },
+    author: author,
     images: string,
     text: string,
     created_at: string,
@@ -36,6 +33,7 @@ interface card  {
     "number_of_comments": string,
     "tags": string[]
 }
+
 export interface Profile {
     user: user
     pages: page[]
@@ -48,8 +46,6 @@ interface RequestProfileQuestion {
 
 export interface ProfileQuestion {
     count: number,
-    next: string,
-    previous: string,
     results: {
             id: number,
             content: string,
@@ -63,22 +59,22 @@ interface CommentRequest {
     question_id: number,
     token : string
 }
-
+//수정
 export interface Comment {
+    id: number,
+    author: author,
+    text: string,
+    is_like: string,
+    is_unlike: string,
+    like_count: string,
+    unlike_count: string,
+    is_mento: string,
+    created_at: string
+}
+
+export interface CommentResponse {
     count: number,
-    next: string,
-    previous: string,
-    results: {
-            id: number,
-            author: author,
-            text: string,
-            is_like: string,
-            is_unlike: string,
-            like_count: string,
-            unlike_count: string,
-            is_mento: string,
-            created_at: string
-        }
+    results: Comment[]
 }
 
 export const PROFILE_REQUEST = 'PROFILE_REQUEST'
@@ -118,7 +114,7 @@ export const QuestionFail = (err: boolean) => {
 export const QuestionCommentRequest = (data : CommentRequest) => {
     return {type: QUESTION_COMMENTS_REQUEST , payload : {data}};
 };
-export const QuestionCommentSuccess = (data: Comment[]) => {
+export const QuestionCommentSuccess = (data: CommentResponse) => {
     return {type: QUESTION_COMMENTS_SUCCESS, payload: {data}};
 };
 export const QuestionCommentFail = (err: boolean) => {

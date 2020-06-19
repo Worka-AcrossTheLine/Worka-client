@@ -1,12 +1,12 @@
 import axios, { AxiosError, AxiosPromise } from "axios";
 import base from './baseURL.json'
-import { data } from "../state/Feed/Reducer";
+import {responseFeeds} from "../state/Feed/Action";
 
 const reqresApi = axios.create({
     baseURL: base.baseURL
 });
 
-export const getFeed = ():AxiosPromise<data> => {
+export const getFeed = ():AxiosPromise<responseFeeds> => {
     return reqresApi.get(`post/all/`)
         .catch((error: AxiosError) => {
             throw error.response

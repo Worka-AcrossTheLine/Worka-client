@@ -29,7 +29,7 @@ export const getFeed = (state: FeedState = initialState, action: Action) => {
     case GET_FEED_SUCCESS:
       return {
         fetching: false,
-        data: action.payload.data,
+        data: action.payload,
         err: false,
       };
     case GET_FEED_FAIL:
@@ -47,7 +47,7 @@ export const getFeed = (state: FeedState = initialState, action: Action) => {
     case MAKE_FEED_SUCCESS:
       return {
         fetching: false,
-        data: action.payload.data,
+        data: action.payload,
         err: false,
       };
     case MAKE_FEED_FAIL:
