@@ -7,15 +7,15 @@ export interface LinkState {
     err: any;
 }
 
-const initialState; LinkState = {fetching: false, data: null, err: null};
+const initialState; LinkState = { fetching: false, data: null, err: null };
 
 export const getLink = (state: LinkState = initialState, action: Action) => {
     switch (action.type) {
         case GET_LINK_REQUEST:
             return {
-              fetching: true,
-              data: null,
-              err: false,
+                fetching: true,
+                data: null,
+                err: false,
             };
         case GET_LINK_SUCCESS:
             return {
@@ -26,7 +26,7 @@ export const getLink = (state: LinkState = initialState, action: Action) => {
         case GET_LINK_FAIL:
             return {
                 fetching: false,
-                data, null,
+                data: null,
                 err: true,
             }
         case GET_LINK_DETAIL_REQUEST:
@@ -56,7 +56,7 @@ export const getLink = (state: LinkState = initialState, action: Action) => {
         case MAKE_LINK_SUCCESS:
             return {
                 fetching: false,
-                data:action.payload.data,
+                data: action.payload.data,
                 err: false,
             }
         case MAKE_LINK_FAIL:
