@@ -25,7 +25,7 @@ interface Storage {
   navigator에 대해 물어보고 그부분만 추가기술할예
  */
 const FeedHome: React.FC = (props) => {
-    const feedState = useSelector<RootState>((state) => state.feed)
+    const feedState = useSelector((state:RootState) => state.feed)
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     // item를 그냥 object로 받아와도 가능하지만 타입체크
     const [storage, setStorage] = useState<Storage>(
@@ -88,7 +88,7 @@ const FeedHome: React.FC = (props) => {
         <Fragment>
             {feedState.fetching ? <Text>'Now Loading'</Text> :
                 <View>
-                    <FlatList data={feedState} renderItem={renderFeed}/>
+                    <FlatList data={feedState.data.data} renderItem={renderFeed}/>
                 </View>
             }
                 <Modal visible={modalVisible} transparent={true} >

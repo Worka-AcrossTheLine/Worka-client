@@ -9,14 +9,16 @@ export type data = Feeds[];
 
 export interface FeedState {
   fetching: boolean;
-  data: data;
+  data: {
+    data :data
+  };
   err: boolean;
 }
 export interface Action {
   type: string;
   payload: data;
 }
-const initialState: FeedState = {fetching: false, data: [], err: false};
+const initialState: FeedState = {fetching: false, data:{data: [] }, err: false};
 
 export const getFeed = (state: FeedState = initialState, action: Action) => {
   switch (action.type) {

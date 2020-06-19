@@ -10,6 +10,7 @@ const reqresApi = axios.create({
 });
 
 export const getFeed = ():AxiosPromise<responseFeeds> => {
+    console.log('1')
     return reqresApi.get(`post/all/`)
         .catch((error: AxiosError) => {
             throw error.response

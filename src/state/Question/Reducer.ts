@@ -25,7 +25,7 @@ export interface QuestionState {
     err: any;
 }
 
-const initialState: QuestionState = { fetching: false, data: null, err: null };
+const initialState: QuestionState = { fetching: false, data: [], err: null };
 
 export const questionFeed = (state: QuestionState = initialState, action: Action) => {
     switch (action.type) {
@@ -38,7 +38,7 @@ export const questionFeed = (state: QuestionState = initialState, action: Action
         case MAKE_QUESTION_SUCCESS:
             return {
                 fetching: false,
-                data: action.payload.data,
+                data: action.payload,
                 err: null,
             };
         case MAKE_QUESTION_FAIL:
@@ -56,7 +56,7 @@ export const questionFeed = (state: QuestionState = initialState, action: Action
         case GET_QUESTION_SUCCESS:
             return {
                 fetching: false,
-                data: action.payload.data,
+                data: action.payload,
                 err: null,
             };
         case GET_QUESTION_FAIL:
