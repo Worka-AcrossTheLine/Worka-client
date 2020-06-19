@@ -4,16 +4,16 @@ export interface getLink {
 interface postLink {
     data: [
         {
-            "id": number,
-            "author": {
-                "pk": number,
-                "username": string,
-                "user_image": string
+            id: number,
+            author: {
+                pk: number,
+                username: string,
+                user_image: string
             },
-            "title": string,
-            "tags": string[],
-            "is_author": boolean | string,
-            "created_at": string
+            title: string,
+            tags: string[],
+            is_author: boolean | string,
+            created_at: string
         }
     ]
 }

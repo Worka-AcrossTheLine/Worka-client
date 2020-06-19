@@ -46,6 +46,8 @@ const Input = styled.TextInput`
 `
 const ValidText = styled.Text`
     color:red;
+    margin-top: 10px;
+    margin-left: 43px;
 `
 
 export default MakeEmbed
