@@ -4,7 +4,7 @@ import { TopTapParamList } from '../navigator/TopNavigation'
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs'
 
 
-type HomeTopNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'NewsFeed'>;
+type HomeTopNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
 
 // type Props = {
 //     navigation: HomeTopNavigationProp;

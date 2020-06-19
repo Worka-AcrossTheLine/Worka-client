@@ -18,8 +18,7 @@ export type BottomCreateNavigationParamList = {
 
 const barStyle = {
   justifyContent: "center",
-  alignItems: "center",
-  textAlign: "center"
+  alignItems: "center"
 }
 
 const Tab = createBottomTabNavigator<BottomCreateNavigationParamList>();
@@ -30,7 +29,10 @@ const Tab = createBottomTabNavigator<BottomCreateNavigationParamList>();
 export default function () {
   return (
     <Tab.Navigator tabBarOptions={{
-      tabStyle: barStyle
+      tabStyle: {
+        justifyContent: 'center',
+        alignItems: 'center'
+      }
     }}>
       <Tab.Screen name="TabCard" component={TabCard} />
       <Tab.Screen name="TabLink" component={TabLink} />

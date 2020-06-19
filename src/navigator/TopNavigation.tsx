@@ -1,5 +1,4 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native'
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 
@@ -16,12 +15,6 @@ export type TopTapParamList = {
 }
 
 const Tab = createMaterialTopTabNavigator<TopTapParamList>();
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-})
 
 export default function () {
   return (
