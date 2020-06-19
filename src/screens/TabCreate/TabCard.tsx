@@ -1,10 +1,20 @@
-import React, { useState } from 'react'
-import { Keyboard, TouchableWithoutFeedback, Text, View, Image, Platform } from 'react-native'
-import { useSelector } from 'react-redux'
+import React, { useState, useRef, useEffect } from 'react'
+import { Animated, Keyboard, Image, Platform, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
+
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
+import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
+import { TopTapParamList } from '../../navigator/TopNavigation';
+
+import { useSelector, useDispatch } from 'react-redux'
+import { MAKE_FEED_REQUEST } from "../../state/Feed/Action";
+import { RootState } from '../../reducers';
+import { ThemeProps } from '../../style/theme';
+
+import DownArrow from '../../../assets/DownArrow.svg';
+import UpArrow from '../../../assets/UpArrow.svg';
 
 import MakeJobTagInput from "../../components/MakeJobTagInput"
 import MakeCardDescriptionInput from "../../components/MakeCardDescriptionInput";
@@ -13,12 +23,7 @@ import MakeButton from "../../components/MakeButton"
 import CancerButton from '../../components/CancerButton'
 import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
-import { Avatar } from "react-native-elements";
-import { useDispatch } from "react-redux";
-import { MAKE_FEED_REQUEST } from "../../state/Feed/Action";
-import AsyncStorage from "@react-native-community/async-storage";
-import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
-import { RootState } from '../../reducers';
+
 
 type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
 
@@ -45,33 +50,57 @@ const Title = styled.Text`
 const InputWrapper = styled.View`
   
   flex-direction:column;
-`
+`;
+
+const ImageToggleWrapper = styled.View`
+    height:30px;
+    width:100%;
+    max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
+    margin-bottom:8px;
+    justify-content:center;
+    align-items:center;
+    box-shadow:0px 3px 6px #000;
+    elevation:6;
+    background-color:${({ theme }: ThemeProps): string => theme.white};
+`;
+
+const Iconwrapper = styled.View`
+    border:1px solid black;
+`;
 
 
-const TabCard: React.FC = ({ navigation }: Props) => {
-
+const TabCard = ({ navigation }: Props) => {
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState('');
     const [image, setImage] = useState('');
     const [Description, setDescription] = useState('');
-    const dispatch = useDispatch();
-    const isIos = Platform.OS === 'ios';
+    const [animationOn, setAnimationOn] = useState(false);
+    const [focusDesc, setFocusDesc] = useState(false);
 
+    const slideIn = useRef(new Animated.Value(0)).current;
+    const descSlide = useRef(new Animated.Value(70)).current;
+
+    const dispatch = useDispatch();
     const login = useSelector((state: RootState) => state.login);
+
+    const isIos = Platform.OS === 'ios';
 
     const onCancer = () => {
         navigation.navigate('News');
     }
 
-    const handleKeyboard = () => {
+    const handleCameraWrapper = () => {
+        setAnimationOn(!animationOn);
         Keyboard.dismiss();
     }
-    const onBlur = () => {
 
+    const handleDescInput = () => {
+        setFocusDesc(true);
+        if (animationOn) {
+            setAnimationOn(false);
+        }
     }
-    const onFocus = () => {
 
-    }
     const camera = async () => {
         try {
             if (isIos) {
@@ -114,6 +143,33 @@ const TabCard: React.FC = ({ navigation }: Props) => {
         }
     }
 
+    useEffect(() => {
+        if (animationOn) {
+            Animated.timing(slideIn, {
+                toValue: 200,
+                duration: 500
+            }).start();
+        } else {
+            Animated.timing(slideIn, {
+                toValue: 0,
+                duration: 500
+            }).start();
+        }
+    }, [animationOn]);
+
+    useEffect(() => {
+        if (focusDesc) {
+            Animated.timing(descSlide, {
+                toValue: 400,
+                duration: 500
+            }).start();
+        } else {
+            Animated.timing(descSlide, {
+                toValue: 60,
+                duration: 500
+            }).start();
+        }
+    }, [focusDesc])
 
     const Upload = () => {
         const token = login.token;
@@ -127,7 +183,6 @@ const TabCard: React.FC = ({ navigation }: Props) => {
             console.log('토큰이 존재하지 않음')
         }
     }
-
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
@@ -148,7 +203,6 @@ const TabCard: React.FC = ({ navigation }: Props) => {
                         value={tapTag}
                         onChange={addTap(setTaptag)}
                         autoFocus={true}
-                        onPress={handleKeyboard}
                     />
                     <MakeInterestingInput
                         placeholder="Make Interesting Title"
@@ -156,30 +210,39 @@ const TabCard: React.FC = ({ navigation }: Props) => {
                         onChange={addTap(setInterestingTitle)}
                         autoFocus={true}
                     />
-                    <MakeCameraInput>
-                        <Avatar
-                            size="medium"
-                            title="C"
-                            onPress={camera}
-                            source={{}}
+                    <Animated.View style={{ height: slideIn, overflow: 'hidden' }}>
+                        <MakeCameraInput>
+                            <TouchableOpacity onPress={camera}>
+                                <Iconwrapper >
+                                    <Title>카메라</Title>
+                                </Iconwrapper>
+                            </TouchableOpacity>
+                            <TouchableOpacity onPress={pickImage}>
+                                <Iconwrapper>
+                                    <Title>갤러리</Title>
+                                </Iconwrapper>
+                            </TouchableOpacity>
+                            {image !== '' && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
+                        </MakeCameraInput>
+                    </Animated.View>
+                    <TouchableOpacity onPress={handleCameraWrapper}>
+                        <ImageToggleWrapper>
+                            {animationOn ? <UpArrow /> : <DownArrow />}
+                        </ImageToggleWrapper>
+                    </TouchableOpacity>
+                    <Animated.View style={{ height: descSlide, elevation: 6 }}>
+                        <MakeCardDescriptionInput
+                            multiline
+                            numberOfLines={4}
+                            placeholder="Make Card Description"
+                            value={Description}
+                            onChange={addTap(setDescription)}
+                            onBlur={() => setFocusDesc(false)}
+                            onFocus={handleDescInput}
                         />
-                        <Avatar
-                            size="medium"
-                            title="D"
-                            onPress={pickImage}
-                            source={{}}
-                        />
-                        {image !== '' && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
-
-                    </MakeCameraInput>
-                    <MakeCardDescriptionInput
-                        multiline
-                        numberOfLines={4}
-                        placeholder="Make Card Description"
-                        value={Description}
-                        onChange={addTap(setDescription)}
-                        onBlur={() => onBlur()} />
+                    </Animated.View>
                 </InputWrapper>
+
             </Wrapper>
         </OsView>
     )
@@ -189,9 +252,11 @@ const FlexWrapper = styled.View`
     align-items: center;
 `;
 const MakeCameraInput = styled.View`
+    flex:1;
     flex-direction: row;
-    align-content: center;
-
+    align-items: center;
+    justify-content:space-around;
+    padding:0px 5px;
 `
 
 export default TabCard

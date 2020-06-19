@@ -16,11 +16,9 @@ const Title = styled.Text`
   font-weight:300;
 `;
 
-const CancerButton = ({ title, onPress, fontSize = 12}: Props) => 
-        <Button 
-            onPress={() => onPress()}
-        >
-            <Title style={{ fontSize }}>{title}</Title>
-        </Button>
+const CancerButton = ({ title, onPress, fontSize = 12 }: Props) =>
+    <Button onPress={() => onPress()} >
+        <Title style={{ fontSize }}>{title}</Title>
+    </Button>
 
 export default CancerButton;
