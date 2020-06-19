@@ -1,6 +1,6 @@
 import { call, put } from "redux-saga/effects"
-import { getLinkSuccess, GET_LINK_FAIL } from "./Action";
-import { getLink } from "../../Api/Link"
+import { getLinkSuccess, GET_LINK_FAIL, MAKE_LINK_FAIL, makeLinkSuccess } from "./Action";
+import { getLink , postLink } from "../../Api/Link"
 import { Action } from "../index"
 
 export function*handleLink(action: Action) {
@@ -9,6 +9,14 @@ export function*handleLink(action: Action) {
           yield put(getLinkSuccess(response.data.results));
     } catch (err) {
         yield put({type: GET_LINK_FAIL, payload: err})
+    }
+}
+export function*handleMakeLink(action: Action) {
+    try{
+        const response = yield call( postLink, action.payload);
+            yield put(makeLinkSuccess(response.data.results));
+    } catch (err) {
+        yield put({ type: MAKE_LINK_FAIL, payload: err})
     }
 }
 
