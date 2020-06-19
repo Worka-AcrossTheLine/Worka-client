@@ -1,9 +1,11 @@
 import { GET_LINK_REQUEST, GET_LINK_SUCCESS, GET_LINK_FAIL, GET_LINK_DETAIL_REQUEST, GET_LINK_DETAIL_SUCCESS, GET_LINK_DETAIL_FAIL, MAKE_LINK_REQUEST, MAKE_LINK_SUCCESS, MAKE_LINK_FAIL } from "./Action";
 import { Action } from "../index"
+import { Links } from "../Link/Action"
 
+export type data = Links[];
 export interface LinkState {
     fetching: boolean;
-    data: any;
+    data: data;
     err: boolean;
 }
 

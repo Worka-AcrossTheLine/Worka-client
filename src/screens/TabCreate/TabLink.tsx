@@ -15,6 +15,8 @@ import { MAKE_LINK_REQUEST } from '../../state/Link/Action';
 import { RootState } from '../../reducers';
 import { TopTapParamList } from '../../navigator/TopNavigation'
 
+import validCheck from '../../constants/validCheck'
+
 type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
 
 type Props = {
@@ -55,8 +57,8 @@ const TabLink = ({
 
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState<string>('');
-    const [tapUrl, setTapUrl] = useState<string>('')
-    
+    const [tapUrl, setTapUrl] = useState<string>('');
+    const [urlValid, setUrlValid] = useState('');
 
     const login = useSelector((state: RootState) => state.login);
     
@@ -71,11 +73,12 @@ const TabLink = ({
 
     const Upload = () => {
         const token = login.token;
+        const tags = tapTag.split(',')
         console.log("TAB LINK TOKEN IS", token);
         if(token) {
             dispatch({
                 type: MAKE_LINK_REQUEST,
-                payload: { title: InterestingTitle, tag: tapTag, token: token, url:tapUrl  }
+                payload: { title: InterestingTitle, tag: tags, token: token, url:tapUrl  }
             })
         } else { 
             console.log("Does not exist Token")
@@ -115,9 +118,11 @@ const TabLink = ({
                             value={tapUrl}
                             keyboardType = {keyboardType}
                             onChange={addTap(setTapUrl)}
+                            onBlur={() => validCheck('url')(tapUrl, setUrlValid)}
+                            valid = {urlValid}
+                            isUrl={true}
                         />
                     </InputWrapper>
-
                 </Wrapper>
             </TouchableWithoutFeedback>
         </OsView>
