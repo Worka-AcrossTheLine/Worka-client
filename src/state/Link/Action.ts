@@ -1,6 +1,6 @@
 
 
-interface makeLink {
+export interface makeLink {
     title: string, tags: string, text: string, url: webkitURL
 }
 interface getLink {
@@ -13,7 +13,7 @@ interface getLink {
                 "user_image": string
             },
             "title": string,
-            "tags": [string, string, "..."],
+            "tags": string[],
             "is_author": boolean | string,
             "created_at": string
         }

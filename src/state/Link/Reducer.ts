@@ -4,10 +4,10 @@ import { Action } from "../index"
 export interface LinkState {
     fetching: boolean;
     data: any;
-    err: any;
+    err: boolean;
 }
 
-const initialState; LinkState = {fetching: false, data: null, err: null};
+const initialState: LinkState = {fetching: false, data: null, err: false};
 
 export const getLink = (state: LinkState = initialState, action: Action) => {
     switch (action.type) {
@@ -26,7 +26,7 @@ export const getLink = (state: LinkState = initialState, action: Action) => {
         case GET_LINK_FAIL:
             return {
                 fetching: false,
-                data, null,
+                data: null,
                 err: true,
             }
         case GET_LINK_DETAIL_REQUEST:
