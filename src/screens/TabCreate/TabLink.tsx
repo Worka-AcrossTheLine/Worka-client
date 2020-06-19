@@ -70,7 +70,7 @@ const TabLink = ({
 
     const Upload = () => {
         const token = login.token;
-        console.log("TAB CARD TOKEN IS", token);
+        console.log("TAB LINK TOKEN IS", token);
         if(token) {
             dispatch({
                 type: MAKE_LINK_REQUEST,
