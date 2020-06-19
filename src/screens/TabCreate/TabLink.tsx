@@ -71,32 +71,32 @@ const TabLink = ({
     }
     const dispatch = useDispatch();
 
-    useEffect(()=> {
-        if(isMake) {
-            setIsMake(false);
-        }else if(!urlValid) {
-            dispatch({ type: MAKE_LINK_REQUEST })
-        }
-    })
-
-    const Upload = () => {
+    const upLoad = () => {
         Keyboard.dismiss();
         setTimeout(() => {
             setIsMake(true);
         }, 50);
-        const token = login.token;
-        const tags = tapTag.split(',')
-        console.log("TAB LINK TOKEN IS", token);
-        if(token) {
-            dispatch({
-                type: MAKE_LINK_REQUEST,
-                payload: { title: InterestingTitle, tag: tags, token: token, url:tapUrl  }
-            })
-        } else { 
-            console.log("Does not exist Token")
-        }
+      
     }
-
+    useEffect(()=> {
+        console.log("UPLOAD")
+        if(isMake) {
+            setIsMake(false);
+             if(!urlValid) {
+                const token = login.token;
+                const tags = tapTag.split(',')
+                console.log("TAB LINK TOKEN IS", token);
+                if(token) {
+                    dispatch({
+                        type: MAKE_LINK_REQUEST,
+                        payload: { title: InterestingTitle, tag: tags, token: token, url:tapUrl  }
+                    })
+                } else { 
+                    console.log("Does not exist Token")
+                }
+            }
+        }
+    },[isMake])
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
@@ -110,7 +110,7 @@ const TabLink = ({
                         <FlexWrapper>
                             <Title>Link Worka</Title>
                         </FlexWrapper>
-                        <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
+                        <MakeButton title="MAKE" onPress={upLoad}></MakeButton>
                     </TitleWrapper>
                     <InputWrapper >
                         <MakeJobTagInput 

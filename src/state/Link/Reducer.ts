@@ -10,7 +10,7 @@ export interface LinkState {
 }
 
 
-const initialState: LinkState = {fetching: false, data: null, err: false};
+const initialState: LinkState = {fetching: false, data: [], err: false};
 
 export const GetLinkState = (state: LinkState = initialState, action: Action) => {
     switch (action.type) {
