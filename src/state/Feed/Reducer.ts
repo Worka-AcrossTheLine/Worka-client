@@ -1,19 +1,22 @@
 import {
-  GET_FEED_DETAIL_FAIL,
-  GET_FEED_DETAIL_REQUEST, GET_FEED_DETAIL_SUCCESS,
   GET_FEED_FAIL,
   GET_FEED_REQUEST,
   GET_FEED_SUCCESS, MAKE_FEED_FAIL, MAKE_FEED_REQUEST, MAKE_FEED_SUCCESS
 } from './Action';
-import {Action} from '../index';
+import { Feeds } from "./Action";
+
+export type data = Feeds[];
 
 export interface FeedState {
   fetching: boolean;
-  data: any;
-  err: any;
+  data: data;
+  err: boolean;
 }
-
-const initialState: FeedState = {fetching: false, data: null, err: null};
+export interface Action {
+  type: string;
+  payload: data;
+}
+const initialState: FeedState = {fetching: false, data: [], err: false};
 
 export const getFeed = (state: FeedState = initialState, action: Action) => {
   switch (action.type) {
@@ -21,55 +24,37 @@ export const getFeed = (state: FeedState = initialState, action: Action) => {
       return {
         fetching: true,
         data: null,
-        err: null,
+        err: false,
       };
     case GET_FEED_SUCCESS:
       return {
         fetching: false,
-        data: action.payload.data,
-        err: null,
+        data: action.payload,
+        err: false,
       };
     case GET_FEED_FAIL:
       return {
         fetching: false,
         data: null,
-        err: action.payload.err,
-      };
-    case GET_FEED_DETAIL_REQUEST:
-      return {
-        fetching: true,
-        data: null,
-        err: null,
-      };
-    case GET_FEED_DETAIL_SUCCESS:
-      return {
-        fetching: false,
-        data: action.payload.data,
-        err: null,
-      };
-    case GET_FEED_DETAIL_FAIL:
-      return {
-        fetching: false,
-        data: null,
-        err: action.payload.err,
+        err: true,
       };
     case MAKE_FEED_REQUEST:
       return {
         fetching: true,
         data: null,
-        err: null,
+        err: false,
       };
     case MAKE_FEED_SUCCESS:
       return {
         fetching: false,
-        data: action.payload.data,
-        err: null,
+        data: action.payload,
+        err: false,
       };
     case MAKE_FEED_FAIL:
       return {
         fetching: false,
         data: null,
-        err: action.payload.err,
+        err: true,
       };
     default:
       return state;

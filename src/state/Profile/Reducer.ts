@@ -1,4 +1,4 @@
-import {Action} from "../index";
+
 import {
     PROFILE_SUCCESS,
     PROFILE_FAIL,
@@ -10,28 +10,58 @@ import {
     QUESTION_COMMENTS_SUCCESS,
     QUESTION_COMMENTS_FAIL
 } from "./Action";
+import {Profile, ProfileQuestion, Comment} from "./Action";
 
 export interface ProfileState {
     fetching: boolean;
-    data: any;
-    err: any;
+    data: Profile;
+    err: boolean;
+}
+
+export interface Action {
+    type: string;
+    payload: any;
 }
 
 export interface ProfileQuestionState {
     fetching: boolean;
-    data: any;
-    err: any;
+    data: ProfileQuestion[];
+    err: boolean;
 }
 
 export interface QuestionCommentState {
     fetching: boolean;
-    data: any;
-    err: any;
+    data: Comment[];
+    err: boolean;
 }
 
-const initialState: ProfileState = {fetching: false, data: null, err: null};
-const initialStateQ: ProfileQuestionState = {fetching: false, data: null, err: null};
-const initialStateQC: ProfileQuestionState = {fetching: false, data: null, err: null};
+const initialState: ProfileState = {
+    fetching: false,
+    data: {
+        user: {
+            pk: 0,
+            username: '',
+            user_image: '',
+            mento: '',
+            mentiee: '',
+            mbti: '',
+            is_me: false
+        },
+        pages : [],
+        cards :[]
+    },
+    err: false
+};
+const initialStateQ: ProfileQuestionState = {
+    fetching: false,
+    data: [],
+    err: false
+};
+const initialStateQC: QuestionCommentState = {
+    fetching: false,
+    data: [],
+    err: false
+};
 
 export const ProfileFeed = (state: ProfileState = initialState, action: Action) => {
     switch (action.type) {
@@ -39,7 +69,7 @@ export const ProfileFeed = (state: ProfileState = initialState, action: Action) 
             return {
                 fetching: true,
                 data: null,
-                err: null,
+                err: false,
             };
         case PROFILE_SUCCESS:
             return {
