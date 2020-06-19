@@ -1,8 +1,7 @@
 import React, { useState }from 'react'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 import CancerButton from '../../components/CancerButton'
 import MakeJobTagInput from "../../components/MakeJobTagInput"
@@ -14,6 +13,7 @@ import addTap from "../../constants/addTap"
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 import { MAKE_LINK_REQUEST } from '../../state/Link/Action';
 import { RootState } from '../../reducers';
+import { TopTapParamList } from '../../navigator/TopNavigation'
 
 type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
 
@@ -74,7 +74,7 @@ const TabLink = ({
         if(token) {
             dispatch({
                 type: MAKE_LINK_REQUEST,
-                payload: { title: InterestingTitle, tags: tapTag, url: Url, token: token }
+                payload: { title: InterestingTitle, tags: tapTag, token: token }
             })
         } else { 
             console.log("Does not exist Token")
