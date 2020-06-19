@@ -41,7 +41,7 @@ export const getLinkRequest = () => {
     return {type:GET_LINK_REQUEST};
 };
 export const getLinkSuccess = (data: postLink) => {
-    return {type:GET_LINKTAG_SUCCESS, payload:{data}};
+    return {type:GET_LINK_SUCCESS, payload:{data}};
 };
 export const getLinkFail = (err: boolean) => {
     return {type:GET_LINK_FAIL, payload: {err}};
