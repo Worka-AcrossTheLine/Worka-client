@@ -17,6 +17,17 @@ interface postLink {
         }
     ]
 }
+export interface Links {
+    id: number,
+    author: {
+        pk:number,
+        username: string,
+        user_image: string
+    },
+    title: string,
+    tags: string[],
+    created_at:  string
+}
 
 
 

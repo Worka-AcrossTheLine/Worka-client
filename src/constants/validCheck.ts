@@ -15,6 +15,16 @@ const validCheck = (type: string) => (state: string, setState: React.Dispatch<Se
         state.length === 2 ? setState('') : setState("not MM");
     } else if (type === 'day') {
         state.length === 2 ? setState('') : setState("mpt DD");
+    } else if (type === 'url') {
+        // const pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+        // '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+        // '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+        // '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+        // '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+        // '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+        // pattern.test(String(state))? setState('') : setState('페이지 주소가 올바르지 않습니다.');
+        const regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
+        regex.test(String(state).toLowerCase()) ? setState(''): setState('페이지 주소를 정확히 써주세요.')
     }
 }
 export default validCheck

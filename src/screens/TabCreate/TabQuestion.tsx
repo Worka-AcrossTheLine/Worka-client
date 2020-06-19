@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import { TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native'
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 
@@ -67,40 +68,41 @@ const TabQuestion = ({navigation} :Props) => {
     }
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-            <Wrapper>
-                <TitleWrapper>
-                    <CancerButton
-                        title="CANCER"
-                        onPress={() => onCancer()}
-                    />
-                    <FlexWrapper>
-                        <Title>Link Question</Title>
-                    </FlexWrapper>
-                    <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
-                </TitleWrapper>
-                
-                <InputWrapper>
-                    <MakeJobTagInput 
-                        placeholder="Make Job Tag"
-                        value={tapTag}
-                        onChange = {addTap(setTaptag)}
-                        autoFocus = { true }
-                        onPress={handleKeyboard}  
-                    />
-                    <MakeInterestingInput
-                        placeholder="Make Interesting Title"
-                        value={InterestingTitle}
-                        onChange={addTap(setInterestingTitle)}
-                        autoFocus = {true}     
-                    />
-                    <MakeQuestionInput
-                        placeholder="Q1. Make Question"
-                        value={quetion}
-                        onChange={addTap(setQuestion)}
-                        autoFocus = {true}
-                    />
-                </InputWrapper>
-        </Wrapper>
+            <TouchableWithoutFeedback onPress={handleKeyboard}>
+                <Wrapper>
+                    <TitleWrapper>
+                        <CancerButton
+                            title="CANCER"
+                            onPress={() => onCancer()}
+                        />
+                        <FlexWrapper>
+                            <Title>Link Question</Title>
+                        </FlexWrapper>
+                        <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
+                    </TitleWrapper>
+
+                    <InputWrapper>
+                        <MakeJobTagInput 
+                            placeholder="Make Job Tag"
+                            value={tapTag}
+                            onChange = {addTap(setTaptag)}
+                            autoFocus = { true }
+                        />
+                        <MakeInterestingInput
+                            placeholder="Make Interesting Title"
+                            value={InterestingTitle}
+                            onChange={addTap(setInterestingTitle)}
+                            autoFocus = {true}     
+                        />
+                        <MakeQuestionInput
+                            placeholder="Q1. Make Question"
+                            value={quetion}
+                            onChange={addTap(setQuestion)}
+                            autoFocus = {true}
+                        />
+                    </InputWrapper>
+            </Wrapper>
+        </TouchableWithoutFeedback>
     </OsView>
     )
 }
