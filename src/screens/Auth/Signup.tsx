@@ -47,19 +47,19 @@ const ButtonWrapper = styled.View`
   margin-bottom:56px;
 `;
 
-function Signup({ navigation }: Props) {
-  const [email, setEmail] = useState('test1@email.com');
+function Signup() {
+  const [email, setEmail] = useState('');
   const [emailValid, setEmailValid] = useState('');
-  const [username, setUsername] = useState('test12');
+  const [username, setUsername] = useState('');
   const [usernameValid, setUsernameValid] = useState('');
-  const [password, setPassword] = useState('12345678');
+  const [password, setPassword] = useState('');
   const [passwordValid, setPasswordValid] = useState('');
-  const [year, setYear] = useState('2000');
-  const [yearValid, setYearValid] = useState('');
-  const [month, setMonth] = useState('10');
-  const [monthValid, setMonthValid] = useState('');
-  const [day, setDay] = useState('01');
-  const [dayValid, setDayValid] = useState('');
+  // const [year, setYear] = useState('2000');
+  // const [yearValid, setYearValid] = useState('');
+  // const [month, setMonth] = useState('10');
+  // const [monthValid, setMonthValid] = useState('');
+  // const [day, setDay] = useState('01');
+  // const [dayValid, setDayValid] = useState('');
   const [isSubmit, setIsSubmit] = useState(false);
 
 
@@ -94,8 +94,13 @@ function Signup({ navigation }: Props) {
   useEffect(() => {
     if (isSubmit) {
       setIsSubmit(false);
-      if (!emailValid && !usernameValid && !passwordValid && !yearValid && !monthValid && !dayValid) {
-        dispatch({ type: SIGNUP_REQUESTED, payload: { email, username, password, year, month, day } });
+      if (
+        !emailValid
+        && !usernameValid
+        && !passwordValid
+        // && !yearValid && !monthValid && !dayValid
+      ) {
+        dispatch({ type: SIGNUP_REQUESTED, payload: { email, username, password } });
         // create 성공할 경우 state (signup.isSignup --> true );
       }
     }
@@ -130,7 +135,7 @@ function Signup({ navigation }: Props) {
             isPassword={true}
           />
         </InputWrapper>
-        <BirthInputWrapper>
+        {/* <BirthInputWrapper>
           <SignInput
             placeholder="year"
             value={year}
@@ -155,7 +160,7 @@ function Signup({ navigation }: Props) {
             onBlur={() => validCheck('day')(day, setDayValid)}
             fontSize={20} keyboardType="number-pad"
           />
-        </BirthInputWrapper>
+        </BirthInputWrapper> */}
         <TermsWrapper>
           <SignupText />
         </TermsWrapper>

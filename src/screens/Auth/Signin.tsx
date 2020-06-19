@@ -61,18 +61,18 @@ const ButtonWrapper = styled.View`
 `;
 
 const Signin = ({ navigation }: Props) => {
-    const [username, setUsername] = useState('test12');
+    const [username, setUsername] = useState('');
     const [usernameValid, setUsernameValid] = useState('');
-    const [password, setPassword] = useState('12345678');
+    const [password, setPassword] = useState('');
     const [passwordValid, setPasswordValid] = useState('');
     const [isSubmit, setIsSubmit] = useState(false);
 
     const loginState = useSelector((state: RootState) => state.login)
     const dispatch = useDispatch();
 
-    if(loginState.isError) {
-        alert("정보가 틀림 ㅠㅠ");
-        dispatch({type:LOGIN_INIT});
+    if (loginState.isError) {
+        alert("입력하신 정보가 맞지 않습니다. 다시 확인해주세요");
+        dispatch({ type: LOGIN_INIT });
     }
 
     const handleInput = (setInput: React.Dispatch<string>) => (e: string) => {
@@ -91,7 +91,6 @@ const Signin = ({ navigation }: Props) => {
         if (isSubmit) {
             setIsSubmit(false);
             if (!usernameValid && !passwordValid) {
-                console.log("VLIAD")
                 dispatch({ type: LOGIN_REQUESTED, payload: { username, password } });
                 // 로그인에 성공할경우 components/NavController 에서 감지해서 메인 nav 로 분기
             }
