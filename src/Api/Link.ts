@@ -13,6 +13,7 @@ export const postLink = ({id, tags, title, token, url}: {id: number, token: stri
 };
 
 export const getLink = ({id,  token}: {id: number, token:string}) => {
+    console.log(token)
     return reqresApi.get(`links/${id}/`, { headers: { Authorization: `JWT${token}`} })
         .catch((error: AxiosError) => {
             throw error.response

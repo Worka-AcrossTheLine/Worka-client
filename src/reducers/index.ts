@@ -13,8 +13,11 @@ import {
     ProfileQuestionState,
     ProfileQuestionFeed,
     QuestionCommentState,
-    QuestionCommentFeed
+    QuestionCommentFeed, 
+
 } from "../state/Profile/Reducer";
+import { LinkState } from "../state/Link/Reducer";
+import { getLink } from '../Api/Link';
 
 export type RootState = {
     login: LoginState,
@@ -25,7 +28,8 @@ export type RootState = {
     question: QuestionState,
     profile: ProfileState,
     profileQuestion: ProfileQuestionState,
-    questionComment: QuestionCommentState,
+    questionComment: QuestionCommentState, 
+    link: LinkState,
 }
 
 export default combineReducers({
@@ -38,4 +42,5 @@ export default combineReducers({
     profile: ProfileFeed,
     profileQuestion: ProfileQuestionFeed,
     questionComment: QuestionCommentFeed,
+    link: getLink
 });
