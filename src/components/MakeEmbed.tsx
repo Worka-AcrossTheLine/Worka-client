@@ -8,16 +8,15 @@ type Props = {
     onChange: (e: string) => void;
     autoFocus?: boolean;
     keyboardType?: 'url';
-    
+    onBlur: () =>void;
+    valid: string;
 }
 
+
+
 const MakeEmbed = ({
-    placeholder, value, onChange, autoFocus = false, keyboardType
+    placeholder, value, onChange, autoFocus = false, keyboardType, onBlur, valid, 
 }:Props) => {
-    let textAlign: 'left'
-    // if(value.length>0) {
-    //     textAlign = 'left'
-    // }
     return (
         <InputWrapper>
             <Input
@@ -26,11 +25,10 @@ const MakeEmbed = ({
                 value = {value}
                 keyboardType = {keyboardType}
                 autoFocus = {true}
+                onBlur={onBlur}
             >
-            
-                
             </Input>
-          
+            <ValidText>{valid}</ValidText>
         </InputWrapper>
     )
 }
@@ -45,6 +43,11 @@ const InputWrapper = styled.View`
 const Input = styled.TextInput`
     background-color:white;
     padding: 21px 10px 21px 43px;
+`
+const ValidText = styled.Text`
+    color:red;
+    margin-top: 10px;
+    margin-left: 43px;
 `
 
 export default MakeEmbed

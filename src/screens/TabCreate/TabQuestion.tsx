@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react'
+import { TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native'
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 
@@ -12,6 +13,8 @@ import addTap from "../../constants/addTap"
 import { Keyboard } from 'react-native'
 import {useDispatch, useSelector} from "react-redux";
 import { MAKE_QUESTION_REQUEST } from '../../state/Question/Action'
+import {TopTapParamList} from "../../navigator/TopNavigation";
+import {RootState} from "../../reducers";
 
 
 
@@ -47,7 +50,7 @@ const TabQuestion = ({navigation} :Props) => {
     const [InterestingTitle, setInterestingTitle] = useState('');
     const [quetion, setQuestion] = useState('');
     const dispatch = useDispatch()
-    const isLogin = useSelector(state => state.login)
+    const isLogin = useSelector((state: RootState) => state.login)
 
 
     const Upload = () => {
@@ -67,40 +70,41 @@ const TabQuestion = ({navigation} :Props) => {
     }
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-            <Wrapper>
-                <TitleWrapper>
-                    <CancerButton
-                        title="CANCER"
-                        onPress={() => onCancer()}
-                    />
-                    <FlexWrapper>
-                        <Title>Link Question</Title>
-                    </FlexWrapper>
-                    <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
-                </TitleWrapper>
-                
-                <InputWrapper>
-                    <MakeJobTagInput 
-                        placeholder="Make Job Tag"
-                        value={tapTag}
-                        onChange = {addTap(setTaptag)}
-                        autoFocus = { true }
-                        onPress={handleKeyboard}  
-                    />
-                    <MakeInterestingInput
-                        placeholder="Make Interesting Title"
-                        value={InterestingTitle}
-                        onChange={addTap(setInterestingTitle)}
-                        autoFocus = {true}     
-                    />
-                    <MakeQuestionInput
-                        placeholder="Q1. Make Question"
-                        value={quetion}
-                        onChange={addTap(setQuestion)}
-                        autoFocus = {true}
-                    />
-                </InputWrapper>
-        </Wrapper>
+            <TouchableWithoutFeedback onPress={handleKeyboard}>
+                <Wrapper>
+                    <TitleWrapper>
+                        <CancerButton
+                            title="CANCER"
+                            onPress={() => onCancer()}
+                        />
+                        <FlexWrapper>
+                            <Title>Link Question</Title>
+                        </FlexWrapper>
+                        <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
+                    </TitleWrapper>
+
+                    <InputWrapper>
+                        <MakeJobTagInput 
+                            placeholder="Make Job Tag"
+                            value={tapTag}
+                            onChange = {addTap(setTaptag)}
+                            autoFocus = { true }
+                        />
+                        <MakeInterestingInput
+                            placeholder="Make Interesting Title"
+                            value={InterestingTitle}
+                            onChange={addTap(setInterestingTitle)}
+                            autoFocus = {true}     
+                        />
+                        <MakeQuestionInput
+                            placeholder="Q1. Make Question"
+                            value={quetion}
+                            onChange={addTap(setQuestion)}
+                            autoFocus = {true}
+                        />
+                    </InputWrapper>
+            </Wrapper>
+        </TouchableWithoutFeedback>
     </OsView>
     )
 }

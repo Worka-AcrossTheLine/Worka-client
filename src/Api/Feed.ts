@@ -9,8 +9,14 @@ const reqresApi = axios.create({
     baseURL: base.baseURL
 });
 
+<<<<<<< HEAD
 export const getFeed = ({ token }: { token: string }): AxiosPromise<responseFeeds> => {
     return reqresApi.get(`post/feed/`, { headers: { Authorization: `JWT ${token}` } })
+=======
+export const getFeed = ():AxiosPromise<responseFeeds> => {
+    console.log('1')
+    return reqresApi.get(`post/all/`)
+>>>>>>> 1a0f9c6ab25efd8b661bce23906c86c6169d429e
         .catch((error: AxiosError) => {
             throw error.response
         });
