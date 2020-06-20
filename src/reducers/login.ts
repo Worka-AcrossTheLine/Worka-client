@@ -52,6 +52,13 @@ export type LoginResponse = {
   }
 };
 
+export type TendencyResponse = {
+  data: {
+    token: string;
+    user: User;
+  }
+};
+
 type withdrawal = {
   type: string;
   payload: {
@@ -77,6 +84,11 @@ export const requestLogin = () =>
 export function* loginUser(action: LoginActionTypes) {
   try {
     const user: LoginResponse = yield call(Api.login, action.payload);
+    if(user.data.token && user.data.user.mbti && user.data.user.pk) {
+      yield AsyncStorage.setItem('token', user.data.token)
+      yield AsyncStorage.setItem('mbti', String(user.data.user.mbti))
+      yield AsyncStorage.setItem('pk', String(user.data.user.pk))
+    }
     yield put({ type: LOGIN_SUCCESS, payload: user });
   } catch (err) {
     console.log(err);
@@ -87,6 +99,7 @@ export function* loginUser(action: LoginActionTypes) {
 export function* tendencyUser(action: TendencyActionTypes) {
   try {
     yield call(Api.tendency, action.payload);
+    yield AsyncStorage.setItem('mbti', action.payload.mbti)
   } catch (err) {
     console.log(err);
   } finally {
