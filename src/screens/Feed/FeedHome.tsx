@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View, Text, FlatList, Image, Modal, TouchableWithoutFeedback, Button, TouchableOpacity } from 'react-native';
+import {
+    StyleSheet,
+    View,
+    Text,
+    FlatList,
+    Image,
+    Modal,
+    TouchableWithoutFeedback,
+    Button,
+    TouchableOpacity,
+    AsyncStorage
+} from 'react-native';
 import styled from 'styled-components/native';
 
 import { useDispatch, useSelector } from "react-redux";
@@ -8,6 +19,8 @@ import { GET_FEED_REQUEST, responseFeeds, Feeds, } from "../../state/Feed/Action
 
 import MentoCard from '../../components/MentoCard';
 import DetailModal from '../../components/DetailModal';
+import {LOGIN_SUCCESS} from "../../reducers/login";
+import {login} from "../../Api/login";
 
 /*
  분기처리가 필요 -> 로그인했을시, isskip 일시에 따라 api 다르게 줌(현재는 permission필요없는 전체 list만 호출중
@@ -41,6 +54,9 @@ const FeedHome = () => {
         });
     const dispatch = useDispatch();
     const logininfo = useSelector((state: RootState) => state.login);
+    const token = AsyncStorage.getItem('token')
+    const pk = AsyncStorage.getItem('pk')
+    const mbti = AsyncStorage.getItem('mbti')
 
     const feedDetail = (item: Feeds) => {
         setStorage({
@@ -53,8 +69,9 @@ const FeedHome = () => {
         setModalVisible(false);
     }
 
+
     useEffect(() => {
-        dispatch({ type: GET_FEED_REQUEST, payload: logininfo.token });
+        // dispatch({ type: GET_FEED_REQUEST, payload: {token : logininfo.token });
     }, []);
 
     return (
@@ -62,7 +79,7 @@ const FeedHome = () => {
             {feedState.fetching ? <Text>'Now Loading'</Text> :
                 <View>
                     <FlatList
-                        data={feedState.data}
+                        data={feedState.data.data}
                         renderItem={({ item }) =>
                             <TouchableOpacity onPress={() => feedDetail(item)} key={item.id}>
                                 <PaddingHeight >
