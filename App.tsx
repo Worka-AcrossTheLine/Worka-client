@@ -13,8 +13,6 @@ export default function App() {
   const [isLogin, setIsLogin] = useState(false);
 
   const setLogin = async () => {
-    AsyncStorage.removeItem('token');
-    // testing 을 위한 토큰 삭제
     const login = await AsyncStorage.getItem('token');
     // token 여부 확인 ( 로그인 여부 확인 );
     if (typeof login === 'string') {

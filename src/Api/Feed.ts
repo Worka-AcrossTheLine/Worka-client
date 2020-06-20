@@ -1,5 +1,6 @@
 import axios, { AxiosError, AxiosPromise } from "axios";
 import base from './baseURL.json'
+import {responseFeeds} from "../state/Feed/Action";
 
 import { makeCard } from '../state/Feed/Action'
 import { string } from "prop-types";
@@ -8,7 +9,7 @@ const reqresApi = axios.create({
     baseURL: base.baseURL
 });
 
-export const getFeed = () => {
+export const getFeed = ():AxiosPromise<responseFeeds> => {
     return reqresApi.get(`post/all/`)
         .catch((error: AxiosError) => {
             throw error.response

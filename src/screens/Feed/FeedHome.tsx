@@ -88,7 +88,7 @@ const FeedHome: React.FC = (props) => {
         <Fragment>
             {feedState.fetching ? <Text>'Now Loading'</Text> :
                 <View>
-                    <FlatList data={feedState.data} renderItem={renderFeed}/>
+                    <FlatList data={feedState} renderItem={renderFeed}/>
                 </View>
             }
                 <Modal visible={modalVisible} transparent={true} >

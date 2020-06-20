@@ -56,6 +56,7 @@ const TabLink = ({
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState<string>('');
     const [tapUrl, setTapUrl] = useState<string>('')
+    
 
     const login = useSelector((state: RootState) => state.login);
     
@@ -70,11 +71,11 @@ const TabLink = ({
 
     const Upload = () => {
         const token = login.token;
-        console.log("TAB CARD TOKEN IS", token);
+        console.log("TAB LINK TOKEN IS", token);
         if(token) {
             dispatch({
                 type: MAKE_LINK_REQUEST,
-                payload: { title: InterestingTitle, tags: tapTag, token: token }
+                payload: { title: InterestingTitle, tag: tapTag, token: token, url:tapUrl  }
             })
         } else { 
             console.log("Does not exist Token")
