@@ -9,7 +9,8 @@ import { TENDENCY } from '../../reducers/login'
 
 
 const Wrapper = styled.SafeAreaView`
-    flex:1
+    flex:1;
+    background-color:white;
 `;
 
 const TitleWrapper = styled.View`

@@ -1,113 +1,83 @@
-import React, {useEffect, Fragment, useState} from 'react';
-import {StyleSheet, View, Text, FlatList, Image, Modal, TouchableWithoutFeedback, Button} from 'react-native';
-import { Divider } from 'react-native-elements';
-import {useDispatch, useSelector} from "react-redux";
-import {RootState} from "../../reducers";
-import {GET_FEED_REQUEST} from "../../state/Feed/Action";
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, Text, FlatList, Image, Modal, TouchableWithoutFeedback, Button, TouchableOpacity } from 'react-native';
+import styled from 'styled-components/native';
 
-interface Storage {
-    id: string
-    user_image : string
-    username: string
-    groups : []
-    images : string
-    text : string
-    create_at : string
-    updated_at : string
-    number_of_likes : number
-    number_of_comments : number
-    liked_by_req_user : boolean
-    tags : []
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../reducers";
+import { GET_FEED_REQUEST, responseFeeds, Feeds, } from "../../state/Feed/Action";
 
-};
+import MentoCard from '../../components/MentoCard';
+import DetailModal from '../../components/DetailModal';
+
 /*
  분기처리가 필요 -> 로그인했을시, isskip 일시에 따라 api 다르게 줌(현재는 permission필요없는 전체 list만 호출중
   navigator에 대해 물어보고 그부분만 추가기술할예
  */
-const FeedHome: React.FC = (props) => {
-    const feedState = useSelector<RootState>((state) => state.feed)
+
+const PaddingHeight = styled.View`
+    padding:10px 0px;
+`;
+
+const FeedHome = () => {
+    const feedState = useSelector((state: RootState) => state.feed)
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     // item를 그냥 object로 받아와도 가능하지만 타입체크
-    const [storage, setStorage] = useState<Storage>(
-        {id: '',
-            user_image: '',
-            username: '',
-            groups: [],
-            images:'',
-            text:'',
-            create_at:'',
-            updated_at:'',
-            number_of_comments:0,
-            number_of_likes:0,
-            liked_by_req_user:false,
-            tags:[]
-    });
+    const [storage, setStorage] = useState<Feeds>(
+        {
+            id: '',
+            author: {
+                username: '',
+                user_image: ''
+            },
+            title: '',
+            images: '',
+            text: '',
+            created_at: '',
+            updated_at: '',
+            number_of_comments: '0',
+            number_of_likes: '0',
+            post_comments: [],
+            tags: [],
+        });
     const dispatch = useDispatch();
+    const logininfo = useSelector((state: RootState) => state.login);
+
+    const feedDetail = (item: Feeds) => {
+        setStorage({
+            ...item
+        })
+        setModalVisible(true)
+    }
+
+    const handleClose = () => {
+        setModalVisible(false);
+    }
 
     useEffect(() => {
-        dispatch({type: GET_FEED_REQUEST});
+        dispatch({ type: GET_FEED_REQUEST, payload: logininfo.token });
     }, []);
 
-    const feedDetail = async ( item : any) => {
-        setStorage({
-            id:item.id,
-            user_image: item.author.user_image,
-            username: item.author.username,
-            groups: item.author.groups,
-            images :item.images,
-            text: item.text,
-            create_at: item.create_at,
-            updated_at: item.updated_at,
-            number_of_comments: item.number_of_comments,
-            number_of_likes: item.number_of_likes,
-            liked_by_req_user: item.liked_by_req_user,
-            tags: item.tags,
-        })
-        await setModalVisible(!modalVisible)
-    }
-
-    const renderFeed = ({item}: any) => {
-        return(
-            <>
-                <TouchableWithoutFeedback onPress={() => feedDetail(item)}>
-                        <View style={styles.container}>
-                            <View style={styles.item}>
-                                <Text>
-                                    {`${item.id} ${item.text}  ${item.author.username} ${item.author.point} ${item.images}
-                         Like:${item.number_of_likes}  comment:${item.number_of_comments} ${item.tags}`}
-                                </Text>
-                            </View>
-                            <Divider/>
-                        </View>
-                    </TouchableWithoutFeedback>
-
-            </>
-        )
-    }
-    return(
-        <Fragment>
+    return (
+        <>
             {feedState.fetching ? <Text>'Now Loading'</Text> :
                 <View>
-                    <FlatList data={feedState} renderItem={renderFeed}/>
+                    <FlatList
+                        data={feedState.data}
+                        renderItem={({ item }) =>
+                            <TouchableOpacity onPress={() => feedDetail(item)} key={item.id}>
+                                <PaddingHeight >
+                                    <MentoCard {...item} />
+                                </PaddingHeight>
+                            </TouchableOpacity>}
+                    />
                 </View>
             }
-                <Modal visible={modalVisible} transparent={true} >
-                <TouchableWithoutFeedback onPress={() => setModalVisible(false)}>
-                <View style = {styles.viewtest}>
-                <TouchableWithoutFeedback>
-                <View>
-                    <View style={styles.viewWrapImage}>
-                        <Image style={styles.avatar} source={{uri: storage.user_image}}/>
-                    </View>
-                    {/*storage state에서 필요한정보 추출*/}
-                <Text>`{storage.text} {storage.tags}`</Text>
-                    <Button onPress = { () => setModalVisible(!modalVisible)} title="close">test </Button>
-                </View>
-                </TouchableWithoutFeedback>
-                </View>
-                </TouchableWithoutFeedback>
-                </Modal>
-        </Fragment>
+            <DetailModal
+                visible={modalVisible}
+                onPress={handleClose}
+                {...storage}
+            />
+        </>
     )
 }
 
@@ -134,7 +104,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         margin: 5,
     },
-    viewtest : {
+    viewtest: {
         flex: 1,
         paddingLeft: 10, paddingRight: 10,
         width: 30,
