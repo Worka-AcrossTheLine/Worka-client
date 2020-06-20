@@ -67,7 +67,7 @@ type Props = {
     username: string;
     mento: string;
     mentiee: string;
-    tag: string[];
+    tag?: string[];
     comment: string;
     onPress: () => void;
 }
@@ -76,7 +76,7 @@ const Profile = ({
     username,
     mento,
     mentiee,
-    tag,
+    tag = [],
     comment,
     onPress
 }: Props) => {

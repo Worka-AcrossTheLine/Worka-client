@@ -48,6 +48,8 @@ const MakeCardDescriptionInput = ({
             value={value}
             onBlur={onBlur}
             onFocus={onFocus}
+            autoCompleteType="off"
+            autoCorrect={false}
         >
         </Input>
     </InputWrapper>
