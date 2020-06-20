@@ -2,8 +2,8 @@ interface user {
     pk: number,
     username: string,
     user_image: string,
-    mento: string,
-    mentiee: string,
+    mento: number,
+    mentiee: number,
     mbti: string,
     is_me: boolean
 }
@@ -13,16 +13,16 @@ interface author {
     username: string,
     user_image: string,
 }
-interface page {
-    id: number,
+export interface page {
+    id: string,
     author: author,
     title: string,
     tags: string[],
-    questions: string,
+    questions: number,
     created_at: string,
 }
 
-interface card {
+export interface card {
     id: string,
     author: author,
     images: string,
@@ -40,24 +40,24 @@ export interface Profile {
     cards: card[]
 }
 interface RequestProfileQuestion {
-    token : string
-    pk : number
+    token: string
+    pk: number
 }
 
 export interface ProfileQuestion {
     count: number,
     results: {
-            id: number,
-            content: string,
-            created_at: string
-        }
+        id: number,
+        content: string,
+        created_at: string
+    }
 }
 
 interface CommentRequest {
     account_pk: number,
     pk: number,
     question_id: number,
-    token : string
+    token: string
 }
 //수정
 export interface Comment {
@@ -90,33 +90,33 @@ export const QUESTION_COMMENTS_SUCCESS = 'QUESTION_COMMENTS_SUCCESS'
 export const QUESTION_COMMENTS_FAIL = 'QUESTION_COMMENTS_FAIL'
 
 
-export const ProfileRequest = (data : string) => {
-    return {type: PROFILE_REQUEST , payload : {data}};
+export const ProfileRequest = (data: string) => {
+    return { type: PROFILE_REQUEST, payload: { data } };
 };
 export const ProfileSuccess = (data: Profile) => {
-    return {type: PROFILE_SUCCESS, payload: {data}};
+    return { type: PROFILE_SUCCESS, payload: { data } };
 };
 export const ProfileFail = (err: boolean) => {
-    return {type: PROFILE_FAIL, payload: {err}};
+    return { type: PROFILE_FAIL, payload: { err } };
 };
 
 
-export const QuestionRequest = (data : RequestProfileQuestion) => {
-    return {type: PROFILE_QUESTION_REQUEST , payload : {data}};
+export const QuestionRequest = (data: RequestProfileQuestion) => {
+    return { type: PROFILE_QUESTION_REQUEST, payload: { data } };
 };
 export const QuestionSuccess = (data: ProfileQuestion[]) => {
-    return {type: PROFILE_QUESTION_SUCCESS, payload: {data}};
+    return { type: PROFILE_QUESTION_SUCCESS, payload: { data } };
 };
 export const QuestionFail = (err: boolean) => {
-    return {type: PROFILE_QUESTION_FAIL, payload: {err}};
+    return { type: PROFILE_QUESTION_FAIL, payload: { err } };
 };
 
-export const QuestionCommentRequest = (data : CommentRequest) => {
-    return {type: QUESTION_COMMENTS_REQUEST , payload : {data}};
+export const QuestionCommentRequest = (data: CommentRequest) => {
+    return { type: QUESTION_COMMENTS_REQUEST, payload: { data } };
 };
 export const QuestionCommentSuccess = (data: CommentResponse) => {
-    return {type: QUESTION_COMMENTS_SUCCESS, payload: {data}};
+    return { type: QUESTION_COMMENTS_SUCCESS, payload: { data } };
 };
 export const QuestionCommentFail = (err: boolean) => {
-    return {type: QUESTION_COMMENTS_FAIL, payload: {err}};
+    return { type: QUESTION_COMMENTS_FAIL, payload: { err } };
 };
