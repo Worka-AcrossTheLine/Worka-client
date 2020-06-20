@@ -4,6 +4,7 @@ import { handleActions } from 'redux-actions';
 import * as Api from '../Api/login';
 
 import LOGIN_SUCCESS from './login';
+import AsyncStorage from "@react-native-community/async-storage";
 
 export const SIGNUP_INIT = 'SIGNUP_INIT' as const;
 export const SIGNUP_REQUESTED = 'SIGNUP_REQUESTED' as const;
@@ -28,6 +29,7 @@ type SignupActionTypes = {
 export type SignupResponse = {
     data: {
         token: string;
+        pk: number;
     }
 }
 
@@ -55,9 +57,13 @@ export const requestLogin = () =>
 
 export function* signupUser(action: SignupActionTypes) {
     try {
-        const user: SignupResponse = yield call(Api.signup, action.payload);
+        const user = yield call(Api.signup, action.payload);
+        // if(user.data.token && user.data.pk){
+        //     yield AsyncStorage.setItem('token', user.data.token)
+        //     yield AsyncStorage.setItem('pk', user.data.pk)
+        // }
         yield put({ type: SIGNUP_SUCCESS, payload: user.data });
-        yield put({ type: LOGIN_SUCCESS });
+        yield put({ type: LOGIN_SUCCESS});
     } catch (_error) {
         let { data }: SignupError = _error;
         const email = data.email ? (data.email[0]) : '';
