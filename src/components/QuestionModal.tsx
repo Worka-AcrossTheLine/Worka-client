@@ -12,17 +12,10 @@ import UpArrow from '../../assets/UpArrow.svg';
 import ThumpsUp from '../../assets/ThumpsUp.svg';
 import ThumpsDown from '../../assets/ThumpsDown.svg';
 import Tag from './Tag';
+import { page } from '../state/Profile/Action'
 
-
-type Props = {
-    id: string;
+interface Props extends page {
     visible: boolean;
-    image: string;
-    desc: string;
-    question_count: number;
-    tags: string[];
-    questionsArr: string[];
-    username: string;
     onPress: () => void;
 }
 
@@ -137,7 +130,20 @@ type animationState = {
     animationOn: boolean;
 }
 
-export default function QuestionModal({ visible, desc, image, question_count, tags, username, onPress, id, questionsArr }: Props) {
+export default function QuestionModal({
+    visible,
+    onPress,
+    id,
+    author: {
+        username,
+        user_image,
+        pk
+    },
+    title,
+    tags,
+    questions,
+    created_at,
+}: Props) {
     const [animationState, setAnimationState] = useState<animationState>({
         detailIndex: undefined,
         animationOn: false
@@ -148,7 +154,6 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
     const QuestionDetail = useSelector((state: RootState) => state.profileQuestion)
     const Logininfo = useSelector((state: RootState) => state.login)
     const QuestionComment = useSelector((state: RootState) => state.questionComment)
-    console.log(QuestionDetail.data + questionsArr[0])
 
 
 
@@ -206,9 +211,9 @@ export default function QuestionModal({ visible, desc, image, question_count, ta
                                 <ModalTabWrapper>
                                     <TileWrapper onStartShouldSetResponder={() => true}>
                                         <TextWrapper style={{ flex: 1 }}>
-                                            <Desc>{desc}</Desc>
+                                            <Desc>{title}</Desc>
                                         </TextWrapper>
-                                        <Image source={{ uri: image }} />
+                                        <Image source={{ uri: user_image }} />
                                     </TileWrapper>
                                 </ModalTabWrapper>
                                 <BodyWrapper>

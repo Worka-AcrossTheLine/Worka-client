@@ -1,19 +1,14 @@
 import React from 'react'
-import { TouchableWithoutFeedback, TouchableOpacity, ScrollView } from 'react-native'
+import { TouchableOpacity, ScrollView } from 'react-native'
 import styled from 'styled-components/native';
 import Tag from './Tag';
 import { ThemeProps } from '../style/theme';
 
 import Xsvg from '../../assets/X_1.svg';
+import { Feeds } from '../state/Feed/Action';
 
-type Props = {
+interface Props extends Feeds {
     visible: boolean;
-    image: string | null;
-    title: string;
-    tags: string[];
-    username: string;
-    company: string;
-    desc: string;
     onPress: () => void;
 }
 
@@ -94,8 +89,18 @@ const Desc = styled.Text`
     line-height:12px;
 `;
 
-export default function DetailModal({ visible, image, title = "타이틀 테스트", tags, username, company, desc, onPress }: Props) {
-    console.log(visible, image);
+export default function DetailModal({
+    visible,
+    id,
+    author: {
+        username,
+    },
+    title,
+    images,
+    text,
+    tags,
+    onPress
+}: Props) {
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={onPress} >
             <Wrapper>
@@ -109,18 +114,17 @@ export default function DetailModal({ visible, image, title = "타이틀 테스�
                 <DetailWrapper>
                     <ScrollView>
                         <ScrollWrapper onStartShouldSetResponder={() => true}>
-                            {image ? <ImageWrapper><Image source={{ uri: image }} style={{ width: '100%', height: '100%' }} /></ImageWrapper> : <TitleView><Title>{title}</Title></TitleView>}
+                            {images ? <ImageWrapper><Image source={{ uri: images }} style={{ width: '100%', height: '100%' }} /></ImageWrapper> : <TitleView><Title>{title}</Title></TitleView>}
                             <BodyWrapper>
                                 <TagWrapper >
                                     {tags.map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FFFFFF" />)}
                                 </TagWrapper>
                                 <TagWrapper style={{ justifyContent: "space-between" }}>
                                     <Tag text={username} fontColor="#FFFFFF" />
-                                    <Tag text={company} fontColor="#FFFFFF" />
                                 </TagWrapper>
                                 <TextWrapper>
-                                    {image && <TitleView><Title>{title}</Title></TitleView>}
-                                    <Desc>{desc}</Desc>
+                                    {images && <TitleView><Title>{title}</Title></TitleView>}
+                                    <Desc>{text}</Desc>
                                 </TextWrapper>
                             </BodyWrapper>
                         </ScrollWrapper>

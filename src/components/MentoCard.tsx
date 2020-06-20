@@ -1,18 +1,13 @@
 import React from 'react'
 import styled from 'styled-components/native';
 
+import { Feeds } from "../state/Feed/Action";
+
 import { ThemeProps } from '../style/theme';
 
 import Tag from './Tag';
 
-type Props = {
-    image?: string | null;
-    title: string;
-    desc: string;
-    tags: string[];
-    username: string;
-    company: string;
-}
+type Props = Feeds;
 
 const Wrapper = styled.View`
     align-self:center;
@@ -78,19 +73,22 @@ const UserTagWrapper = styled.View`
 `;
 
 export default function MentoCard({
-    image,
+    id,
+    author: {
+        username,
+    },
     title,
-    desc,
+    images,
+    text,
     tags,
-    username,
-    company,
+    // company,
 }: Props) {
     return (
         <Wrapper>
             <ImageWrapper>
-                {image ? <Image source={{ uri: image }} /> : <TextWrapper>
+                {images ? <Image source={{ uri: images }} /> : <TextWrapper>
                     <Title>{title}</Title>
-                    <Desc>{desc}</Desc>
+                    <Desc>{text}</Desc>
                 </TextWrapper>}
             </ImageWrapper>
             <BottomWrapper>
@@ -99,7 +97,6 @@ export default function MentoCard({
                 </TagsWrapper>
                 <UserTagWrapper>
                     <Tag text={username} />
-                    <Tag text={company} />
                 </UserTagWrapper>
             </BottomWrapper>
         </Wrapper>
