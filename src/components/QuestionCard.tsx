@@ -4,15 +4,11 @@ import styled from 'styled-components/native'
 
 import ShadowBox from './ShadowBox'
 import Tag from './Tag'
-import { ThemeProps } from '../style/theme';
 
-type Props = {
-    desc: string;
-    question_count: number;
-    image: string;
-    tags: string[];
-    username: string;
-}
+import { ThemeProps } from '../style/theme';
+import { page } from '../state/Profile/Action'
+
+type Props = page;
 
 const Wrapper = styled.View`
     width:100%;
@@ -54,21 +50,26 @@ const TagWrapper = styled.View`
 `;
 
 export default function QuestionCard({
-    desc,
-    question_count,
-    image,
+    id,
+    author: {
+        username,
+        user_image,
+        pk
+    },
+    title,
     tags,
-    username
+    questions,
+    created_at,
 }: Props) {
     return (
         <Wrapper>
             <ShadowBox semi={"top"}>
                 <HeaderWrapper>
                     <DescWrapper>
-                        <Desc>{desc}</Desc>
-                        <Desc>질문 갯수: {question_count}</Desc>
+                        <Desc>{title}</Desc>
+                        <Desc>질문 갯수: {questions}</Desc>
                     </DescWrapper>
-                    <Image source={{ uri: image }} />
+                    <Image source={{ uri: user_image }} />
                 </HeaderWrapper>
             </ShadowBox>
             <ShadowBox semi={"bottom"}>

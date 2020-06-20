@@ -10,7 +10,7 @@ import {
     QUESTION_COMMENTS_SUCCESS,
     QUESTION_COMMENTS_FAIL
 } from "./Action";
-import {Profile, ProfileQuestion, Comment} from "./Action";
+import { Profile, ProfileQuestion, Comment } from "./Action";
 
 export interface ProfileState {
     fetching: boolean;
@@ -42,13 +42,13 @@ const initialState: ProfileState = {
             pk: 0,
             username: '',
             user_image: '',
-            mento: '',
-            mentiee: '',
+            mento: 0,
+            mentiee: 0,
             mbti: '',
             is_me: false
         },
-        pages : [],
-        cards :[]
+        pages: [],
+        cards: []
     },
     err: false
 };
@@ -67,20 +67,20 @@ export const ProfileFeed = (state: ProfileState = initialState, action: Action) 
     switch (action.type) {
         case PROFILE_REQUEST:
             return {
+                ...state,
                 fetching: true,
-                data: null,
                 err: false,
             };
         case PROFILE_SUCCESS:
             return {
+                ...state,
                 fetching: false,
                 data: action.payload.data,
-                err: null,
             };
         case PROFILE_FAIL:
             return {
+                ...state,
                 fetching: false,
-                data: null,
                 err: action.payload.err,
             };
         default:
@@ -92,20 +92,19 @@ export const ProfileQuestionFeed = (state: ProfileQuestionState = initialStateQ,
     switch (action.type) {
         case PROFILE_QUESTION_REQUEST:
             return {
+                ...state,
                 fetching: true,
-                data: null,
-                err: null,
             };
         case PROFILE_QUESTION_SUCCESS:
             return {
+                ...state,
                 fetching: false,
                 data: action.payload.data,
-                err: null,
             };
         case PROFILE_QUESTION_FAIL:
             return {
+                ...state,
                 fetching: false,
-                data: null,
                 err: action.payload.err,
             };
         default:

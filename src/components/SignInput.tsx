@@ -63,6 +63,9 @@ const SignInput = ({
         keyboardType={keyboardType}
         secureTextEntry={isPassword}
         onBlur={onBlur}
+        autoCapitalize='none'
+        autoCompleteType='off'
+        autoCorrect={false}
       />
       <ValidText>{valid}</ValidText>
     </InputWrapper>

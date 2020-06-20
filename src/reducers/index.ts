@@ -1,6 +1,4 @@
 import { combineReducers } from 'redux';
-import { takeLatest } from 'redux-saga/effects';
-
 import login, { LoginState } from './login';
 import signup, { SignupState } from './signup'
 import { getFeed, FeedState } from '../state/Feed/Reducer'
@@ -13,7 +11,7 @@ import {
     ProfileQuestionState,
     ProfileQuestionFeed,
     QuestionCommentState,
-    QuestionCommentFeed, 
+    QuestionCommentFeed,
 
 } from "../state/Profile/Reducer";
 import { LinkState, GetLinkState } from "../state/Link/Reducer";
@@ -28,7 +26,7 @@ export type RootState = {
     question: QuestionState,
     profile: ProfileState,
     profileQuestion: ProfileQuestionState,
-    questionComment: QuestionCommentState, 
+    questionComment: QuestionCommentState,
     link: LinkState,
 }
 

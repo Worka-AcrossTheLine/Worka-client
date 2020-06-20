@@ -9,16 +9,15 @@ export interface LinkState {
     err: boolean;
 }
 
-
-const initialState: LinkState = {fetching: false, data: [], err: false};
+const initialState: LinkState = { fetching: false, data: [], err: false };
 
 export const GetLinkState = (state: LinkState = initialState, action: Action) => {
     switch (action.type) {
         case GET_LINK_REQUEST:
             return {
-              fetching: true,
-              data: null,
-              err: false,
+                fetching: true,
+                data: null,
+                err: false,
             };
         case GET_LINK_SUCCESS:
             return {
@@ -59,7 +58,7 @@ export const GetLinkState = (state: LinkState = initialState, action: Action) =>
         case MAKE_LINK_SUCCESS:
             return {
                 fetching: false,
-                data:action.payload.data,
+                data: action.payload.data,
                 err: false,
             }
         case MAKE_LINK_FAIL:

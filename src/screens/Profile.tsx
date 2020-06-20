@@ -21,9 +21,10 @@ import DetailModal from '../components/DetailModal';
 import { useDispatch, useSelector } from "react-redux";
 
 import QuestionModal from '../components/QuestionModal';
-import { PROFILE_QUESTION_REQUEST, PROFILE_REQUEST } from "../state/Profile/Action";
+import { PROFILE_REQUEST } from "../state/Profile/Action";
 import { LOGOUT, WITHDRAWAL } from '../reducers/login'
 import { RootState } from '../reducers';
+import { card, page } from '../state/Profile/Action'
 
 type select = 'card' | 'question';
 
@@ -39,62 +40,8 @@ type myprofile = {
 
 type modal = {
     type: ModalType;
-    detail: mentoCard | {};
-    question: questionCard | {};
-}
-
-type mentoCard = {
-    id: string;
-    image: string | null;
-    title: string;
-    desc: string;
-    tags: string[];
-    username: string;
-    company: string;
-}
-
-type questionCard = {
-    id: string;
-    desc: string;
-    image: string;
-    tags: string[];
-    questions: string[];
-    author: {
-        username: string;
-    }
-}
-
-const FAKEDATA = {
-    username: "Kimjoobin",
-    mento: 3,
-    mentiee: 4,
-    tag: ["IT", "font-end", "back-end", "full-stack"],
-    comment: "한줄로 적을수 있을만큼 열심히 하겠습니다."
-}
-
-const FAKEDATA_1: {
-    card: mentoCard[];
-} = {
-    card: [
-        {
-            id: "1",
-            image: null,
-            title: "CodeStates 에서 살아남기",
-            desc: "1. 열심히 공부한다. \n 2. 프리코스를 수강한다. \n 3. 이머시브를 졸업한다 \n 4. CSE에 들어간다. \n 5. 후배양성을 잘한다. \n 6. 대표님과 면접에서 포부를 설명한다. \n 7. CODESTATE 에 들어간다.",
-            tags: ["IT", "front-end", "back-end", "education-end", "engineer"],
-            username: "김주빈",
-            company: "codestate"
-        },
-        {
-            id: "2",
-            image: "https://miro.medium.com/max/1400/1*x9kUnyASEa_Ke21yQ9gBPw.png",
-            title: "CodeStates",
-            desc: "1. 열심히 공부한다. \n 2. 프리코스를 수강한다. \n 3. 이머시브를 졸업한다 \n 4. CSE에 들어간다. \n 5. 후배양성을 잘한다. \n 6. 대표님과 면접에서 포부를 설명한다. \n 7. CODESTATE 에 들어간다.",
-            tags: ["IT", "front-end", "back-end", "education-end", "engineer"],
-            username: "any",
-            company: "codestate"
-        },
-    ],
+    detail: card | null;
+    question: page | null;
 }
 
 const Wrapper = styled.View`
@@ -178,43 +125,22 @@ const SelectText = styled.Text`
 `;
 
 const Profile = () => {
+    console.log("PROFILE1");
     const [select, setSelect] = useState<select>("card");
     const [modal, setModal] = useState<modal>({
         type: 'none',
-        detail: {},
-        question: {}
+        detail: null,
+        question: null
     });
-    const [detail, setDetail] = useState<mentoCard[]>([]);
-    const [questionCard, setQuestionCard] = useState<questionCard>();
-    const [myprofile, setMyprofile] = useState<myprofile>();
-    const [question, setQuestion] = useState<questionCard[]>([])
-    const [questionComment, setQuestionComment] = useState<[string]>(['riri']);
-
-
-    const mentoCards: mentoCard[] = FAKEDATA_1.card;
+    console.log("PROFILE2");
+    //분기처리를 했는데 
     const dispatch = useDispatch()
-    const logininfo = useSelector((state: RootState) => state.login)
-    const profileinfo = useSelector((state: RootState) => state.profile)
-    const questionState = useSelector((state: RootState) => state.profileQuestion)
-    const faketags = ['kim', 'park']
-
-    if (!myprofile) {
-        dispatch({ type: PROFILE_REQUEST, payload: { pk: logininfo.data.pk, token: logininfo.token } })
-        setMyprofile({
-            username: logininfo.data.username,
-            mento: logininfo.data.mento,
-            mentiee: logininfo.data.mentiee,
-            tag: ["IT", "font-end", "back-end", "full-stack"],
-            comment: "한줄로 적을수 있을만큼 열심히 하겠습니다."
-        })
-    }
-
-    useEffect(() => {
-        if (profileinfo.data) {
-            setQuestion(profileinfo.data.pages)
-        }
-    })
-
+    const [questionComment, setQuestionComment] = useState<[string]>(['riri']);
+    const logininfo = useSelector((state: RootState) => state.login);
+    const profile = useSelector((state: RootState) => state.profile);
+    const comments = useSelector((state: RootState) => state.questionComment);
+    const { data: { user, cards, pages } } = profile;
+    console.log(profile)
 
     const handleSelect = (text: select) => () => {
         setSelect(text);
@@ -234,7 +160,7 @@ const Profile = () => {
         });
     }
 
-    const handelDetail = (card: mentoCard) => {
+    const handelDetail = (card: card) => {
         setModal({
             ...modal,
             type: 'detail',
@@ -242,15 +168,12 @@ const Profile = () => {
         })
     }
 
-    const handleQuestion = (card: questionCard) => {
-        dispatch({ type: PROFILE_QUESTION_REQUEST, payload: { token: logininfo.token, pk: card.id } })
-
+    const handleQuestion = (card: page) => {
         setModal({
             ...modal,
             type: "question",
             question: card
         });
-        setQuestionComment(questionState.data.results)
     }
 
     const handelClose = () => {
@@ -282,101 +205,100 @@ const Profile = () => {
         )
     }
 
+    useEffect(() => {
+        console.log("logininfo", logininfo)
+        dispatch({ type: PROFILE_REQUEST, payload: { pk: logininfo.data.pk, token: logininfo.token } })
+    }, [])
+
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
-            <Wrapper>
-                <Modal visible={modal.type === 'setting'} transparent={true} onRequestClose={handleModal} >
-                    <TouchableWithoutFeedback onPress={handleModal}>
-                        <ModalWrapper >
-                            <ModalLayout onStartShouldSetResponder={() => true}>
-                                <ScrollView style={{ width: '100%', padding: 18 }}>
-                                    <ModalTitle>Helle {FAKEDATA.username}</ModalTitle>
-                                    {/* <SettingTab text="username" />
-                                    <SettingTab text="password" />
+            {user.pk ?
+                <Wrapper>
+                    <Modal visible={modal.type === 'setting'} transparent={true} onRequestClose={handleModal} >
+                        <TouchableWithoutFeedback onPress={handleModal}>
+                            <ModalWrapper >
+                                <ModalLayout onStartShouldSetResponder={() => true}>
+                                    <ScrollView style={{ width: '100%', padding: 18 }}>
+                                        <ModalTitle>Helle {user.username}</ModalTitle>
+                                        <SettingTab text="comment" />
+                                        {/* <SettingTab text="password" />
                                     <SettingTab text="font size" />
                                     <SettingTab text="dark theme" /> */}
-                                    <SettingTab text="account">
-                                        <TouchableOpacity onPress={handleLogout}>
-                                            <SettingChlidWrapper>
-                                                <SelectText>로그아웃</SelectText>
-                                            </SettingChlidWrapper>
-                                        </TouchableOpacity>
-                                        <TouchableOpacity onPress={handleWithdrawal}>
-                                            <SettingChlidWrapper>
-                                                <SelectText>회원탈퇴</SelectText>
-                                            </SettingChlidWrapper>
-                                        </TouchableOpacity>
-                                    </SettingTab>
-                                    <View style={{ height: 50 }}></View>
-                                </ScrollView>
-                            </ModalLayout>
-                        </ModalWrapper>
-                    </TouchableWithoutFeedback>
-                </Modal>
-                <ScrollView>
-                    <TitleView>
-                        <Title>Question</Title>
-                    </TitleView>
-                    <BodyWrapper>
-                        {myprofile ? <UserCard {...myprofile} onPress={handleSetting} /> : <ActivityIndicator />}
-                        <SelectWrapper>
-                            <Select onPress={() => handleSelect('card')()}>
-                                <SelectView style={{ borderBottomWidth: (select === "card" ? 3 : 0) }}>
-                                    <SelectText style={{ color: (select === "card" ? theme.textColor : "black") }}>Card</SelectText>
-                                </SelectView>
-                            </Select>
-                            <Select onPress={() => handleSelect('question')()}>
-                                <SelectView style={{ borderBottomWidth: (select === "question" ? 3 : 0) }}>
-                                    <SelectText style={{ color: (select === "question" ? theme.textColor : "black") }}>Question</SelectText>
-                                </SelectView>
-                            </Select>
-                        </SelectWrapper>
-                        {select === 'card' ?
-                            mentoCards.map((item) =>
-                                <TouchableOpacity onPress={() => handelDetail(item)} key={item.id}>
-                                    <PaddingHeight >
-                                        <MentoCard {...item} />
-                                    </PaddingHeight>
-                                </TouchableOpacity>
-                            )
-                            :
-                            question.map((item: questionCard) =>
-                                <TouchableOpacity onPress={() => handleQuestion(item)} key={item.id}>
-                                    <PaddingHeight>
-                                        <QuestionCard
-                                            desc={item.desc}
-                                            image="https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg"
-                                            question_count={item.questions.length}
-                                            username={item.author.username}
-                                            tags={faketags}
-                                        />
-                                    </PaddingHeight>
-                                </TouchableOpacity>
-                            )
-                        }
-                    </BodyWrapper>
-                </ScrollView>
-                {'id' in modal.detail && modal.type === 'detail' &&
-                    <DetailModal
-                        visible={true}
-                        onPress={handelClose}
-                        {...modal.detail}
-                    />
-                }
-                {'id' in modal.question && modal.type === 'question' &&
-                    <QuestionModal
-                        visible={true}
-                        onPress={handelClose}
-                        id={modal.question.id}
-                        desc={modal.question.desc}
-                        image="https://image.freepik.com/free-vector/design-word-concept_23-2147844787.jpg"
-                        question_count={modal.question.questions.length}
-                        username={modal.question.author.username}
-                        tags={faketags}
-                        questionsArr={questionComment}
-                    />
-                }
-            </Wrapper>
+                                        <SettingTab text="account">
+                                            <TouchableOpacity onPress={handleLogout}>
+                                                <SettingChlidWrapper>
+                                                    <SelectText>로그아웃</SelectText>
+                                                </SettingChlidWrapper>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity onPress={handleWithdrawal}>
+                                                <SettingChlidWrapper>
+                                                    <SelectText>회원탈퇴</SelectText>
+                                                </SettingChlidWrapper>
+                                            </TouchableOpacity>
+                                        </SettingTab>
+                                        <View style={{ height: 50 }}></View>
+                                    </ScrollView>
+                                </ModalLayout>
+                            </ModalWrapper>
+                        </TouchableWithoutFeedback>
+                    </Modal>
+                    <ScrollView>
+                        <TitleView>
+                            <Title>Question</Title>
+                        </TitleView>
+                        <BodyWrapper>
+                            {user ? <UserCard {...user} onPress={handleSetting} /> : <ActivityIndicator />}
+                            <SelectWrapper>
+                                <Select onPress={() => handleSelect('card')()}>
+                                    <SelectView style={{ borderBottomWidth: (select === "card" ? 3 : 0) }}>
+                                        <SelectText style={{ color: (select === "card" ? theme.textColor : "black") }}>Card</SelectText>
+                                    </SelectView>
+                                </Select>
+                                <Select onPress={() => handleSelect('question')()}>
+                                    <SelectView style={{ borderBottomWidth: (select === "question" ? 3 : 0) }}>
+                                        <SelectText style={{ color: (select === "question" ? theme.textColor : "black") }}>Question</SelectText>
+                                    </SelectView>
+                                </Select>
+                            </SelectWrapper>
+                            {select === 'card' ?
+                                cards.map((item) =>
+                                    <TouchableOpacity onPress={() => handelDetail(item)} key={item.id}>
+                                        <PaddingHeight >
+                                            <MentoCard {...item} />
+                                        </PaddingHeight>
+                                    </TouchableOpacity>
+                                )
+                                :
+                                pages.map((item) =>
+                                    <TouchableOpacity onPress={() => handleQuestion(item)} key={item.id}>
+                                        <PaddingHeight>
+                                            <QuestionCard
+                                                {...item}
+                                            />
+                                        </PaddingHeight>
+                                    </TouchableOpacity>
+                                )
+                            }
+                        </BodyWrapper>
+                    </ScrollView>
+                    {modal.detail && 'id' in modal.detail && modal.type === 'detail' &&
+                        <DetailModal
+                            visible={true}
+                            onPress={handelClose}
+                            {...modal.detail}
+                        />
+                    }
+                    {modal.question && 'id' in modal.question && modal.type === 'question' &&
+                        <QuestionModal
+                            visible={true}
+                            onPress={handelClose}
+                            {...modal.question}
+                        />
+                    }
+                </Wrapper>
+                :
+                <ActivityIndicator />
+            }
         </OsView>
     )
 }
