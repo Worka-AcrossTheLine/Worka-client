@@ -13,7 +13,6 @@ import DetailModal from '../../components/DetailModal';
  분기처리가 필요 -> 로그인했을시, isskip 일시에 따라 api 다르게 줌(현재는 permission필요없는 전체 list만 호출중
   navigator에 대해 물어보고 그부분만 추가기술할예
  */
-<<<<<<< HEAD
 
 const PaddingHeight = styled.View`
     padding:10px 0px;
@@ -21,10 +20,6 @@ const PaddingHeight = styled.View`
 
 const FeedHome = () => {
     const feedState = useSelector((state: RootState) => state.feed)
-=======
-const FeedHome: React.FC = (props) => {
-    const feedState = useSelector((state:RootState) => state.feed)
->>>>>>> 1a0f9c6ab25efd8b661bce23906c86c6169d429e
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     // item를 그냥 object로 받아와도 가능하지만 타입체크
     const [storage, setStorage] = useState<Feeds>(
