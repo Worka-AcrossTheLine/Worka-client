@@ -71,7 +71,7 @@ const FeedHome = () => {
 
 
     useEffect(() => {
-        dispatch({ type: GET_FEED_REQUEST, payload: logininfo.token });
+        // dispatch({ type: GET_FEED_REQUEST, payload: {token : logininfo.token });
     }, []);
 
     return (
@@ -79,7 +79,7 @@ const FeedHome = () => {
             {feedState.fetching ? <Text>'Now Loading'</Text> :
                 <View>
                     <FlatList
-                        data={feedState.data}
+                        data={feedState.data.data}
                         renderItem={({ item }) =>
                             <TouchableOpacity onPress={() => feedDetail(item)} key={item.id}>
                                 <PaddingHeight >
