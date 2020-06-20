@@ -83,7 +83,10 @@ const Signin = ({ navigation }: Props) => {
         Keyboard.dismiss();
         //signup 과 동일
         setTimeout(() => {
-            setIsSubmit(true);
+            if (!usernameValid && !passwordValid) {
+                dispatch({ type: LOGIN_REQUESTED, payload: { username, password } });
+                // 로그인에 성공할경우 components/NavController 에서 감지해서 메인 nav 로 분기
+            }
         }, 50);
     }
 
