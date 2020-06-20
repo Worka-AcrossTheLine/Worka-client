@@ -61,7 +61,6 @@ const FeedHome = () => {
         <>
             {feedState.fetching ? <Text>'Now Loading'</Text> :
                 <View>
-<<<<<<< HEAD
                     <FlatList
                         data={feedState.data}
                         renderItem={({ item }) =>
@@ -71,9 +70,6 @@ const FeedHome = () => {
                                 </PaddingHeight>
                             </TouchableOpacity>}
                     />
-=======
-                    <FlatList data={feedState.data.data} renderItem={renderFeed}/>
->>>>>>> 1a0f9c6ab25efd8b661bce23906c86c6169d429e
                 </View>
             }
             <DetailModal
