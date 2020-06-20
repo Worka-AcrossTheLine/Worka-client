@@ -5,27 +5,24 @@ import {
 } from './Action';
 import { Feeds } from "./Action";
 
-export type data = Feeds[];
-
 export interface FeedState {
   fetching: boolean;
-  data: {
-    data :data
-  };
+  data: Feeds[]
   err: boolean;
 }
 export interface Action {
   type: string;
-  payload: data;
+  payload: Feeds[] | Feeds;
 }
-const initialState: FeedState = {fetching: false, data:{data: [] }, err: false};
+
+const initialState: FeedState = { fetching: false, data: [], err: false };
 
 export const getFeed = (state: FeedState = initialState, action: Action) => {
   switch (action.type) {
     case GET_FEED_REQUEST:
       return {
+        ...state,
         fetching: true,
-        data: null,
         err: false,
       };
     case GET_FEED_SUCCESS:
@@ -36,26 +33,26 @@ export const getFeed = (state: FeedState = initialState, action: Action) => {
       };
     case GET_FEED_FAIL:
       return {
+        ...state,
         fetching: false,
-        data: null,
         err: true,
       };
     case MAKE_FEED_REQUEST:
       return {
+        ...state,
         fetching: true,
-        data: null,
         err: false,
       };
     case MAKE_FEED_SUCCESS:
       return {
         fetching: false,
-        data: action.payload,
+        data: [action.payload, ...state.data],
         err: false,
       };
     case MAKE_FEED_FAIL:
       return {
+        ...state,
         fetching: false,
-        data: null,
         err: true,
       };
     default:
