@@ -8,17 +8,17 @@ export interface makeCard {
 export interface Feeds {
   id: string,
   author: {
-    username : string;
-    user_image : string;
+    username: string;
+    user_image: string;
   },
-  title:string,
+  title?: string,
   images: string,
   text: string,
   created_at: string,
   updated_at: string,
   number_of_likes: string,
   number_of_comments: string,
-  post_comments: string[],
+  post_comments?: string[],
   tags: string[]
 }
 
@@ -26,7 +26,7 @@ export interface responseFeeds {
   count: number,
   next: string,
   previous: string,
-  results : Feeds[]
+  results: Feeds[]
 }
 
 
@@ -51,19 +51,19 @@ export const getFeedRequest = () => {
   return { type: GET_FEED_REQUEST };
 };
 export const getFeedSuccess = (data: Feeds[]) => {
-  return {type: GET_FEED_SUCCESS, payload: {data}};
+  return { type: GET_FEED_SUCCESS, payload: { data } };
 };
 export const getFeedFail = (err: boolean) => {
-  return {type: GET_FEED_FAIL, payload: {err}};
+  return { type: GET_FEED_FAIL, payload: { err } };
 };
 
-export const makeFeedRequest = (data:makeCard) => {
-  return {type: MAKE_FEED_REQUEST, payload : {data}}
+export const makeFeedRequest = (data: makeCard) => {
+  return { type: MAKE_FEED_REQUEST, payload: { data } }
 }
-export const makeFeedSuccess = (data:Feeds) => {
-  return {type: MAKE_FEED_SUCCESS, payload : {data}}
+export const makeFeedSuccess = (data: Feeds) => {
+  return { type: MAKE_FEED_SUCCESS, payload: { data } }
 }
-export const makeFeedFail = (err : boolean) => {
-  return {type : MAKE_FEED_FAIL, payload: {err}}
+export const makeFeedFail = (err: boolean) => {
+  return { type: MAKE_FEED_FAIL, payload: { err } }
 }
 
