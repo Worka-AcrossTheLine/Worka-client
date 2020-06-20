@@ -13,6 +13,8 @@ import addTap from "../../constants/addTap"
 import { Keyboard } from 'react-native'
 import {useDispatch, useSelector} from "react-redux";
 import { MAKE_QUESTION_REQUEST } from '../../state/Question/Action'
+import {TopTapParamList} from "../../navigator/TopNavigation";
+import {RootState} from "../../reducers";
 
 
 
@@ -48,7 +50,7 @@ const TabQuestion = ({navigation} :Props) => {
     const [InterestingTitle, setInterestingTitle] = useState('');
     const [quetion, setQuestion] = useState('');
     const dispatch = useDispatch()
-    const isLogin = useSelector(state => state.login)
+    const isLogin = useSelector((state: RootState) => state.login)
 
 
     const Upload = () => {

@@ -6,9 +6,9 @@ import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tab
 
 type HomeTopNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
 
-// type Props = {
-//     navigation: HomeTopNavigationProp;
-// }
+    // type Props = {
+    //     navigation: HomeTopNavigationProp;
+    // }
 
 
 const Text = styled.Text`

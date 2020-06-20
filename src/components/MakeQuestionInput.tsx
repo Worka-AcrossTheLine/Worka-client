@@ -7,10 +7,8 @@ type Props = {
     value: string;
     onChange: (e: string) => void;
     fontSize?: number;
-    onBlur:() => void;
     autoFocus?: boolean;
     keyboardType?: 'default';
-    onPress: () => void;
 }
 
 
