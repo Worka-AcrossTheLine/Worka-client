@@ -1,24 +1,24 @@
-import React, {useEffect, useState} from 'react'
-import {useDispatch, useSelector} from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 
 import AuthNavigation from '../navigator/AuthNavigation';
 import BottomNavigation from '../navigator/BottomNavigation'
 import Tendency from '../screens/Tendency/Select'
 
 import { RootState } from '../reducers';
-import {LOGIN_SUCCESS} from "../reducers/login";
-import {LoginInfo} from "../../App";
-import {GET_FEED_REQUEST} from "../state/Feed/Action";
+import { LOGIN_SUCCESS } from "../reducers/login";
+import { LoginInfo } from "../../App";
+import { GET_FEED_REQUEST } from "../state/Feed/Action";
 
 type TendencyProps = {
     mbti: string;
 }
 
 type Props = {
-    token : string
+    token: string
 }
 
-function TendencyController({ mbti, isSkip }: TendencyProps) {
+function TendencyController({ mbti }: TendencyProps) {
     return (
         <>
             {mbti === "" ? <Tendency /> : <BottomNavigation />}
@@ -32,12 +32,13 @@ export default function NavController({ token }: Props) {
     const loginState = rootState.login;
     const dispatch = useDispatch()
     const feedState = rootState.feed;
-    useEffect(()=> {
-        if(token || loginState.token) {
+    useEffect(() => {
+        console.log(token, loginState.token)
+        if (token || loginState.token) {
             console.log('useEffect')
-            dispatch({type: GET_FEED_REQUEST, payload: token})
+            dispatch({ type: GET_FEED_REQUEST, payload: { token: token || loginState.token } })
         }
-    },[])
+    }, [loginState.token])
 
     const loginController = loginState.isLogin
     return (

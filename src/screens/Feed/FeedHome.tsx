@@ -19,8 +19,8 @@ import { GET_FEED_REQUEST, responseFeeds, Feeds, } from "../../state/Feed/Action
 
 import MentoCard from '../../components/MentoCard';
 import DetailModal from '../../components/DetailModal';
-import {LOGIN_SUCCESS} from "../../reducers/login";
-import {login} from "../../Api/login";
+import { LOGIN_SUCCESS } from "../../reducers/login";
+import { login } from "../../Api/login";
 
 /*
  분기처리가 필요 -> 로그인했을시, isskip 일시에 따라 api 다르게 줌(현재는 permission필요없는 전체 list만 호출중
@@ -79,7 +79,7 @@ const FeedHome = () => {
             {feedState.fetching ? <Text>'Now Loading'</Text> :
                 <View>
                     <FlatList
-                        data={feedState.data.data}
+                        data={feedState.data}
                         renderItem={({ item }) =>
                             <TouchableOpacity onPress={() => feedDetail(item)} key={item.id}>
                                 <PaddingHeight >

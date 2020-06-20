@@ -12,7 +12,6 @@ import MiddleButton from '../../components/MiddleButton';
 import { HEIGHT } from '../../constants/dimensions';
 import validCheck from '../../constants/validCheck'
 import { RootState } from '../../reducers';
-import { LOGIN_SUCCESS } from '../../reducers/login';
 
 type AuthHomeNavigationProps = StackNavigationProp<AuthStackParamList, 'Signup'>
 
@@ -31,12 +30,12 @@ const InputWrapper = styled.View`
   padding:0px 33px;
 `;
 
-const BirthInputWrapper = styled.View`
-  flex:1;
-  justify-content:center;
-  align-items:flex-start;
-  flex-direction:row;
-`;
+// const BirthInputWrapper = styled.View`
+//   flex:1;
+//   justify-content:center;
+//   align-items:flex-start;
+//   flex-direction:row;
+// `;
 
 const TermsWrapper = styled.View``
 
@@ -68,10 +67,6 @@ function Signup() {
 
   const headerHeight = useHeaderHeight();
 
-  if (signup.isSignup) {
-    dispatch({ type: LOGIN_SUCCESS, payload: { data: { token: signup.token, user: { mbti: null } } } });
-    // 회원가입에 성공할경우 바로 로그인 시켜준다.
-  }
   if (signup.isError) {
     setUsernameValid(signup.username);
     setEmailValid(signup.email);

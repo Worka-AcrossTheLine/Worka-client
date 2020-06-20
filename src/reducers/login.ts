@@ -45,11 +45,13 @@ type User = {
   mbti: string | null;
 };
 
+type payload = {
+  token: string;
+  user: User
+}
+
 export type LoginResponse = {
-  data: {
-    token: string;
-    user: User;
-  }
+  data: payload
 };
 
 export type TendencyResponse = {
@@ -84,12 +86,8 @@ export const requestLogin = () =>
 export function* loginUser(action: LoginActionTypes) {
   try {
     const user: LoginResponse = yield call(Api.login, action.payload);
-    if(user.data.token && user.data.user.mbti && user.data.user.pk) {
-      yield AsyncStorage.setItem('token', user.data.token)
-      yield AsyncStorage.setItem('mbti', String(user.data.user.mbti))
-      yield AsyncStorage.setItem('pk', String(user.data.user.pk))
-    }
-    yield put({ type: LOGIN_SUCCESS, payload: user });
+    console.log(user.data);
+    yield put({ type: LOGIN_SUCCESS, payload: user.data });
   } catch (err) {
     console.log(err);
     yield put({ type: LOGIN_FAILURE })
@@ -155,17 +153,18 @@ const reducer = handleActions(
       isLogin: false,
       isSkip: true,
     }),
-    [LOGIN_SUCCESS]: (state, { payload }: { type: string, payload: LoginResponse }) => {
-      if (payload.data.token) {
-        AsyncStorage.setItem('token', payload.data.token);
+    [LOGIN_SUCCESS]: (state, { payload }: { type: string, payload: payload }) => {
+      if (payload.token) {
+        AsyncStorage.setItem('token', payload.token);
       }
+      console.log(payload);
       return ({
         ...state,
         pending: false,
         isLogin: true,
-        token: payload.data.token || state.token,
-        data: payload.data.user,
-        mbti: payload.data.user.mbti || ''
+        token: payload.token || state.token,
+        data: payload.user,
+        mbti: payload.user.mbti || ''
       })
     },
     [LOGIN_FAILURE]: (state) => ({

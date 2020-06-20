@@ -32,7 +32,6 @@ export const signup = (
 }
 
 export const tendency = ({ token, mbti }: { token: string, mbti: string }): AxiosPromise<void> => {
-  console.log(token, mbti);
   return reqresApi.patch('accounts/tendency/', { mbti }, { headers: { Authorization: `JWT ${token}` } })
     .catch((error: AxiosError) => {
       throw error.response;
@@ -40,7 +39,6 @@ export const tendency = ({ token, mbti }: { token: string, mbti: string }): Axio
 }
 
 export const withdrawal = ({ token }: { token: string }): AxiosPromise<void> => {
-  console.log("TOKEN INS ", token);
   return reqresApi.delete('/accounts/delete/', { headers: { Authorization: `JWT ${token}` } })
     .catch((error: AxiosError) => {
       throw error.response;
