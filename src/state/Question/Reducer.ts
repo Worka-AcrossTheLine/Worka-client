@@ -45,11 +45,21 @@ export interface questionCard {
 
 export interface QuestionState {
     fetching: boolean;
-    data: questionCard[];
+    data: {
+        results: questionCard[]
+    }
     err: boolean;
 }
 
-export interface CommentState{
+const initialState: QuestionState = {
+    fetching: false,
+    data: {
+        results: []
+    },
+    err: false
+};
+
+export interface CommentState {
     fetching: boolean;
     data: QuestionComment[];
     err: boolean;
@@ -119,14 +129,14 @@ export const CommentFeed = (state: CommentState = initialStateComment, action: Q
         case MAKE_QUESTION_COMMENT_SUCCESS:
             return {
                 fetching: false,
-                err:false,
+                err: false,
                 data: action.payload,
             };
         case MAKE_QUESTION_COMMENT_FAIL:
             return {
                 ...state,
                 err: true,
-                fetching:false,
+                fetching: false,
             };
         case QUESTION_COMMENTS_REQUEST:
             return {

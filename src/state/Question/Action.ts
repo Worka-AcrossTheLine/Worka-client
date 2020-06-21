@@ -34,7 +34,7 @@ export interface QuestionComment {
     is_unlike: string,
     like_count: string,
     unlike_count: string,
-    is_mento:string,
+    is_mento: string,
     created_at: string
 }
 
@@ -42,7 +42,7 @@ export interface MakeCommentRequest {
     question_pk: number,
     page_pk: number,
     text: string,
-    token:string,
+    token: string,
 }
 
 interface CommentRequest {

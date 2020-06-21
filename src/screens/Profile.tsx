@@ -25,6 +25,7 @@ import { PROFILE_REQUEST } from "../state/Profile/Action";
 import { LOGOUT, WITHDRAWAL } from '../reducers/login'
 import { RootState } from '../reducers';
 import { card, page } from '../state/Profile/Action'
+import { questionCard } from '../state/Question/Reducer';
 
 type select = 'card' | 'question';
 
@@ -41,7 +42,7 @@ type myprofile = {
 type modal = {
     type: ModalType;
     detail: card | null;
-    question: page | null;
+    question: questionCard | null;
 }
 
 const Wrapper = styled.View`
@@ -134,7 +135,7 @@ const Profile = () => {
         question: null
     });
     const [switcher, setSwitcher] = useState<boolean>(false);
-    //분기처리를 했는데 
+    //분기처리를 했는데
     const dispatch = useDispatch()
     const logininfo = useSelector((state: RootState) => state.login);
     const profile = useSelector((state: RootState) => state.profile);
@@ -170,8 +171,7 @@ const Profile = () => {
         })
     }
 
-    const handleQuestion = (card: page) => {
-        console.log('cardjojo', card)
+    const handleQuestion = (card: questionCard) => {
         setModal({
             ...modal,
             type: "question",
@@ -224,7 +224,6 @@ const Profile = () => {
                                 <ModalLayout onStartShouldSetResponder={() => true}>
                                     <ScrollView style={{ width: '100%', padding: 18 }}>
                                         <ModalTitle>Helle {user.username}</ModalTitle>
-                                        <SettingTab text="comment" />
                                         {/* <SettingTab text="password" />
                                     <SettingTab text="font size" />
                                     <SettingTab text="dark theme" /> */}

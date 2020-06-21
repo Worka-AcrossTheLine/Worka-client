@@ -11,10 +11,10 @@ import UpArrow from '../../assets/UpArrow.svg';
 import ThumpsUp from '../../assets/ThumpsUp.svg';
 import ThumpsDown from '../../assets/ThumpsDown.svg';
 import Tag from './Tag';
-import { page } from '../state/Profile/Action'
+import { questionCard } from '../state/Question/Reducer';
 import {GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST} from "../state/Question/Action";
 
-interface Props extends page {
+interface Props extends questionCard {
     visible: boolean;
     onPress: () => void;
 }
@@ -214,7 +214,7 @@ export default function QuestionModal({
                                         <TextWrapper style={{ flex: 1 }}>
                                             <Desc>{title}</Desc>
                                         </TextWrapper>
-                                        <Image source={{ uri: user_image || '' }} />
+                                        <Image source={{ uri: user_image || "https://miro.medium.com/max/1400/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg" }} />
                                     </TileWrapper>
                                 </ModalTabWrapper>
                                 <BodyWrapper>

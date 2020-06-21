@@ -192,12 +192,7 @@ const reducer = (state: LoginState = initialState, action: action) => {
     case LOGOUT:
       AsyncStorage.clear();
       return {
-        ...state,
-        isLogin: false,
-        isSkip: false,
-        data: {},
-        mbti: 'logo',
-        token: '',
+        ...initialState
       };
     default:
       return state;
