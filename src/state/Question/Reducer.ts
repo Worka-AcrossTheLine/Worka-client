@@ -9,7 +9,13 @@ import {
     QUESTION_COMMENTS_SUCCESS,
     QUESTION_COMMENTS_FAIL,
     QuestionDetail,
-    GET_QUESTION_DETAIL_REQUEST, GET_QUESTION_DETAIL_SUCCESS, GET_QUESTION_DETAIL_FAIL, GET_QUESTION_REQUEST, GET_QUESTION_SUCCESS, GET_QUESTION_FAIL
+    GET_QUESTION_DETAIL_REQUEST,
+    GET_QUESTION_DETAIL_SUCCESS,
+    GET_QUESTION_DETAIL_FAIL,
+    GET_QUESTION_REQUEST,
+    GET_QUESTION_SUCCESS,
+    GET_QUESTION_FAIL,
+    MAKE_QUESTION_INIT
 } from "./Action";
 import { QuestionComment } from "./Action";
 
@@ -102,6 +108,10 @@ export const QuestionFeed = (state: QuestionState = initialState, action: Questi
 
 export const MakeQuestionFeed = (state: QuestionState = initialState, action: QuestionCardAction) => {
     switch (action.type) {
+        case MAKE_QUESTION_INIT:
+            return{
+                ...initialState
+            }
         case MAKE_QUESTION_REQUEST:
             return {
                 ...state,

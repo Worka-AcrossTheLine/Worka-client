@@ -143,8 +143,6 @@ const Profile = () => {
     const comments = useSelector((state: RootState) => state.questionComment);
     let { data: { user, cards, pages } } = profile;
 
-    console.log(makeQuestion)
-
     const handleSelect = (text: select) => () => {
         setSelect(text);
     }

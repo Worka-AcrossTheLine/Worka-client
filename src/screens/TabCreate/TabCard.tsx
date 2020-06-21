@@ -181,7 +181,7 @@ const TabCard = ({ navigation }: Props) => {
         if (token) {
             dispatch({
                 type: MAKE_FEED_REQUEST,
-                payload: { title: InterestingTitle, tags: tapTag.replace( /\s/gi, ','), text: Description, images: image, token: token }
+                payload: { title: InterestingTitle, tags: tapTag.replace('/,/gi', '').replace( /\s/gi, ','), text: Description, images: image, token: token }
             })
         } else {
             console.log('토큰이 존재하지 않음')

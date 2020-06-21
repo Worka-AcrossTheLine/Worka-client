@@ -54,6 +54,7 @@ interface CommentRequest {
 export const MAKE_QUESTION_REQUEST = 'MAKE_QUESTION_REQUEST'
 export const MAKE_QUESTION_SUCCESS = 'MAKE_QUESTION_SUCCESS'
 export const MAKE_QUESTION_FAIL = 'MAKE_QUESTION_FAIL'
+export const MAKE_QUESTION_INIT = 'MAKE_QUESTION_INIT'
 
 export const GET_QUESTION_DETAIL_REQUEST = 'GET_QUESTION_DETAIL_REQUEST'
 export const GET_QUESTION_DETAIL_SUCCESS = 'GET_QUESTION_DETAIL_SUCCESS'
@@ -82,6 +83,9 @@ export const makeQuestionSuccess = (data: Question) => {
 export const MakeQuestionFail = (err: boolean) => {
     return { type: MAKE_QUESTION_FAIL, payload: { err } };
 };
+export const MakeQuestionInit = () => {
+    return {type: MAKE_QUESTION_INIT}
+}
 
 export const makeQuestionCommentRequest = (data: MakeCommentRequest) => {
     return {type: MAKE_QUESTION_COMMENT_REQUEST, payload:{data}};

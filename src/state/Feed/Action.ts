@@ -41,6 +41,7 @@ export const GET_FEED_DETAIL_FAIL = 'GET_FEED_DETAIL_FAIL'
 export const MAKE_FEED_REQUEST = 'MAKE_FEED_REQUEST';
 export const MAKE_FEED_SUCCESS = 'MAKE_FEED_SUCCESS';
 export const MAKE_FEED_FAIL = 'MAKE_FEED_FAIL';
+export const MAKE_FEED_INIT = 'MAKE_FEED_INIT'
 //get Tag
 export const GET_TAG_REQUEST = 'GET_TAG_REQUEST';
 export const GET_TAG_SUCCESS = 'GET_TAG_SUCCESS';
@@ -65,5 +66,8 @@ export const makeFeedSuccess = (data: Feeds) => {
 }
 export const makeFeedFail = (err: boolean) => {
   return { type: MAKE_FEED_FAIL, payload: { err } }
+}
+export const makeFeedInit = () => {
+  return { type: MAKE_FEED_INIT }
 }
 
