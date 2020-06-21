@@ -29,7 +29,7 @@ export interface responseFeeds {
   results: Feeds[]
 }
 
-
+export const GET_FEED_INIT = 'GET_FEED_INIT';
 export const GET_FEED_REQUEST = 'GET_FEED_REQUEST';
 export const GET_FEED_SUCCESS = 'GET_FEED_SUCCESS';
 export const GET_FEED_FAIL = 'GET_FEED_FAIL';

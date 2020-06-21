@@ -12,6 +12,7 @@ export const LOGIN_FAILURE = 'LOGINFAILURE' as const;
 
 export const WITHDRAWAL = 'WITHDRAWAL' as const;
 
+export const LOGOUT_REQUEST = 'LOGOUT_REQUEST' as const;
 export const LOGOUT = 'LOGOUT' as const;
 
 export const TENDENCY_SUCSSES = 'TENDENCY_SUCSSES' as const;
@@ -73,7 +74,7 @@ export type LoginState = {
   isLogin: boolean;
   isError: boolean;
   isSkip: boolean;
-  data: User | {};
+  data: User;
   mbti: string;
   token: string;
 };
@@ -86,24 +87,27 @@ export const requestLogin = () =>
 export function* loginUser(action: LoginActionTypes) {
   try {
     const user: LoginResponse = yield call(Api.login, action.payload);
-    console.log(user.data);
     yield put({ type: LOGIN_SUCCESS, payload: user.data });
   } catch (err) {
-    console.log(err);
     yield put({ type: LOGIN_FAILURE })
   }
 }
 
 export function* tendencyUser(action: TendencyActionTypes) {
   try {
-    const tendency = yield call(Api.tendency, action.payload);
-    console.log(tendency);
+    yield call(Api.tendency, action.payload);
+    yield put({ type: TENDENCY_SUCSSES, payload: action.payload })
   } catch (err) {
-    console.log(err);
-  } finally {
-    yield put({
-      type: TENDENCY_SUCSSES, payload: action.payload
-    })
+    yield put({ type: LOGIN_FAILURE });
+  }
+}
+
+export function* logout() {
+  try {
+    yield AsyncStorage.removeItem('token');
+    yield put({ type: LOGOUT })
+  } catch (error) {
+
   }
 }
 
@@ -111,9 +115,8 @@ export function* tendencyUser(action: TendencyActionTypes) {
 export function* withdrawal({ payload: { token } }: withdrawal) {
   try {
     yield call(Api.withdrawal, { token });
-    yield put({ type: LOGOUT })
+    yield put({ type: LOGOUT_REQUEST })
   } catch (error) {
-    console.log(error);
   }
 }
 
@@ -124,7 +127,11 @@ const initialState: LoginState = {
   isLogin: false,
   isError: false,
   isSkip: false,
-  data: {},
+  data: {
+    pk: 0,
+    username: '',
+    mbti: ''
+  },
   mbti: '',
   token: '',
 };
@@ -144,7 +151,7 @@ const reducer = (state: LoginState = initialState, action: action) => {
         isLogin: false,
         isError: false,
         isSkip: false,
-        token: 'logouttoken'
+        token: ''
       };
     case LOGIN_REQUESTED:
       return {
@@ -190,7 +197,6 @@ const reducer = (state: LoginState = initialState, action: action) => {
         mbti: action.payload,
       }
     case LOGOUT:
-      AsyncStorage.clear();
       return {
         ...initialState
       };

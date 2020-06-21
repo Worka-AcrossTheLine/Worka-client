@@ -1,7 +1,6 @@
 import { SetStateAction } from "react";
 
 const validCheck = (type: string) => (state: string, setState: React.Dispatch<SetStateAction<string>>): void => {
-    console.log(type, 'validCheck');
     if (type === 'email') {
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         re.test(String(state).toLowerCase()) ? setState('') : setState('email 타입이 올바르지 않습니다.');

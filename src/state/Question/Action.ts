@@ -74,7 +74,7 @@ export const QUESTION_COMMENTS_FAIL = 'QUESTION_COMMENTS_FAIL'
 
 
 export const makeQuestionRequest = (data: QuestionRequest) => {
-    return { type: MAKE_QUESTION_REQUEST, payload:  {data}  };
+    return { type: MAKE_QUESTION_REQUEST, payload: { data } };
 };
 export const makeQuestionSuccess = (data: Question) => {
     return { type: MAKE_QUESTION_SUCCESS, payload: data };
@@ -84,24 +84,24 @@ export const MakeQuestionFail = (err: boolean) => {
 };
 
 export const makeQuestionCommentRequest = (data: MakeCommentRequest) => {
-    return {type: MAKE_QUESTION_COMMENT_REQUEST, payload:{data}};
+    return { type: MAKE_QUESTION_COMMENT_REQUEST, payload: { data } };
 };
 export const makeQuestionCommentSuccess = (data: Question[]) => {
-    return {type: MAKE_QUESTION_COMMENT_SUCCESS, payload: {data}};
+    return { type: MAKE_QUESTION_COMMENT_SUCCESS, payload: { data } };
 };
 export const makeQuestionCommentFail = (err: boolean) => {
-    return {type: MAKE_QUESTION_COMMENT_FAIL, payload: {err}};
+    return { type: MAKE_QUESTION_COMMENT_FAIL, payload: { err } };
 };
 
-export const getQuestionDetailRequest = ({id, token}: {id:number, token:string}) => {
-    return {type: GET_QUESTION_DETAIL_REQUEST, payload:{id, token}};
+export const getQuestionDetailRequest = ({ id, token }: { id: number, token: string }) => {
+    return { type: GET_QUESTION_DETAIL_REQUEST, payload: { id, token } };
 }
 
 export const getQuestionDetailSuccess = (data: QuestionDetail[]) => {
-    return {type: GET_QUESTION_DETAIL_SUCCESS, payload: {data}};
+    return { type: GET_QUESTION_DETAIL_SUCCESS, payload: { data } };
 };
 export const getQuestionDetailFail = (err: boolean) => {
-    return {type: GET_QUESTION_DETAIL_FAIL, payload: {err}};
+    return { type: GET_QUESTION_DETAIL_FAIL, payload: { err } };
 };
 
 

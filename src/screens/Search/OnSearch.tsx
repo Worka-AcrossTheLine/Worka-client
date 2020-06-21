@@ -41,7 +41,9 @@ const GoBackWrapper = styled.TouchableOpacity``;
 
 const BackText = styled.Text``;
 
-const Input = styled.TextInput``;
+const Input = styled.TextInput`
+    flex:1;
+`;
 
 const BodyWrapper = styled.View`
     height:100%;
@@ -67,11 +69,9 @@ export default function ({ navigation }: Props) {
     const [modal, setModal] = useState<boolean>(false);
     const { temp, searchE } = searchState;
 
-
     const handleInput = (e: string): void => {
         clearTimeout(searchState.searchE);
         const searchE = setTimeout(() => {
-            console.log("SEARCH!!", e);
             dispatch({ type: SEARCH_REQUEST, payload: { token, temp: e } })
         }, 600);
 
@@ -117,11 +117,13 @@ export default function ({ navigation }: Props) {
                             </TouchableOpacity>}
                     />
                 }
-                < DetailModal
-                    visible={modal}
-                    onPress={handleClose}
-                    {...storage}
-                />
+                {storage &&
+                    < DetailModal
+                        visible={modal}
+                        onPress={handleClose}
+                        {...storage}
+                    />
+                }
             </BodyWrapper>
         </OsView>
     )

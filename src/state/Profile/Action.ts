@@ -7,7 +7,7 @@ export interface user {
     mento: number,
     mentiee: number,
     mbti: string,
-    comment: string,
+    comments: string,
     is_me: boolean
 }
 

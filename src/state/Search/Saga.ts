@@ -15,7 +15,6 @@ export function* handleSearch(action: Action) {
         const search = yield call(searching, action.payload);
         yield put({ type: SEARCH_SUCCESS, payload: search.data });
     } catch (err) {
-        console.log(err);
         yield put({ type: SEARCH_FAILURCH });
     }
 }
