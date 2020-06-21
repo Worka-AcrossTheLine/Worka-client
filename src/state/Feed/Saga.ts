@@ -10,12 +10,10 @@ import { LOGIN_SUCCESS } from "../../reducers/login";
 import { AsyncStorage } from "react-native";
 
 
-export function* handleGetFeed({ payload: { token } }: { payload: { token: string } }) {
-
+export function* handleGetFeed({ payload: { token } }: { type: string, payload: { token: string } }) {
   try {
     const response = yield call(getFeed, { token });
-    console.log(response.data.request_user);
-    yield put({ type: LOGIN_SUCCESS, payload: { token, user: response.request_user } })
+    yield put({ type: LOGIN_SUCCESS, payload: { token, user: response.data.request_user } })
     yield put(getFeedSuccess(response.data.results));
   } catch (err) {
     console.log(err);

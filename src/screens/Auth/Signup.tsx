@@ -78,15 +78,17 @@ function Signup() {
   }
 
   const handleSignup = () => {
+    console.log("dismiss");
     Keyboard.dismiss();
     //keyboard dismiss 를 통해 모든 focus 를 제거해서 vlid 검사를 하는데, Keyboard가 비동기적 처리다.
     // async awiat 을 먹여서 처리하려했지만 먹지 않는다..
     setTimeout(() => {
       setIsSubmit(true);
-    }, 50);
+    }, 5);
   }
-
+  console.log(isSubmit);
   useEffect(() => {
+    console.log('ISSUBMIT', isSubmit)
     if (isSubmit) {
       setIsSubmit(false);
       if (

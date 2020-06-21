@@ -1,7 +1,7 @@
 import { SetStateAction } from "react";
 
 const validCheck = (type: string) => (state: string, setState: React.Dispatch<SetStateAction<string>>): void => {
-    console.log('validCheck');
+    console.log(type, 'validCheck');
     if (type === 'email') {
         const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         re.test(String(state).toLowerCase()) ? setState('') : setState('email 타입이 올바르지 않습니다.');
@@ -24,7 +24,7 @@ const validCheck = (type: string) => (state: string, setState: React.Dispatch<Se
         // '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
         // pattern.test(String(state))? setState('') : setState('페이지 주소가 올바르지 않습니다.');
         const regex = /(http|https):\/\/(\w+:{0,1}\w*)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%!\-\/]))?/;
-        regex.test(String(state).toLowerCase()) ? setState(''): setState('페이지 주소를 정확히 써주세요.')
+        regex.test(String(state).toLowerCase()) ? setState('') : setState('페이지 주소를 정확히 써주세요.')
     }
 }
 export default validCheck
