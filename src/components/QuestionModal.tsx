@@ -40,9 +40,6 @@ const QuestionWrapper = styled.View`
     background-color:${({ theme }: ThemeProps): string => theme.detailBg};
 `;
 
-const ScrollWrapper = styled.View`
-`;
-
 const ModalTabWrapper = styled.View`
     width:100%;
     background-color:${({ theme }: ThemeProps): string => theme.white};
@@ -63,12 +60,6 @@ const TextWrapper = styled.View`
 
 const BodyWrapper = styled.View`
     flex:1
-`;
-
-const DetailWrapper = styled.View`
-    flex:1;
-    padding:0px 20px;
-    align-items:flex-start;
 `;
 
 const DropDownWrapper = styled.View`
@@ -160,15 +151,19 @@ export default function QuestionModal({
     questions,
     created_at,
 }: Props) {
+    // animation
     const [animationState, setAnimationState] = useState<animationState>({
         detailIndex: undefined,
         animationOn: false
     })
     const { detailIndex, animationOn } = animationState;
     const slideToggle = useRef(new Animated.Value(0)).current;
+    // redux
     const dispatch = useDispatch()
     const rootState = useSelector((state: RootState) => state);
     const { login: Logininfo, questionComment: questionComment, questionDetail: questionDetail } = rootState;
+    // refresh
+    const [isRefresh, setIsRefresh] = useState(false);
 
     const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number, overFlow?: string } => {
         return (
@@ -218,6 +213,12 @@ export default function QuestionModal({
         setText("");
     }
 
+    const refreshing = () => {
+        setIsRefresh(true);
+        getQuestionDetailRequest();
+        setIsRefresh(false);
+    }
+
     useEffect(() => {
         if (animationOn) {
             Animated.timing(slideToggle, {
@@ -236,6 +237,7 @@ export default function QuestionModal({
     }
 
     useEffect(() => {
+        setIsRefresh(false);
         getQuestionDetailRequest()
     }, []);
 
@@ -256,8 +258,8 @@ export default function QuestionModal({
                             {/*detailQuestion*/}
                             {questionDetail.data.results && (
                                 <FlatList
-                                    refreshing={questionDetail.fetching}
-                                    onRefresh={getQuestionDetailRequest}
+                                    refreshing={isRefresh}
+                                    onRefresh={refreshing}
                                     data={questionDetail.data.results}
                                     keyExtractor={(item) => `${item.id}`}
                                     renderItem={({ item }) =>
@@ -265,16 +267,17 @@ export default function QuestionModal({
                                             <TextWrapper>
                                                 <QuestionText>Q{item.id + 1}.{item.content}</QuestionText>
                                             </TextWrapper>
-                                            <Animated.View style={setDetailStyle(item.id)}>
+                                            <Animated.View style={setDetailStyle(item.id)} onStartShouldSetResponder={() => true}>
                                                 {/*comment*/}
                                                 {questionComment.data && (
                                                     <FlatList
+                                                        style={{}}
                                                         refreshing={questionComment.fetching}
                                                         onRefresh={() => questionCommentsRequest(item.id)}
                                                         data={questionComment.data}
                                                         keyExtractor={(item) => `${item.id}`}
                                                         renderItem={({ item: questionComment }) =>
-                                                            <AnswerWrapper >
+                                                            <AnswerWrapper onStartShouldSetResponder={() => true} >
                                                                 <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
                                                                 <AnswerUsername>${questionComment.text}</AnswerUsername>
                                                                 <RatingWrapper>

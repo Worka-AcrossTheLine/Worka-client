@@ -24,6 +24,9 @@ export default function App() {
   }
   useEffect(() => {
     setLogin();
+    return () => {
+      setToken("");
+    }
   }, []);
   return (
     <Provider store={store}>

@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import QuestionModal from '../components/QuestionModal';
 import { PROFILE_REQUEST } from "../state/Profile/Action";
-import { LOGOUT, WITHDRAWAL } from '../reducers/login'
+import { LOGOUT, WITHDRAWAL, LOGOUT_REQUEST } from '../reducers/login'
 import { RootState } from '../reducers';
 import { card, page } from '../state/Profile/Action'
 import { questionCard } from '../state/Question/Reducer';
@@ -184,7 +184,7 @@ const Profile = () => {
     }
 
     const handleLogout = () => {
-        dispatch({ type: LOGOUT })
+        dispatch({ type: LOGOUT_REQUEST })
     }
 
     const handleWithdrawal = () => {
@@ -210,8 +210,6 @@ const Profile = () => {
             dispatch({ type: PROFILE_REQUEST, payload: { pk: logininfo.data.pk, token: logininfo.token } })
         }
     }, [])
-
-    console.log(user);
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>

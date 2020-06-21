@@ -70,6 +70,7 @@ const FeedHome = () => {
             {feedState.fetching ? <Text>'Now Loading'</Text> :
                 <View>
                     <FlatList
+                        style={{ height: "100%" }}
                         data={feedState.data}
                         keyExtractor={(item) => item.id}
                         renderItem={({ item }) =>

@@ -1,7 +1,7 @@
 import {
   GET_FEED_FAIL,
   GET_FEED_REQUEST,
-  GET_FEED_SUCCESS, MAKE_FEED_FAIL, MAKE_FEED_REQUEST, MAKE_FEED_SUCCESS
+  GET_FEED_SUCCESS, MAKE_FEED_FAIL, MAKE_FEED_REQUEST, MAKE_FEED_SUCCESS, GET_FEED_INIT
 } from './Action';
 import { Feeds } from "./Action";
 
@@ -19,6 +19,10 @@ const initialState: FeedState = { fetching: false, data: [], err: false };
 
 export const getFeed = (state: FeedState = initialState, action: Action) => {
   switch (action.type) {
+    case GET_FEED_INIT:
+      return {
+        ...initialState
+      }
     case GET_FEED_REQUEST:
       return {
         ...state,
