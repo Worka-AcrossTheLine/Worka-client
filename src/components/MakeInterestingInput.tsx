@@ -8,6 +8,7 @@ type Props = {
     onChange: (e: string) => void;
     autoFocus?: boolean;
     keyboardType?: 'default';
+    autoCorrect?: boolean;
 }
 
 const MakeInterestingInput = ({
@@ -23,6 +24,10 @@ const MakeInterestingInput = ({
                 placeholder={placeholder}
                 onChangeText={(e) => onChange(e)}
                 value = {value}
+                autoFocus={autoFocus}
+                autoCapitalize  = 'none'
+                autoCorrect = { false }   
+                autoCompleteType = 'off'
             >
                 
             </Input>
