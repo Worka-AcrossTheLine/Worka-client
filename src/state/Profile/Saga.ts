@@ -4,7 +4,7 @@ import {
     PROFILE_QUESTION_FAIL,
     ProfileSuccess,
     QuestionSuccess
-} from "../Profile/Action";
+} from "./Action";
 import {getProfile, getQuestion} from "../../Api/Profile";
 import {Action} from "./Reducer";
 
@@ -26,13 +26,3 @@ export function* handleProfileQuestion(action : Action) {
         yield put({ type: PROFILE_QUESTION_FAIL , payload: err })
     }
 }
-
-// export function* handleQuestionComments(action : Action) {
-//     try{
-//         let arr = []
-//
-//         yield put(QuestionCommentSuccess(arr));
-//     } catch (err) {
-//         yield put({ type: QUESTION_COMMENTS_FAIL , payload: err })
-//     }
-// }

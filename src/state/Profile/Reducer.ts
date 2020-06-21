@@ -6,9 +6,6 @@ import {
     PROFILE_QUESTION_REQUEST,
     PROFILE_QUESTION_SUCCESS,
     PROFILE_QUESTION_FAIL,
-    QUESTION_COMMENTS_REQUEST,
-    QUESTION_COMMENTS_SUCCESS,
-    QUESTION_COMMENTS_FAIL
 } from "./Action";
 import { Profile, ProfileQuestion, Comment } from "./Action";
 
@@ -29,11 +26,6 @@ export interface ProfileQuestionState {
     err: boolean;
 }
 
-export interface QuestionCommentState {
-    fetching: boolean;
-    data: Comment[];
-    err: boolean;
-}
 
 const initialState: ProfileState = {
     fetching: false,
@@ -53,11 +45,6 @@ const initialState: ProfileState = {
     err: false
 };
 const initialStateQ: ProfileQuestionState = {
-    fetching: false,
-    data: [],
-    err: false
-};
-const initialStateQC: QuestionCommentState = {
     fetching: false,
     data: [],
     err: false
@@ -105,31 +92,6 @@ export const ProfileQuestionFeed = (state: ProfileQuestionState = initialStateQ,
             return {
                 ...state,
                 fetching: false,
-                err: action.payload.err,
-            };
-        default:
-            return state;
-    }
-};
-
-export const QuestionCommentFeed = (state: QuestionCommentState = initialStateQC, action: Action) => {
-    switch (action.type) {
-        case QUESTION_COMMENTS_REQUEST:
-            return {
-                fetching: true,
-                data: null,
-                err: null,
-            };
-        case QUESTION_COMMENTS_SUCCESS:
-            return {
-                fetching: false,
-                data: action.payload.data,
-                err: null,
-            };
-        case QUESTION_COMMENTS_FAIL:
-            return {
-                fetching: false,
-                data: null,
                 err: action.payload.err,
             };
         default:
