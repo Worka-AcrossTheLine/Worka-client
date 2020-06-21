@@ -7,7 +7,7 @@ import Search from '../screens/Search/OnSearch';
 import { ParamListBase } from '@react-navigation/core';
 
 export type SearchStackParamList = {
-    Home: { navigation: any };
+    Home: undefined;
     Search: undefined;
 }
 
@@ -27,16 +27,21 @@ const titleStyle = {
 
 export default function () {
     return (
-        <Stack.Navigator>
-            <Stack.Screen name="Home" component={TopNavigation}
+        <Stack.Navigator mode="modal">
+            <Stack.Screen
+                name="Home"
+                component={TopNavigation}
                 options={{
-                    animationEnabled: false,
                     header: ({ navigation }) => <Home navigation={navigation} />
                 }} />
-            <Stack.Screen name="Search" component={Search} options={{
-                animationEnabled: false,
-                headerShown: false,
-            }} />
+            <Stack.Screen
+                name="Search"
+                component={Search}
+                options={{
+                    headerShown: false,
+                    header: () => <></>
+                }}
+            />
         </Stack.Navigator>
     );
 }

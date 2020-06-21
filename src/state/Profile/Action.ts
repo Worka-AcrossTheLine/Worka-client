@@ -1,6 +1,6 @@
 import { questionCard } from "../Question/Reducer";
 
-interface user {
+export interface user {
     pk: number,
     username: string,
     user_image: string,

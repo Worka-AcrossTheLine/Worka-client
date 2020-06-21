@@ -13,10 +13,9 @@ export interface Action {
 export function* handleSearch(action: Action) {
     try {
         const search = yield call(searching, action.payload);
-        yield put({ type: SEARCH_SUCCESS, payload: search });
-        alert('질문지 생성 완료')
+        yield put({ type: SEARCH_SUCCESS, payload: search.data });
     } catch (err) {
-        console.log("FALI")
+        console.log(err);
         yield put({ type: SEARCH_FAILURCH });
     }
 }

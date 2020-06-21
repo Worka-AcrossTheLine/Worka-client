@@ -69,7 +69,7 @@ export default function QuestionCard({
                         <Desc>{title}</Desc>
                         <Desc>질문 갯수: {questions}</Desc>
                     </DescWrapper>
-                    <Image source={{ uri: user_image || "" }} />
+                    <Image source={{ uri: user_image || "https://miro.medium.com/max/1400/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg" }} />
                 </HeaderWrapper>
             </ShadowBox>
             <ShadowBox semi={"bottom"}>

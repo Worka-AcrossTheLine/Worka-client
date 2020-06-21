@@ -86,13 +86,13 @@ export const getQuestionFail = (err: boolean) => {
 
 
 export const makeQuestionCommentRequest = (data: MakeCommentRequest) => {
-    return { type: MAKE_QUESTION_REQUEST, payload: { data } };
+    return { type: MAKE_QUESTION_COMMENT_REQUEST, payload: { data } };
 };
 export const makeQuestionCommentSuccess = (data: Question[]) => {
-    return { type: MAKE_QUESTION_SUCCESS, payload: { data } };
+    return { type: MAKE_QUESTION_COMMENT_SUCCESS, payload: { data } };
 };
 export const makeQuestionCommentFail = (err: boolean) => {
-    return { type: MAKE_QUESTION_FAIL, payload: { err } };
+    return { type: MAKE_QUESTION_COMMENT_FAIL, payload: { err } };
 };
 
 

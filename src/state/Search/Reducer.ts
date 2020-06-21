@@ -1,9 +1,9 @@
 import { SEARCH_FAILURCH, SEARCH_REQUEST, SEARCH_SUCCESS } from "./Action";
-import { questionCard } from '../Question/Reducer'
+import { Feeds } from "../Feed/Action";
 
 export interface data {
     count: number;
-    results: questionCard[];
+    results: Feeds[];
 }
 
 export interface SearchState {

@@ -57,7 +57,7 @@ const QuestionFeed = () => {
             }
             {modal &&
                 <QuestionModal
-                    visible={modal !== undefined}
+                    visible={true}
                     onPress={handelClose}
                     {...modal}
                 />

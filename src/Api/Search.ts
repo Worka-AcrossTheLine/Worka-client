@@ -8,7 +8,7 @@ const reqresApi = axios.create({
 });
 
 export const searching = ({ token, temp }: { token: string, temp: string }): AxiosPromise<data> => {
-    return reqresApi.get(`search/`, {
+    return reqresApi.get(`post/feed/`, {
         params: {
             search: temp
         },

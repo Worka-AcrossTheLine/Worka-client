@@ -4,7 +4,6 @@ import styled from 'styled-components/native';
 
 import { ThemeProps } from '../style/theme';
 import { useDispatch, useSelector } from "react-redux";
-import { QUESTION_COMMENTS_REQUEST } from "../state/Profile/Action";
 import { RootState } from '../reducers';
 
 import DownArrow from '../../assets/DownArrow.svg';
@@ -12,9 +11,9 @@ import UpArrow from '../../assets/UpArrow.svg';
 import ThumpsUp from '../../assets/ThumpsUp.svg';
 import ThumpsDown from '../../assets/ThumpsDown.svg';
 import Tag from './Tag';
-import { page } from '../state/Profile/Action'
+import { questionCard } from '../state/Question/Reducer';
 
-interface Props extends page {
+interface Props extends questionCard {
     visible: boolean;
     onPress: () => void;
 }
@@ -213,7 +212,7 @@ export default function QuestionModal({
                                         <TextWrapper style={{ flex: 1 }}>
                                             <Desc>{title}</Desc>
                                         </TextWrapper>
-                                        <Image source={{ uri: user_image || "" }} />
+                                        <Image source={{ uri: user_image || "https://miro.medium.com/max/1400/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg" }} />
                                     </TileWrapper>
                                 </ModalTabWrapper>
                                 <BodyWrapper>
