@@ -4,6 +4,7 @@ export interface user {
     pk: number,
     username: string,
     user_image: string,
+    comments: string;
     mento: number,
     mentiee: number,
     mbti: string,
@@ -86,6 +87,9 @@ export const PROFILE_FAIL = 'PROFILE_FAIL'
 export const PROFILE_QUESTION_REQUEST = 'PROFILE_QUESTION_REQUEST'
 export const PROFILE_QUESTION_SUCCESS = 'PROFILE_QUESTION_SUCCESS'
 export const PROFILE_QUESTION_FAIL = 'PROFILE_QUESTION_FAIL'
+
+export const PATCH_COMMENTS_SUCCESS = 'PATCH_COMMENTS_SUCCESS'
+export const PATCH_COMMENTS_REQUEST = 'PATCH_COMMENTS_REQUEST'
 
 
 export const ProfileRequest = (data: string) => {

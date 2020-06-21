@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components/native'
 
 import ShadowBox from './ShadowBox'
 import Tag from '../components/Tag';
 
 import { ThemeProps } from '../style/theme'
-import { user } from '../state/Profile/Action';
+import { user, PATCH_COMMENTS_REQUEST } from '../state/Profile/Action';
 import ModifySvg from '../../assets/Modify.svg'
-import { TouchableOpacity, TextInput } from 'react-native';
+import { TouchableOpacity, TextInput, View } from 'react-native';
+import { RootState } from '../reducers';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Wrapper = styled.View`
     width:100%;
@@ -37,13 +39,13 @@ const InfoWrapper = styled.View`
 `;
 
 const CommentWrapper = styled.View`
+    width:100%;
     flex-direction:row;
+    margin-bottom:5px;
 `;
 
 const ModifySvgWrapper = styled.View`
     margin-left:10px;
-    width:10px;
-    height:10px;
 `;
 
 const NameText = styled.Text`
@@ -69,6 +71,13 @@ const TendencyWrapper = styled.View`
     margin:3px 0px;
 `;
 
+const CommentButtonWrapper = styled.View`
+    flex-direction:row;
+    justify-content:flex-end;
+    padding-top:10px;
+    padding-right:10px;
+`;
+
 const Comment = styled.Text`
     font-size:${({ theme }: ThemeProps): number => theme.smFont}px;
     color:${({ theme }: ThemeProps): string => theme.textColor};
@@ -84,12 +93,35 @@ const Profile = ({
     mento,
     mentiee,
     mbti,
-    comment,
+    comments,
     onPress
 }: Props) => {
+
+    const dispatch = useDispatch();
+    const loginState = useSelector((state: RootState) => state.login);
+
     const [isModifyComment, setIsModifyComment] = useState<boolean>(false);
+    const [inputComment, setInputComment] = useState(comments);
+
     const handleComment = () => {
         setIsModifyComment(true);
+    }
+
+    const handleChange = (e: string) => {
+        if (e.length <= 50) {
+            setInputComment(e);
+        }
+    }
+
+    const handleModify = (type: 'change' | 'cancel') => () => {
+        if (type === 'change') {
+            if (comments !== inputComment) {
+                dispatch({ type: PATCH_COMMENTS_REQUEST, payload: { token: loginState.token, comments: inputComment } })
+            }
+        } else {
+            setInputComment(comments);
+        }
+        setIsModifyComment(false);
     }
     return (
         <Wrapper>
@@ -110,13 +142,27 @@ const Profile = ({
                     <CommentWrapper>
                         <SemiTitle>Comment</SemiTitle>
                         <ModifySvgWrapper>
-                            <TouchableOpacity onPress={handleComment}>
-                                <ModifySvg />
-                            </TouchableOpacity>
+                            {isModifyComment ? <Comment>{inputComment.length}/50</Comment> :
+                                <TouchableOpacity onPress={handleComment}>
+                                    <ModifySvg />
+                                </TouchableOpacity>
+                            }
                         </ModifySvgWrapper>
                     </CommentWrapper>
-                    {isModifyComment ? <TextInput /> :
-                        <Comment>{comment}</Comment>
+                    {isModifyComment ?
+                        <View style={{}}>
+                            <TextInput style={{ borderWidth: 1, borderRadius: 8, fontSize: 12, padding: 5 }} value={inputComment} onChangeText={handleChange} maxLength={50} autoCorrect={false} />
+                            <CommentButtonWrapper>
+                                <TouchableOpacity style={{ marginRight: 10 }} onPress={handleModify('change')}>
+                                    <Comment>수정</Comment>
+                                </TouchableOpacity>
+                                <TouchableOpacity onPress={handleModify('cancel')}>
+                                    <Comment>취소</Comment>
+                                </TouchableOpacity>
+                            </CommentButtonWrapper>
+                        </View>
+                        :
+                        <Comment>{inputComment}</Comment>
                     }
                 </WrapperPadding>
             </ShadowBox>

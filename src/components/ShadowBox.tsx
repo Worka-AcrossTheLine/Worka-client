@@ -9,7 +9,6 @@ type Props = {
 
 const Wrapper = styled.View`
     width:100%;
-    height:151.82px;
     border-radius:8px;
     background-color:#FFFFFF
     box-shadow:0px 3px 6px #000;

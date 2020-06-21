@@ -6,6 +6,7 @@ import {
     PROFILE_QUESTION_REQUEST,
     PROFILE_QUESTION_SUCCESS,
     PROFILE_QUESTION_FAIL,
+    PATCH_COMMENTS_SUCCESS,
 } from "./Action";
 import { Profile, ProfileQuestion, Comment } from "./Action";
 
@@ -18,6 +19,14 @@ export interface ProfileState {
 export interface Action {
     type: string;
     payload: any;
+}
+
+export interface PatchCommentsAction {
+    type: string;
+    payload: {
+        token: string;
+        comments: string;
+    }
 }
 
 export interface ProfileQuestionState {
@@ -36,7 +45,7 @@ const initialState: ProfileState = {
             user_image: '',
             mento: 0,
             mentiee: 0,
-            comment: '',
+            comments: '',
             mbti: '',
             is_me: false
         },
@@ -65,6 +74,17 @@ export const ProfileFeed = (state: ProfileState = initialState, action: Action) 
                 fetching: false,
                 data: action.payload.data,
             };
+        case PATCH_COMMENTS_SUCCESS:
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    user: {
+                        ...state.data.user,
+                        comments: action.payload.comments
+                    }
+                }
+            }
         case PROFILE_FAIL:
             return {
                 ...state,
