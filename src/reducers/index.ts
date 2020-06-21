@@ -4,7 +4,14 @@ import signup, { SignupState } from './signup'
 import { getFeed, FeedState } from '../state/Feed/Reducer'
 import setting, { SettingState } from './setting'
 import { search, SearchState } from '../state/Search/Reducer'
-import {QuestionState, questionFeed, CommentState, CommentFeed} from "../state/Question/Reducer";
+import {
+    QuestionState,
+    QuestionFeed,
+    CommentState,
+    CommentFeed,
+    QuestionDetailState,
+    QuestionDetailFeed
+} from "../state/Question/Reducer";
 import {
     ProfileState,
     ProfileFeed,
@@ -26,6 +33,7 @@ export type RootState = {
     profileQuestion: ProfileQuestionState,
     questionComment: CommentState,
     link: LinkState,
+    questionDetail: QuestionDetailState,
 }
 
 export default combineReducers({
@@ -34,9 +42,10 @@ export default combineReducers({
     feed: getFeed,
     setting,
     search,
-    question: questionFeed,
+    question: QuestionFeed,
     profile: ProfileFeed,
     profileQuestion: ProfileQuestionFeed,
     questionComment: CommentFeed,
     link: GetLinkState,
+    questionDetail:QuestionDetailFeed
 });

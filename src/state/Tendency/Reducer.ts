@@ -9,7 +9,7 @@
 //
 // const initialState: QuestionState = {fetching: false, data: null, err: null};
 //
-// export const questionFeed = (state: QuestionState = initialState, action: Action) => {
+// export const QuestionFeed = (state: QuestionState = initialState, action: Action) => {
 //     switch (action.type) {
 //         case MAKE_QUESTION_REQUEST:
 //             return {

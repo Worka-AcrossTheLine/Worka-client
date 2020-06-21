@@ -35,6 +35,12 @@ export interface ProfileQuestionState {
     err: boolean;
 }
 
+export interface ProfileQuestionDetailState {
+    fetching: boolean;
+    data: ProfileQuestion;
+    err: boolean;
+}
+
 
 const initialState: ProfileState = {
     fetching: false,
@@ -45,7 +51,7 @@ const initialState: ProfileState = {
             user_image: '',
             mento: 0,
             mentiee: 0,
-            comments: '',
+            comment: '',
             mbti: '',
             is_me: false
         },

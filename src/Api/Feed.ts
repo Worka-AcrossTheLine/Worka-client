@@ -10,7 +10,6 @@ const reqresApi = axios.create({
 });
 
 export const getFeed = ({ token }: { token: string }): AxiosPromise<responseFeeds> => {
-    console.log('gugu'+token)
     return reqresApi.get(`post/feed/`, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
             throw error.response

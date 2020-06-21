@@ -5,7 +5,7 @@ import styled from 'styled-components/native';
 import QuestionCard from '../../../components/QuestionCard';
 
 import { useDispatch, useSelector } from "react-redux";
-import { GET_QUESTION_REQUEST } from "../../../state/Question/Action";
+// import { GET_QUESTION_REQUEST } from "../../../state/Question/Action";
 import { RootState } from "../../../reducers";
 import { questionCard } from '../../../state/Question/Reducer';
 import QuestionModal from '../../../components/QuestionModal';
@@ -30,7 +30,7 @@ const QuestionFeed = () => {
 
     useEffect(() => {
         if (loginState.isLogin) {
-            dispatch({ type: GET_QUESTION_REQUEST, payload: { token: loginState.token } })
+            // dispatch({ type: GET_QUESTION_REQUEST, payload: { token: loginState.token } })
         }
     }, [])
     console.log("QIESTIOSNTATAE");

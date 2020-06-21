@@ -12,6 +12,7 @@ import ThumpsUp from '../../assets/ThumpsUp.svg';
 import ThumpsDown from '../../assets/ThumpsDown.svg';
 import Tag from './Tag';
 import { questionCard } from '../state/Question/Reducer';
+import {GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST} from "../state/Question/Action";
 
 interface Props extends questionCard {
     visible: boolean;
@@ -150,10 +151,10 @@ export default function QuestionModal({
     const { detailIndex, animationOn } = animationState;
     const slideToggle = useRef(new Animated.Value(0)).current;
     const dispatch = useDispatch()
-    const QuestionDetail = useSelector((state: RootState) => state.profileQuestion)
+    // const QuestionDetail = useSelector((state: RootState) => state.profile)
     const Logininfo = useSelector((state: RootState) => state.login)
     const QuestionComment = useSelector((state: RootState) => state.questionComment)
-
+    const QuestionDetail = useSelector((state:RootState) => state.questionDetail)
 
 
     const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number, overFlow?: string } => {
@@ -170,7 +171,9 @@ export default function QuestionModal({
     }
 
     const handleDetail = (index: number) => {
+        console.log('index',index)
         const isClose = index === detailIndex
+        dispatch({type: QUESTION_COMMENTS_REQUEST, payload : {token: Logininfo.token, page_pk: id, question_pk: index}})
         if (animationOn) {
             Animated.timing(slideToggle, {
                 toValue: 0,
@@ -187,18 +190,17 @@ export default function QuestionModal({
                 animationOn: true
             })
         }
-
     }
-
     useEffect(() => {
-
+        dispatch({type: GET_QUESTION_DETAIL_REQUEST, payload: {token : Logininfo.token, id: id}})
+    },[])
+    useEffect(() => {
         if (animationOn) {
             Animated.timing(slideToggle, {
                 toValue: 300,
                 duration: 1000
             }).start();
         }
-
     }, [animationState])
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={closeModal} >
@@ -216,6 +218,7 @@ export default function QuestionModal({
                                     </TileWrapper>
                                 </ModalTabWrapper>
                                 <BodyWrapper>
+                                    {/*detailQuestion*/}
                                     {QuestionDetail.data.results && (
                                         QuestionDetail.data.results.map((item) =>
                                             <ModalTabWrapper key={`q-${item.id}`} onStartShouldSetResponder={() => true}>
@@ -223,11 +226,12 @@ export default function QuestionModal({
                                                     <QuestionText>Q{item.id + 1}.{item.content}</QuestionText>
                                                 </TextWrapper>
                                                 <Animated.View style={setDetailStyle(item.id)}>
-                                                    {questionsArr && (
-                                                        questionsArr.map((answer) =>
+                                                    {/*comment*/}
+                                                    {QuestionComment.data && (
+                                                        QuestionComment.data.map((answer) =>
                                                             <AnswerWrapper key={`answer-${answer.id}`}>
                                                                 <AnswerUsername style={{ opacity: 0.6 }}>'kim'</AnswerUsername>
-                                                                <AnswerUsername>'kim'</AnswerUsername>
+                                                                <AnswerUsername>${answer.text}</AnswerUsername>
                                                                 <RatingWrapper>
                                                                     <ThumpsUp style={{ marginRight: 7 }} />
                                                                     <ThumpsDown style={{ marginRight: 5 }} />
@@ -237,7 +241,7 @@ export default function QuestionModal({
                                                     )}
                                                 </Animated.View>
                                                 <DropDownWrapper >
-                                                    <TouchableOpacity onPress={() => handleDetail(1)} style={{ padding: 5 }}>
+                                                    <TouchableOpacity onPress={() => handleDetail(item.id)} style={{ padding: 5 }}>
                                                         {detailIndex === 1 ? <UpArrow /> : <DownArrow />}
                                                     </TouchableOpacity>
                                                 </DropDownWrapper>

@@ -1,29 +1,39 @@
 import {
-    GET_QUESTION_FAIL,
-    GET_QUESTION_REQUEST,
-    GET_QUESTION_SUCCESS,
-    MAKE_QUESTION_FAIL,
-    MAKE_QUESTION_REQUEST,
-    MAKE_QUESTION_SUCCESS,
     MAKE_QUESTION_COMMENT_FAIL,
     MAKE_QUESTION_COMMENT_REQUEST,
     MAKE_QUESTION_COMMENT_SUCCESS,
-    QUESTION_COMMENTS_FAIL,
+    MAKE_QUESTION_FAIL,
+    MAKE_QUESTION_REQUEST,
+    MAKE_QUESTION_SUCCESS,
     QUESTION_COMMENTS_REQUEST,
     QUESTION_COMMENTS_SUCCESS,
-    QuestionComment
+    QUESTION_COMMENTS_FAIL,
+    QuestionDetail,
+    GET_QUESTION_DETAIL_REQUEST, GET_QUESTION_DETAIL_SUCCESS, GET_QUESTION_DETAIL_FAIL, GET_QUESTION_REQUEST, GET_QUESTION_SUCCESS, GET_QUESTION_FAIL
 } from "./Action";
+import { QuestionComment } from "./Action";
 
-export interface Action {
+
+export interface QuestionCardAction {
     type: string;
-    payload: questionCard[] | questionCard;
+    payload: questionCard[];
+}
+
+export interface QuestionCommentAction{
+    type: string;
+    payload: Comment[]
+}
+
+export interface QuestionDetailAction {
+    type: string;
+    payload: QuestionDetail[]
 }
 
 export interface questionCard {
-    id: number;
+    id: string;
     title: string;
     tags: string[];
-    questions: string;
+    questions: number;
     author: {
         pk: number;
         username: string;
@@ -41,13 +51,7 @@ export interface QuestionState {
     err: boolean;
 }
 
-const initialState: QuestionState = {
-    fetching: false,
-    data: {
-        results: []
-    },
-    err: false
-};
+
 
 export interface CommentState {
     fetching: boolean;
@@ -55,14 +59,23 @@ export interface CommentState {
     err: boolean;
 }
 
-const initialStateComment: CommentState =
-{
-    fetching: false,
-    data: [],
-    err: false
+export interface QuestionDetailState{
+    fetching: boolean;
+    data: QuestionDetail[]
+    err: boolean;
 }
 
-export const questionFeed = (state: QuestionState = initialState, action: Action) => {
+const initialState: QuestionState = {
+    fetching: false,
+    data: {
+        results: []
+    },
+    err: false
+};
+const initialStateComment : CommentState = { fetching: false, data: [], err: false};
+const initialStateQuestionDetail : QuestionDetailState = { fetching: false, data: [], err: false}
+
+export const QuestionFeed = (state: QuestionState = initialState, action: QuestionCardAction) => {
     switch (action.type) {
         case MAKE_QUESTION_REQUEST:
             return {
@@ -105,7 +118,7 @@ export const questionFeed = (state: QuestionState = initialState, action: Action
     }
 };
 
-export const CommentFeed = (state: CommentState = initialStateComment, action: Action) => {
+export const CommentFeed = (state: CommentState = initialStateComment, action: QuestionCommentAction) => {
     switch (action.type) {
         case MAKE_QUESTION_COMMENT_REQUEST:
             return {
@@ -142,6 +155,31 @@ export const CommentFeed = (state: CommentState = initialStateComment, action: A
                 ...state,
                 fetching: false,
                 err: false,
+            };
+        default:
+            return state;
+    }
+};
+
+export const QuestionDetailFeed = (state: QuestionDetailState = initialStateQuestionDetail, action: QuestionDetailAction) => {
+    switch (action.type) {
+        case GET_QUESTION_DETAIL_REQUEST:
+            return {
+                ...state,
+                fetching: true,
+                err: false
+            };
+        case GET_QUESTION_DETAIL_SUCCESS:
+            return {
+                fetching: false,
+                err:false,
+                data: action.payload,
+            };
+        case GET_QUESTION_DETAIL_FAIL:
+            return {
+                ...state,
+                err: true,
+                fetching:false,
             };
         default:
             return state;

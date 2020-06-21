@@ -8,6 +8,7 @@ export interface user {
     mento: number,
     mentiee: number,
     mbti: string,
+    comment?: string,
     is_me: boolean
 }
 
@@ -101,7 +102,6 @@ export const ProfileSuccess = (data: Profile) => {
 export const ProfileFail = (err: boolean) => {
     return { type: PROFILE_FAIL, payload: { err } };
 };
-
 
 export const QuestionRequest = (data: RequestProfileQuestion) => {
     return { type: PROFILE_QUESTION_REQUEST, payload: { data } };
