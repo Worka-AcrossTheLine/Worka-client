@@ -1,6 +1,6 @@
 import { call, put } from "redux-saga/effects";
-import { MAKE_QUESTION_FAIL, GET_QUESTION_SUCCESS, makeQuestionSuccess } from "../Question/Action";
-import { makeQuestion, makeQuestionCard, getQuestion } from "../../Api/Question";
+import { MAKE_QUESTION_FAIL, GET_QUESTION_SUCCESS, makeQuestionSuccess, getQuestionSuccess } from "../Question/Action";
+import { makeQuestion, makeQuestionCard, getQuestion, } from "../../Api/Question";
 import { Action } from "../index";
 
 export function* handleQuestion(action: Action) {
@@ -17,7 +17,7 @@ export function* handleQuestion(action: Action) {
 export function* handleGetQuestion({ type, payload: { token } }: { type: string, payload: { token: string } }) {
     try {
         const response = yield call(getQuestion, { token })
-        yield put(makeQuestionSuccess(response.data));
+        yield put(getQuestionSuccess(response.data));
     } catch (err) {
         yield put({ type: GET_QUESTION_SUCCESS, payload: err })
     }
