@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { TouchableWithoutFeedback, TouchableOpacity, ScrollView, Animated } from 'react-native'
+import { TouchableWithoutFeedback, TouchableOpacity, ScrollView, Animated, FlatList, Button, ActivityIndicator } from 'react-native'
 import styled from 'styled-components/native';
 
 import { ThemeProps } from '../style/theme';
@@ -12,14 +12,17 @@ import ThumpsUp from '../../assets/ThumpsUp.svg';
 import ThumpsDown from '../../assets/ThumpsDown.svg';
 import Tag from './Tag';
 import { questionCard } from '../state/Question/Reducer';
-import { GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST } from "../state/Question/Action";
+import { GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST, MAKE_QUESTION_COMMENT_REQUEST } from "../state/Question/Action";
+import { TextInput } from 'react-native-gesture-handler';
 
 interface Props extends questionCard {
     visible: boolean;
     onPress: () => void;
 }
 
-const ModalWrapper = styled.Modal``;
+const ModalWrapper = styled.Modal`
+    flex:1;
+`;
 
 const Wrapper = styled.View`
     width:100%;
@@ -99,6 +102,19 @@ const UserTagWrapper = styled.View`
     justify-content:space-between;
 `;
 
+const PostComment = styled.View`
+    flex:1;
+    min-height:40px;
+    justify-content:flex-end;
+    padding:10px;
+`;
+
+const CommnetWrapper = styled.View`
+    border:1px solid black;
+    border-radius:3px;
+    flex-direction:row;
+`;
+
 const Image = styled.Image`
     width:64px;
     height:64px;
@@ -151,7 +167,6 @@ export default function QuestionModal({
     const { detailIndex, animationOn } = animationState;
     const slideToggle = useRef(new Animated.Value(0)).current;
     const dispatch = useDispatch()
-    // const QuestionDetail = useSelector((state: RootState) => state.profile)
     const rootState = useSelector((state: RootState) => state);
     const { login: Logininfo, questionComment: questionComment, questionDetail: questionDetail } = rootState;
 
@@ -163,6 +178,7 @@ export default function QuestionModal({
                 { display: 'none' }
         )
     }
+    const [text, setText] = useState('');
 
     const closeModal = () => {
         onPress();
@@ -170,7 +186,7 @@ export default function QuestionModal({
 
     const handleDetail = (index: number) => {
         const isClose = index === detailIndex
-        dispatch({ type: QUESTION_COMMENTS_REQUEST, payload: { token: Logininfo.token, page_pk: id, question_pk: index } })
+        questionCommentsRequest(index);
         if (animationOn) {
             Animated.timing(slideToggle, {
                 toValue: 0,
@@ -187,10 +203,21 @@ export default function QuestionModal({
                 animationOn: true
             })
         }
+    };
+
+    const postComments = () => {
+        dispatch({
+            type: MAKE_QUESTION_COMMENT_REQUEST,
+            payload: {
+                token: Logininfo.token,
+                question_pk: detailIndex,
+                page_pk: id,
+                text,
+            }
+        })
+        setText("");
     }
-    useEffect(() => {
-        dispatch({ type: GET_QUESTION_DETAIL_REQUEST, payload: { token: Logininfo.token, id: id } })
-    }, [])
+
     useEffect(() => {
         if (animationOn) {
             Animated.timing(slideToggle, {
@@ -198,67 +225,103 @@ export default function QuestionModal({
                 duration: 1000
             }).start();
         }
-    }, [animationState])
+    }, [animationState]);
 
-    console.log(questionDetail);
+    const questionCommentsRequest = (index: number) => {
+        dispatch({ type: QUESTION_COMMENTS_REQUEST, payload: { token: Logininfo.token, page_pk: id, question_pk: index } })
+    }
+
+    const getQuestionDetailRequest = () => {
+        dispatch({ type: GET_QUESTION_DETAIL_REQUEST, payload: { token: Logininfo.token, id: id } })
+    }
+
+    useEffect(() => {
+        getQuestionDetailRequest()
+    }, []);
 
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={closeModal} >
             <TouchableWithoutFeedback onPress={closeModal}>
                 <Wrapper>
                     <QuestionWrapper onStartShouldSetResponder={() => true}>
-                        <ScrollView>
-                            <ScrollWrapper>
-                                <ModalTabWrapper>
-                                    <TileWrapper onStartShouldSetResponder={() => true}>
-                                        <TextWrapper style={{ flex: 1 }}>
-                                            <Desc>{title}</Desc>
-                                        </TextWrapper>
-                                        <Image source={{ uri: user_image || "https://miro.medium.com/max/1400/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg" }} />
-                                    </TileWrapper>
-                                </ModalTabWrapper>
-                                <BodyWrapper>
-                                    {/*detailQuestion*/}
-                                    {questionDetail.data.results && (
-                                        questionDetail.data.results.map((item) =>
-                                            <ModalTabWrapper key={`q-${item.id}`} onStartShouldSetResponder={() => true}>
-                                                <TextWrapper>
-                                                    <QuestionText>Q{item.id + 1}.{item.content}</QuestionText>
-                                                </TextWrapper>
-                                                <Animated.View style={setDetailStyle(item.id)}>
-                                                    {/*comment*/}
-                                                    {questionComment.data && (
-                                                        questionComment.data.map((answer) =>
-                                                            <AnswerWrapper key={`answer-${answer.id}`}>
-                                                                <AnswerUsername style={{ opacity: 0.6 }}>'kim'</AnswerUsername>
-                                                                <AnswerUsername>${answer.text}</AnswerUsername>
+                        <ModalTabWrapper>
+                            <TileWrapper onStartShouldSetResponder={() => true}>
+                                <TextWrapper style={{ flex: 1 }}>
+                                    <Desc>{title}</Desc>
+                                </TextWrapper>
+                                <Image source={{ uri: user_image || "https://miro.medium.com/max/1400/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg" }} />
+                            </TileWrapper>
+                        </ModalTabWrapper>
+                        <BodyWrapper>
+                            {/*detailQuestion*/}
+                            {questionDetail.data.results && (
+                                <FlatList
+                                    refreshing={questionDetail.fetching}
+                                    onRefresh={getQuestionDetailRequest}
+                                    data={questionDetail.data.results}
+                                    keyExtractor={(item) => `${item.id}`}
+                                    renderItem={({ item }) =>
+                                        <ModalTabWrapper key={`q-${item.id}`} onStartShouldSetResponder={() => true}>
+                                            <TextWrapper>
+                                                <QuestionText>Q{item.id + 1}.{item.content}</QuestionText>
+                                            </TextWrapper>
+                                            <Animated.View style={setDetailStyle(item.id)}>
+                                                {/*comment*/}
+                                                {questionComment.data && (
+                                                    <FlatList
+                                                        refreshing={questionComment.fetching}
+                                                        onRefresh={() => questionCommentsRequest(item.id)}
+                                                        data={questionComment.data}
+                                                        keyExtractor={(item) => `${item.id}`}
+                                                        renderItem={({ item: questionComment }) =>
+                                                            <AnswerWrapper >
+                                                                <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
+                                                                <AnswerUsername>${questionComment.text}</AnswerUsername>
                                                                 <RatingWrapper>
                                                                     <ThumpsUp style={{ marginRight: 7 }} />
                                                                     <ThumpsDown style={{ marginRight: 5 }} />
                                                                 </RatingWrapper>
                                                             </AnswerWrapper>
-                                                        )
-                                                    )}
-                                                </Animated.View>
-                                                <DropDownWrapper >
-                                                    <TouchableOpacity onPress={() => handleDetail(item.id)} style={{ padding: 5 }}>
-                                                        {detailIndex === item.id ? <UpArrow /> : <DownArrow />}
-                                                    </TouchableOpacity>
-                                                </DropDownWrapper>
-                                            </ModalTabWrapper>
-                                        )
-                                    )}
-                                </BodyWrapper>
-                            </ScrollWrapper>
-                        </ScrollView>
-                        <TagWrapper >
-                            <TendencyTagWrapper>
-                                {tags.map((tag, tagIndex) => <Tag key={`tag-${tagIndex}`} text={tag} fontColor="#FFFFFF" />)}
-                            </TendencyTagWrapper>
-                            <UserTagWrapper>
-                                <Tag text={username} fontColor="#FFFFFF" />
-                            </UserTagWrapper>
-                        </TagWrapper>
+                                                        }
+                                                    />
+                                                )}
+                                                {Logininfo.data.pk !== pk &&
+                                                    <PostComment>
+                                                        <CommnetWrapper>
+                                                            <TextInput
+                                                                style={{ flex: 1, fontSize: 10, padding: 3 }}
+                                                                multiline={true}
+                                                                autoCorrect={false}
+                                                                value={text}
+                                                                onChangeText={(e) => setText(e)}
+                                                            />
+                                                            {questionComment.fetching ?
+                                                                <ActivityIndicator />
+                                                                :
+                                                                <Button title="등록" onPress={postComments} />
+                                                            }
+                                                        </CommnetWrapper>
+                                                    </PostComment>
+                                                }
+                                            </Animated.View>
+                                            <DropDownWrapper >
+                                                <TouchableOpacity onPress={() => handleDetail(item.id)} style={{ padding: 5 }}>
+                                                    {detailIndex === item.id ? <UpArrow /> : <DownArrow />}
+                                                </TouchableOpacity>
+                                            </DropDownWrapper>
+                                        </ModalTabWrapper>
+                                    }
+                                />
+                            )}
+                            <TagWrapper >
+                                <TendencyTagWrapper>
+                                    {tags.map((tag, tagIndex) => <Tag key={`tag-${tagIndex}`} text={tag} fontColor="#FFFFFF" />)}
+                                </TendencyTagWrapper>
+                                <UserTagWrapper>
+                                    <Tag text={username} fontColor="#FFFFFF" />
+                                </UserTagWrapper>
+                            </TagWrapper>
+                        </BodyWrapper>
                     </QuestionWrapper>
                 </Wrapper>
             </TouchableWithoutFeedback>

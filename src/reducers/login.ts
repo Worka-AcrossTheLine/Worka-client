@@ -73,7 +73,7 @@ export type LoginState = {
   isLogin: boolean;
   isError: boolean;
   isSkip: boolean;
-  data: User | {};
+  data: User;
   mbti: string;
   token: string;
 };
@@ -119,7 +119,11 @@ const initialState: LoginState = {
   isLogin: false,
   isError: false,
   isSkip: false,
-  data: {},
+  data: {
+    pk: 0,
+    username: '',
+    mbti: ''
+  },
   mbti: '',
   token: '',
 };

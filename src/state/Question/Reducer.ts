@@ -79,8 +79,19 @@ const initialState: QuestionState = {
     },
     err: false
 };
-const initialStateComment: CommentState = { fetching: false, data: [], err: false };
-const initialStateQuestionDetail: QuestionDetailState = { fetching: false, data: [], err: false }
+const initialStateComment: CommentState = {
+    fetching: false,
+    data: [],
+    err: false
+};
+
+const initialStateQuestionDetail: QuestionDetailState = {
+    fetching: false,
+    data: {
+        results: []
+    },
+    err: false
+}
 
 export const QuestionFeed = (state: QuestionState = initialState, action: QuestionCardAction) => {
     switch (action.type) {
@@ -91,7 +102,6 @@ export const QuestionFeed = (state: QuestionState = initialState, action: Questi
             };
         case MAKE_QUESTION_SUCCESS:
             return {
-                ...state,
                 fetching: false,
                 data: action.payload,
                 err: false,
@@ -135,9 +145,10 @@ export const CommentFeed = (state: CommentState = initialStateComment, action: Q
             };
         case MAKE_QUESTION_COMMENT_SUCCESS:
             return {
+                ...state,
                 fetching: false,
                 err: false,
-                data: action.payload,
+                data: [...state.data, action.payload],
             };
         case MAKE_QUESTION_COMMENT_FAIL:
             return {
