@@ -154,19 +154,7 @@ export default function QuestionModal({
     // const QuestionDetail = useSelector((state: RootState) => state.profile)
     const Logininfo = useSelector((state: RootState) => state.login)
     const QuestionComment = useSelector((state: RootState) => state.questionComment)
-    const QuestionDetail = [{
-        id,
-        title,
-        tags,
-        questions,
-        created_at,
-        author:{
-            username,
-            user_image,
-            pk
-        }
-    }]
-
+    const QuestionDetail = useSelector((state:RootState) => state.questionDetail)
 
 
     const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number, overFlow?: string } => {
@@ -183,7 +171,9 @@ export default function QuestionModal({
     }
 
     const handleDetail = (index: number) => {
+        console.log('index',index)
         const isClose = index === detailIndex
+        dispatch({type: QUESTION_COMMENTS_REQUEST, payload : {token: Logininfo.token, page_pk: id, question_pk: index}})
         if (animationOn) {
             Animated.timing(slideToggle, {
                 toValue: 0,
@@ -202,8 +192,10 @@ export default function QuestionModal({
         }
     }
     useEffect(() => {
+        // dispatch({type: QUESTION_COMMENTS_REQUEST, payload : {token: Logininfo.token, page_pk: id, question_pk: QuestionDetail.data.results.id}})
+    }, [QuestionDetail])
+    useEffect(() => {
         dispatch({type: GET_QUESTION_DETAIL_REQUEST, payload: {token : Logininfo.token, id: id}})
-        dispatch({type: QUESTION_COMMENTS_REQUEST, payload : {token: Logininfo.token, page_pk: id, question_pk: id}})
     },[])
     useEffect(() => {
         if (animationOn) {
@@ -230,8 +222,8 @@ export default function QuestionModal({
                                 </ModalTabWrapper>
                                 <BodyWrapper>
                                     {/*detailQuestion*/}
-                                    {QuestionDetail&& (
-                                        QuestionDetail.map((item) =>
+                                    {QuestionDetail.data.results && (
+                                        QuestionDetail.data.results.map((item) =>
                                             <ModalTabWrapper key={`q-${item.id}`} onStartShouldSetResponder={() => true}>
                                                 <TextWrapper>
                                                     <QuestionText>Q{item.id + 1}.{item.content}</QuestionText>
@@ -252,7 +244,7 @@ export default function QuestionModal({
                                                     )}
                                                 </Animated.View>
                                                 <DropDownWrapper >
-                                                    <TouchableOpacity onPress={() => handleDetail(Number(item.id))} style={{ padding: 5 }}>
+                                                    <TouchableOpacity onPress={() => handleDetail(item.id)} style={{ padding: 5 }}>
                                                         {detailIndex === 1 ? <UpArrow /> : <DownArrow />}
                                                     </TouchableOpacity>
                                                 </DropDownWrapper>

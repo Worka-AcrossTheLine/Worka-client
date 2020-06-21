@@ -12,7 +12,6 @@ export const makeQuestionCard = ({ tags, title, token }: { token: string, title:
 };
 
 export const makeQuestion = ({ id, question, token }: { id: string, question: string, token: string }) => {
-    console.log(question)
     return reqresApi.post(`pages/${id}/questions/`, { content: question, title: 'kim' }, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
             throw error.response
@@ -28,7 +27,7 @@ export const getQuestion = ({ token }: { token: string }) => {
 };
 
 export const getQuestionDetail =({token, id} : {token: string, id: number}) => {
-    return reqresApi.get(`pages/${id}`, { headers: { Authorization: `JWT ${token}` } })
+    return reqresApi.get(`pages/${id}/questions/`, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
             throw error.response
         });

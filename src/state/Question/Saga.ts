@@ -38,6 +38,7 @@ export function* handleGetQuestion({ type, payload: { token } }: { type: string,
 export function* handleGetQuestionDetail({ type, payload: { token, id } }: { type: string, payload: { token: string, id: number } }) {
     try {
         const response = yield call(getQuestionDetail, { token, id })
+        console.log(response)
         yield put({type: GET_QUESTION_DETAIL_SUCCESS, payload:response.data});
     } catch (err) {
         yield put({ type: GET_QUESTION_DETAIL_FAIL, payload: err })

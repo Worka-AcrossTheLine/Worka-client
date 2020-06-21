@@ -64,6 +64,7 @@ const FeedHome = () => {
         setModalVisible(false);
     }
 
+
     return (
         <>
             {feedState.fetching ? <Text>'Now Loading'</Text> :
