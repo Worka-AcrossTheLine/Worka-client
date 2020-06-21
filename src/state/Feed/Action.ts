@@ -61,7 +61,7 @@ export const makeFeedRequest = (data: makeCard) => {
   return { type: MAKE_FEED_REQUEST, payload: { data } }
 }
 export const makeFeedSuccess = (data: Feeds) => {
-  return { type: MAKE_FEED_SUCCESS, payload: { data } }
+  return { type: MAKE_FEED_SUCCESS, payload: data }
 }
 export const makeFeedFail = (err: boolean) => {
   return { type: MAKE_FEED_FAIL, payload: { err } }

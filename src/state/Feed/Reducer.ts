@@ -18,7 +18,6 @@ export interface Action {
 const initialState: FeedState = { fetching: false, data: [], err: false };
 
 export const getFeed = (state: FeedState = initialState, action: Action) => {
-  console.log(action.type);
   switch (action.type) {
     case GET_FEED_REQUEST:
       return {
@@ -38,6 +37,13 @@ export const getFeed = (state: FeedState = initialState, action: Action) => {
         fetching: false,
         err: true,
       };
+    default:
+      return state;
+  }
+};
+
+export const PostFeed = (state: FeedState = initialState, action: Action) => {
+  switch (action.type) {
     case MAKE_FEED_REQUEST:
       return {
         ...state,
