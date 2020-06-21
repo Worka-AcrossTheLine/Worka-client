@@ -80,17 +80,6 @@ export const ProfileFeed = (state: ProfileState = initialState, action: Action) 
                 fetching: false,
                 data: action.payload.data,
             };
-        case PATCH_COMMENTS_SUCCESS:
-            return {
-                ...state,
-                data: {
-                    ...state.data,
-                    user: {
-                        ...state.data.user,
-                        comments: action.payload.comments
-                    }
-                }
-            }
         case PROFILE_FAIL:
             return {
                 ...state,
