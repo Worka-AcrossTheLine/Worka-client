@@ -52,11 +52,6 @@ const FeedHome = () => {
             post_comments: [],
             tags: [],
         });
-    const dispatch = useDispatch();
-    const logininfo = useSelector((state: RootState) => state.login);
-    const token = AsyncStorage.getItem('token')
-    const pk = AsyncStorage.getItem('pk')
-    const mbti = AsyncStorage.getItem('mbti')
 
     const feedDetail = (item: Feeds) => {
         setStorage({
@@ -69,17 +64,13 @@ const FeedHome = () => {
         setModalVisible(false);
     }
 
-
-    useEffect(() => {
-        // dispatch({ type: GET_FEED_REQUEST, payload: {token : logininfo.token });
-    }, []);
-
     return (
         <>
             {feedState.fetching ? <Text>'Now Loading'</Text> :
                 <View>
                     <FlatList
                         data={feedState.data}
+                        keyExtractor={(item) => item.id}
                         renderItem={({ item }) =>
                             <TouchableOpacity onPress={() => feedDetail(item)} key={item.id}>
                                 <PaddingHeight >
@@ -99,36 +90,3 @@ const FeedHome = () => {
 }
 
 export default FeedHome
-
-//이하 초보 스타일 , 다지웁시다
-const styles = StyleSheet.create({
-    container: {
-        flex: 1, paddingLeft: 10, paddingRight: 10
-    },
-    item: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-    },
-    avatar: {
-        width: 30,
-        height: 30,
-        borderRadius: 15,
-    },
-    viewWrapImage: {
-        flexDirection: 'row',
-        height: 50,
-        alignSelf: 'stretch',
-        alignItems: 'center',
-        margin: 5,
-    },
-    viewtest: {
-        flex: 1,
-        paddingLeft: 10, paddingRight: 10,
-        width: 30,
-        height: 30,
-        backgroundColor: '#ffffff'
-    },
-    closebutton: {
-        //empty
-    }
-})

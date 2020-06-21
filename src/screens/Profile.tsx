@@ -125,14 +125,12 @@ const SelectText = styled.Text`
 `;
 
 const Profile = () => {
-    console.log("PROFILE1");
     const [select, setSelect] = useState<select>("card");
     const [modal, setModal] = useState<modal>({
         type: 'none',
         detail: null,
         question: null
     });
-    console.log("PROFILE2");
     //분기처리를 했는데 
     const dispatch = useDispatch()
     const [questionComment, setQuestionComment] = useState<[string]>(['riri']);
@@ -140,7 +138,6 @@ const Profile = () => {
     const profile = useSelector((state: RootState) => state.profile);
     const comments = useSelector((state: RootState) => state.questionComment);
     const { data: { user, cards, pages } } = profile;
-    console.log(profile)
 
     const handleSelect = (text: select) => () => {
         setSelect(text);
@@ -206,8 +203,9 @@ const Profile = () => {
     }
 
     useEffect(() => {
-        console.log("logininfo", logininfo)
-        dispatch({ type: PROFILE_REQUEST, payload: { pk: logininfo.data.pk, token: logininfo.token } })
+        if ('pk' in logininfo.data) {
+            dispatch({ type: PROFILE_REQUEST, payload: { pk: logininfo.data.pk, token: logininfo.token } })
+        }
     }, [])
 
     return (

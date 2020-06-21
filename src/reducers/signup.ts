@@ -1,10 +1,7 @@
 import { call, put } from 'redux-saga/effects';
-import { handleActions } from 'redux-actions';
-
 import * as Api from '../Api/login';
 
-import LOGIN_SUCCESS from './login';
-import AsyncStorage from "@react-native-community/async-storage";
+import { LOGIN_SUCCESS } from './login';
 
 export const SIGNUP_INIT = 'SIGNUP_INIT' as const;
 export const SIGNUP_REQUESTED = 'SIGNUP_REQUESTED' as const;
@@ -45,7 +42,6 @@ export type SignupState = {
     pending: boolean;
     isSignup: boolean;
     isError: boolean;
-    token: string;
     email: string;
     username: string;
 };
@@ -63,8 +59,9 @@ export function* signupUser(action: SignupActionTypes) {
         //     yield AsyncStorage.setItem('pk', user.data.pk)
         // }
         yield put({ type: SIGNUP_SUCCESS, payload: user.data });
-        yield put({ type: LOGIN_SUCCESS});
+        yield put({ type: LOGIN_SUCCESS, payload: { token: user.data.token, user: { mbti: null, pk: user.data.pk, username: user.data.username } } });
     } catch (_error) {
+        console.log(_error);
         let { data }: SignupError = _error;
         const email = data.email ? (data.email[0]) : '';
         const username = data.username ? (data.username[0]) : '';
@@ -76,41 +73,44 @@ const initialState: SignupState = {
     pending: false,
     isSignup: false,
     isError: false,
-    token: '',
     email: '',
     username: '',
 };
 
-const reducer = handleActions(
-    {
-        [SIGNUP_INIT]: (state) => ({
-            pending: false,
-            isSignup: false,
-            isError: false,
-            token: '',
-            email: '',
-            username: '',
-        }),
-        [SIGNUP_REQUESTED]: (state) => ({
-            ...state,
-            pending: true,
-        }),
-        [SIGNUP_SUCCESS]: (state, { payload }) => ({
-            ...state,
-            pending: false,
-            isSignup: true,
-            token: payload.token,
-        }),
-        [SIGNUP_FAILURE]: (state, { payload }) => ({
-            ...state,
-            pending: false,
-            isSignup: false,
-            isError: true,
-            email: payload.email,
-            username: payload.username,
-        }),
-    },
-    initialState,
-);
+const reducer = (state: SignupState = initialState, action: SignupActionTypes) => {
+    const { payload } = action;
+    switch (action.type) {
+        case SIGNUP_INIT:
+            return {
+                pending: false,
+                isSignup: false,
+                isError: false,
+                email: '',
+                username: '',
+            };
+        case SIGNUP_REQUESTED:
+            return {
+                ...state,
+                pending: true,
+            };
+        case SIGNUP_SUCCESS:
+            return {
+                ...state,
+                pending: false,
+                isSignup: true,
+            };
+        case SIGNUP_FAILURE:
+            return {
+                ...state,
+                pending: false,
+                isSignup: false,
+                isError: true,
+                email: payload.email,
+                username: payload.username,
+            };
+        default:
+            return initialState
+    }
+}
 
 export default reducer;

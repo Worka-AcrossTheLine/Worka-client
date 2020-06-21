@@ -63,14 +63,14 @@ export const QUESTION_COMMENTS_FAIL = 'QUESTION_COMMENTS_FAIL'
 
 
 
-export const makeQuestionRequest = (data : QuestionRequest) => {
-    return {type: MAKE_QUESTION_REQUEST , payload : {data}};
+export const makeQuestionRequest = (data: QuestionRequest) => {
+    return { type: MAKE_QUESTION_REQUEST, payload: { data } };
 };
 export const makeQuestionSuccess = (data: Question) => {
-    return {type: MAKE_QUESTION_SUCCESS, payload: {data}};
+    return { type: MAKE_QUESTION_SUCCESS, payload: { data } };
 };
 export const MakeQuestionFail = (err: boolean) => {
-    return {type: MAKE_QUESTION_FAIL, payload: {err}};
+    return { type: MAKE_QUESTION_FAIL, payload: { err } };
 };
 
 

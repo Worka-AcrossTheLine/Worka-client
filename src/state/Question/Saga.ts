@@ -1,11 +1,12 @@
 import {call, put} from "redux-saga/effects";
 import {
     MAKE_QUESTION_COMMENT_FAIL,
-    MAKE_QUESTION_COMMENT_SUCCESS,
-    MAKE_QUESTION_FAIL,
+    MAKE_QUESTION_COMMENT_SUCCESS,GET_QUESTION_FAIL,
+    MAKE_QUESTION_FAIL,getQuestionSuccess,
     makeQuestionSuccess, QUESTION_COMMENTS_SUCCESS, QUESTION_COMMENTS_FAIL, QUESTION_COMMENTS_REQUEST
 } from "./Action";
 import {makeQuestion, makeQuestionCard, getQuestion, makeQuestionComment, getQuestionComment} from "../../Api/Question";
+
 import {Action} from "./Reducer";
 
 export function* handleQuestion(action : Action) {
@@ -19,12 +20,12 @@ export function* handleQuestion(action : Action) {
     }
 }
 
-export function* handleGetQuestion() {
-    try{
-        const response = yield call(getQuestion)
-        yield put(makeQuestionSuccess(response.data));
+export function* handleGetQuestion({ type, payload: { token } }: { type: string, payload: { token: string } }) {
+    try {
+        const response = yield call(getQuestion, { token })
+        yield put(getQuestionSuccess(response.data));
     } catch (err) {
-        yield put({ type: MAKE_QUESTION_FAIL , payload: err })
+        yield put({ type: GET_QUESTION_FAIL, payload: err })
     }
 }
 

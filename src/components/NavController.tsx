@@ -12,42 +12,39 @@ import { GET_FEED_REQUEST } from "../state/Feed/Action";
 
 type TendencyProps = {
     mbti: string;
+    token: string;
 }
 
 type Props = {
     token: string
 }
 
-function TendencyController({ mbti }: TendencyProps) {
+function TendencyController({ token, mbti }: TendencyProps) {
+    const dispatch = useDispatch()
+    const rootState = useSelector((state: RootState) => state);
+    const loginState = rootState.login;
+    const feedState = rootState.feed;
+    useEffect(() => {
+        console.log("DISPATCH FEED REQUEST");
+        dispatch({ type: GET_FEED_REQUEST, payload: { token: token || loginState.token } })
+    }, [])
     return (
         <>
-            {mbti === "" ? <Tendency /> : <BottomNavigation />}
+            {!mbti || !loginState.mbti ? <Tendency /> : <BottomNavigation />}
         </>
     )
 }
 
 export default function NavController({ token }: Props) {
     const rootState = useSelector((state: RootState) => state)
-    const [setLogin, setSetLogin] = useState<boolean>(false);
     const loginState = rootState.login;
-    const dispatch = useDispatch()
-    const feedState = rootState.feed;
-
-    useEffect(() => {
-        if (token || loginState.token) {
-            dispatch({ type: GET_FEED_REQUEST, payload: { token: token || loginState.token } })
-        }
-    }, [token])
-
-    const setInfo = () => {
-    }
-    const loginController = loginState.isLogin
+    const loginController = loginState.isLogin || token
     return (
         <>
             {!loginController ?
                 <AuthNavigation />
                 :
-                <TendencyController mbti={loginState.mbti} />
+                <TendencyController token={token} mbti={loginState.mbti} />
             }
         </>
     )

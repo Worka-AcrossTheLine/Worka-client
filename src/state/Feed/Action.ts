@@ -51,7 +51,7 @@ export const getFeedRequest = () => {
   return { type: GET_FEED_REQUEST };
 };
 export const getFeedSuccess = (data: Feeds[]) => {
-  return { type: GET_FEED_SUCCESS, payload: { data } };
+  return { type: GET_FEED_SUCCESS, payload: data };
 };
 export const getFeedFail = (err: boolean) => {
   return { type: GET_FEED_FAIL, payload: { err } };
