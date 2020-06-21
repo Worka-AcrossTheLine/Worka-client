@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, Dispatch } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
 import AuthNavigation from '../navigator/AuthNavigation';
@@ -16,7 +16,8 @@ type TendencyProps = {
 }
 
 type Props = {
-    token: string
+    token: string;
+    setToken: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function TendencyController({ token }: TendencyProps) {
@@ -47,10 +48,13 @@ function TendencyController({ token }: TendencyProps) {
     )
 }
 
-export default function NavController({ token }: Props) {
+export default function NavController({ token, setToken }: Props) {
     const rootState = useSelector((state: RootState) => state)
     const loginState = rootState.login;
     const loginController = loginState.isLogin || token
+    if (loginState.isLogin) {
+        setToken("");
+    }
     useEffect(() => {
     }, [])
     return (

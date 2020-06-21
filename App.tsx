@@ -34,7 +34,7 @@ export default function App() {
         <NavigationContainer>
           <View style={{ width: "100%", height: "100%", backgroundColor: 'black', alignItems: 'center' }}>
             <View style={{ height: "100%", width: "100%", maxWidth: 800 }}>
-              <NavController token={token} />
+              <NavController token={token} setToken={setToken} />
             </View>
           </View>
         </NavigationContainer>
