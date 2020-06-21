@@ -2,6 +2,4 @@ const addTap =  (setFunction: React.Dispatch<React.SetStateAction<string>>) => (
     setFunction(e);
 };
 
-
-
 export default addTap

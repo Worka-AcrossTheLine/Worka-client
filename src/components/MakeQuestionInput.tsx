@@ -25,6 +25,9 @@ const MakeQuestionInput = ({
                 placeholder={placeholder}
                 onChangeText={(e) => onChange(e)}
                 value = {value}
+                autoCapitalize  = 'none'
+                autoCorrect = { false }
+                autoCompleteType = 'off'
             />
         </InputWrapper>
     
