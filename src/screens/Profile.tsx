@@ -208,6 +208,8 @@ const Profile = () => {
         }
     }, [])
 
+    console.log(profile.data)
+
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             {user.pk ?
