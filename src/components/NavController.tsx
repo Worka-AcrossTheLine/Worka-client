@@ -25,7 +25,6 @@ function TendencyController({ token, mbti }: TendencyProps) {
     const loginState = rootState.login;
     const feedState = rootState.feed;
     useEffect(() => {
-        console.log("DISPATCH FEED REQUEST");
         dispatch({ type: GET_FEED_REQUEST, payload: { token: token || loginState.token } })
     }, [])
     return (

@@ -71,7 +71,6 @@ export default function ({ navigation }: Props) {
     const handleInput = (e: string): void => {
         clearTimeout(searchState.searchE);
         const searchE = setTimeout(() => {
-            console.log("SEARCH!!", e);
             dispatch({ type: SEARCH_REQUEST, payload: { token, temp: e } })
         }, 600);
 

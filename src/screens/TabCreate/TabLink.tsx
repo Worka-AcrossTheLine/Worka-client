@@ -1,4 +1,4 @@
-import React, { useState, useEffect }from 'react'
+import React, { useState, useEffect } from 'react'
 import { Keyboard, TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
@@ -20,7 +20,7 @@ import validCheck from '../../constants/validCheck'
 type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
 
 type Props = {
-    onPress:() => void;
+    onPress: () => void;
     keyboardType?: 'url';
     navigation: TopNewsNavigationProp;
 }
@@ -51,8 +51,8 @@ const InputWrapper = styled.View`
 
 const TabLink = ({
     onPress, keyboardType, navigation
-    }:Props) => {
-    
+}: Props) => {
+
 
 
     const [tapTag, setTaptag] = useState('');
@@ -62,8 +62,8 @@ const TabLink = ({
     const [isMake, setIsMake] = useState(false);
 
     const login = useSelector((state: RootState) => state.login);
-    
-    const handleKeyboard  = () => {
+
+    const handleKeyboard = () => {
         Keyboard.dismiss();
     }
     const onCancer = () => {
@@ -76,34 +76,31 @@ const TabLink = ({
         setTimeout(() => {
             setIsMake(true);
         }, 50);
-      
+
     }
-    useEffect(()=> {
-        console.log("UPLOAD")
-        if(isMake) {
+    useEffect(() => {
+        if (isMake) {
             setIsMake(false);
-             if(!urlValid) {
+            if (!urlValid) {
                 const token = login.token;
                 const tags = tapTag.split(',')
-                console.log("TAB LINK TOKEN IS", token);
-                if(token) {
+                if (token) {
                     dispatch({
                         type: MAKE_LINK_REQUEST,
-                        payload: { title: InterestingTitle, tag: tags, token: token, url:tapUrl  }
+                        payload: { title: InterestingTitle, tag: tags, token: token, url: tapUrl }
                     })
-                } else { 
-                    console.log("Does not exist Token")
+                } else {
                 }
             }
         }
-    },[isMake])
+    }, [isMake])
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <TouchableWithoutFeedback onPress={handleKeyboard}>
                 <Wrapper>
                     <TitleWrapper>
-                        <CancerButton 
+                        <CancerButton
                             title="CANCER"
                             onPress={() => onCancer()}
                         />
@@ -113,25 +110,25 @@ const TabLink = ({
                         <MakeButton title="MAKE" onPress={upLoad}></MakeButton>
                     </TitleWrapper>
                     <InputWrapper >
-                        <MakeJobTagInput 
+                        <MakeJobTagInput
                             placeholder="Make Job Tag"
                             value={tapTag}
-                            onChange = {addTap(setTaptag)}
-                            autoFocus = { true }
+                            onChange={addTap(setTaptag)}
+                            autoFocus={true}
                         />
                         <MakeInterestingInput
                             placeholder="Make Interesting Title"
                             value={InterestingTitle}
                             onChange={addTap(setInterestingTitle)}
-                            autoFocus = {true}
+                            autoFocus={true}
                         />
                         <MakeEmbed
-                            placeholder="http://"    
+                            placeholder="http://"
                             value={tapUrl}
-                            keyboardType = {keyboardType}
+                            keyboardType={keyboardType}
                             onChange={addTap(setTapUrl)}
                             onBlur={() => validCheck('url')(tapUrl, setUrlValid)}
-                            valid = {urlValid}
+                            valid={urlValid}
                         />
                     </InputWrapper>
                 </Wrapper>

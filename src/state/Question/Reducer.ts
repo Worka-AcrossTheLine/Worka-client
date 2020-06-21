@@ -9,7 +9,12 @@ import {
     QUESTION_COMMENTS_SUCCESS,
     QUESTION_COMMENTS_FAIL,
     QuestionDetail,
-    GET_QUESTION_DETAIL_REQUEST, GET_QUESTION_DETAIL_SUCCESS, GET_QUESTION_DETAIL_FAIL, GET_QUESTION_REQUEST, GET_QUESTION_SUCCESS, GET_QUESTION_FAIL
+    GET_QUESTION_DETAIL_REQUEST,
+    GET_QUESTION_DETAIL_SUCCESS,
+    GET_QUESTION_DETAIL_FAIL,
+    GET_QUESTION_REQUEST,
+    GET_QUESTION_SUCCESS,
+    GET_QUESTION_FAIL
 } from "./Action";
 import { QuestionComment } from "./Action";
 
@@ -19,7 +24,7 @@ export interface QuestionCardAction {
     payload: questionCard[];
 }
 
-export interface QuestionCommentAction{
+export interface QuestionCommentAction {
     type: string;
     payload: Comment[]
 }
@@ -59,9 +64,11 @@ export interface CommentState {
     err: boolean;
 }
 
-export interface QuestionDetailState{
+export interface QuestionDetailState {
     fetching: boolean;
-    data: QuestionDetail[]
+    data: {
+        results: QuestionDetail[]
+    }
     err: boolean;
 }
 
@@ -72,8 +79,8 @@ const initialState: QuestionState = {
     },
     err: false
 };
-const initialStateComment : CommentState = { fetching: false, data: [], err: false};
-const initialStateQuestionDetail : QuestionDetailState = { fetching: false, data: [], err: false}
+const initialStateComment: CommentState = { fetching: false, data: [], err: false };
+const initialStateQuestionDetail: QuestionDetailState = { fetching: false, data: [], err: false }
 
 export const QuestionFeed = (state: QuestionState = initialState, action: QuestionCardAction) => {
     switch (action.type) {
@@ -172,14 +179,14 @@ export const QuestionDetailFeed = (state: QuestionDetailState = initialStateQues
         case GET_QUESTION_DETAIL_SUCCESS:
             return {
                 fetching: false,
-                err:false,
+                err: false,
                 data: action.payload,
             };
         case GET_QUESTION_DETAIL_FAIL:
             return {
                 ...state,
                 err: true,
-                fetching:false,
+                fetching: false,
             };
         default:
             return state;

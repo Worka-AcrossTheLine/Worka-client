@@ -14,10 +14,8 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
   try {
     const response = yield call(getFeed, { token });
     yield put({ type: LOGIN_SUCCESS, payload: { token, user: response.data.request_user } })
-    console.log(response.data)
     yield put(getFeedSuccess(response.data.results));
   } catch (err) {
-    console.log(err);
     if (err.status === 401) {
       yield put({ type: LOGOUT });
     }
@@ -29,7 +27,6 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
 export function* handleMakeFeed(action: Action) {
   try {
     const response = yield call(makeFeed, action.payload);
-    //   console.log(response);
     //   yield put(makeFeedSuccess(response.data));
   } catch (err) {
     yield put({ type: MAKE_FEED_FAIL, payload: err })

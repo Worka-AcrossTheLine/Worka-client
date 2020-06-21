@@ -61,7 +61,6 @@ export function* signupUser(action: SignupActionTypes) {
         yield put({ type: SIGNUP_SUCCESS, payload: user.data });
         yield put({ type: LOGIN_SUCCESS, payload: { token: user.data.token, user: { mbti: null, pk: user.data.pk, username: user.data.username } } });
     } catch (_error) {
-        console.log(_error);
         let { data }: SignupError = _error;
         const email = data.email ? (data.email[0]) : '';
         const username = data.username ? (data.username[0]) : '';

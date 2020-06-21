@@ -86,10 +86,8 @@ export const requestLogin = () =>
 export function* loginUser(action: LoginActionTypes) {
   try {
     const user: LoginResponse = yield call(Api.login, action.payload);
-    console.log(user.data);
     yield put({ type: LOGIN_SUCCESS, payload: user.data });
   } catch (err) {
-    console.log(err);
     yield put({ type: LOGIN_FAILURE })
   }
 }
@@ -97,9 +95,7 @@ export function* loginUser(action: LoginActionTypes) {
 export function* tendencyUser(action: TendencyActionTypes) {
   try {
     const tendency = yield call(Api.tendency, action.payload);
-    console.log(tendency);
   } catch (err) {
-    console.log(err);
   } finally {
     yield put({
       type: TENDENCY_SUCSSES, payload: action.payload
@@ -113,7 +109,6 @@ export function* withdrawal({ payload: { token } }: withdrawal) {
     yield call(Api.withdrawal, { token });
     yield put({ type: LOGOUT })
   } catch (error) {
-    console.log(error);
   }
 }
 
