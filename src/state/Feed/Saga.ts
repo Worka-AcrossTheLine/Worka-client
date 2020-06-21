@@ -2,7 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import { getFeed, getFeedDetail, makeFeed } from '../../Api/Feed';
 import {
   GET_FEED_FAIL,
-  getFeedSuccess, MAKE_FEED_FAIL,
+  getFeedSuccess, MAKE_FEED_FAIL, makeCard,
   makeFeedSuccess
 } from './Action';
 import { Action } from '../index'
@@ -26,12 +26,14 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
 }
 
 
-export function* handleMakeFeed(action: Action) {
+export function* handleMakeFeed({ type, payload: { title,tags, text, images, token}  }: { type: string, payload: makeCard }) {
   try {
-    const response = yield call(makeFeed, action.payload);
-    //   console.log(response);
-    //   yield put(makeFeedSuccess(response.data));
+    console.log(title)
+    const response = yield call(makeFeed, {title,tags,text,images,token});
+    console.log(response)
+      yield put(makeFeedSuccess(response.data));
   } catch (err) {
+    console.log(err.status)
     yield put({ type: MAKE_FEED_FAIL, payload: err })
   }
 }

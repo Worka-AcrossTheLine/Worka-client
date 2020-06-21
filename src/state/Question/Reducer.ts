@@ -77,24 +77,6 @@ const initialStateQuestionDetail : QuestionDetailState = { fetching: false, data
 
 export const QuestionFeed = (state: QuestionState = initialState, action: QuestionCardAction) => {
     switch (action.type) {
-        case MAKE_QUESTION_REQUEST:
-            return {
-                ...state,
-                fetching: true,
-            };
-        case MAKE_QUESTION_SUCCESS:
-            return {
-                ...state,
-                fetching: false,
-                data: action.payload,
-                err: false,
-            };
-        case MAKE_QUESTION_FAIL:
-            return {
-                ...state,
-                fetching: false,
-                err: true,
-            };
         case GET_QUESTION_REQUEST:
             return {
                 ...state,
@@ -118,6 +100,30 @@ export const QuestionFeed = (state: QuestionState = initialState, action: Questi
     }
 };
 
+export const MakeQuestionFeed = (state: QuestionState = initialState, action: QuestionCardAction) => {
+    switch (action.type) {
+        case MAKE_QUESTION_REQUEST:
+            return {
+                ...state,
+                fetching: true,
+            };
+        case MAKE_QUESTION_SUCCESS:
+            return {
+                ...state,
+                fetching: false,
+                data: action.payload,
+                err: false,
+            };
+        case MAKE_QUESTION_FAIL:
+            return {
+                ...state,
+                fetching: false,
+                err: true,
+            };
+        default:
+            return state;
+    }
+};
 export const CommentFeed = (state: CommentState = initialStateComment, action: QuestionCommentAction) => {
     switch (action.type) {
         case MAKE_QUESTION_COMMENT_REQUEST:

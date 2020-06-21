@@ -219,8 +219,8 @@ export default function QuestionModal({
                                 </ModalTabWrapper>
                                 <BodyWrapper>
                                     {/*detailQuestion*/}
-                                    {QuestionDetail.data.results && (
-                                        QuestionDetail.data.results.map((item) =>
+                                    {QuestionDetail.data && (
+                                        QuestionDetail.data.map((item) =>
                                             <ModalTabWrapper key={`q-${item.id}`} onStartShouldSetResponder={() => true}>
                                                 <TextWrapper>
                                                     <QuestionText>Q{item.id + 1}.{item.content}</QuestionText>

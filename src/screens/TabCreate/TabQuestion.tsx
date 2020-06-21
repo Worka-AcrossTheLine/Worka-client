@@ -54,7 +54,7 @@ const TabQuestion = ({navigation} :Props) => {
 
 
     const Upload = () => {
-        const tags = tapTag.split(',')
+        const tags = tapTag.split(' ')
         if(isLogin.isLogin && isLogin.token) {
             dispatch({type: MAKE_QUESTION_REQUEST, payload: {tags: tags, title: InterestingTitle, question: quetion,token: isLogin.token}})
         }
