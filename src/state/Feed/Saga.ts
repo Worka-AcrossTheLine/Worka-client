@@ -14,6 +14,7 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
   try {
     const response = yield call(getFeed, { token });
     yield put({ type: LOGIN_SUCCESS, payload: { token, user: response.data.request_user } })
+    console.log(response.data)
     yield put(getFeedSuccess(response.data.results));
   } catch (err) {
     console.log(err);
