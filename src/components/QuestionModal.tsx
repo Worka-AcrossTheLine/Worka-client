@@ -192,9 +192,6 @@ export default function QuestionModal({
         }
     }
     useEffect(() => {
-        // dispatch({type: QUESTION_COMMENTS_REQUEST, payload : {token: Logininfo.token, page_pk: id, question_pk: QuestionDetail.data.results.id}})
-    }, [QuestionDetail])
-    useEffect(() => {
         dispatch({type: GET_QUESTION_DETAIL_REQUEST, payload: {token : Logininfo.token, id: id}})
     },[])
     useEffect(() => {

@@ -14,16 +14,26 @@ import {
 import { QuestionComment } from "./Action";
 
 
-export interface Action {
+export interface QuestionCardAction {
     type: string;
-    payload: any;
+    payload: questionCard[];
+}
+
+export interface QuestionCommentAction{
+    type: string;
+    payload: Comment[]
+}
+
+export interface QuestionDetailAction {
+    type: string;
+    payload: QuestionDetail[]
 }
 
 export interface questionCard {
-    id: number;
+    id: string;
     title: string;
     tags: string[];
-    questions: string;
+    questions: number;
     author: {
         pk: number;
         username: string;
@@ -55,7 +65,7 @@ const initialState: QuestionState = { fetching: false, data: [], err: false };
 const initialStateComment : CommentState = { fetching: false, data: [], err: false};
 const initialStateQuestionDetail : QuestionDetailState = { fetching: false, data: [], err: false}
 
-export const questionFeed = (state: QuestionState = initialState, action: Action) => {
+export const questionFeed = (state: QuestionState = initialState, action: QuestionCardAction) => {
     switch (action.type) {
         case MAKE_QUESTION_REQUEST:
             return {
@@ -98,7 +108,7 @@ export const questionFeed = (state: QuestionState = initialState, action: Action
     }
 };
 
-export const CommentFeed = (state: CommentState = initialStateComment, action: Action) => {
+export const CommentFeed = (state: CommentState = initialStateComment, action: QuestionCommentAction) => {
     switch (action.type) {
         case MAKE_QUESTION_COMMENT_REQUEST:
             return {
@@ -127,7 +137,7 @@ export const CommentFeed = (state: CommentState = initialStateComment, action: A
         case QUESTION_COMMENTS_SUCCESS:
             return {
                 fetching: false,
-                data: action.payload.data,
+                data: action.payload,
                 err: false,
             };
         case QUESTION_COMMENTS_FAIL:
@@ -141,7 +151,7 @@ export const CommentFeed = (state: CommentState = initialStateComment, action: A
     }
 };
 
-export const QuestionDetailFeed = (state: QuestionDetailState = initialStateQuestionDetail, action: Action) => {
+export const QuestionDetailFeed = (state: QuestionDetailState = initialStateQuestionDetail, action: QuestionDetailAction) => {
     switch (action.type) {
         case GET_QUESTION_DETAIL_REQUEST:
             return {
