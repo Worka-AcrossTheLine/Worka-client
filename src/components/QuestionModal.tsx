@@ -68,7 +68,6 @@ const DropDownWrapper = styled.View`
 
 const AnswerWrapper = styled.View`
     width:100%;
-    height:30px;
     margin-top:10px;
     padding:0px 10px;
 `;
@@ -95,7 +94,8 @@ const UserTagWrapper = styled.View`
 
 const PostComment = styled.View`
     flex:1;
-    min-height:40px;
+    min-height:60px;
+    margin-top:10px;
     justify-content:flex-end;
     padding:10px;
 `;
@@ -121,14 +121,16 @@ const Desc = styled.Text`
 
 const QuestionText = styled.Text`
     text-align:center;
-    font-size:${({ theme }: ThemeProps): number => theme.mdFont}px;
+    font-size:${({ theme }: ThemeProps): number => theme.lgFont}px;
     color:${({ theme }: ThemeProps): string => theme.textColor};
+    font-weight:800;
     line-height:12px;
 `;
 
 const AnswerUsername = styled.Text`
     color:${({ theme }: ThemeProps): string => theme.textColor};
-    font-size:${({ theme }: ThemeProps): number => theme.smFont}px;
+    font-size:${({ theme }: ThemeProps): number => theme.mdFont}px;
+    font-weight:800;
     margin-bottom:4px;
 `;
 
@@ -163,7 +165,6 @@ export default function QuestionModal({
     const rootState = useSelector((state: RootState) => state);
     const { login: Logininfo, questionComment: questionComment, questionDetail: questionDetail } = rootState;
     // refresh
-    const [isRefresh, setIsRefresh] = useState(false);
 
     const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number, overFlow?: string } => {
         return (
@@ -213,12 +214,6 @@ export default function QuestionModal({
         setText("");
     }
 
-    const refreshing = () => {
-        setIsRefresh(true);
-        getQuestionDetailRequest();
-        setIsRefresh(false);
-    }
-
     useEffect(() => {
         if (animationOn) {
             Animated.timing(slideToggle, {
@@ -237,49 +232,45 @@ export default function QuestionModal({
     }
 
     useEffect(() => {
-        setIsRefresh(false);
         getQuestionDetailRequest()
     }, []);
+
 
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={closeModal} >
             <TouchableWithoutFeedback onPress={closeModal}>
                 <Wrapper>
-                    <QuestionWrapper onStartShouldSetResponder={() => true}>
+                    <QuestionWrapper onStartShouldSetResponder={() => true} >
                         <ModalTabWrapper>
-                            <TileWrapper onStartShouldSetResponder={() => true}>
+                            <TileWrapper >
                                 <TextWrapper style={{ flex: 1 }}>
                                     <Desc>{title}</Desc>
                                 </TextWrapper>
                                 <Image source={{ uri: user_image || "https://miro.medium.com/max/1400/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg" }} />
                             </TileWrapper>
                         </ModalTabWrapper>
-                        <BodyWrapper>
+                        <BodyWrapper onStartShouldSetResponder={() => true}>
                             {/*detailQuestion*/}
                             {questionDetail.data.results && (
-                                <FlatList
-                                    refreshing={isRefresh}
-                                    onRefresh={refreshing}
-                                    data={questionDetail.data.results}
-                                    keyExtractor={(item) => `${item.id}`}
-                                    renderItem={({ item }) =>
-                                        <ModalTabWrapper key={`q-${item.id}`} onStartShouldSetResponder={() => true}>
+                                <ScrollView style={{ flex: 1 }} scrollEnabled={typeof animationState.detailIndex !== 'number'}>
+                                    {questionDetail.data.results.map((item) =>
+                                        <ModalTabWrapper key={`q-${item.id}`}>
                                             <TextWrapper>
                                                 <QuestionText>Q{item.id + 1}.{item.content}</QuestionText>
                                             </TextWrapper>
-                                            <Animated.View style={setDetailStyle(item.id)} onStartShouldSetResponder={() => true}>
+                                            <Animated.View style={setDetailStyle(item.id)} >
                                                 {/*comment*/}
                                                 {questionComment.data && (
                                                     <FlatList
-                                                        style={{}}
+                                                        scrollEnabled={typeof animationState.detailIndex === 'number'}
                                                         refreshing={questionComment.fetching}
                                                         onRefresh={() => questionCommentsRequest(item.id)}
                                                         data={questionComment.data}
                                                         keyExtractor={(item) => `${item.id}`}
                                                         renderItem={({ item: questionComment }) =>
-                                                            <AnswerWrapper onStartShouldSetResponder={() => true} >
+                                                            <AnswerWrapper>
                                                                 <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
-                                                                <AnswerUsername>${questionComment.text}</AnswerUsername>
+                                                                <AnswerUsername>{questionComment.text}</AnswerUsername>
                                                                 <RatingWrapper>
                                                                     <ThumpsUp style={{ marginRight: 7 }} />
                                                                     <ThumpsDown style={{ marginRight: 5 }} />
@@ -313,8 +304,8 @@ export default function QuestionModal({
                                                 </TouchableOpacity>
                                             </DropDownWrapper>
                                         </ModalTabWrapper>
-                                    }
-                                />
+                                    )}
+                                </ScrollView>
                             )}
                             <TagWrapper >
                                 <TendencyTagWrapper>
