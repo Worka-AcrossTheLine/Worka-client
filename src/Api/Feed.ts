@@ -42,17 +42,18 @@ export const makeFeed = ({ title,
     token
 }: makeCard) => {
     const form: Form = new FormData();
-    // console.log(body);
+    console.log("MAKE FEED");
     form.append("title", title);
     form.append("tags", tags);
     form.append("text", text);
     form.append("token", token);
-    let match = /\.(\w+)$/.exec(images);
-    let type = match ? `image/${match[1]}` : `image`;
-    const blob = new Blob([JSON.stringify({ uri: images, name: images.split('/').pop(), type }, null, 2)]);
-    // form.append('images', JSON.stringify({ uri: images, name: images.split('/').pop(), type }));
-    form.append('images', { uri: images, name: images.split('/').pop(), type });
-    console.log(form);
+    if (images) {
+        let match = /\.(\w+)$/.exec(images);
+        let type = match ? `image/${match[1]}` : `image`;
+        // form.append('images', JSON.stringify({ uri: images, name: images.split('/').pop(), type }));
+        form.append('images', { uri: images, name: images.split('/').pop(), type });
+    }
+    // console.log(form);
     return reqresApi.post(`post/feed/`, form, {
         headers: {
             Authorization: `JWT ${token}`, 'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'

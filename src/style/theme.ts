@@ -29,12 +29,10 @@ const theme = {
     lgFont: 12,
 }
 
-function update() {
-    console.log("UPDATE");
-    theme.smFont = 8 + store.getState().setting.addFont;
-}
-
-store.subscribe(update);
+// function update() {
+//     theme.smFont = 8 + store.getState().setting.addFont;
+// }
+// store.subscribe(update);
 
 
 export default theme;

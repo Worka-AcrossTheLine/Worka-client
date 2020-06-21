@@ -18,7 +18,7 @@ export interface questionCard {
     tags: string[];
     questions: string;
     author: {
-        pk : number;
+        pk: number;
         username: string;
         user_image: string;
     }
@@ -32,44 +32,48 @@ export interface QuestionState {
     err: boolean;
 }
 
-const initialState: QuestionState = { fetching: false, data: [], err: false };
+const initialState: QuestionState = {
+    fetching: false,
+    data: [],
+    err: false
+};
 
 export const questionFeed = (state: QuestionState = initialState, action: Action) => {
     switch (action.type) {
         case MAKE_QUESTION_REQUEST:
             return {
+                ...state,
                 fetching: true,
-                data: null,
-                err: false,
             };
         case MAKE_QUESTION_SUCCESS:
             return {
+                ...state,
                 fetching: false,
                 data: action.payload,
                 err: false,
             };
         case MAKE_QUESTION_FAIL:
             return {
+                ...state,
                 fetching: false,
-                data: null,
                 err: true,
             };
         case GET_QUESTION_REQUEST:
             return {
+                ...state,
                 fetching: true,
-                data: null,
-                err: false,
             };
         case GET_QUESTION_SUCCESS:
             return {
+                ...state,
                 fetching: false,
                 data: action.payload,
                 err: false,
             };
         case GET_QUESTION_FAIL:
             return {
+                ...state,
                 fetching: false,
-                data: null,
                 err: true,
             };
         default:
