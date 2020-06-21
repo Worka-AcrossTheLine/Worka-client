@@ -1,17 +1,22 @@
 import {
     GET_QUESTION_FAIL,
     GET_QUESTION_REQUEST,
-    GET_QUESTION_SUCCESS, MAKE_QUESTION_COMMENT_FAIL, MAKE_QUESTION_COMMENT_REQUEST, MAKE_QUESTION_COMMENT_SUCCESS,
+    GET_QUESTION_SUCCESS,
     MAKE_QUESTION_FAIL,
     MAKE_QUESTION_REQUEST,
-    MAKE_QUESTION_SUCCESS, QUESTION_COMMENTS_REQUEST, QUESTION_COMMENTS_SUCCESS, QUESTION_COMMENTS_FAIL
+    MAKE_QUESTION_SUCCESS,
+    MAKE_QUESTION_COMMENT_FAIL,
+    MAKE_QUESTION_COMMENT_REQUEST,
+    MAKE_QUESTION_COMMENT_SUCCESS,
+    QUESTION_COMMENTS_FAIL,
+    QUESTION_COMMENTS_REQUEST,
+    QUESTION_COMMENTS_SUCCESS,
+    QuestionComment
 } from "./Action";
-import { QuestionComment } from "./Action";
-
 
 export interface Action {
     type: string;
-    payload: any;
+    payload: questionCard[] | questionCard;
 }
 
 export interface questionCard {
@@ -30,18 +35,32 @@ export interface questionCard {
 
 export interface QuestionState {
     fetching: boolean;
-    data: questionCard[];
+    data: {
+        results: questionCard[]
+    }
     err: boolean;
 }
 
-export interface CommentState{
+const initialState: QuestionState = {
+    fetching: false,
+    data: {
+        results: []
+    },
+    err: false
+};
+
+export interface CommentState {
     fetching: boolean;
     data: QuestionComment[];
     err: boolean;
 }
 
-const initialState: QuestionState = { fetching: false, data: [], err: false };
-const initialStateComment : CommentState = { fetching: false, data: [], err: false}
+const initialStateComment: CommentState =
+{
+    fetching: false,
+    data: [],
+    err: false
+}
 
 export const questionFeed = (state: QuestionState = initialState, action: Action) => {
     switch (action.type) {
@@ -97,14 +116,14 @@ export const CommentFeed = (state: CommentState = initialStateComment, action: A
         case MAKE_QUESTION_COMMENT_SUCCESS:
             return {
                 fetching: false,
-                err:false,
+                err: false,
                 data: action.payload,
             };
         case MAKE_QUESTION_COMMENT_FAIL:
             return {
                 ...state,
                 err: true,
-                fetching:false,
+                fetching: false,
             };
         case QUESTION_COMMENTS_REQUEST:
             return {
@@ -115,7 +134,7 @@ export const CommentFeed = (state: CommentState = initialStateComment, action: A
         case QUESTION_COMMENTS_SUCCESS:
             return {
                 fetching: false,
-                data: action.payload.data,
+                data: action.payload,
                 err: false,
             };
         case QUESTION_COMMENTS_FAIL:

@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { Text, ActivityIndicator, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { StackNavigationProp } from '@react-navigation/stack'
 import { useSelector, useDispatch } from 'react-redux'
@@ -8,8 +9,10 @@ import { SearchStackParamList } from '../../navigator/SeachNavigation'
 
 import OsView from '../../components/OsView';
 import { RootState } from '../../reducers';
-import { Text } from 'react-native';
-
+import { FlatList } from 'react-native-gesture-handler';
+import { Feeds } from '../../state/Feed/Action';
+import MentoCard from '../../components/MentoCard';
+import DetailModal from '../../components/DetailModal';
 type AuthHomeNavigationProps = StackNavigationProp<SearchStackParamList, 'Search'>
 
 type Props = {
@@ -17,11 +20,11 @@ type Props = {
 }
 
 const SearchWrapper = styled.View`
-    width:100%
+    width:100%;
+    height:34px;
     justify-content: center;
     align-items : center;
     flex-direction : row;
-    background-color : #FFFFFF
 `;
 
 const InputWrapper = styled.View`
@@ -34,32 +37,36 @@ const InputWrapper = styled.View`
     flex-direction:row;
 `;
 
-const GoBackWrapper = styled.TouchableOpacity`
-    background-color:black;
-`;
+const GoBackWrapper = styled.TouchableOpacity``;
 
 const BackText = styled.Text``;
 
 const Input = styled.TextInput``;
 
 const BodyWrapper = styled.View`
-    background-color:white;
     height:100%;
+    background-color:white;
 `;
 
+const PaddingHeight = styled.View`
+    padding:10px 0px;
+`;
 
 export default function ({ navigation }: Props) {
+    const state = useSelector((state: RootState) => state);
+    const dispatch = useDispatch();
+    const token = state.login.token;
+    const search = state.search
+    const feed = state.feed;
+
     const [searchState, setSearchState] = useState({
         temp: '',
         searchE: 0,
     })
+    const [storage, setStorage] = useState<Feeds>(feed.data[0]);
+    const [modal, setModal] = useState<boolean>(false);
     const { temp, searchE } = searchState;
 
-    const state = useSelector((state: RootState) => state);
-    const dispatch = useDispatch();
-
-    const token = state.login.token;
-    const search = state.search
 
     const handleInput = (e: string): void => {
         clearTimeout(searchState.searchE);
@@ -74,18 +81,47 @@ export default function ({ navigation }: Props) {
         })
     }
 
+    const feedDetail = (item: Feeds) => {
+        setStorage({
+            ...item
+        })
+        setModal(true);
+    }
+
+    const handleClose = () => {
+        setModal(false);
+    }
+
     return (
-        <OsView style={{}}>
+        <OsView>
             <SearchWrapper>
                 <InputWrapper>
-                    <Input value={temp} onChangeText={handleInput} autoFocus={true} />
+                    <Input value={temp} onChangeText={handleInput} autoFocus={true} autoCapitalize='none' />
                 </InputWrapper>
                 <GoBackWrapper onPress={() => navigation.goBack()} >
                     <BackText> CANCEL</BackText>
                 </GoBackWrapper>
             </SearchWrapper>
             <BodyWrapper>
-                <Text>SEARCHED THE </Text>
+                <Text>SEARCHED THE {temp} </Text>
+                {search.fetching ?
+                    <ActivityIndicator /> :
+                    <FlatList
+                        data={search.data.results}
+                        keyExtractor={(item) => `${item.id}`}
+                        renderItem={({ item }) =>
+                            <TouchableOpacity onPress={() => feedDetail(item)} key={item.id}>
+                                <PaddingHeight >
+                                    <MentoCard {...item} />
+                                </PaddingHeight>
+                            </TouchableOpacity>}
+                    />
+                }
+                < DetailModal
+                    visible={modal}
+                    onPress={handleClose}
+                    {...storage}
+                />
             </BodyWrapper>
         </OsView>
     )

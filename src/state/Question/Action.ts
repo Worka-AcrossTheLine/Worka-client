@@ -28,7 +28,7 @@ export interface QuestionComment {
     is_unlike: string,
     like_count: string,
     unlike_count: string,
-    is_mento:string,
+    is_mento: string,
     created_at: string
 }
 
@@ -36,7 +36,7 @@ export interface MakeCommentRequest {
     question_pk: number,
     page_pk: number,
     text: string,
-    token:string,
+    token: string,
 }
 
 interface CommentRequest {
@@ -75,24 +75,24 @@ export const MakeQuestionFail = (err: boolean) => {
 
 
 export const getQuestionRequest = () => {
-    return {type: MAKE_QUESTION_COMMENT_REQUEST };
+    return { type: MAKE_QUESTION_COMMENT_REQUEST };
 };
-export const getQuestionSuccess = (data: QuestionComment) => {
-    return {type: MAKE_QUESTION_COMMENT_SUCCESS, payload: {data}};
+export const getQuestionSuccess = (data: Question[]) => {
+    return { type: MAKE_QUESTION_SUCCESS, payload: data };
 };
 export const getQuestionFail = (err: boolean) => {
-    return {type: MAKE_QUESTION_COMMENT_FAIL, payload: {err}};
+    return { type: MAKE_QUESTION_COMMENT_FAIL, payload: { err } };
 };
 
 
 export const makeQuestionCommentRequest = (data: MakeCommentRequest) => {
-    return {type: MAKE_QUESTION_REQUEST, payload:{data}};
+    return { type: MAKE_QUESTION_COMMENT_REQUEST, payload: { data } };
 };
 export const makeQuestionCommentSuccess = (data: Question[]) => {
-    return {type: MAKE_QUESTION_SUCCESS, payload: {data}};
+    return { type: MAKE_QUESTION_COMMENT_SUCCESS, payload: { data } };
 };
 export const makeQuestionCommentFail = (err: boolean) => {
-    return {type: MAKE_QUESTION_FAIL, payload: {err}};
+    return { type: MAKE_QUESTION_COMMENT_FAIL, payload: { err } };
 };
 
 

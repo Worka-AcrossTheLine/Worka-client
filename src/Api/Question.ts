@@ -12,7 +12,6 @@ export const makeQuestionCard = ({ tags, title, token }: { token: string, title:
 };
 
 export const makeQuestion = ({ id, question, token }: { id: string, question: string, token: string }) => {
-    console.log(question)
     return reqresApi.post(`pages/${id}/questions/`, { content: question, title: 'kim' }, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
             throw error.response

@@ -6,7 +6,7 @@ import {
   makeFeedSuccess
 } from './Action';
 import { Action } from '../index'
-import { LOGIN_SUCCESS } from "../../reducers/login";
+import { LOGIN_SUCCESS, LOGOUT } from "../../reducers/login";
 import { AsyncStorage } from "react-native";
 
 
@@ -18,7 +18,7 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
   } catch (err) {
     console.log(err);
     if (err.status === 401) {
-      yield AsyncStorage.clear()
+      yield put({ type: LOGOUT });
     }
     yield put({ type: GET_FEED_FAIL, payload: err })
   }

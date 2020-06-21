@@ -190,6 +190,7 @@ const reducer = (state: LoginState = initialState, action: action) => {
         mbti: action.payload,
       }
     case LOGOUT:
+      AsyncStorage.clear();
       return {
         ...state,
         isLogin: false,
