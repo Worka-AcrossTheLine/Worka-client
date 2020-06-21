@@ -64,12 +64,6 @@ const FeedHome = () => {
         setModalVisible(false);
     }
 
-
-    useEffect(() => {
-        // dispatch({ type: GET_FEED_REQUEST, payload: {token : logininfo.token });
-    }, []);
-    console.log(feedState.data.length);
-
     return (
         <>
             {feedState.fetching ? <Text>'Now Loading'</Text> :
