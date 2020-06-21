@@ -36,6 +36,7 @@ function TendencyController({ token, mbti }: TendencyProps) {
 }
 
 export default function NavController({ token }: Props) {
+    //fetching.. loading
     const rootState = useSelector((state: RootState) => state)
     const loginState = rootState.login;
     const loginController = loginState.isLogin || token

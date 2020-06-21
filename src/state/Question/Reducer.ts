@@ -111,7 +111,7 @@ export const MakeQuestionFeed = (state: QuestionState = initialState, action: Qu
             return {
                 ...state,
                 fetching: false,
-                data: action.payload,
+                data: [action.payload, ...state.data.results],
                 err: false,
             };
         case MAKE_QUESTION_FAIL:
