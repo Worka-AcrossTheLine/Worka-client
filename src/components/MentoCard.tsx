@@ -83,6 +83,7 @@ export default function MentoCard({
     tags,
     // company,
 }: Props) {
+    console.log(id);
     return (
         <Wrapper>
             <ImageWrapper>

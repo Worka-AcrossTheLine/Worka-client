@@ -203,7 +203,9 @@ const Profile = () => {
     }
 
     useEffect(() => {
-        dispatch({ type: PROFILE_REQUEST, payload: { pk: logininfo.data.pk, token: logininfo.token } })
+        if ('pk' in logininfo.data) {
+            dispatch({ type: PROFILE_REQUEST, payload: { pk: logininfo.data.pk, token: logininfo.token } })
+        }
     }, [])
 
     return (

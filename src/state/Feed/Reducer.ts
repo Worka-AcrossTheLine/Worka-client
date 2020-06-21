@@ -18,6 +18,7 @@ export interface Action {
 const initialState: FeedState = { fetching: false, data: [], err: false };
 
 export const getFeed = (state: FeedState = initialState, action: Action) => {
+  console.log(action.type);
   switch (action.type) {
     case GET_FEED_REQUEST:
       return {

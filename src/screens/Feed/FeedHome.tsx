@@ -68,6 +68,7 @@ const FeedHome = () => {
     useEffect(() => {
         // dispatch({ type: GET_FEED_REQUEST, payload: {token : logininfo.token });
     }, []);
+    console.log(feedState.data.length);
 
     return (
         <>
@@ -75,6 +76,7 @@ const FeedHome = () => {
                 <View>
                     <FlatList
                         data={feedState.data}
+                        keyExtractor={(item) => item.id}
                         renderItem={({ item }) =>
                             <TouchableOpacity onPress={() => feedDetail(item)} key={item.id}>
                                 <PaddingHeight >

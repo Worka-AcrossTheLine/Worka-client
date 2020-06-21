@@ -26,13 +26,11 @@ function TendencyController({ token, mbti }: TendencyProps) {
     const feedState = rootState.feed;
     useEffect(() => {
         console.log("DISPATCH FEED REQUEST");
-        if (!feedState.data) {
-            dispatch({ type: GET_FEED_REQUEST, payload: { token: token || loginState.token } })
-        }
+        dispatch({ type: GET_FEED_REQUEST, payload: { token: token || loginState.token } })
     }, [])
     return (
         <>
-            {!mbti ? <Tendency /> : <BottomNavigation />}
+            {!mbti || !loginState.mbti ? <Tendency /> : <BottomNavigation />}
         </>
     )
 }
@@ -40,9 +38,7 @@ function TendencyController({ token, mbti }: TendencyProps) {
 export default function NavController({ token }: Props) {
     const rootState = useSelector((state: RootState) => state)
     const loginState = rootState.login;
-    const loginController = loginState.isLogin
-    console.log(loginState);
-
+    const loginController = loginState.isLogin || token
     return (
         <>
             {!loginController ?

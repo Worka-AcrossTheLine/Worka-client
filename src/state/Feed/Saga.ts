@@ -28,7 +28,8 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
 export function* handleMakeFeed(action: Action) {
   try {
     const response = yield call(makeFeed, action.payload);
-    yield put(makeFeedSuccess(response));
+    //   console.log(response);
+    //   yield put(makeFeedSuccess(response.data));
   } catch (err) {
     yield put({ type: MAKE_FEED_FAIL, payload: err })
   }
