@@ -1,10 +1,15 @@
 import {
-    GET_QUESTION_FAIL,
-    GET_QUESTION_REQUEST,
-    GET_QUESTION_SUCCESS, MAKE_QUESTION_COMMENT_FAIL, MAKE_QUESTION_COMMENT_REQUEST, MAKE_QUESTION_COMMENT_SUCCESS,
+    MAKE_QUESTION_COMMENT_FAIL,
+    MAKE_QUESTION_COMMENT_REQUEST,
+    MAKE_QUESTION_COMMENT_SUCCESS,
     MAKE_QUESTION_FAIL,
     MAKE_QUESTION_REQUEST,
-    MAKE_QUESTION_SUCCESS, QUESTION_COMMENTS_REQUEST, QUESTION_COMMENTS_SUCCESS, QUESTION_COMMENTS_FAIL
+    MAKE_QUESTION_SUCCESS,
+    QUESTION_COMMENTS_REQUEST,
+    QUESTION_COMMENTS_SUCCESS,
+    QUESTION_COMMENTS_FAIL,
+    QuestionDetail,
+    GET_QUESTION_DETAIL_REQUEST, GET_QUESTION_DETAIL_SUCCESS, GET_QUESTION_DETAIL_FAIL
 } from "./Action";
 import { QuestionComment } from "./Action";
 
@@ -40,8 +45,15 @@ export interface CommentState{
     err: boolean;
 }
 
+export interface QuestionDetailState{
+    fetching: boolean;
+    data: QuestionDetail[]
+    err: boolean;
+}
+
 const initialState: QuestionState = { fetching: false, data: [], err: false };
-const initialStateComment : CommentState = { fetching: false, data: [], err: false}
+const initialStateComment : CommentState = { fetching: false, data: [], err: false};
+const initialStateQuestionDetail : QuestionDetailState = { fetching: false, data: [], err: false}
 
 export const questionFeed = (state: QuestionState = initialState, action: Action) => {
     switch (action.type) {
@@ -123,6 +135,31 @@ export const CommentFeed = (state: CommentState = initialStateComment, action: A
                 ...state,
                 fetching: false,
                 err: false,
+            };
+        default:
+            return state;
+    }
+};
+
+export const QuestionDetailFeed = (state: QuestionDetailState = initialStateQuestionDetail, action: Action) => {
+    switch (action.type) {
+        case GET_QUESTION_DETAIL_REQUEST:
+            return {
+                ...state,
+                fetching: true,
+                err: false
+            };
+        case GET_QUESTION_DETAIL_SUCCESS:
+            return {
+                fetching: false,
+                err:false,
+                data: action.payload,
+            };
+        case GET_QUESTION_DETAIL_FAIL:
+            return {
+                ...state,
+                err: true,
+                fetching:false,
             };
         default:
             return state;

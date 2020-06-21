@@ -86,7 +86,7 @@ export default function MentoCard({
     return (
         <Wrapper>
             <ImageWrapper>
-                {images ? <Image source={{ uri: images }} /> : <TextWrapper>
+                {images ? <Image source={{ uri: images || '' }} /> : <TextWrapper>
                     <Title>{title}</Title>
                     <Desc>{text}</Desc>
                 </TextWrapper>}

@@ -124,6 +124,8 @@ const SelectText = styled.Text`
     font-size:20px;
 `;
 
+
+
 const Profile = () => {
     const [select, setSelect] = useState<select>("card");
     const [modal, setModal] = useState<modal>({
@@ -131,13 +133,16 @@ const Profile = () => {
         detail: null,
         question: null
     });
+    const [switcher, setSwitcher] = useState<boolean>(false);
     //분기처리를 했는데 
     const dispatch = useDispatch()
-    const [questionComment, setQuestionComment] = useState<[string]>(['riri']);
     const logininfo = useSelector((state: RootState) => state.login);
     const profile = useSelector((state: RootState) => state.profile);
     const comments = useSelector((state: RootState) => state.questionComment);
-    const { data: { user, cards, pages } } = profile;
+    let { data: { user, cards, pages } } = profile;
+
+    console.log('1')
+
 
     const handleSelect = (text: select) => () => {
         setSelect(text);
@@ -166,6 +171,7 @@ const Profile = () => {
     }
 
     const handleQuestion = (card: page) => {
+        console.log('cardjojo', card)
         setModal({
             ...modal,
             type: "question",

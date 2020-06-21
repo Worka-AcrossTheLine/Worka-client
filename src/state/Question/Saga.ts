@@ -1,16 +1,22 @@
 import {call, put} from "redux-saga/effects";
 import {
     MAKE_QUESTION_COMMENT_FAIL,
-    MAKE_QUESTION_COMMENT_SUCCESS,GET_QUESTION_FAIL,
-    MAKE_QUESTION_FAIL,getQuestionSuccess,
-    makeQuestionSuccess, QUESTION_COMMENTS_SUCCESS, QUESTION_COMMENTS_FAIL, QUESTION_COMMENTS_REQUEST
+    MAKE_QUESTION_COMMENT_SUCCESS,
+    GET_QUESTION_FAIL,
+    MAKE_QUESTION_FAIL,
+    makeQuestionSuccess,
+    QUESTION_COMMENTS_SUCCESS,
+    QUESTION_COMMENTS_FAIL,
+    QUESTION_COMMENTS_REQUEST,
+    GET_QUESTION_SUCCESS, GET_QUESTION_DETAIL_SUCCESS, GET_QUESTION_DETAIL_FAIL
 } from "./Action";
-import {makeQuestion, makeQuestionCard, getQuestion, makeQuestionComment, getQuestionComment} from "../../Api/Question";
+import {makeQuestion, makeQuestionCard, getQuestion, makeQuestionComment, getQuestionComment, getQuestionDetail} from "../../Api/Question";
 
 import {Action} from "./Reducer";
 
 export function* handleQuestion(action : Action) {
     try{
+        console.log(action.payload)
         const response = yield call( makeQuestionCard, action.payload );
         yield call(makeQuestion, {id: response.data.id, question : action.payload.question, token: action.payload.token})
         yield put(makeQuestionSuccess(response.data));
@@ -23,9 +29,18 @@ export function* handleQuestion(action : Action) {
 export function* handleGetQuestion({ type, payload: { token } }: { type: string, payload: { token: string } }) {
     try {
         const response = yield call(getQuestion, { token })
-        yield put(getQuestionSuccess(response.data));
+        yield put({type: GET_QUESTION_SUCCESS, payload:response.data});
     } catch (err) {
         yield put({ type: GET_QUESTION_FAIL, payload: err })
+    }
+}
+
+export function* handleGetQuestionDetail({ type, payload: { token, id } }: { type: string, payload: { token: string, id: number } }) {
+    try {
+        const response = yield call(getQuestionDetail, { token, id })
+        yield put({type: GET_QUESTION_DETAIL_SUCCESS, payload:response.data});
+    } catch (err) {
+        yield put({ type: GET_QUESTION_DETAIL_FAIL, payload: err })
     }
 }
 

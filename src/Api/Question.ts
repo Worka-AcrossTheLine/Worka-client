@@ -27,6 +27,13 @@ export const getQuestion = ({ token }: { token: string }) => {
         });
 };
 
+export const getQuestionDetail =({token, id} : {token: string, id: number}) => {
+    return reqresApi.get(`pages/${id}`, { headers: { Authorization: `JWT ${token}` } })
+        .catch((error: AxiosError) => {
+            throw error.response
+        });
+};
+
 
 export const makeQuestionComment = ({page_pk, question_pk, text, token}:{page_pk:number, question_pk:number, token:string,text:string}) => {
     return reqresApi.post(`pages/${page_pk}/questions${question_pk}/commments/`, {text},{ headers: { Authorization: `JWT ${token}` } })

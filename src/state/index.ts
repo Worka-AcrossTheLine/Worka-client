@@ -3,8 +3,15 @@ import { LOGIN_REQUESTED, TENDENCY, WITHDRAWAL, loginUser, tendencyUser, withdra
 import { SIGNUP_REQUESTED, signupUser } from '../reducers/signup'
 import { GET_FEED_DETAIL_REQUEST, GET_FEED_REQUEST, MAKE_FEED_REQUEST } from "./Feed/Action";
 import { handleGetFeed, handleMakeFeed } from "./Feed/Saga"
-import {handleQuestion, handleGetQuestion, handleMakeQuestionComment, handleQuestionComments} from "./Question/Saga"
 import {
+  handleQuestion,
+  handleGetQuestion,
+  handleMakeQuestionComment,
+  handleQuestionComments,
+  handleGetQuestionDetail
+} from "./Question/Saga"
+import {
+  GET_QUESTION_DETAIL_REQUEST,
   GET_QUESTION_REQUEST,
   MAKE_QUESTION_COMMENT_REQUEST,
   MAKE_QUESTION_REQUEST,
@@ -47,6 +54,7 @@ function* watchLoginRequested() {
   yield takeLatest(MAKE_LINK_REQUEST, handleMakeLink);
   yield takeLatest(MAKE_QUESTION_COMMENT_REQUEST,handleMakeQuestionComment)
   yield takeLatest(QUESTION_COMMENTS_REQUEST, handleQuestionComments)
+  yield takeLatest(GET_QUESTION_DETAIL_REQUEST, handleGetQuestionDetail)
 }
 
 
