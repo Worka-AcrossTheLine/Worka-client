@@ -4,7 +4,7 @@ export interface user {
     pk: number,
     username: string,
     user_image: string,
-    comment: string;
+    comments: string;
     mento: number,
     mentiee: number,
     mbti: string,
