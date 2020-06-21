@@ -20,8 +20,8 @@ export default function App() {
 
   const setLogin = async () => {
     const token = await AsyncStorage.getItem('token');
-    if(token) setToken(token)
-
+    // console.log(token)
+    if(token) await setToken(token)
   }
   useEffect(() => {
     setLogin();

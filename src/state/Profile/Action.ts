@@ -87,10 +87,6 @@ export const PROFILE_QUESTION_REQUEST = 'PROFILE_QUESTION_REQUEST'
 export const PROFILE_QUESTION_SUCCESS = 'PROFILE_QUESTION_SUCCESS'
 export const PROFILE_QUESTION_FAIL = 'PROFILE_QUESTION_FAIL'
 
-export const QUESTION_COMMENTS_REQUEST = 'QUESTION_COMMENTS_REQUEST'
-export const QUESTION_COMMENTS_SUCCESS = 'QUESTION_COMMENTS_SUCCESS'
-export const QUESTION_COMMENTS_FAIL = 'QUESTION_COMMENTS_FAIL'
-
 
 export const ProfileRequest = (data: string) => {
     return { type: PROFILE_REQUEST, payload: { data } };
@@ -111,14 +107,4 @@ export const QuestionSuccess = (data: ProfileQuestion[]) => {
 };
 export const QuestionFail = (err: boolean) => {
     return { type: PROFILE_QUESTION_FAIL, payload: { err } };
-};
-
-export const QuestionCommentRequest = (data: CommentRequest) => {
-    return { type: QUESTION_COMMENTS_REQUEST, payload: { data } };
-};
-export const QuestionCommentSuccess = (data: CommentResponse) => {
-    return { type: QUESTION_COMMENTS_SUCCESS, payload: { data } };
-};
-export const QuestionCommentFail = (err: boolean) => {
-    return { type: QUESTION_COMMENTS_FAIL, payload: { err } };
 };

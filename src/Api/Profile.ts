@@ -18,10 +18,3 @@ export const getQuestion = ({pk, token}:{pk:string, token:string}) => {
         });
 };
 
-export const getQuestionComment = ({account_pk,pk,question_id,token}:{account_pk:string, pk:string, question_id:string, token:string}) => {
-    return reqresApi.get(`/profile/${account_pk}/pages/${pk}/questions/${question_id}/comments/`,{ headers: { Authorization: `JWT ${token}` } })
-        .catch((error: AxiosError) => {
-            throw error.response
-        });
-};
-
