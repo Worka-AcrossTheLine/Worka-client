@@ -5,9 +5,8 @@ import {
   getFeedSuccess, MAKE_FEED_FAIL, makeCard,
   makeFeedSuccess
 } from './Action';
-import { Action } from '../index'
 import { LOGIN_SUCCESS, LOGOUT } from "../../reducers/login";
-import { AsyncStorage } from "react-native";
+
 
 
 export function* handleGetFeed({ payload: { token } }: { type: string, payload: { token: string } }) {
