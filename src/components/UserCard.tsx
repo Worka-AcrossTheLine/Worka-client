@@ -93,7 +93,7 @@ const Profile = ({
     mento,
     mentiee,
     mbti,
-    comments,
+    comment,
     onPress
 }: Props) => {
 
@@ -101,7 +101,7 @@ const Profile = ({
     const loginState = useSelector((state: RootState) => state.login);
 
     const [isModifyComment, setIsModifyComment] = useState<boolean>(false);
-    const [inputComment, setInputComment] = useState(comments);
+    const [inputComment, setInputComment] = useState(comment);
 
     const handleComment = () => {
         setIsModifyComment(true);
@@ -115,11 +115,11 @@ const Profile = ({
 
     const handleModify = (type: 'change' | 'cancel') => () => {
         if (type === 'change') {
-            if (comments !== inputComment) {
-                dispatch({ type: PATCH_COMMENTS_REQUEST, payload: { token: loginState.token, comments: inputComment } })
+            if (comment !== inputComment) {
+                dispatch({ type: PATCH_COMMENTS_REQUEST, payload: { token: loginState.token, comment: inputComment } })
             }
         } else {
-            setInputComment(comments);
+            setInputComment(comment);
         }
         setIsModifyComment(false);
     }
