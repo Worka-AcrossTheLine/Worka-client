@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import login, { LoginState } from './login';
 import signup, { SignupState } from './signup'
-import { getFeed, FeedState } from '../state/Feed/Reducer'
+import {getFeed, FeedState, PostFeed} from '../state/Feed/Reducer'
 import setting, { SettingState } from './setting'
 import { search, SearchState } from '../state/Search/Reducer'
 import {
@@ -10,7 +10,7 @@ import {
     CommentState,
     CommentFeed,
     QuestionDetailState,
-    QuestionDetailFeed
+    QuestionDetailFeed, MakeQuestionFeed
 } from "../state/Question/Reducer";
 import {
     ProfileState,
@@ -34,6 +34,8 @@ export type RootState = {
     questionComment: CommentState,
     link: LinkState,
     questionDetail: QuestionDetailState,
+    makeFeed: FeedState,
+    makeQuestion: QuestionState,
 }
 
 export default combineReducers({
@@ -47,5 +49,7 @@ export default combineReducers({
     profileQuestion: ProfileQuestionFeed,
     questionComment: CommentFeed,
     link: GetLinkState,
-    questionDetail:QuestionDetailFeed
+    questionDetail:QuestionDetailFeed,
+    makeFeed: PostFeed,
+    makeQuestion: MakeQuestionFeed,
 });

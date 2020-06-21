@@ -26,6 +26,9 @@ const MakeEmbed = ({
                 keyboardType = {keyboardType}
                 autoFocus = {true}
                 onBlur={onBlur}
+                autoCapitalize  = 'none'
+                autoCorrect = { false }
+                autoCompleteType = 'off'
             >
             </Input>
             <ValidText>{valid}</ValidText>

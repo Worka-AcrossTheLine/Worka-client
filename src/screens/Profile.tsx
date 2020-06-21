@@ -138,9 +138,12 @@ const Profile = () => {
     const dispatch = useDispatch()
     const logininfo = useSelector((state: RootState) => state.login);
     const profile = useSelector((state: RootState) => state.profile);
+    const makeFeed = useSelector((state: RootState) => state.makeFeed);
+    const makeQuestion = useSelector((state:RootState) => state.makeQuestion);
     const comments = useSelector((state: RootState) => state.questionComment);
     let { data: { user, cards, pages } } = profile;
 
+    console.log(makeQuestion)
 
     const handleSelect = (text: select) => () => {
         setSelect(text);
@@ -209,7 +212,7 @@ const Profile = () => {
         if ('pk' in logininfo.data) {
             dispatch({ type: PROFILE_REQUEST, payload: { pk: logininfo.data.pk, token: logininfo.token } })
         }
-    }, [])
+    }, [makeFeed.data, makeQuestion.data])
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>

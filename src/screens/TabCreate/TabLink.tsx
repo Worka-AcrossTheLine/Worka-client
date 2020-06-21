@@ -115,12 +115,14 @@ const TabLink = ({
                             value={tapTag}
                             onChange={addTap(setTaptag)}
                             autoFocus={true}
+                            autoCorrect={false}
                         />
                         <MakeInterestingInput
                             placeholder="Make Interesting Title"
                             value={InterestingTitle}
                             onChange={addTap(setInterestingTitle)}
                             autoFocus={true}
+                            autoCorrect={false}
                         />
                         <MakeEmbed
                             placeholder="http://"

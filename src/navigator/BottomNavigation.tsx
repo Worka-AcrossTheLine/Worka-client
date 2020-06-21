@@ -38,17 +38,17 @@ export default function () {
         options={{
           tabBarVisible: false,
           tabBarLabel: 'Create',
-          // tabBarIcon: ({ color, size }) => (
-          //   <MaterialCommunityIcons name="Create" color={color} size={size} />
-          // ),
+          tabBarIcon: ({ color, size }) => (
+            <MaterialCommunityIcons name="eye-plus" color={color} size={size} />
+          ),
         }}
         component={BottomCreateNavigation} />
       <Tab.Screen name="Profile"
         options={{
           tabBarLabel: 'Profile',
-          // tabBarIcon: ({color, size}) => (
-          //   <MaterialCommunityIcons name="Profile" color={color} size={size} />
-          // ),
+          tabBarIcon: ({color, size}) => (
+            <MaterialCommunityIcons name="face-profile" color={color} size={size} />
+          ),
         }}
         component={Profile} />
       {/* <Tab.Screen name="Coin" component={Coin} /> */}

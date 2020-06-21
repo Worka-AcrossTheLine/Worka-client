@@ -4,10 +4,10 @@ export interface user {
     pk: number,
     username: string,
     user_image: string,
-    comments: string;
     mento: number,
     mentiee: number,
     mbti: string,
+    comments: string,
     is_me: boolean
 }
 

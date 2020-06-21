@@ -41,6 +41,13 @@ export const getFeed = (state: FeedState = initialState, action: Action) => {
         fetching: false,
         err: true,
       };
+    default:
+      return state;
+  }
+};
+
+export const PostFeed = (state: FeedState = initialState, action: Action) => {
+  switch (action.type) {
     case MAKE_FEED_REQUEST:
       return {
         ...state,

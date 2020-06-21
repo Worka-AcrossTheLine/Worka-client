@@ -116,7 +116,7 @@ const Profile = ({
     const handleModify = (type: 'change' | 'cancel') => () => {
         if (type === 'change') {
             if (comments !== inputComment) {
-                dispatch({ type: PATCH_COMMENTS_REQUEST, payload: { token: loginState.token, comments: inputComment } })
+                dispatch({ type: PATCH_COMMENTS_REQUEST, payload: { token: loginState.token, comment: inputComment } })
             }
         } else {
             setInputComment(comments);
