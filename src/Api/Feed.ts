@@ -40,7 +40,6 @@ export const makeFeed = ({ title,
     token
 }: makeCard) => {
     const form: Form = new FormData();
-    console.log("MAKE FEED");
     form.append("title", title);
     form.append("tags", tags);
     form.append("text", text);
@@ -51,15 +50,12 @@ export const makeFeed = ({ title,
         // form.append('images', JSON.stringify({ uri: images, name: images.split('/').pop(), type }));
         form.append('images', { uri: images, name: images.split('/').pop(), type });
     }
-    // console.log(form);
     return reqresApi.post(`post/feed/`, form, {
         headers: {
             Authorization: `JWT ${token}`, 'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'
         }
     })
         .catch((error: AxiosError) => {
-            console.log(error);
-            console.log(error.response);
             throw error.response
         });
 };

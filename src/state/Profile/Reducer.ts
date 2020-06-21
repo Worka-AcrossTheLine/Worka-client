@@ -51,7 +51,7 @@ const initialState: ProfileState = {
             user_image: '',
             mento: 0,
             mentiee: 0,
-            comment: '',
+            comments: '',
             mbti: '',
             is_me: false
         },

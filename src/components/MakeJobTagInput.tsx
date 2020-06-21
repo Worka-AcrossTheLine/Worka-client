@@ -9,11 +9,12 @@ type Props = {
     fontSize?: number;
     autoFocus?: boolean;
     keyboardType?: 'default';
+    autoCorrect?: boolean;
 }
 
 
 const MakeJobTagInput = ({
-    placeholder, value, onChange, fontSize, autoFocus = false, keyboardType, 
+    placeholder, value, onChange, fontSize, autoFocus = false, keyboardType, autoCorrect
 }:Props) => {
     let textAlign: 'left'
     if(value.length>0) {
@@ -27,6 +28,9 @@ const MakeJobTagInput = ({
                     onChangeText={(e) => onChange(e)}
                     autoFocus={autoFocus}
                     keyboardType={keyboardType}
+                    autoCapitalize  = 'none'
+                    autoCorrect = { false }
+                    autoCompleteType = 'off'
                 />
             </InputWrapper>
     )

@@ -12,7 +12,6 @@ import { Action, PatchCommentsAction } from "./Reducer";
 export function* handleProfile(action: Action) {
     try {
         const response = yield call(getProfile, action.payload);
-        console.log(response.data)
         yield put(ProfileSuccess(response.data));
     } catch (err) {
         yield put({ type: PROFILE_FAIL, payload: err })
@@ -29,7 +28,6 @@ export function* handleProfileQuestion(action: Action) {
 }
 
 export function* handleProfileComments(action: PatchCommentsAction) {
-    console.log(action.payload);
     try {
         const response = yield call(patchComment, action.payload);
         yield put({ type: PATCH_COMMENTS_SUCCESS, comments: action.payload.comments })

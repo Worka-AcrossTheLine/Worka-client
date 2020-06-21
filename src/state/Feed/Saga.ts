@@ -13,10 +13,8 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
   try {
     const response = yield call(getFeed, { token });
     yield put({ type: LOGIN_SUCCESS, payload: { token, user: response.data.request_user } })
-    console.log(response.data)
     yield put(getFeedSuccess(response.data.results));
   } catch (err) {
-    console.log(err);
     if (err.status === 401) {
       yield put({ type: LOGOUT });
     }
@@ -25,12 +23,12 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
 }
 
 
-export function* handleMakeFeed({ type, payload: { title,tags, text, images, token}  }: { type: string, payload: makeCard }) {
+export function* handleMakeFeed({ type, payload: { title, tags, text, images, token } }: { type: string, payload: makeCard }) {
   try {
     console.log(title)
-    const response = yield call(makeFeed, {title,tags,text,images,token});
+    const response = yield call(makeFeed, { title, tags, text, images, token });
     console.log(response)
-      yield put(makeFeedSuccess(response.data));
+    yield put(makeFeedSuccess(response.data));
   } catch (err) {
     console.log(err.status)
     yield put({ type: MAKE_FEED_FAIL, payload: err })

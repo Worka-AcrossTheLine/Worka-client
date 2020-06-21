@@ -33,8 +33,7 @@ const QuestionFeed = () => {
             dispatch({ type: GET_QUESTION_REQUEST, payload: { token: loginState.token } })
         }
     }, [])
-    console.log("QIESTIOSNTATAE");
-    console.log(questionState.data.results);
+
     return (
         <View style={{ flex: 1 }}>
             {questionState.fetching ? <ActivityIndicator /> :

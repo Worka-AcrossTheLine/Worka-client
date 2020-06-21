@@ -32,7 +32,6 @@ const ForgotEmail = () => {
     };
 
     const handleSubmit = () => {
-        console.log("SUBMIT")
     }
 
     return (

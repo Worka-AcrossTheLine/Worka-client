@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -53,8 +53,8 @@ const SkipText = styled.Text`
 `;
 
 function Home({ navigation }: Props) {
-
-  const dispatch = useDispatch();
+  // skip 을 위한 dispatch
+  // const dispatch = useDispatch();
 
   const onSignin = () => {
     navigation.navigate('Signin');

@@ -29,7 +29,7 @@ const PaddingHeight = styled.View`
 
 const FeedHome = () => {
     const feedState = useSelector((state: RootState) => state.feed)
-    const makeFeed = useSelector((state:RootState) => state.makeFeed)
+    const makeFeed = useSelector((state: RootState) => state.makeFeed)
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const FeedsAll = makeFeed.data.concat(feedState.data)
     const [storage, setStorage] = useState<Feeds>(

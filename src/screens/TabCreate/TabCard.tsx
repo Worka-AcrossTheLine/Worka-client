@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Animated, Keyboard, Image, Platform, TouchableOpacity , TouchableWithoutFeedback} from 'react-native'
+import { Animated, Keyboard, Image, Platform, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native'
 
 import * as ImagePicker from 'expo-image-picker';
@@ -88,7 +88,7 @@ const TabCard = ({ navigation }: Props) => {
     const onCancer = () => {
         navigation.navigate('News');
     }
-    const handleKeyboard  = () => {
+    const handleKeyboard = () => {
         Keyboard.dismiss();
     }
 
@@ -119,7 +119,6 @@ const TabCard = ({ navigation }: Props) => {
                 setImage(result.uri)
             }
         } catch (e) {
-            console.log(e);
             alert("카메라 에러");
         }
     }
@@ -141,7 +140,6 @@ const TabCard = ({ navigation }: Props) => {
                 setImage(result.uri)
             }
         } catch (e) {
-            console.log(e);
             alert("카메라 라이브러리 에러");
         }
     }
@@ -177,14 +175,12 @@ const TabCard = ({ navigation }: Props) => {
     const Upload = () => {
         Keyboard.dismiss();
         const token = login.token;
-        console.log("TAB CARD TOKEN IS ", token);
         if (token) {
             dispatch({
                 type: MAKE_FEED_REQUEST,
                 payload: { title: InterestingTitle, tags: tapTag.replace('/,/gi', '').replace( /\s/gi, ','), text: Description, images: image, token: token }
             })
         } else {
-            console.log('토큰이 존재하지 않음')
         }
     }
 

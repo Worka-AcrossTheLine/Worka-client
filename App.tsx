@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-community/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
-import {Provider} from 'react-redux';
+import { Provider } from 'react-redux';
 import { ThemeProvider } from 'styled-components'
 
 import store from './src/state/store';
@@ -11,8 +11,8 @@ import { View } from 'react-native';
 
 export interface LoginInfo {
   token: string,
-  pk : string,
-  mbti : string,
+  pk: string,
+  mbti: string,
 }
 
 export default function App() {
@@ -20,11 +20,13 @@ export default function App() {
 
   const setLogin = async () => {
     const token = await AsyncStorage.getItem('token');
-    // console.log(token)
-    if(token) await setToken(token)
+    if (token) await setToken(token)
   }
   useEffect(() => {
     setLogin();
+    return () => {
+      setToken("");
+    }
   }, []);
   return (
     <Provider store={store}>
@@ -32,7 +34,7 @@ export default function App() {
         <NavigationContainer>
           <View style={{ width: "100%", height: "100%", backgroundColor: 'black', alignItems: 'center' }}>
             <View style={{ height: "100%", width: "100%", maxWidth: 800 }}>
-              <NavController token={ token } />
+              <NavController token={token} setToken={setToken} />
             </View>
           </View>
         </NavigationContainer>
