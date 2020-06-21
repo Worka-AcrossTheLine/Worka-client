@@ -35,7 +35,7 @@ export const getQuestionRequest = () => {
     return { type: MAKE_QUESTION_REQUEST };
 };
 export const getQuestionSuccess = (data: Question[]) => {
-    return { type: MAKE_QUESTION_SUCCESS, payload: { data } };
+    return { type: MAKE_QUESTION_SUCCESS, payload: data };
 };
 export const getQuestionFail = (err: boolean) => {
     return { type: MAKE_QUESTION_FAIL, payload: { err } };

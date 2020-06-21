@@ -25,6 +25,7 @@ import { PROFILE_REQUEST } from "../state/Profile/Action";
 import { LOGOUT, WITHDRAWAL } from '../reducers/login'
 import { RootState } from '../reducers';
 import { card, page } from '../state/Profile/Action'
+import { questionCard } from '../state/Question/Reducer';
 
 type select = 'card' | 'question';
 
@@ -41,7 +42,7 @@ type myprofile = {
 type modal = {
     type: ModalType;
     detail: card | null;
-    question: page | null;
+    question: questionCard | null;
 }
 
 const Wrapper = styled.View`
@@ -165,7 +166,7 @@ const Profile = () => {
         })
     }
 
-    const handleQuestion = (card: page) => {
+    const handleQuestion = (card: questionCard) => {
         setModal({
             ...modal,
             type: "question",

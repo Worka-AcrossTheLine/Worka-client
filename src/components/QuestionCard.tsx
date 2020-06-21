@@ -6,9 +6,9 @@ import ShadowBox from './ShadowBox'
 import Tag from './Tag'
 
 import { ThemeProps } from '../style/theme';
-import { page } from '../state/Profile/Action'
+import { questionCard } from '../state/Question/Reducer';
 
-type Props = page;
+type Props = questionCard;
 
 const Wrapper = styled.View`
     width:100%;
@@ -51,14 +51,14 @@ const TagWrapper = styled.View`
 
 export default function QuestionCard({
     id,
-    author: {
-        username,
-        user_image,
-        pk
-    },
     title,
     tags,
     questions,
+    author: {
+        pk,
+        username,
+        user_image,
+    },
     created_at,
 }: Props) {
     return (
@@ -69,7 +69,7 @@ export default function QuestionCard({
                         <Desc>{title}</Desc>
                         <Desc>질문 갯수: {questions}</Desc>
                     </DescWrapper>
-                    <Image source={{ uri: user_image }} />
+                    <Image source={{ uri: user_image || "" }} />
                 </HeaderWrapper>
             </ShadowBox>
             <ShadowBox semi={"bottom"}>

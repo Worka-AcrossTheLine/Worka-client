@@ -213,7 +213,7 @@ export default function QuestionModal({
                                         <TextWrapper style={{ flex: 1 }}>
                                             <Desc>{title}</Desc>
                                         </TextWrapper>
-                                        <Image source={{ uri: user_image }} />
+                                        <Image source={{ uri: user_image || "" }} />
                                     </TileWrapper>
                                 </ModalTabWrapper>
                                 <BodyWrapper>

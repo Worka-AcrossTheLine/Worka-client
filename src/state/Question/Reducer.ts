@@ -9,7 +9,7 @@ import {
 
 export interface Action {
     type: string;
-    payload: any;
+    payload: questionCard[] | questionCard;
 }
 
 export interface questionCard {
@@ -28,13 +28,17 @@ export interface questionCard {
 
 export interface QuestionState {
     fetching: boolean;
-    data: questionCard[];
+    data: {
+        results: questionCard[]
+    }
     err: boolean;
 }
 
 const initialState: QuestionState = {
     fetching: false,
-    data: [],
+    data: {
+        results: []
+    },
     err: false
 };
 

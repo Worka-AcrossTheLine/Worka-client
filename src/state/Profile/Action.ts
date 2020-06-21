@@ -1,3 +1,5 @@
+import { questionCard } from "../Question/Reducer";
+
 interface user {
     pk: number,
     username: string,
@@ -36,7 +38,7 @@ export interface card {
 
 export interface Profile {
     user: user
-    pages: page[]
+    pages: questionCard[]
     cards: card[]
 }
 interface RequestProfileQuestion {
