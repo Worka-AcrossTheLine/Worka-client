@@ -134,15 +134,12 @@ const Profile = () => {
         detail: null,
         question: null
     });
-    const [switcher, setSwitcher] = useState<boolean>(false);
     //분기처리를 했는데
     const dispatch = useDispatch()
     const logininfo = useSelector((state: RootState) => state.login);
     const profile = useSelector((state: RootState) => state.profile);
     const comments = useSelector((state: RootState) => state.questionComment);
     let { data: { user, cards, pages } } = profile;
-
-    console.log('1')
 
 
     const handleSelect = (text: select) => () => {

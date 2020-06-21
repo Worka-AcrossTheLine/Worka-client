@@ -51,13 +51,7 @@ export interface QuestionState {
     err: boolean;
 }
 
-const initialState: QuestionState = {
-    fetching: false,
-    data: {
-        results: []
-    },
-    err: false
-};
+
 
 export interface CommentState {
     fetching: boolean;
@@ -71,11 +65,17 @@ export interface QuestionDetailState{
     err: boolean;
 }
 
-const initialState: QuestionState = { fetching: false, data: [], err: false };
+const initialState: QuestionState = {
+    fetching: false,
+    data: {
+        results: []
+    },
+    err: false
+};
 const initialStateComment : CommentState = { fetching: false, data: [], err: false};
 const initialStateQuestionDetail : QuestionDetailState = { fetching: false, data: [], err: false}
 
-export const questionFeed = (state: QuestionState = initialState, action: QuestionCardAction) => {
+export const QuestionFeed = (state: QuestionState = initialState, action: QuestionCardAction) => {
     switch (action.type) {
         case MAKE_QUESTION_REQUEST:
             return {

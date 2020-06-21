@@ -6,7 +6,7 @@ import setting, { SettingState } from './setting'
 import { search, SearchState } from '../state/Search/Reducer'
 import {
     QuestionState,
-    questionFeed,
+    QuestionFeed,
     CommentState,
     CommentFeed,
     QuestionDetailState,
@@ -42,7 +42,7 @@ export default combineReducers({
     feed: getFeed,
     setting,
     search,
-    question: questionFeed,
+    question: QuestionFeed,
     profile: ProfileFeed,
     profileQuestion: ProfileQuestionFeed,
     questionComment: CommentFeed,
