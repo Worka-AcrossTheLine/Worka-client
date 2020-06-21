@@ -1,7 +1,12 @@
 import {call, put} from "redux-saga/effects";
-import {MAKE_QUESTION_FAIL,makeQuestionSuccess} from "../Question/Action";
-import {makeQuestion, makeQuestionCard, getQuestion} from "../../Api/Question";
-import {Action} from "../index";
+import {
+    MAKE_QUESTION_COMMENT_FAIL,
+    MAKE_QUESTION_COMMENT_SUCCESS,
+    MAKE_QUESTION_FAIL,
+    makeQuestionSuccess, QUESTION_COMMENTS_SUCCESS, QUESTION_COMMENTS_FAIL, QUESTION_COMMENTS_REQUEST
+} from "./Action";
+import {makeQuestion, makeQuestionCard, getQuestion, makeQuestionComment, getQuestionComment} from "../../Api/Question";
+import {Action} from "./Reducer";
 
 export function* handleQuestion(action : Action) {
     try{
@@ -20,5 +25,26 @@ export function* handleGetQuestion() {
         yield put(makeQuestionSuccess(response.data));
     } catch (err) {
         yield put({ type: MAKE_QUESTION_FAIL , payload: err })
+    }
+}
+
+export function* handleMakeQuestionComment(action: Action) {
+    try{
+        const response = yield call(makeQuestionComment, action.payload)
+        yield put({type:MAKE_QUESTION_COMMENT_SUCCESS, payload: response.data})
+        yield put({type:QUESTION_COMMENTS_REQUEST, payload: action.payload})
+    }catch (err) {
+        yield put({ type: MAKE_QUESTION_COMMENT_FAIL , payload: err })
+    }
+
+}
+
+
+export function* handleQuestionComments(action : Action) {
+    try{
+        const response = yield call(getQuestionComment, action.payload);
+        yield put({type:QUESTION_COMMENTS_SUCCESS, payload: response.data.results})
+    } catch (err) {
+        yield put({ type: QUESTION_COMMENTS_FAIL , payload: err })
     }
 }

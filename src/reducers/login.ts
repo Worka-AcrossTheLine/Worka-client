@@ -97,7 +97,6 @@ export function* loginUser(action: LoginActionTypes) {
 export function* tendencyUser(action: TendencyActionTypes) {
   try {
     yield call(Api.tendency, action.payload);
-    yield AsyncStorage.setItem('mbti', action.payload.mbti)
   } catch (err) {
     console.log(err);
   } finally {
@@ -157,14 +156,14 @@ const reducer = handleActions(
       if (payload.token) {
         AsyncStorage.setItem('token', payload.token);
       }
-      console.log(payload);
+      console.log('payload',payload);
       return ({
         ...state,
         pending: false,
         isLogin: true,
         token: payload.token || state.token,
         data: payload.user,
-        mbti: payload.user.mbti || ''
+        mbti: payload.mbti || ''
       })
     },
     [LOGIN_FAILURE]: (state) => ({

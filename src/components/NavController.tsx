@@ -32,14 +32,15 @@ export default function NavController({ token }: Props) {
     const loginState = rootState.login;
     const dispatch = useDispatch()
     const feedState = rootState.feed;
+
     useEffect(() => {
-        console.log(token, loginState.token)
         if (token || loginState.token) {
-            console.log('useEffect')
             dispatch({ type: GET_FEED_REQUEST, payload: { token: token || loginState.token } })
         }
-    }, [loginState.token])
+    }, [token])
 
+    const setInfo = () => {
+    }
     const loginController = loginState.isLogin
     return (
         <>

@@ -26,3 +26,18 @@ export const getQuestion = () => {
             throw error.response
         });
 };
+
+
+export const makeQuestionComment = ({page_pk, question_pk, text, token}:{page_pk:number, question_pk:number, token:string,text:string}) => {
+    return reqresApi.post(`pages/${page_pk}/questions${question_pk}/commments/`, {text},{ headers: { Authorization: `JWT ${token}` } })
+        .catch((error: AxiosError) => {
+            throw error.response
+        });
+};
+
+export const getQuestionComment = ({page_pk, question_pk, token}:{page_pk:number, question_pk:number, token:string}) => {
+    return reqresApi.get(`pages/${page_pk}/questions${question_pk}/commments/`, { headers: { Authorization: `JWT ${token}` } })
+        .catch((error: AxiosError) => {
+            throw error.response
+        });
+};
