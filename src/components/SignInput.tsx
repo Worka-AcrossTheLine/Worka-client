@@ -1,5 +1,6 @@
 import React, { useState, SetStateAction } from 'react'
 import styled from 'styled-components/native';
+import { Platform } from 'react-native';
 
 type Props = {
   placeholder: string;
@@ -26,7 +27,6 @@ const Input = styled.TextInput`
   width:100%;
   min-width:90px;
   padding-left:5px;
-  align-self:center;
 `;
 
 const ValidText = styled.Text`
@@ -46,18 +46,30 @@ const SignInput = ({
   isPassword = false,
   keyboardType = "default",
 }: Props) => {
-  let textAlign: 'center' | 'left' = 'center';
-  if (value.length > 0) {
-    textAlign = 'left';
+
+  const [textAlign, setTextAlign] = useState<'center' | 'left'>(value.length === 0 ? 'center' : 'left');
+
+  const changeText = (e: string): void => {
+    if (e.length > 0 && textAlign === 'center') {
+      setTextAlign('left');
+    } else if (e.length === 0) {
+      setTextAlign('center');
+    }
+    onChange(e);
   }
 
+  const focus = () => {
+    if (Platform.OS === 'android' && isPassword) {
+      setTextAlign('left');
+    }
+  }
 
   return (
     <InputWrapper>
       <Input
         placeholder={placeholder}
         value={value}
-        onChangeText={(e) => onChange(e)}
+        onChangeText={changeText}
         style={{ fontSize, textAlign }}
         autoFocus={autoFocus}
         keyboardType={keyboardType}
@@ -66,6 +78,7 @@ const SignInput = ({
         autoCapitalize='none'
         autoCompleteType='off'
         autoCorrect={false}
+        onFocus={focus}
       />
       <ValidText>{valid}</ValidText>
     </InputWrapper>
