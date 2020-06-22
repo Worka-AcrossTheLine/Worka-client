@@ -96,7 +96,6 @@ const Profile = ({
     comments,
     onPress
 }: Props) => {
-
     const dispatch = useDispatch();
     const loginState = useSelector((state: RootState) => state.login);
 

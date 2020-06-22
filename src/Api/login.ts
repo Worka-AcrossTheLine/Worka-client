@@ -37,10 +37,8 @@ export const forgotPassword = (
   return reqresApi.post('accounts/tmp-password/', { username, email })
     .catch((error: AxiosError) => {
       if ('response' in error) {
-        console.log(error.response)
         throw error.response;
       }
-      console.log(error);
       throw error;
     })
 }
@@ -51,10 +49,8 @@ export const forgotUsername = (
   return reqresApi.post('accounts/forgot-username/', { email })
     .catch((error: AxiosError) => {
       if ('response' in error) {
-        console.log(error.response)
         throw error.response;
       }
-      console.log(error);
       throw error;
     })
 }
