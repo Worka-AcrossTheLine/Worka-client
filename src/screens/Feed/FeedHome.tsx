@@ -34,7 +34,7 @@ const FeedHome = () => {
 
     const [refresh, setRefresh] = useState<boolean>(false);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
-    const FeedsAll = makeFeed.data.concat(feedState.data)
+    // const FeedsAll = makeFeed.data.concat()
     const [storage, setStorage] = useState<Feeds>(
         {
             id: '',
@@ -78,7 +78,7 @@ const FeedHome = () => {
         <>
             <View style={{ flex: 1 }}>
                 <FlatList
-                    data={FeedsAll}
+                    data={feedState.data}
                     refreshing={refresh}
                     onRefresh={getFeed}
                     keyExtractor={(item) => item.id}

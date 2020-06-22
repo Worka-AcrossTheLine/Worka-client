@@ -73,7 +73,7 @@ export const GetLinkState = (state: LinkState = initialState, action: Action) =>
                 ...state,
                 posting: true,
                 fetching: false,
-                data: action.payload.data,
+                data: action.payload,
                 err: false,
             }
         case MAKE_LINK_FAIL:
