@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { TouchableWithoutFeedback, TouchableOpacity, ScrollView, Animated, FlatList, Button, ActivityIndicator } from 'react-native'
+import { TouchableWithoutFeedback, TouchableOpacity, View, Animated, FlatList, Button, ActivityIndicator } from 'react-native'
 import styled from 'styled-components/native';
 
 import { ThemeProps } from '../style/theme';
@@ -12,7 +12,7 @@ import ThumpsUp from '../../assets/ThumpsUp.svg';
 import ThumpsDown from '../../assets/ThumpsDown.svg';
 import Tag from './Tag';
 import { questionCard } from '../state/Question/Reducer';
-import { GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST, MAKE_QUESTION_COMMENT_REQUEST } from "../state/Question/Action";
+import { GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST, MAKE_QUESTION_COMMENT_REQUEST, GET_QUESTION_DETAIL_INIT, GET_QUESTION_COMMENTS_INIT, QUESTION_COMMENTS_INIT } from "../state/Question/Action";
 import { TextInput } from 'react-native-gesture-handler';
 
 interface Props extends questionCard {
@@ -169,7 +169,7 @@ export default function QuestionModal({
     const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number, overFlow?: string } => {
         return (
             typeof detailIndex === 'number' && detailIndex === index ?
-                { height: slideToggle, overFlow: 'hidden' }
+                { height: slideToggle }
                 :
                 { display: 'none' }
         )
@@ -233,8 +233,11 @@ export default function QuestionModal({
 
     useEffect(() => {
         getQuestionDetailRequest()
+        return () => {
+            dispatch({ type: GET_QUESTION_DETAIL_INIT });
+            dispatch({ type: QUESTION_COMMENTS_INIT });
+        }
     }, []);
-
 
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={closeModal} >
@@ -249,33 +252,41 @@ export default function QuestionModal({
                                 <Image source={{ uri: user_image || "https://miro.medium.com/max/1400/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg" }} />
                             </TileWrapper>
                         </ModalTabWrapper>
-                        <BodyWrapper onStartShouldSetResponder={() => true}>
+                        <BodyWrapper >
                             {/*detailQuestion*/}
-                            {questionDetail.data.results && (
-                                <ScrollView style={{ flex: 1 }} scrollEnabled={typeof animationState.detailIndex !== 'number'}>
-                                    {questionDetail.data.results.map((item) =>
-                                        <ModalTabWrapper key={`q-${item.id}`}>
+                            {questionDetail.data.results && !questionDetail.fetching ? (
+                                <FlatList
+                                    scrollEnabled={typeof animationState.detailIndex !== 'number'}
+                                    nestedScrollEnabled={true}
+                                    data={questionDetail.data.results}
+                                    keyExtractor={(item) => `${item.id}`}
+                                    renderItem={({ item }) =>
+                                        <ModalTabWrapper key={`q-${item.id}`} onStartShouldSetResponder={() => false}>
                                             <TextWrapper>
                                                 <QuestionText>Q{item.id + 1}.{item.content}</QuestionText>
                                             </TextWrapper>
-                                            <Animated.View style={setDetailStyle(item.id)} >
+                                            <View style={{ flex: 1 }} >
                                                 {/*comment*/}
                                                 {questionComment.data && (
                                                     <FlatList
-                                                        scrollEnabled={typeof animationState.detailIndex === 'number'}
-                                                        refreshing={questionComment.fetching}
+                                                        nestedScrollEnabled={true}
+                                                        scrollEnabled={true}
+                                                        refreshing={true}
                                                         onRefresh={() => questionCommentsRequest(item.id)}
                                                         data={questionComment.data}
                                                         keyExtractor={(item) => `${item.id}`}
+                                                        extraData={questionComment.data}
                                                         renderItem={({ item: questionComment }) =>
-                                                            <AnswerWrapper>
-                                                                <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
-                                                                <AnswerUsername>{questionComment.text}</AnswerUsername>
-                                                                <RatingWrapper>
-                                                                    <ThumpsUp style={{ marginRight: 7 }} />
-                                                                    <ThumpsDown style={{ marginRight: 5 }} />
-                                                                </RatingWrapper>
-                                                            </AnswerWrapper>
+                                                            <TouchableOpacity>
+                                                                <AnswerWrapper >
+                                                                    <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
+                                                                    <AnswerUsername>{questionComment.text}</AnswerUsername>
+                                                                    <RatingWrapper>
+                                                                        <ThumpsUp style={{ marginRight: 7 }} />
+                                                                        <ThumpsDown style={{ marginRight: 5 }} />
+                                                                    </RatingWrapper>
+                                                                </AnswerWrapper>
+                                                            </TouchableOpacity>
                                                         }
                                                     />
                                                 )}
@@ -297,16 +308,16 @@ export default function QuestionModal({
                                                         </CommnetWrapper>
                                                     </PostComment>
                                                 }
-                                            </Animated.View>
+                                            </View>
                                             <DropDownWrapper >
                                                 <TouchableOpacity onPress={() => handleDetail(item.id)} style={{ padding: 5 }}>
                                                     {detailIndex === item.id ? <UpArrow /> : <DownArrow />}
                                                 </TouchableOpacity>
                                             </DropDownWrapper>
                                         </ModalTabWrapper>
-                                    )}
-                                </ScrollView>
-                            )}
+                                    }
+                                />
+                            ) : <ActivityIndicator />}
                             <TagWrapper >
                                 <TendencyTagWrapper>
                                     {tags.map((tag, tagIndex) => <Tag key={`tag-${tagIndex}`} text={tag} fontColor="#FFFFFF" />)}

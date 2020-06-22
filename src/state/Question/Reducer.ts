@@ -14,7 +14,9 @@ import {
     GET_QUESTION_DETAIL_FAIL,
     GET_QUESTION_REQUEST,
     GET_QUESTION_SUCCESS,
-    GET_QUESTION_FAIL
+    GET_QUESTION_FAIL,
+    GET_QUESTION_DETAIL_INIT,
+    QUESTION_COMMENTS_INIT
 } from "./Action";
 import { QuestionComment } from "./Action";
 
@@ -142,6 +144,7 @@ export const MakeQuestionFeed = (state: QuestionState = initialState, action: Qu
     }
 };
 export const CommentFeed = (state: CommentState = initialStateComment, action: QuestionCommentAction) => {
+    console.log(action.type);
     switch (action.type) {
         case MAKE_QUESTION_COMMENT_REQUEST:
             return {
@@ -162,6 +165,10 @@ export const CommentFeed = (state: CommentState = initialStateComment, action: Q
                 err: true,
                 fetching: false,
             };
+        case QUESTION_COMMENTS_INIT:
+            return {
+                ...initialStateComment
+            }
         case QUESTION_COMMENTS_REQUEST:
             return {
                 ...state,
@@ -187,6 +194,10 @@ export const CommentFeed = (state: CommentState = initialStateComment, action: Q
 
 export const QuestionDetailFeed = (state: QuestionDetailState = initialStateQuestionDetail, action: QuestionDetailAction) => {
     switch (action.type) {
+        case GET_QUESTION_DETAIL_INIT:
+            return {
+                ...initialStateQuestionDetail
+            }
         case GET_QUESTION_DETAIL_REQUEST:
             return {
                 ...state,
