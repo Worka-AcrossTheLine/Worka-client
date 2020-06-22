@@ -11,7 +11,7 @@ import MakeButton from "../../components/MakeButton"
 import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
-import { MAKE_LINK_REQUEST } from '../../state/Link/Action';
+import { MAKE_LINK_REQUEST, MAKE_LINK_INIT } from '../../state/Link/Action';
 import { RootState } from '../../reducers';
 import { TopTapParamList } from '../../navigator/TopNavigation'
 
@@ -74,6 +74,18 @@ const TabLink = ({
 
     const upLoad = () => {
         Keyboard.dismiss();
+        setTimeout(() => {
+            setIsMake(true);
+        }, 50);
+    }
+
+    if (linkState.posting) {
+        onCancer();
+    }
+
+    useEffect(() => {
+        if (isMake) {
+            setIsMake(false);
             if (!urlValid) {
                 const token = login.token;
                 const tags = tapTag.split(',')
@@ -86,6 +98,13 @@ const TabLink = ({
                 }
             }
     }
+        return () => {
+            dispatch({
+                type: MAKE_LINK_INIT
+            })
+        }
+    }, [isMake])
+
 
     if (linkState.posting) {
         onCancer();

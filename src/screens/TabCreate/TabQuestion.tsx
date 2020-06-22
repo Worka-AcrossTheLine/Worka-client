@@ -56,7 +56,7 @@ const TabQuestion = ({ navigation }: Props) => {
     const makeState = useSelector((state: RootState) => state.makeQuestion);
 
 
-    const Upload = () => {
+    const upload = () => {
         const tags = tapTag.split(' ')
         if (isLogin.isLogin && isLogin.token) {
             dispatch({ type: MAKE_QUESTION_REQUEST, payload: { tags: tags, title: InterestingTitle, question: quetion, token: isLogin.token } })
@@ -93,7 +93,7 @@ const TabQuestion = ({ navigation }: Props) => {
                             <Title>Link Question</Title>
                         </FlexWrapper>
                         {!makeState.fetching ?
-                            <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
+                            <MakeButton title="MAKE" onPress={() => upload()}></MakeButton>
                             :<ActivityIndicator />}
                     </TitleWrapper>
 

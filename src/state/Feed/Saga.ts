@@ -40,7 +40,6 @@ export function* handleMakeFeed({ type, payload: { title, tags, text, images, to
     const response = yield call(makeFeed, { title, tags, text, images, token });
     const getResponse = yield call(getFeed, {token})
     yield put(makeFeedSuccess(response.data));
-    console.log(getResponse)
     yield put(getFeedSuccess(getResponse.data.results));
     alert('카드가 작성 되었습니다.')
   } catch (err) {
