@@ -1,5 +1,3 @@
-
-
 interface Question {
     author: {
         username: string
@@ -74,8 +72,6 @@ export const QUESTION_COMMENTS_REQUEST = 'QUESTION_COMMENTS_REQUEST'
 export const QUESTION_COMMENTS_SUCCESS = 'QUESTION_COMMENTS_SUCCESS'
 export const QUESTION_COMMENTS_FAIL = 'QUESTION_COMMENTS_FAIL'
 
-
-
 export const makeQuestionRequest = (data: QuestionRequest) => {
     return { type: MAKE_QUESTION_REQUEST, payload: { data } };
 };
@@ -86,7 +82,7 @@ export const MakeQuestionFail = (err: boolean) => {
     return { type: MAKE_QUESTION_FAIL, payload: { err } };
 };
 export const MakeQuestionInit = () => {
-    return {type: MAKE_QUESTION_INIT}
+    return { type: MAKE_QUESTION_INIT }
 }
 
 export const makeQuestionCommentRequest = (data: MakeCommentRequest) => {
@@ -109,8 +105,6 @@ export const getQuestionDetailSuccess = (data: QuestionDetail[]) => {
 export const getQuestionDetailFail = (err: boolean) => {
     return { type: GET_QUESTION_DETAIL_FAIL, payload: { err } };
 };
-
-
 
 export const QuestionCommentRequest = (data: CommentRequest) => {
     return { type: QUESTION_COMMENTS_REQUEST, payload: { data } };

@@ -182,17 +182,15 @@ export default function QuestionModal({
 
     const handleDetail = (index: number) => {
         const isClose = index === detailIndex
-        questionCommentsRequest(index);
         if (animationOn) {
+            setAnimationState({
+                detailIndex: isClose ? undefined : index,
+                animationOn: isClose ? false : true
+            })
             Animated.timing(slideToggle, {
                 toValue: 0,
                 duration: 1000
-            }).start(() => {
-                setAnimationState({
-                    detailIndex: isClose ? undefined : index,
-                    animationOn: isClose ? false : true
-                })
-            });
+            }).start(() => { });
         } else {
             setAnimationState({
                 detailIndex: index === detailIndex ? undefined : index,
@@ -215,11 +213,12 @@ export default function QuestionModal({
     }
 
     useEffect(() => {
-        if (animationOn) {
+        if (animationOn && typeof detailIndex === 'number') {
             Animated.timing(slideToggle, {
                 toValue: 300,
                 duration: 1000
-            }).start();
+            }).start(() => questionCommentsRequest(detailIndex)
+            );
         }
     }, [animationState]);
 
@@ -256,7 +255,7 @@ export default function QuestionModal({
                             {/*detailQuestion*/}
                             {questionDetail.data.results && !questionDetail.fetching ? (
                                 <FlatList
-                                    scrollEnabled={typeof animationState.detailIndex !== 'number'}
+                                    // scrollEnabled
                                     nestedScrollEnabled={true}
                                     data={questionDetail.data.results}
                                     keyExtractor={(item) => `${item.id}`}
@@ -265,14 +264,14 @@ export default function QuestionModal({
                                             <TextWrapper>
                                                 <QuestionText>Q{item.id + 1}.{item.content}</QuestionText>
                                             </TextWrapper>
-                                            <View style={{ flex: 1 }} >
+                                            <View style={{ flex: 1, display: detailIndex === item.id ? 'flex' : 'none' }} >
                                                 {/*comment*/}
-                                                {questionComment.data && (
+                                                {questionComment.data.length > 0 ? (
                                                     <FlatList
                                                         nestedScrollEnabled={true}
                                                         scrollEnabled={true}
-                                                        refreshing={true}
-                                                        onRefresh={() => questionCommentsRequest(item.id)}
+                                                        initialNumToRender={5}
+                                                        horizontal={false}
                                                         data={questionComment.data}
                                                         keyExtractor={(item) => `${item.id}`}
                                                         extraData={questionComment.data}
@@ -289,7 +288,7 @@ export default function QuestionModal({
                                                             </TouchableOpacity>
                                                         }
                                                     />
-                                                )}
+                                                ) : <ActivityIndicator />}
                                                 {Logininfo.data.pk !== pk &&
                                                     <PostComment>
                                                         <CommnetWrapper>
