@@ -15,7 +15,7 @@ import styled from 'styled-components/native';
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../reducers";
-import { GET_FEED_REQUEST, responseFeeds, Feeds, } from "../../state/Feed/Action";
+import { GET_FEED_REQUEST, responseFeeds, Feeds, ONLY_GET_FEED_REQUEST, } from "../../state/Feed/Action";
 
 import MentoCard from '../../components/MentoCard';
 import DetailModal from '../../components/DetailModal';
@@ -28,8 +28,11 @@ const PaddingHeight = styled.View`
 `;
 
 const FeedHome = () => {
-    const feedState = useSelector((state: RootState) => state.feed)
-    const makeFeed = useSelector((state: RootState) => state.makeFeed)
+    const dispatch = useDispatch()
+    const rootState = useSelector((state: RootState) => state);
+    const { feed: feedState, makeFeed, login: loginState } = rootState;
+
+    const [refresh, setRefresh] = useState<boolean>(false);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     const FeedsAll = makeFeed.data.concat(feedState.data)
     const [storage, setStorage] = useState<Feeds>(
@@ -61,23 +64,32 @@ const FeedHome = () => {
         setModalVisible(false);
     }
 
+    const getFeed = async () => {
+        setRefresh(true);
+        dispatch({ type: ONLY_GET_FEED_REQUEST, payload: { token: loginState.token } })
+    }
 
+    useEffect(() => {
+        if (refresh && !feedState.fetching) {
+            setRefresh(false);
+        }
+    }, [feedState.fetching])
     return (
         <>
-            {feedState.fetching ? <Text>'Now Loading'</Text> :
-                <View>
-                    <FlatList
-                        data={FeedsAll}
-                        keyExtractor={(item) => item.id}
-                        renderItem={({ item }) =>
-                            <TouchableOpacity onPress={() => feedDetail(item)} key={item.id}>
-                                <PaddingHeight >
-                                    <MentoCard {...item} />
-                                </PaddingHeight>
-                            </TouchableOpacity>}
-                    />
-                </View>
-            }
+            <View style={{ flex: 1 }}>
+                <FlatList
+                    data={FeedsAll}
+                    refreshing={refresh}
+                    onRefresh={getFeed}
+                    keyExtractor={(item) => item.id}
+                    renderItem={({ item }) =>
+                        <TouchableOpacity onPress={() => feedDetail(item)} key={item.id}>
+                            <PaddingHeight >
+                                <MentoCard {...item} />
+                            </PaddingHeight>
+                        </TouchableOpacity>}
+                />
+            </View>
             <DetailModal
                 visible={modalVisible}
                 onPress={handleClose}

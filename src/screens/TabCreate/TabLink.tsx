@@ -62,6 +62,7 @@ const TabLink = ({
     const [isMake, setIsMake] = useState(false);
 
     const login = useSelector((state: RootState) => state.login);
+    const linkState = useSelector((state: RootState) => state.link);
 
     const handleKeyboard = () => {
         Keyboard.dismiss();
@@ -76,8 +77,12 @@ const TabLink = ({
         setTimeout(() => {
             setIsMake(true);
         }, 50);
-
     }
+
+    if (linkState.posting) {
+        onCancer();
+    }
+
     useEffect(() => {
         if (isMake) {
             setIsMake(false);
@@ -92,6 +97,11 @@ const TabLink = ({
                 } else {
                 }
             }
+        }
+        return () => {
+            dispatch({
+                type: MAKE_LINK_REQUEST
+            })
         }
     }, [isMake])
 

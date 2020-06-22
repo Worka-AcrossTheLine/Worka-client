@@ -54,6 +54,7 @@ export interface questionCard {
 
 
 export interface QuestionState {
+    posting: boolean;
     fetching: boolean;
     data: {
         results: questionCard[]
@@ -64,6 +65,7 @@ export interface QuestionState {
 
 
 export interface CommentState {
+    posting: boolean;
     fetching: boolean;
     data: QuestionComment[];
     err: boolean;
@@ -78,6 +80,7 @@ export interface QuestionDetailState {
 }
 
 const initialState: QuestionState = {
+    posting: false,
     fetching: false,
     data: {
         results: []
@@ -85,6 +88,7 @@ const initialState: QuestionState = {
     err: false
 };
 const initialStateComment: CommentState = {
+    posting: false,
     fetching: false,
     data: [],
     err: false
@@ -136,6 +140,7 @@ export const MakeQuestionFeed = (state: QuestionState = initialState, action: Qu
         case MAKE_QUESTION_SUCCESS:
             return {
                 ...state,
+                posting: true,
                 fetching: false,
                 data: [action.payload, ...state.data.results],
                 err: false,
@@ -212,6 +217,8 @@ export const QuestionDetailFeed = (state: QuestionDetailState = initialStateQues
             };
         case GET_QUESTION_DETAIL_SUCCESS:
             return {
+                ...state,
+                posting: true,
                 fetching: false,
                 err: false,
                 data: action.payload,

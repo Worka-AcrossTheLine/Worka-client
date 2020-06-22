@@ -9,7 +9,7 @@ import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tab
 import { TopTapParamList } from '../../navigator/TopNavigation';
 
 import { useSelector, useDispatch } from 'react-redux'
-import { MAKE_FEED_REQUEST } from "../../state/Feed/Action";
+import { MAKE_FEED_REQUEST, MAKE_FEED_INIT } from "../../state/Feed/Action";
 import { RootState } from '../../reducers';
 import { ThemeProps } from '../../style/theme';
 
@@ -82,6 +82,7 @@ const TabCard = ({ navigation }: Props) => {
 
     const dispatch = useDispatch();
     const login = useSelector((state: RootState) => state.login);
+    const makeFeedState = useSelector((state: RootState) => state.makeFeed);
 
     const isIos = Platform.OS === 'ios';
 
@@ -144,6 +145,22 @@ const TabCard = ({ navigation }: Props) => {
         }
     }
 
+    const Upload = () => {
+        Keyboard.dismiss();
+        const token = login.token;
+        if (token) {
+            dispatch({
+                type: MAKE_FEED_REQUEST,
+                payload: { title: InterestingTitle, tags: tapTag.replace('/,/gi', '').replace(/\s/gi, ','), text: Description, images: image, token: token }
+            })
+        } else {
+        }
+    }
+
+    if (makeFeedState.posting) {
+        onCancer();
+    }
+
     useEffect(() => {
         if (animationOn) {
             Animated.timing(slideIn, {
@@ -172,17 +189,11 @@ const TabCard = ({ navigation }: Props) => {
         }
     }, [focusDesc])
 
-    const Upload = () => {
-        Keyboard.dismiss();
-        const token = login.token;
-        if (token) {
-            dispatch({
-                type: MAKE_FEED_REQUEST,
-                payload: { title: InterestingTitle, tags: tapTag.replace('/,/gi', '').replace( /\s/gi, ','), text: Description, images: image, token: token }
-            })
-        } else {
+    useEffect(() => {
+        return () => {
+            dispatch({ type: MAKE_FEED_INIT });
         }
-    }
+    }, []);
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
