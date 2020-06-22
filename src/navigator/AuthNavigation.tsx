@@ -35,7 +35,7 @@ const titleStyle = {
 
 export default function () {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator mode="modal">
       <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
       <Stack.Screen
         name="Signup"
