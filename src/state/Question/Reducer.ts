@@ -16,7 +16,10 @@ import {
     GET_QUESTION_SUCCESS,
     GET_QUESTION_FAIL,
     GET_QUESTION_DETAIL_INIT,
-    QUESTION_COMMENTS_INIT
+    QUESTION_COMMENTS_INIT,
+
+    MAKE_QUESTION_INIT
+
 } from "./Action";
 import { QuestionComment } from "./Action";
 
@@ -121,6 +124,10 @@ export const QuestionFeed = (state: QuestionState = initialState, action: Questi
 
 export const MakeQuestionFeed = (state: QuestionState = initialState, action: QuestionCardAction) => {
     switch (action.type) {
+        case MAKE_QUESTION_INIT:
+            return {
+                ...initialState
+            }
         case MAKE_QUESTION_REQUEST:
             return {
                 ...state,

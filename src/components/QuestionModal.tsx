@@ -12,7 +12,7 @@ import ThumpsUp from '../../assets/ThumpsUp.svg';
 import ThumpsDown from '../../assets/ThumpsDown.svg';
 import Tag from './Tag';
 import { questionCard } from '../state/Question/Reducer';
-import { GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST, MAKE_QUESTION_COMMENT_REQUEST, GET_QUESTION_DETAIL_INIT, GET_QUESTION_COMMENTS_INIT, QUESTION_COMMENTS_INIT } from "../state/Question/Action";
+import { GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST, MAKE_QUESTION_COMMENT_REQUEST, GET_QUESTION_DETAIL_INIT, QUESTION_COMMENTS_INIT } from "../state/Question/Action";
 import { TextInput } from 'react-native-gesture-handler';
 
 interface Props extends questionCard {
