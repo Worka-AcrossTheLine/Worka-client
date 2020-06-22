@@ -78,9 +78,23 @@ const ForgotUsername = ({ navigation }: Props) => {
     useEffect(() => {
         if (passwordState.success) {
             alert("Email 로 임시 패스워드가 전송되었습니다. 최대 5분이 걸릴수있습니다!");
+            dispatch({ type: FORGOT_PASSWORD_INIT });
             navigation.navigate('Home');
         }
     }, [passwordState.success]);
+
+    useEffect(() => {
+        if (passwordState.error) {
+            const { error } = passwordState;
+            if (error === '404') {
+                alert("일치하는 정보가 없습니다.");
+            }
+            if (error === '500') {
+                alert('잠시후에 다시 시도해주세요');
+            }
+            dispatch({ type: FORGOT_PASSWORD_INIT });
+        }
+    }, [passwordState.error])
 
     useEffect(() => {
         return () => {
@@ -115,7 +129,7 @@ const ForgotUsername = ({ navigation }: Props) => {
                     title="REQUEST USERNAME RECOVERY EMAIL"
                     fontSize={14}
                     onPress={handleSubmit}
-                    isPending={false}
+                    isPending={passwordState.fetching}
                 />
             </ButtonWrapper>
         </Wrapper>

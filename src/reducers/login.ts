@@ -105,7 +105,7 @@ export type LoginState = {
 export type ForgotState = {
   fetching: boolean;
   success: boolean;
-  error: boolean;
+  error: string;
 }
 
 export type ForgotUsernameState = {
@@ -149,8 +149,13 @@ export function* forgotPassword(action: forgotAction) {
     yield call(Api.forgotPassword, action.payload);
     yield put({ type: FORGOT_PASSWORD_SUCCESS });
   } catch (error) {
-    console.log(error);
-    yield put({ type: FORGOT_PASSWORD_FAILURE });
+    let status: string;
+    if ('status' in error) {
+      status = error.status.toString()
+    } else {
+      status = '500'
+    }
+    yield put({ type: FORGOT_PASSWORD_FAILURE, payload: status });
   }
 }
 
@@ -221,7 +226,7 @@ type action = {
 const passwordInitialState: ForgotState = {
   fetching: false,
   success: false,
-  error: false,
+  error: '',
 }
 
 const forgotUsernameState: ForgotUsernameState = {
@@ -294,7 +299,7 @@ const reducer = (state: LoginState = initialState, action: action) => {
   }
 };
 
-export const forgotPasswordReducer = (state: ForgotState = passwordInitialState, { type }: { type: string }) => {
+export const forgotPasswordReducer = (state: ForgotState = passwordInitialState, { type, payload = '' }: { type: string, payload?: string }) => {
   switch (type) {
     case FORGOT_PASSWORD_INIT:
       return {
@@ -304,29 +309,28 @@ export const forgotPasswordReducer = (state: ForgotState = passwordInitialState,
       return {
         ...state,
         fetching: true,
-        success: false,
-        error: false,
       }
     case FORGOT_PASSWORD_SUCCESS:
       return {
         ...state,
         fetching: false,
         success: true,
-        error: false
       }
     case FORGOT_PASSWORD_FAILURE:
       return {
         ...state,
         fetching: false,
-        error: true,
-        success: false
+        error: payload,
       }
     default:
       return passwordInitialState;
   }
 }
 
-export const forgotUsernameReducer = (state: ForgotUsernameState = forgotUsernameState, { type, payload }: { type: string, payload: string }) => {
+export const forgotUsernameReducer = (
+  state: ForgotUsernameState = forgotUsernameState,
+  { type, payload }: { type: string, payload: string }
+) => {
   switch (type) {
     case FORGOT_USERNAME_INIT:
       return {
