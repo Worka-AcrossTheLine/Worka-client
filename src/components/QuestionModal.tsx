@@ -276,16 +276,14 @@ export default function QuestionModal({
                                                         keyExtractor={(item) => `${item.id}`}
                                                         extraData={questionComment.data}
                                                         renderItem={({ item: questionComment }) =>
-                                                            <TouchableOpacity>
-                                                                <AnswerWrapper >
-                                                                    <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
-                                                                    <AnswerUsername>{questionComment.text}</AnswerUsername>
-                                                                    <RatingWrapper>
-                                                                        <ThumpsUp style={{ marginRight: 7 }} />
-                                                                        <ThumpsDown style={{ marginRight: 5 }} />
-                                                                    </RatingWrapper>
-                                                                </AnswerWrapper>
-                                                            </TouchableOpacity>
+                                                            <AnswerWrapper onStartShouldSetResponder={() => true}>
+                                                                <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
+                                                                <AnswerUsername>{questionComment.text}</AnswerUsername>
+                                                                <RatingWrapper>
+                                                                    <ThumpsUp style={{ marginRight: 7 }} />
+                                                                    <ThumpsDown style={{ marginRight: 5 }} />
+                                                                </RatingWrapper>
+                                                            </AnswerWrapper>
                                                         }
                                                     />
                                                 ) : <ActivityIndicator />}
