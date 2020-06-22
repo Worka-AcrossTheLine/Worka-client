@@ -214,11 +214,11 @@ export default function QuestionModal({
 
     useEffect(() => {
         if (animationOn && typeof detailIndex === 'number') {
+            questionCommentsRequest(detailIndex);
             Animated.timing(slideToggle, {
                 toValue: 300,
                 duration: 1000
-            }).start(() => questionCommentsRequest(detailIndex)
-            );
+            }).start();
         }
     }, [animationState]);
 
@@ -266,27 +266,29 @@ export default function QuestionModal({
                                             </TextWrapper>
                                             <View style={{ flex: 1, display: detailIndex === item.id ? 'flex' : 'none' }} >
                                                 {/*comment*/}
-                                                {questionComment.data.length > 0 ? (
-                                                    <FlatList
-                                                        nestedScrollEnabled={true}
-                                                        scrollEnabled={true}
-                                                        initialNumToRender={5}
-                                                        horizontal={false}
-                                                        data={questionComment.data}
-                                                        keyExtractor={(item) => `${item.id}`}
-                                                        extraData={questionComment.data}
-                                                        renderItem={({ item: questionComment }) =>
-                                                            <AnswerWrapper onStartShouldSetResponder={() => true}>
-                                                                <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
-                                                                <AnswerUsername>{questionComment.text}</AnswerUsername>
-                                                                <RatingWrapper>
-                                                                    <ThumpsUp style={{ marginRight: 7 }} />
-                                                                    <ThumpsDown style={{ marginRight: 5 }} />
-                                                                </RatingWrapper>
-                                                            </AnswerWrapper>
-                                                        }
-                                                    />
-                                                ) : <ActivityIndicator />}
+                                                {questionComment.fetching ? (
+                                                    <ActivityIndicator />
+                                                ) : (
+                                                        <FlatList
+                                                            nestedScrollEnabled={true}
+                                                            scrollEnabled={true}
+                                                            initialNumToRender={8}
+                                                            horizontal={false}
+                                                            data={questionComment.data}
+                                                            keyExtractor={(item) => `${item.id}`}
+                                                            extraData={questionComment.data}
+                                                            renderItem={({ item: questionComment }) =>
+                                                                <AnswerWrapper onStartShouldSetResponder={() => true}>
+                                                                    <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
+                                                                    <AnswerUsername>{questionComment.text}</AnswerUsername>
+                                                                    <RatingWrapper>
+                                                                        <ThumpsUp style={{ marginRight: 7 }} />
+                                                                        <ThumpsDown style={{ marginRight: 5 }} />
+                                                                    </RatingWrapper>
+                                                                </AnswerWrapper>
+                                                            }
+                                                        />
+                                                    )}
                                                 {Logininfo.data.pk !== pk &&
                                                     <PostComment>
                                                         <CommnetWrapper>
