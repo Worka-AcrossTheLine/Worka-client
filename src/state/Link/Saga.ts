@@ -14,8 +14,10 @@ export function*handleLink(action: Action) {
 export function*handleMakeLink(action: Action) {
     try{
         const response = yield call( postLink, action.payload);
-            yield put(makeLinkSuccess(response.data.results));
+        console.log(response)
+        yield put(makeLinkSuccess(response));
     } catch (err) {
+        console.log(err)
         yield put({ type: MAKE_LINK_FAIL, payload: err})
     }
 }

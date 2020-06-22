@@ -2,20 +2,16 @@ export interface getLink {
     title: string, tags: string, text: string, url: webkitURL
 }
 interface postLink {
-    data: [
-        {
-            id: number,
-            author: {
-                pk: number,
-                username: string,
-                user_image: string
-            },
-            title: string,
-            tags: string[],
-            is_author: boolean | string,
-            created_at: string
-        }
-    ]
+    id: number,
+    author: {
+        pk: number,
+        username: string,
+        user_image: string
+    },
+    title: string,
+    tags: string[],
+    is_author: boolean | string,
+    created_at: string
 }
 export interface Links {
     id: number,
@@ -70,8 +66,8 @@ export const getLinkDetailFail = (err: boolean) => {
 export const makeLinkRequest = (data: getLink) => {
     return { type: MAKE_LINK_REQUEST, payload: { data } }
 }
-export const makeLinkSuccess = (data: getLink[]) => {
-    return { type: MAKE_LINK_SUCCESS, paylaod: { data } }
+export const makeLinkSuccess = (data: postLink) => {
+    return { type: MAKE_LINK_SUCCESS, payload: data }
 }
 export const makeLinkFail = (err: boolean) => {
     return { type: MAKE_LINK_REQUEST, payload: { err } }
