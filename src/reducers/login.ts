@@ -10,6 +10,11 @@ export const LOGIN_REQUESTED = 'LOGIN_REQUESTED' as const;
 export const LOGIN_SUCCESS = 'LOGINSUCCESS' as const;
 export const LOGIN_FAILURE = 'LOGINFAILURE' as const;
 
+export const FORGOT_PASSWORD_INIT = 'FORGET_PASSWORD_INIT';
+export const FORGOT_PASSWORD_REQUEST = 'FORGET_PASSWORD_REQUEST';
+export const FORGOT_PASSWORD_SUCCESS = 'FORGET_PASSWORD_SUCCESS';
+export const FORGOT_PASSWORD_FAILURE = 'FORGET_PASSWORD_FAILURE';
+
 export const WITHDRAWAL = 'WITHDRAWAL' as const;
 
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST' as const;
@@ -17,6 +22,11 @@ export const LOGOUT = 'LOGOUT' as const;
 
 export const TENDENCY_SUCSSES = 'TENDENCY_SUCSSES' as const;
 export const TENDENCY = 'TENDENCY' as const;
+
+type LoginActionTypes = {
+  type: string;
+  payload: LoginPayload;
+};
 
 export type GetLoginAction = {
   type: typeof LOGIN_REQUESTED;
@@ -27,10 +37,21 @@ export type LoginPayload = {
   password: string;
 };
 
-type LoginActionTypes = {
-  type: string;
-  payload: LoginPayload;
-};
+
+type payload = {
+  token: string;
+  user: User
+}
+
+export type forgetPayload = {
+  email: string;
+  username: string;
+}
+
+export type forgetResponse = {
+
+}
+
 
 type TendencyActionTypes = {
   type: string;
@@ -46,10 +67,6 @@ type User = {
   mbti: string | null;
 };
 
-type payload = {
-  token: string;
-  user: User
-}
 
 export type LoginResponse = {
   data: payload
@@ -79,6 +96,12 @@ export type LoginState = {
   token: string;
 };
 
+export type ForgotState = {
+  fetching: boolean;
+  success: boolean;
+  error: boolean;
+}
+
 export const requestLogin = () =>
   ({
     type: LOGIN_REQUESTED
@@ -90,6 +113,24 @@ export function* loginUser(action: LoginActionTypes) {
     yield put({ type: LOGIN_SUCCESS, payload: user.data });
   } catch (err) {
     yield put({ type: LOGIN_FAILURE })
+  }
+}
+
+type forgotAction = {
+  type: string;
+  payload: {
+    email: string;
+    username: string;
+  }
+}
+
+export function* forgotPassword(action: forgotAction) {
+  try {
+    yield call(Api.forgotPassword, action.payload);
+    yield put({ type: FORGOT_PASSWORD_SUCCESS });
+  } catch (error) {
+    console.log(error);
+    yield put({ type: FORGOT_PASSWORD_FAILURE });
   }
 }
 
@@ -141,6 +182,11 @@ type action = {
   payload: payload;
 }
 
+const passwordInitialState: ForgotState = {
+  fetching: false,
+  success: false,
+  error: false,
+}
 
 const reducer = (state: LoginState = initialState, action: action) => {
   switch (action.type) {
@@ -204,5 +250,37 @@ const reducer = (state: LoginState = initialState, action: action) => {
       return state;
   }
 };
+
+export const forgotReducer = (state: ForgotState = passwordInitialState, action: action) => {
+  switch (action.type) {
+    case FORGOT_PASSWORD_INIT:
+      return {
+        ...passwordInitialState
+      };
+    case FORGOT_PASSWORD_REQUEST:
+      return {
+        ...state,
+        fetching: true,
+        success: false,
+        error: false,
+      }
+    case FORGOT_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        fetching: false,
+        success: true,
+        error: false
+      }
+    case FORGOT_PASSWORD_FAILURE:
+      return {
+        ...state,
+        fetching: false,
+        error: true,
+        success: false
+      }
+    default:
+      return passwordInitialState;
+  }
+}
 
 export default reducer;

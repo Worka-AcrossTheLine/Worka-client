@@ -1,5 +1,5 @@
 import { takeEvery, takeLatest, all } from 'redux-saga/effects';
-import { LOGIN_REQUESTED, TENDENCY, WITHDRAWAL, loginUser, tendencyUser, withdrawal, LOGOUT_REQUEST, logout } from '../reducers/login';
+import { LOGIN_REQUESTED, TENDENCY, WITHDRAWAL, loginUser, tendencyUser, withdrawal, LOGOUT_REQUEST, logout, FORGOT_PASSWORD_REQUEST, forgotPassword } from '../reducers/login';
 import { SIGNUP_REQUESTED, signupUser } from '../reducers/signup'
 import { GET_FEED_DETAIL_REQUEST, GET_FEED_REQUEST, ONLY_GET_FEED_REQUEST, MAKE_FEED_REQUEST } from "./Feed/Action";
 import { handleGetFeed, handleMakeFeed, handleOnlyGetFeed } from "./Feed/Saga"
@@ -24,19 +24,17 @@ import { handleSearch } from './Search/Saga';
 import { handleLink, handleMakeLink } from './Link/Saga';
 import { GET_LINK_REQUEST, MAKE_LINK_REQUEST } from "./Link/Action"
 
-
-
 export interface Action {
   type: string;
   payload: any;
 }
-
 
 function* watchLoginRequested() {
   // signup
   yield takeLatest(SIGNUP_REQUESTED, signupUser);
   //login
   yield takeLatest(LOGIN_REQUESTED, loginUser);
+  yield takeLatest(FORGOT_PASSWORD_REQUEST, forgotPassword)
   yield takeLatest(TENDENCY, tendencyUser);
   yield takeLatest(LOGOUT_REQUEST, logout);
   yield takeLatest(WITHDRAWAL, withdrawal);
