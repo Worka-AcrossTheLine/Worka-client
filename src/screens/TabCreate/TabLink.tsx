@@ -74,18 +74,6 @@ const TabLink = ({
 
     const upLoad = () => {
         Keyboard.dismiss();
-        setTimeout(() => {
-            setIsMake(true);
-        }, 50);
-    }
-
-    if (linkState.posting) {
-        onCancer();
-    }
-
-    useEffect(() => {
-        if (isMake) {
-            setIsMake(false);
             if (!urlValid) {
                 const token = login.token;
                 const tags = tapTag.split(',')
@@ -97,13 +85,12 @@ const TabLink = ({
                 } else {
                 }
             }
-        }
-        return () => {
-            dispatch({
-                type: MAKE_LINK_REQUEST
-            })
-        }
-    }, [isMake])
+    }
+
+    if (linkState.posting) {
+        onCancer();
+    }
+
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
