@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Keyboard, TouchableWithoutFeedback } from 'react-native'
+import {ActivityIndicator, Keyboard, TouchableWithoutFeedback} from 'react-native'
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -117,7 +117,9 @@ const TabLink = ({
                         <FlexWrapper>
                             <Title>Link Worka</Title>
                         </FlexWrapper>
-                        <MakeButton title="MAKE" onPress={upLoad}></MakeButton>
+                        {!linkState.fetching ?
+                            <MakeButton title="MAKE" onPress={upLoad}></MakeButton>
+                            :<ActivityIndicator />}
                     </TitleWrapper>
                     <InputWrapper >
                         <MakeJobTagInput

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { TouchableWithoutFeedback } from 'react-native'
+import {ActivityIndicator, TouchableWithoutFeedback} from 'react-native'
 import styled from 'styled-components/native'
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 
@@ -92,7 +92,9 @@ const TabQuestion = ({ navigation }: Props) => {
                         <FlexWrapper>
                             <Title>Link Question</Title>
                         </FlexWrapper>
-                        <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
+                        {!makeState.fetching ?
+                            <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
+                            :<ActivityIndicator />}
                     </TitleWrapper>
 
                     <InputWrapper>
