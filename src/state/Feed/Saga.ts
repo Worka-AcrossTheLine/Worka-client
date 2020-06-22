@@ -1,7 +1,7 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import { getFeed, getFeedDetail, makeFeed } from '../../Api/Feed';
 import {
-  GET_FEED_FAIL,
+  GET_FEED_FAIL, GET_FEED_REQUEST, GET_FEED_SUCCESS,
   getFeedSuccess, MAKE_FEED_FAIL, makeCard,
   makeFeedSuccess
 } from './Action';
@@ -38,7 +38,11 @@ export function* handleOnlyGetFeed({ payload: { token } }: { type: string, paylo
 export function* handleMakeFeed({ type, payload: { title, tags, text, images, token } }: { type: string, payload: makeCard }) {
   try {
     const response = yield call(makeFeed, { title, tags, text, images, token });
+    const getResponse = yield call(getFeed, {token})
     yield put(makeFeedSuccess(response.data));
+    console.log(getResponse)
+    yield put(getFeedSuccess(getResponse.data.results));
+    alert('카드가 작성 되었습니다.')
   } catch (err) {
     yield put({ type: MAKE_FEED_FAIL, payload: err })
   }
