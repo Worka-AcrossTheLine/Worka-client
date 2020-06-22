@@ -1,7 +1,7 @@
 import {
   GET_FEED_FAIL,
   GET_FEED_REQUEST,
-  GET_FEED_SUCCESS, MAKE_FEED_FAIL, MAKE_FEED_REQUEST, MAKE_FEED_SUCCESS, GET_FEED_INIT,MAKE_FEED_INIT
+  GET_FEED_SUCCESS, MAKE_FEED_FAIL, MAKE_FEED_REQUEST, MAKE_FEED_SUCCESS, GET_FEED_INIT, MAKE_FEED_INIT, ONLY_GET_FEED_REQUEST
 } from './Action';
 import { Feeds } from "./Action";
 
@@ -29,6 +29,12 @@ export const getFeed = (state: FeedState = initialState, action: Action) => {
         fetching: true,
         err: false,
       };
+    case ONLY_GET_FEED_REQUEST:
+      return {
+        ...state,
+        fetching: true,
+        err: false
+      }
     case GET_FEED_SUCCESS:
       return {
         fetching: false,
@@ -49,7 +55,7 @@ export const getFeed = (state: FeedState = initialState, action: Action) => {
 export const PostFeed = (state: FeedState = initialState, action: Action) => {
   switch (action.type) {
     case MAKE_FEED_INIT:
-      return{
+      return {
         ...initialState
       }
     case MAKE_FEED_REQUEST:

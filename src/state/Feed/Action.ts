@@ -31,6 +31,7 @@ export interface responseFeeds {
 
 export const GET_FEED_INIT = 'GET_FEED_INIT';
 export const GET_FEED_REQUEST = 'GET_FEED_REQUEST';
+export const ONLY_GET_FEED_REQUEST = 'ONLY_GET_FEED_REQUEST';
 export const GET_FEED_SUCCESS = 'GET_FEED_SUCCESS';
 export const GET_FEED_FAIL = 'GET_FEED_FAIL';
 //Detail 부분은 다음 커밋에 분기처리 후 api 변경후 실장

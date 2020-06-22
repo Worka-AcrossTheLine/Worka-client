@@ -15,6 +15,7 @@ const PaddingHeight = styled.View`
 `;
 const QuestionFeed = () => {
     const [modal, setModal] = useState<questionCard>();
+    const [refresh, setRefresh] = useState<boolean>(false);
 
     const dispatch = useDispatch();
     const rootState = useSelector((state: RootState) => state);
@@ -28,31 +29,42 @@ const QuestionFeed = () => {
         setModal(undefined);
     }
 
+    const getQuestion = () => {
+        setRefresh(true);
+        dispatch({ type: GET_QUESTION_REQUEST, payload: { token: loginState.token } })
+    }
+
     useEffect(() => {
         if (loginState.isLogin) {
-            dispatch({ type: GET_QUESTION_REQUEST, payload: { token: loginState.token } })
+            getQuestion()
         }
     }, [])
 
+    useEffect(() => {
+        if (refresh && !questionState.fetching) {
+            setRefresh(false);
+        }
+    }, [questionState.fetching])
+
     return (
         <View style={{ flex: 1 }}>
-            {questionState.fetching ? <ActivityIndicator /> :
-                (
-                    !questionState.data.results ?
-                        <Text>LOADINGING</Text>
-                        :
-                        <FlatList
-                            data={questionState.data.results}
-                            keyExtractor={item => `${item.id}`}
-                            renderItem={({ item }) =>
-                                <TouchableOpacity onPress={() => handleQuestion(item)} key={item.id}>
-                                    <PaddingHeight>
-                                        <QuestionCard {...item} />
-                                    </PaddingHeight>
-                                </TouchableOpacity>
-                            }
-                        />
-                )
+            {
+                !questionState.data.results ?
+                    <Text>LOADINGING</Text>
+                    :
+                    <FlatList
+                        data={questionState.data.results}
+                        keyExtractor={item => `${item.id}`}
+                        refreshing={refresh}
+                        onRefresh={getQuestion}
+                        renderItem={({ item }) =>
+                            <TouchableOpacity onPress={() => handleQuestion(item)} key={item.id}>
+                                <PaddingHeight>
+                                    <QuestionCard {...item} />
+                                </PaddingHeight>
+                            </TouchableOpacity>
+                        }
+                    />
             }
             {modal &&
                 <QuestionModal

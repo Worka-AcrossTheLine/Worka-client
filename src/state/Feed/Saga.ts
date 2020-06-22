@@ -22,6 +22,18 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
   }
 }
 
+export function* handleOnlyGetFeed({ payload: { token } }: { type: string, payload: { token: string } }) {
+  try {
+    const response = yield call(getFeed, { token });
+    yield put(getFeedSuccess(response.data.results));
+  } catch (err) {
+    if (err.status === 401) {
+      yield put({ type: LOGOUT });
+    }
+    yield put({ type: GET_FEED_FAIL, payload: err })
+  }
+}
+
 
 export function* handleMakeFeed({ type, payload: { title, tags, text, images, token } }: { type: string, payload: makeCard }) {
   try {
