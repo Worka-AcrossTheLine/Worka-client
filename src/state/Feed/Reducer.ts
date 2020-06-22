@@ -6,6 +6,7 @@ import {
 import { Feeds } from "./Action";
 
 export interface FeedState {
+  posting: boolean;
   fetching: boolean;
   data: Feeds[]
   err: boolean;
@@ -15,7 +16,12 @@ export interface Action {
   payload: Feeds[] | Feeds;
 }
 
-const initialState: FeedState = { fetching: false, data: [], err: false };
+const initialState: FeedState = {
+  posting: false,
+  fetching: false,
+  data: [],
+  err: false
+};
 
 export const getFeed = (state: FeedState = initialState, action: Action) => {
   switch (action.type) {
@@ -37,6 +43,7 @@ export const getFeed = (state: FeedState = initialState, action: Action) => {
       }
     case GET_FEED_SUCCESS:
       return {
+        ...state,
         fetching: false,
         data: action.payload,
         err: false,
@@ -66,6 +73,8 @@ export const PostFeed = (state: FeedState = initialState, action: Action) => {
       };
     case MAKE_FEED_SUCCESS:
       return {
+        ...state,
+        posting: true,
         fetching: false,
         data: [action.payload, ...state.data],
         err: false,

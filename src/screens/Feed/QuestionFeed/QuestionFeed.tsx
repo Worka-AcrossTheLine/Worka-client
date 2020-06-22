@@ -49,22 +49,19 @@ const QuestionFeed = () => {
     return (
         <View style={{ flex: 1 }}>
             {
-                !questionState.data.results ?
-                    <Text>LOADINGING</Text>
-                    :
-                    <FlatList
-                        data={questionState.data.results}
-                        keyExtractor={item => `${item.id}`}
-                        refreshing={refresh}
-                        onRefresh={getQuestion}
-                        renderItem={({ item }) =>
-                            <TouchableOpacity onPress={() => handleQuestion(item)} key={item.id}>
-                                <PaddingHeight>
-                                    <QuestionCard {...item} />
-                                </PaddingHeight>
-                            </TouchableOpacity>
-                        }
-                    />
+                <FlatList
+                    data={questionState.data.results}
+                    keyExtractor={item => `${item.id}`}
+                    refreshing={refresh}
+                    onRefresh={getQuestion}
+                    renderItem={({ item }) =>
+                        <TouchableOpacity onPress={() => handleQuestion(item)} key={item.id}>
+                            <PaddingHeight>
+                                <QuestionCard {...item} />
+                            </PaddingHeight>
+                        </TouchableOpacity>
+                    }
+                />
             }
             {modal &&
                 <QuestionModal

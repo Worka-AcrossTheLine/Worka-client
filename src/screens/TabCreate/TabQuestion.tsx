@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import { TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native'
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
@@ -11,10 +11,11 @@ import CancerButton from '../../components/CancerButton'
 import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
 import { Keyboard } from 'react-native'
-import {useDispatch, useSelector} from "react-redux";
-import { MAKE_QUESTION_REQUEST } from '../../state/Question/Action'
-import {TopTapParamList} from "../../navigator/TopNavigation";
-import {RootState} from "../../reducers";
+import { useDispatch, useSelector } from "react-redux";
+import { MAKE_QUESTION_REQUEST, MAKE_QUESTION_INIT } from '../../state/Question/Action'
+import { TopTapParamList } from "../../navigator/TopNavigation";
+import { RootState } from "../../reducers";
+import { makeFeed } from '../../Api/Feed';
 
 
 
@@ -44,30 +45,41 @@ const Title = styled.Text`
 const InputWrapper = styled.View`
     flex-direction:column;
 `
-const TabQuestion = ({navigation} :Props) => {
-    
+const TabQuestion = ({ navigation }: Props) => {
+
     const [tapTag, setTaptag] = useState('');
     const [InterestingTitle, setInterestingTitle] = useState('');
     const [quetion, setQuestion] = useState('');
     const dispatch = useDispatch()
+
     const isLogin = useSelector((state: RootState) => state.login)
+    const makeState = useSelector((state: RootState) => state.makeQuestion);
 
 
     const Upload = () => {
         const tags = tapTag.split(' ')
-        if(isLogin.isLogin && isLogin.token) {
-            dispatch({type: MAKE_QUESTION_REQUEST, payload: {tags: tags, title: InterestingTitle, question: quetion,token: isLogin.token}})
+        if (isLogin.isLogin && isLogin.token) {
+            dispatch({ type: MAKE_QUESTION_REQUEST, payload: { tags: tags, title: InterestingTitle, question: quetion, token: isLogin.token } })
         }
     }
-
 
     const onCancer = () => {
         navigation.navigate('News');
     }
 
-    const handleKeyboard  = () => {
+    const handleKeyboard = () => {
         Keyboard.dismiss();
     }
+
+    if (makeState.posting) {
+        onCancer();
+    }
+
+    useEffect(() => {
+        return () => {
+            dispatch({ type: MAKE_QUESTION_INIT });
+        }
+    }, [])
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <TouchableWithoutFeedback onPress={handleKeyboard}>
@@ -84,28 +96,28 @@ const TabQuestion = ({navigation} :Props) => {
                     </TitleWrapper>
 
                     <InputWrapper>
-                        <MakeJobTagInput 
+                        <MakeJobTagInput
                             placeholder="Make Job Tag"
                             value={tapTag}
-                            onChange = {addTap(setTaptag)}
-                            autoFocus = { true }
+                            onChange={addTap(setTaptag)}
+                            autoFocus={true}
                         />
                         <MakeInterestingInput
                             placeholder="Make Interesting Title"
                             value={InterestingTitle}
                             onChange={addTap(setInterestingTitle)}
-                            autoFocus = {true}     
+                            autoFocus={true}
                         />
                         <MakeQuestionInput
                             placeholder="Q1. Make Question"
                             value={quetion}
                             onChange={addTap(setQuestion)}
-                            autoFocus = {true}
+                            autoFocus={true}
                         />
                     </InputWrapper>
-            </Wrapper>
-        </TouchableWithoutFeedback>
-    </OsView>
+                </Wrapper>
+            </TouchableWithoutFeedback>
+        </OsView>
     )
 }
 
