@@ -12,7 +12,7 @@ import validCheck from '../../constants/validCheck'
 import { RootState } from '../../reducers';
 import { FORGOT_PASSWORD_REQUEST, FORGOT_PASSWORD_INIT } from '../../reducers/login';
 
-type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Signin'>;
+type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'ForgotPassword'>;
 
 type Props = {
     navigation: AuthHomeNavigationProp;

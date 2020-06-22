@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import login, { LoginState, ForgotState, forgotReducer } from './login';
+import login, { LoginState, ForgotState, forgotPasswordReducer, ForgotUsernameState, forgotUsernameReducer } from './login';
 import signup, { SignupState } from './signup'
 import { getFeed, FeedState, PostFeed } from '../state/Feed/Reducer'
 import setting, { SettingState } from './setting'
@@ -24,7 +24,8 @@ import { LinkState, GetLinkState } from "../state/Link/Reducer";
 
 export type RootState = {
     login: LoginState,
-    password: ForgotState
+    password: ForgotState,
+    forgotUsername: ForgotUsernameState,
     signup: SignupState,
     feed: FeedState,
     setting: SettingState,
@@ -42,7 +43,8 @@ export type RootState = {
 export default combineReducers({
     login,
     signup,
-    password: forgotReducer,
+    password: forgotPasswordReducer,
+    forgotUsername: forgotUsernameReducer,
     feed: getFeed,
     setting,
     search,

@@ -15,6 +15,12 @@ export const FORGOT_PASSWORD_REQUEST = 'FORGET_PASSWORD_REQUEST';
 export const FORGOT_PASSWORD_SUCCESS = 'FORGET_PASSWORD_SUCCESS';
 export const FORGOT_PASSWORD_FAILURE = 'FORGET_PASSWORD_FAILURE';
 
+export const FORGOT_USERNAME_INIT = 'FORGET_USERNAME_INIT';
+export const FORGOT_USERNAME_REQUEST = 'FORGET_USERNAME_REQUEST';
+export const FORGOT_USERNAME_SUCCESS = 'FORGET_USERNAME_SUCCESS';
+export const FORGOT_USERNAME_FAILURE = 'FORGET_USERNAME_FAILURE';
+
+
 export const WITHDRAWAL = 'WITHDRAWAL' as const;
 
 export const LOGOUT_REQUEST = 'LOGOUT_REQUEST' as const;
@@ -102,6 +108,13 @@ export type ForgotState = {
   error: boolean;
 }
 
+export type ForgotUsernameState = {
+  email: string;
+  fetching: boolean;
+  success: boolean;
+  error: string;
+}
+
 export const requestLogin = () =>
   ({
     type: LOGIN_REQUESTED
@@ -124,6 +137,13 @@ type forgotAction = {
   }
 }
 
+type forgotEamilAciton = {
+  type: string;
+  payload: {
+    email: string;
+  }
+}
+
 export function* forgotPassword(action: forgotAction) {
   try {
     yield call(Api.forgotPassword, action.payload);
@@ -134,11 +154,27 @@ export function* forgotPassword(action: forgotAction) {
   }
 }
 
+export function* forgotUsername(action: forgotEamilAciton) {
+  try {
+    const email = yield call(Api.forgotUsername, action.payload);
+    yield put({ type: FORGOT_USERNAME_SUCCESS, payload: email.data.username });
+  } catch (error) {
+    let status: string;
+    if ('status' in error) {
+      status = error.status.toString()
+    } else {
+      status = '500'
+    }
+    yield put({ type: FORGOT_USERNAME_FAILURE, payload: status });
+  }
+}
+
 export function* tendencyUser(action: TendencyActionTypes) {
   try {
     yield call(Api.tendency, action.payload);
     yield put({ type: TENDENCY_SUCSSES, payload: action.payload })
-  } catch (err) {
+  } catch (error) {
+    alert(error.data);
     yield put({ type: LOGIN_FAILURE });
   }
 }
@@ -186,6 +222,13 @@ const passwordInitialState: ForgotState = {
   fetching: false,
   success: false,
   error: false,
+}
+
+const forgotUsernameState: ForgotUsernameState = {
+  email: '',
+  fetching: false,
+  success: false,
+  error: ''
 }
 
 const reducer = (state: LoginState = initialState, action: action) => {
@@ -251,8 +294,8 @@ const reducer = (state: LoginState = initialState, action: action) => {
   }
 };
 
-export const forgotReducer = (state: ForgotState = passwordInitialState, action: action) => {
-  switch (action.type) {
+export const forgotPasswordReducer = (state: ForgotState = passwordInitialState, { type }: { type: string }) => {
+  switch (type) {
     case FORGOT_PASSWORD_INIT:
       return {
         ...passwordInitialState
@@ -280,6 +323,39 @@ export const forgotReducer = (state: ForgotState = passwordInitialState, action:
       }
     default:
       return passwordInitialState;
+  }
+}
+
+export const forgotUsernameReducer = (state: ForgotUsernameState = forgotUsernameState, { type, payload }: { type: string, payload: string }) => {
+  switch (type) {
+    case FORGOT_USERNAME_INIT:
+      return {
+        ...passwordInitialState
+      };
+    case FORGOT_USERNAME_REQUEST:
+      return {
+        ...state,
+        fetching: true,
+        success: false,
+        error: '',
+      }
+    case FORGOT_USERNAME_SUCCESS:
+      return {
+        ...state,
+        email: payload,
+        fetching: false,
+        success: true,
+        error: '200'
+      }
+    case FORGOT_USERNAME_FAILURE:
+      return {
+        ...state,
+        fetching: false,
+        error: payload,
+        success: false,
+      }
+    default:
+      return forgotUsernameState;
   }
 }
 

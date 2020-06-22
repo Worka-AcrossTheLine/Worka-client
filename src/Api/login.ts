@@ -32,17 +32,30 @@ export const signup = (
 }
 
 export const forgotPassword = (
-  payload: forgetPayload
+  { username, email }: forgetPayload
 ) => {
-  const { username, email } = payload;
   return reqresApi.post('accounts/tmp-password/', { username, email })
     .catch((error: AxiosError) => {
       if ('response' in error) {
         console.log(error.response)
-        return error.response;
+        throw error.response;
       }
       console.log(error);
-      return error;
+      throw error;
+    })
+}
+
+export const forgotUsername = (
+  { email }: { email: string }
+) => {
+  return reqresApi.post('accounts/forgot-username/', { email })
+    .catch((error: AxiosError) => {
+      if ('response' in error) {
+        console.log(error.response)
+        throw error.response;
+      }
+      console.log(error);
+      throw error;
     })
 }
 
