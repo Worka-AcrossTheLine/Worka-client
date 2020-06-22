@@ -17,10 +17,11 @@ export interface LoginInfo {
 
 export default function App() {
   const [token, setToken] = useState<string>('');
-
   const setLogin = async () => {
     const token = await AsyncStorage.getItem('token');
-    if (token) await setToken(token)
+    if (token) {
+      setToken(token)
+    }
   }
   useEffect(() => {
     setLogin();

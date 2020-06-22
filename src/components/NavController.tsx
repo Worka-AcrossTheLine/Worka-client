@@ -49,12 +49,12 @@ function TendencyController({ token }: TendencyProps) {
 }
 
 export default function NavController({ token, setToken }: Props) {
-    //fetching.. loading
     const rootState = useSelector((state: RootState) => state)
+    const feedState = rootState.feed
     const loginState = rootState.login;
     const loginController = loginState.isLogin || token
-    if (loginState.isLogin) {
-        setToken("");
+    if(feedState.err || loginState.isLogin) {
+        setToken('')
     }
     useEffect(() => {
     }, [])

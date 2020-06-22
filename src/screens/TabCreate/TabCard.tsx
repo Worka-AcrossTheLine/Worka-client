@@ -1,5 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react'
-import { Animated, Keyboard, Image, Platform, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import {
+    Animated,
+    Keyboard,
+    Image,
+    Platform,
+    TouchableOpacity,
+    TouchableWithoutFeedback,
+    ActivityIndicator
+} from 'react-native'
 import styled from 'styled-components/native'
 
 import * as ImagePicker from 'expo-image-picker';
@@ -151,7 +159,7 @@ const TabCard = ({ navigation }: Props) => {
         if (token) {
             dispatch({
                 type: MAKE_FEED_REQUEST,
-                payload: { title: InterestingTitle, tags: tapTag.replace('/,/gi', '').replace(/\s/gi, ','), text: Description, images: image, token: token }
+                payload: { title: InterestingTitle, tags: tapTag.replace(/,/gi, '').replace(/\s/gi, ','), text: Description, images: image, token: token }
             })
         } else {
         }
@@ -207,7 +215,9 @@ const TabCard = ({ navigation }: Props) => {
                         <FlexWrapper>
                             <Title>Card Worka</Title>
                         </FlexWrapper>
-                        <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
+                        {!makeFeedState.fetching ?
+                            <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
+                            :<ActivityIndicator />}
                     </TitleWrapper>
                     <InputWrapper>
                         <MakeJobTagInput

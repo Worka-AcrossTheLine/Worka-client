@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Keyboard, TouchableWithoutFeedback } from 'react-native'
+import {ActivityIndicator, Keyboard, TouchableWithoutFeedback} from 'react-native'
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -11,7 +11,7 @@ import MakeButton from "../../components/MakeButton"
 import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
-import { MAKE_LINK_REQUEST } from '../../state/Link/Action';
+import { MAKE_LINK_REQUEST, MAKE_LINK_INIT } from '../../state/Link/Action';
 import { RootState } from '../../reducers';
 import { TopTapParamList } from '../../navigator/TopNavigation'
 
@@ -97,13 +97,19 @@ const TabLink = ({
                 } else {
                 }
             }
-        }
+    }
         return () => {
             dispatch({
-                type: MAKE_LINK_REQUEST
+                type: MAKE_LINK_INIT
             })
         }
     }, [isMake])
+
+
+    if (linkState.posting) {
+        onCancer();
+    }
+
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
@@ -117,7 +123,9 @@ const TabLink = ({
                         <FlexWrapper>
                             <Title>Link Worka</Title>
                         </FlexWrapper>
-                        <MakeButton title="MAKE" onPress={upLoad}></MakeButton>
+                        {!linkState.fetching ?
+                            <MakeButton title="MAKE" onPress={upLoad}></MakeButton>
+                            :<ActivityIndicator />}
                     </TitleWrapper>
                     <InputWrapper >
                         <MakeJobTagInput

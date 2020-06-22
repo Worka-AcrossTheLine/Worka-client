@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { TouchableWithoutFeedback } from 'react-native'
+import {ActivityIndicator, TouchableWithoutFeedback} from 'react-native'
 import styled from 'styled-components/native'
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 
@@ -56,7 +56,7 @@ const TabQuestion = ({ navigation }: Props) => {
     const makeState = useSelector((state: RootState) => state.makeQuestion);
 
 
-    const Upload = () => {
+    const upload = () => {
         const tags = tapTag.split(' ')
         if (isLogin.isLogin && isLogin.token) {
             dispatch({ type: MAKE_QUESTION_REQUEST, payload: { tags: tags, title: InterestingTitle, question: quetion, token: isLogin.token } })
@@ -92,7 +92,9 @@ const TabQuestion = ({ navigation }: Props) => {
                         <FlexWrapper>
                             <Title>Link Question</Title>
                         </FlexWrapper>
-                        <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
+                        {!makeState.fetching ?
+                            <MakeButton title="MAKE" onPress={() => upload()}></MakeButton>
+                            :<ActivityIndicator />}
                     </TitleWrapper>
 
                     <InputWrapper>
