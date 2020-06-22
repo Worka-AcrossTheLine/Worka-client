@@ -1,6 +1,6 @@
 import axios, { AxiosPromise, AxiosError } from 'axios';
 import base from './baseURL.json'
-import { LoginPayload, LoginResponse } from '../reducers/login'
+import { LoginPayload, forgetPayload, LoginResponse, forgetResponse } from '../reducers/login'
 import { SignupPayload, SignupResponse } from '../reducers/signup';
 
 const reqresApi = axios.create({
@@ -29,6 +29,30 @@ export const signup = (
   }).catch((error: AxiosError) => {
     throw error.response;
   })
+}
+
+export const forgotPassword = (
+  { username, email }: forgetPayload
+) => {
+  return reqresApi.post('accounts/tmp-password/', { username, email })
+    .catch((error: AxiosError) => {
+      if ('response' in error) {
+        throw error.response;
+      }
+      throw error;
+    })
+}
+
+export const forgotUsername = (
+  { email }: { email: string }
+) => {
+  return reqresApi.post('accounts/forgot-username/', { email })
+    .catch((error: AxiosError) => {
+      if ('response' in error) {
+        throw error.response;
+      }
+      throw error;
+    })
 }
 
 export const tendency = ({ token, mbti }: { token: string, mbti: string }): AxiosPromise<void> => {
