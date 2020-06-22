@@ -25,12 +25,9 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
 
 export function* handleMakeFeed({ type, payload: { title, tags, text, images, token } }: { type: string, payload: makeCard }) {
   try {
-    console.log(title)
     const response = yield call(makeFeed, { title, tags, text, images, token });
-    console.log(response)
     yield put(makeFeedSuccess(response.data));
   } catch (err) {
-    console.log(err.status)
     yield put({ type: MAKE_FEED_FAIL, payload: err })
   }
 }

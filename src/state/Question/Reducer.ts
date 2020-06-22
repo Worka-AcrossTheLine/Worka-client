@@ -151,7 +151,6 @@ export const MakeQuestionFeed = (state: QuestionState = initialState, action: Qu
     }
 };
 export const CommentFeed = (state: CommentState = initialStateComment, action: QuestionCommentAction) => {
-    console.log(action.type);
     switch (action.type) {
         case MAKE_QUESTION_COMMENT_REQUEST:
             return {
