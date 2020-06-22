@@ -5,7 +5,8 @@ import {
   getFeedSuccess, MAKE_FEED_FAIL, makeCard,
   makeFeedSuccess
 } from './Action';
-import { LOGIN_SUCCESS, LOGOUT } from "../../reducers/login";
+import {LOGIN_SUCCESS, LOGOUT, LOGOUT_REQUEST} from "../../reducers/login";
+import {AsyncStorage} from "react-native";
 
 
 
@@ -16,7 +17,7 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
     yield put(getFeedSuccess(response.data.results));
   } catch (err) {
     if (err.status === 401) {
-      yield put({ type: LOGOUT });
+      yield put({ type: LOGOUT_REQUEST });
     }
     yield put({ type: GET_FEED_FAIL, payload: err })
   }
