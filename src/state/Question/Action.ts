@@ -1,5 +1,3 @@
-
-
 interface Question {
     author: {
         username: string
@@ -56,6 +54,7 @@ export const MAKE_QUESTION_SUCCESS = 'MAKE_QUESTION_SUCCESS'
 export const MAKE_QUESTION_FAIL = 'MAKE_QUESTION_FAIL'
 export const MAKE_QUESTION_INIT = 'MAKE_QUESTION_INIT'
 
+export const GET_QUESTION_DETAIL_INIT = 'GET_QUESTION_DETAIL_INIT'
 export const GET_QUESTION_DETAIL_REQUEST = 'GET_QUESTION_DETAIL_REQUEST'
 export const GET_QUESTION_DETAIL_SUCCESS = 'GET_QUESTION_DETAIL_SUCCESS'
 export const GET_QUESTION_DETAIL_FAIL = 'GET_QUESTION_DETAIL_FAIL'
@@ -68,11 +67,10 @@ export const MAKE_QUESTION_COMMENT_REQUEST = 'MAKE_QUESTION_COMMENT_REQUEST'
 export const MAKE_QUESTION_COMMENT_SUCCESS = 'MAKE_QUESTION_COMMENT_SUCCESS'
 export const MAKE_QUESTION_COMMENT_FAIL = 'MAKE_QUESTION_COMMENT_FAIL'
 
+export const QUESTION_COMMENTS_INIT = 'GET_QUESTION_COMMENTS_INIT';
 export const QUESTION_COMMENTS_REQUEST = 'QUESTION_COMMENTS_REQUEST'
 export const QUESTION_COMMENTS_SUCCESS = 'QUESTION_COMMENTS_SUCCESS'
 export const QUESTION_COMMENTS_FAIL = 'QUESTION_COMMENTS_FAIL'
-
-
 
 export const makeQuestionRequest = (data: QuestionRequest) => {
     return { type: MAKE_QUESTION_REQUEST, payload: { data } };
@@ -84,7 +82,7 @@ export const MakeQuestionFail = (err: boolean) => {
     return { type: MAKE_QUESTION_FAIL, payload: { err } };
 };
 export const MakeQuestionInit = () => {
-    return {type: MAKE_QUESTION_INIT}
+    return { type: MAKE_QUESTION_INIT }
 }
 
 export const makeQuestionCommentRequest = (data: MakeCommentRequest) => {
@@ -107,8 +105,6 @@ export const getQuestionDetailSuccess = (data: QuestionDetail[]) => {
 export const getQuestionDetailFail = (err: boolean) => {
     return { type: GET_QUESTION_DETAIL_FAIL, payload: { err } };
 };
-
-
 
 export const QuestionCommentRequest = (data: CommentRequest) => {
     return { type: QUESTION_COMMENTS_REQUEST, payload: { data } };
