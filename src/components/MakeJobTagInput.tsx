@@ -15,24 +15,24 @@ type Props = {
 
 const MakeJobTagInput = ({
     placeholder, value, onChange, fontSize, autoFocus = false, keyboardType, autoCorrect
-}:Props) => {
+}: Props) => {
     let textAlign: 'left'
-    if(value.length>0) {
+    if (value.length > 0) {
         textAlign = 'left'
     }
     return (
-            <InputWrapper>
-                <Input 
-                    placeholder={placeholder}
-                    value = {value}
-                    onChangeText={(e) => onChange(e)}
-                    autoFocus={autoFocus}
-                    keyboardType={keyboardType}
-                    autoCapitalize  = 'none'
-                    autoCorrect = { false }
-                    autoCompleteType = 'off'
-                />
-            </InputWrapper>
+        <InputWrapper>
+            <Input
+                placeholder={placeholder}
+                value={value}
+                onChangeText={(e) => onChange(e)}
+                autoFocus={autoFocus}
+                keyboardType={keyboardType}
+                autoCapitalize='none'
+                autoCorrect={false}
+                autoCompleteType='off'
+            />
+        </InputWrapper>
     )
 }
 
