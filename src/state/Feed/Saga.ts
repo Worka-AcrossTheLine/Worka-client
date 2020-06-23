@@ -18,6 +18,11 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
   } catch (err) {
     if (err.status === 401) {
       yield put({ type: LOGOUT_REQUEST });
+      alert('인증이 유효하지 않습니다.')
+    }else if (err.status === 400) {
+      alert('잘못된 요청입니다.')
+    }else if (err.status === 500) {
+      alert('네트워크에러')
     }
     yield put({ type: GET_FEED_FAIL, payload: err })
   }
@@ -30,6 +35,11 @@ export function* handleOnlyGetFeed({ payload: { token } }: { type: string, paylo
   } catch (err) {
     if (err.status === 401) {
       yield put({ type: LOGOUT });
+      alert('인증이 유효하지 않습니다.')
+    }else if (err.status === 400) {
+      alert('잘못된 요청입니다.')
+    }else if (err.status === 500) {
+      alert('네트워크에러')
     }
     yield put({ type: GET_FEED_FAIL, payload: err })
   }
@@ -44,6 +54,16 @@ export function* handleMakeFeed({ type, payload: { title, tags, text, images, to
     yield put(getFeedSuccess(getResponse.data.results));
     alert('카드가 작성 되었습니다.')
   } catch (err) {
+    if (err.status === 401) {
+      yield put({ type: LOGOUT });
+      alert('인증이 유효하지 않습니다.')
+    }else if (err.status === 400) {
+      alert('잘못된 요청입니다.')
+    }else if (err.status === 500) {
+      alert('네트워크에러')
+    }else if (err.status === 413) {
+      alert('이미지의 파일이 너무 큽니다')
+    }
     yield put({ type: MAKE_FEED_FAIL, payload: err })
   }
 }
