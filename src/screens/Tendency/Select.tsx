@@ -7,6 +7,10 @@ import { TENDENCYQUESTIONS } from '../../constants/tendencyQ';
 import { RootState } from '../../reducers';
 import { TENDENCY } from '../../reducers/login'
 
+type Props = {
+    isFetch: boolean;
+}
+
 
 const Wrapper = styled.SafeAreaView`
     flex:1;
@@ -21,6 +25,7 @@ const TitleWrapper = styled.View`
 
 const Title = styled.Text`
     font-size:30px;
+    margin-bottom: 14px;
 `;
 
 const Italic = styled.Text`
@@ -49,7 +54,7 @@ const BottomButtonWrapper = styled.View`
     margin-top:15px;
 `;
 
-const Select = () => {
+const Select = ({ isFetch }: Props) => {
     const [mbtiIndex, setMbtiIndex] = useState(0);
     const [mbti, setMbti] = useState('');
 
@@ -71,19 +76,29 @@ const Select = () => {
     const [q1, q2] = TENDENCYQUESTIONS[mbtiIndex];
     return (
         <Wrapper>
-            <TitleWrapper>
-                <Title>What <Italic>tickles</Italic></Title>
-                <Title>Your <Italic style={{ fontStyle: 'normal' }}>Tendency?</Italic></Title>
-                <Desc>Choose your interests below.</Desc>
-            </TitleWrapper>
-            <BodyWrapper>
-                <TopButtonWrapper>
-                    <TendencyButton title={q1.q} onPress={chooseQ(q1)} />
-                </TopButtonWrapper>
-                <BottomButtonWrapper>
-                    <TendencyButton title={q2.q} onPress={chooseQ(q2)} />
-                </BottomButtonWrapper>
-            </BodyWrapper>
+            {isFetch ?
+                <TitleWrapper style={{ justifyContent: 'center' }}>
+                    <Title>로그인 정보를 </Title>
+                    <Title>불러오고있습니다!</Title>
+                    <Title>조금만 기다려주세요</Title>
+                </TitleWrapper>
+                :
+                <>
+                    <TitleWrapper>
+                        <Title>What <Italic>tickles</Italic></Title>
+                        <Title>Your <Italic style={{ fontStyle: 'normal' }}>Tendency?</Italic></Title>
+                        <Desc>Choose your interests below.</Desc>
+                    </TitleWrapper>
+                    <BodyWrapper>
+                        <TopButtonWrapper>
+                            <TendencyButton title={q1.q} onPress={chooseQ(q1)} />
+                        </TopButtonWrapper>
+                        <BottomButtonWrapper>
+                            <TendencyButton title={q2.q} onPress={chooseQ(q2)} />
+                        </BottomButtonWrapper>
+                    </BodyWrapper>
+                </>
+            }
         </Wrapper>
     )
 }

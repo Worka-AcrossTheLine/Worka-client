@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {ActivityIndicator, TouchableWithoutFeedback} from 'react-native'
+import { ActivityIndicator, TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native'
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 
@@ -64,6 +64,7 @@ const TabQuestion = ({ navigation }: Props) => {
     }
 
     const onCancer = () => {
+        dispatch({ type: MAKE_QUESTION_INIT });
         navigation.navigate('News');
     }
 
@@ -72,6 +73,9 @@ const TabQuestion = ({ navigation }: Props) => {
     }
 
     if (makeState.posting) {
+        setTaptag("")
+        setInterestingTitle("")
+        setQuestion("")
         onCancer();
     }
 
@@ -94,7 +98,7 @@ const TabQuestion = ({ navigation }: Props) => {
                         </FlexWrapper>
                         {!makeState.fetching ?
                             <MakeButton title="MAKE" onPress={() => upload()}></MakeButton>
-                            :<ActivityIndicator />}
+                            : <ActivityIndicator />}
                     </TitleWrapper>
 
                     <InputWrapper>
@@ -102,19 +106,16 @@ const TabQuestion = ({ navigation }: Props) => {
                             placeholder="Make Job Tag"
                             value={tapTag}
                             onChange={addTap(setTaptag)}
-                            autoFocus={true}
                         />
                         <MakeInterestingInput
                             placeholder="Make Interesting Title"
                             value={InterestingTitle}
                             onChange={addTap(setInterestingTitle)}
-                            autoFocus={true}
                         />
                         <MakeQuestionInput
                             placeholder="Q1. Make Question"
                             value={quetion}
                             onChange={addTap(setQuestion)}
-                            autoFocus={true}
                         />
                     </InputWrapper>
                 </Wrapper>

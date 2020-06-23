@@ -4,8 +4,6 @@ import styled from 'styled-components/native'
 import { useHeaderHeight, StackNavigationProp } from '@react-navigation/stack'
 import { useSelector, useDispatch } from 'react-redux';
 
-import * as Linking from 'expo-linking';
-
 import { SIGNUP_REQUESTED, SIGNUP_INIT } from '../../reducers/signup'
 import { AuthStackParamList } from '../../navigator/AuthNavigation'
 import SignInput from '../../components/SignInput';
@@ -88,10 +86,6 @@ function Signup() {
     }, 5);
   }
 
-  const linkingTerms = () => {
-    Linking.openURL("https://www.notion.so/df4bbe41a1164370b1b798745c369394")
-  }
-
   useEffect(() => {
     if (isSubmit) {
       setIsSubmit(false);
@@ -163,9 +157,7 @@ function Signup() {
           />
         </BirthInputWrapper> */}
         <TermsWrapper>
-          <TouchableOpacity onPress={linkingTerms}>
-            <SignupText />
-          </TouchableOpacity>
+          <SignupText />
         </TermsWrapper>
         <ButtonWrapper>
           <MiddleButton title="CREATE ACCOUNT" onPress={handleSignup} isPending={signup.pending} />

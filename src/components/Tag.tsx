@@ -14,14 +14,14 @@ type TextStyle = {
 
 const Wrapper = styled.View`
     border-radius:10px;
-    background-color:${({ theme }: ThemeProps): string => theme.sky};
+    background-color:${({ theme }: ThemeProps): string => theme.white};
     padding:2px 8px;
     margin:3px;
 `;
 
 const Text = styled.Text`
     font-size:${({ theme }: ThemeProps): number => theme.smFont}px;
-    color:${({ theme }: ThemeProps): string => theme.gray};
+    color:${({ theme }: ThemeProps): string => theme.white};
 `;
 
 export default function Tag({ fontColor, text }: Props) {

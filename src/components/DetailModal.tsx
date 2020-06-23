@@ -27,6 +27,7 @@ const CloseWrapper = styled.View`
     width:100%;
     max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     align-items:flex-end;
+    margin-bottom: 3px;
 `;
 
 const CloseView = styled.View`
@@ -38,10 +39,11 @@ const CloseView = styled.View`
 `;
 
 const DetailWrapper = styled.View`
+    border-radius: 8px;
     width:100%;
-    max-height:50%;
+    max-height:70%;
     max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
-    background-color:${({ theme }: ThemeProps): string => theme.detailBg}
+    background-color:${({ theme }: ThemeProps): string => theme.detailTag}
     padding:2px;
 `;
 
@@ -53,6 +55,11 @@ const ImageWrapper = styled.View`
     padding:5px;
 `;
 
+const TextWrapper = styled.View`
+    align-items: flex-start;
+    padding:4px;
+`;
+
 const Image = styled.Image`
     width:100%;
     height:100%;
@@ -60,19 +67,15 @@ const Image = styled.Image`
 `;
 
 const BodyWrapper = styled.View`
-    margin-top:20px;
+    margin-top:10px;
     width:100%;
 `;
 
 const TagWrapper = styled.View`
     width:100%;
-    padding:0px 15px;
+    padding:0px 10px;
     flex-wrap:wrap;
     flex-direction:row;
-`;
-
-const TextWrapper = styled.View`
-    padding:15px;
 `;
 
 const TitleView = styled.View`
@@ -80,13 +83,22 @@ const TitleView = styled.View`
 `;
 
 const Title = styled.Text`
-    font-size:20px;
-    text-align:center;
+    font-size:14px;
+    text-align:left;
+    font-weight: 700;
+    color: #554C4C;
+    line-height: 20px;
 `;
 
 const Desc = styled.Text`
-    font-size:${({ theme }: ThemeProps): number => theme.smFont}px;
+    font-size:${({ theme }: ThemeProps): number => theme.lgFont}px;
     line-height:12px;
+    padding-left: 8px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    margin-top: 5px;
+    margin-bottom: 12px;
+
 `;
 
 export default function DetailModal({
@@ -114,18 +126,20 @@ export default function DetailModal({
                 <DetailWrapper>
                     <ScrollView>
                         <ScrollWrapper onStartShouldSetResponder={() => true}>
+                            
                             {images ? <ImageWrapper><Image source={{ uri: images || '' }} style={{ width: '100%', height: '100%' }} /></ImageWrapper> : <TitleView><Title>{title}</Title></TitleView>}
+                            
                             <BodyWrapper>
+                                <TextWrapper>
+                                        {images && <TitleView><Title>{title}</Title></TitleView>}
+                                </TextWrapper>
                                 <TagWrapper >
-                                    {tags.map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FFFFFF" />)}
+                                    {tags.map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FA5080" />)}
                                 </TagWrapper>
                                 <TagWrapper style={{ justifyContent: "space-between" }}>
-                                    <Tag text={username} fontColor="#FFFFFF" />
+                                    <Tag text={username} fontColor="#2C4F71" />
                                 </TagWrapper>
-                                <TextWrapper>
-                                    {images && <TitleView><Title>{title}</Title></TitleView>}
-                                    <Desc>{text}</Desc>
-                                </TextWrapper>
+                                <Desc style={{color: "white"}}>{text}</Desc>
                             </BodyWrapper>
                         </ScrollWrapper>
                     </ScrollView>

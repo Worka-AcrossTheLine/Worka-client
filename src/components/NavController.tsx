@@ -40,7 +40,7 @@ function TendencyController({ token }: TendencyProps) {
         <>
             {
                 !loginState.mbti ?
-                    <Tendency /> :
+                    <Tendency isFetch={feedState.fetching} /> :
                     <BottomNavigation />
 
             }
@@ -53,7 +53,7 @@ export default function NavController({ token, setToken }: Props) {
     const feedState = rootState.feed
     const loginState = rootState.login;
     const loginController = loginState.isLogin || token
-    if(feedState.err || loginState.isLogin) {
+    if (feedState.err || loginState.isLogin) {
         setToken('')
     }
     useEffect(() => {

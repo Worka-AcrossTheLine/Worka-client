@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
-import { Text } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { Text, Keyboard } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 
@@ -8,8 +9,10 @@ import SignInput from '../../components/SignInput'
 import SubmitButton from '../../components/MiddleButton';
 
 import validCheck from '../../constants/validCheck'
+import { RootState } from '../../reducers';
+import { FORGOT_PASSWORD_REQUEST, FORGOT_PASSWORD_INIT } from '../../reducers/login';
 
-type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Signin'>;
+type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'ForgotPassword'>;
 
 type Props = {
     navigation: AuthHomeNavigationProp;
@@ -37,7 +40,7 @@ const InputWrapper = styled.View`
 
 const ButtonWrapper = styled.View`
     flex:1;
-    justify-content:flex-end;
+    margin-top:60px;
     align-items:center;
 `;
 
@@ -46,10 +49,58 @@ const ForgotUsername = ({ navigation }: Props) => {
     const [usernameValid, setUsernameValid] = useState('');
     const [email, setEmail] = useState('');
     const [emailValid, setEmailValid] = useState('');
+    const [isSubmit, setIsSubmit] = useState<boolean>(false)
+
+    const dispatch = useDispatch();
+    const passwordState = useSelector((state: RootState) => state.password)
+
 
     const handleInput = (setFunction: React.Dispatch<React.SetStateAction<string>>) => (e: string) => {
         setFunction(e);
     };
+
+    const handleSubmit = () => {
+        Keyboard.dismiss();
+
+        setTimeout(() => {
+            setIsSubmit(true);
+        }, 50);
+    }
+
+    useEffect(() => {
+        if (isSubmit) {
+            setIsSubmit(false);
+            dispatch({ type: FORGOT_PASSWORD_REQUEST, payload: { email, username } })
+        }
+
+    }, [isSubmit]);
+
+    useEffect(() => {
+        if (passwordState.success) {
+            alert("Email 로 임시 패스워드가 전송되었습니다. 최대 5분이 걸릴수있습니다!");
+            dispatch({ type: FORGOT_PASSWORD_INIT });
+            navigation.navigate('Home');
+        }
+    }, [passwordState.success]);
+
+    useEffect(() => {
+        if (passwordState.error) {
+            const { error } = passwordState;
+            if (error === '404') {
+                alert("일치하는 정보가 없습니다.");
+            }
+            if (error === '500') {
+                alert('잠시후에 다시 시도해주세요');
+            }
+            dispatch({ type: FORGOT_PASSWORD_INIT });
+        }
+    }, [passwordState.error])
+
+    useEffect(() => {
+        return () => {
+            dispatch({ type: FORGOT_PASSWORD_INIT });
+        }
+    }, []);
 
     return (
         <Wrapper>
@@ -74,7 +125,12 @@ const ForgotUsername = ({ navigation }: Props) => {
                 <Text>Unfortunately, if you have never given us your email, we will not be able to reset your password.</Text>
             </InputWrapper>
             <ButtonWrapper>
-                <SubmitButton title="REQUEST USERNAME RECOVERY EMAIL" fontSize={14} onPress={() => console.log("asd")} isPending={false} />
+                <SubmitButton
+                    title="REQUEST USERNAME RECOVERY EMAIL"
+                    fontSize={14}
+                    onPress={handleSubmit}
+                    isPending={passwordState.fetching}
+                />
             </ButtonWrapper>
         </Wrapper>
     )

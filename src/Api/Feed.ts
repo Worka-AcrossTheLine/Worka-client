@@ -12,6 +12,7 @@ const reqresApi = axios.create({
 export const getFeed = ({ token }: { token: string }): AxiosPromise<responseFeeds> => {
     return reqresApi.get(`post/feed/`, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
+            console.log(error.response);
             throw error.response
         });
 };
@@ -20,6 +21,7 @@ export const getFeed = ({ token }: { token: string }): AxiosPromise<responseFeed
 export const getFeedDetail = (body: string) => {
     return reqresApi.get(`post/detail/${body}/`)
         .catch((error: AxiosError) => {
+            console.log(error.response);
             throw error.response
         });
 };

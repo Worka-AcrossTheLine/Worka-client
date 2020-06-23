@@ -259,10 +259,10 @@ export default function QuestionModal({
                                     nestedScrollEnabled={true}
                                     data={questionDetail.data.results}
                                     keyExtractor={(item) => `${item.id}`}
-                                    renderItem={({ item }) =>
+                                    renderItem={({ item, index }) =>
                                         <ModalTabWrapper key={`q-${item.id}`} onStartShouldSetResponder={() => false}>
                                             <TextWrapper>
-                                                <QuestionText>Q{item.id + 1}.{item.content}</QuestionText>
+                                                <QuestionText>Q{index + 1}.{item.content}</QuestionText>
                                             </TextWrapper>
                                             <View style={{ flex: 1, display: detailIndex === item.id ? 'flex' : 'none' }} >
                                                 {/*comment*/}
@@ -281,10 +281,10 @@ export default function QuestionModal({
                                                                 <AnswerWrapper onStartShouldSetResponder={() => true}>
                                                                     <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
                                                                     <AnswerUsername>{questionComment.text}</AnswerUsername>
-                                                                    <RatingWrapper>
+                                                                    {/* <RatingWrapper>
                                                                         <ThumpsUp style={{ marginRight: 7 }} />
                                                                         <ThumpsDown style={{ marginRight: 5 }} />
-                                                                    </RatingWrapper>
+                                                                    </RatingWrapper> */}
                                                                 </AnswerWrapper>
                                                             }
                                                         />
