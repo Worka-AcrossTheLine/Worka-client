@@ -157,6 +157,7 @@ const TabCard = ({ navigation }: Props) => {
 
     const Upload = () => {
         Keyboard.dismiss();
+        const tags = tapTag.replace(/^ /gi, "").replace(/,/gi, '').replace(/\s{2,}/gi, ' ').split(' ')
         const token = login.token;
         if (tapTag === "") {
             alert("TAG 를 작성해주세요")
@@ -166,10 +167,16 @@ const TabCard = ({ navigation }: Props) => {
             alert("이미지를 등록해주세요")
         } else if (Description === "") {
             alert("설명글을 입력해주세요~")
+        } else if (tags.length > 3) {
+            alert("tag는 3개 이상 사용할다 수 없습니다")
+        } else if (tags.length === 0){
+            alert("tag는 하나이상 입력해야합니다.")
         } else if (token) {
+            const tags = tapTag.replace(/^ /gi, "").replace(/,/gi, '').replace(/\s{2,}/gi, ' ').split(' ')
+
             dispatch({
                 type: MAKE_FEED_REQUEST,
-                payload: { title: InterestingTitle, tags: tapTag.replace(/^ /gi, "").replace(/,/gi, '').replace(/\s{2,}/gi, ' ').split(' '), text: Description, images: image, token: token }
+                payload: { title: InterestingTitle, tags: tags, text: Description, images: image, token: token }
             })
         } else {
             alert("로그인이 필요한 기능입니다!")

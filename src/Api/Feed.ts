@@ -43,7 +43,11 @@ export const makeFeed = ({ title,
 }: makeCard) => {
     const form: Form = new FormData();
     form.append("title", title);
-    form.append("tags", tags);
+    for (let i = 0; i < tags.length; i++) {
+        const tag = tags[i];
+        form.append('tags', tag)
+    }
+
     form.append("text", text);
     form.append("token", token);
     if (images) {
