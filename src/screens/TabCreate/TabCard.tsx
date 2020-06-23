@@ -6,7 +6,8 @@ import {
     Platform,
     TouchableOpacity,
     TouchableWithoutFeedback,
-    ActivityIndicator
+    ActivityIndicator,
+    StatusBar
 } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -32,6 +33,8 @@ import CancerButton from '../../components/CancerButton'
 import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
 
+import { HEIGHT } from '../../constants/dimensions'
+
 
 type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
 
@@ -39,9 +42,7 @@ type Props = {
     navigation: TopNewsNavigationProp;
 }
 
-const Wrapper = styled.SafeAreaView`
-    flex:1;
-`;
+const Wrapper = styled.SafeAreaView``;
 
 const TitleWrapper = styled.View`
     flex-direction: row;
@@ -55,10 +56,7 @@ const Title = styled.Text`
     color: #7B7B7B;
 `;
 
-const InputWrapper = styled.View`
-  
-  flex-direction:column;
-`;
+const InputWrapper = styled.View``;
 
 const ImageToggleWrapper = styled.View`
     height:30px;
@@ -82,7 +80,7 @@ const TabCard = ({ navigation }: Props) => {
     const [InterestingTitle, setInterestingTitle] = useState('');
     const [image, setImage] = useState('');
     const [Description, setDescription] = useState('');
-    const [animationOn, setAnimationOn] = useState(false);
+    const [animationOn, setAnimationOn] = useState(true);
     const [focusDesc, setFocusDesc] = useState(false);
 
     const slideIn = useRef(new Animated.Value(0)).current;
@@ -95,6 +93,7 @@ const TabCard = ({ navigation }: Props) => {
     const isIos = Platform.OS === 'ios';
 
     const onCancer = () => {
+        dispatch({ type: MAKE_FEED_INIT });
         navigation.navigate('News');
     }
     const handleKeyboard = () => {
@@ -123,7 +122,9 @@ const TabCard = ({ navigation }: Props) => {
                 }
             }
 
-            const result = await ImagePicker.launchCameraAsync();
+            const result = await ImagePicker.launchCameraAsync({
+                quality: 0.1
+            });
             if (!result.cancelled) {
                 setImage(result.uri)
             }
@@ -144,6 +145,7 @@ const TabCard = ({ navigation }: Props) => {
             let result = await ImagePicker.launchImageLibraryAsync({
                 allowsEditing: true,
                 aspect: [4, 3],
+                quality: 0.1
             });
             if (!result.cancelled) {
                 setImage(result.uri)
@@ -156,16 +158,36 @@ const TabCard = ({ navigation }: Props) => {
     const Upload = () => {
         Keyboard.dismiss();
         const token = login.token;
-        if (token) {
+        if (tapTag === "") {
+            alert("TAG 를 작성해주세요")
+        } else if (InterestingTitle === "") {
+            alert("TITLE 을 작성해주세오");
+        } else if (image === "") {
+            alert("이미지를 등록해주세요")
+        } else if (Description === "") {
+            alert("설명글을 입력해주세요~")
+        } else if (token) {
             dispatch({
                 type: MAKE_FEED_REQUEST,
                 payload: { title: InterestingTitle, tags: tapTag.replace(/,/gi, '').replace(/\s/gi, ','), text: Description, images: image, token: token }
             })
         } else {
+            alert("로그인이 필요한 기능입니다!")
         }
     }
 
+    if (makeFeedState.err) {
+        alert(makeFeedState.err);
+        dispatch({ type: MAKE_FEED_INIT });
+    }
+
     if (makeFeedState.posting) {
+        setTaptag('');
+        setInterestingTitle('');
+        setImage('');
+        setDescription('');
+        setAnimationOn(false);
+        setFocusDesc(false);
         onCancer();
     }
 
@@ -198,13 +220,15 @@ const TabCard = ({ navigation }: Props) => {
     }, [focusDesc])
 
     useEffect(() => {
+        console.log("MOUNT_TAB_CARD")
         return () => {
+            console.log("UNMOUNT_TAB CARD")
             dispatch({ type: MAKE_FEED_INIT });
         }
     }, []);
 
     return (
-        <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
+        <OsView style={{ backgroundColor: "#FFFFFF" }}>
             <TouchableWithoutFeedback onPress={handleKeyboard}>
                 <Wrapper>
                     <TitleWrapper>
@@ -217,20 +241,18 @@ const TabCard = ({ navigation }: Props) => {
                         </FlexWrapper>
                         {!makeFeedState.fetching ?
                             <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
-                            :<ActivityIndicator />}
+                            : <ActivityIndicator />}
                     </TitleWrapper>
                     <InputWrapper>
                         <MakeJobTagInput
                             placeholder="Make Job Tag"
                             value={tapTag}
                             onChange={addTap(setTaptag)}
-                            autoFocus={true}
                         />
                         <MakeInterestingInput
                             placeholder="Make Interesting Title"
                             value={InterestingTitle}
                             onChange={addTap(setInterestingTitle)}
-                            autoFocus={true}
                         />
                         <Animated.View style={{ height: slideIn, overflow: 'hidden' }}>
                             <MakeCameraInput>
@@ -252,7 +274,7 @@ const TabCard = ({ navigation }: Props) => {
                                 {animationOn ? <UpArrow /> : <DownArrow />}
                             </ImageToggleWrapper>
                         </TouchableOpacity>
-                        <Animated.View style={{ height: descSlide, elevation: 6 }}>
+                        <Animated.View style={{ height: descSlide, elevation: 10 }}>
                             <MakeCardDescriptionInput
                                 multiline
                                 numberOfLines={4}

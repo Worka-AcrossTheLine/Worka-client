@@ -139,7 +139,7 @@ const Profile = () => {
     const logininfo = useSelector((state: RootState) => state.login);
     const profile = useSelector((state: RootState) => state.profile);
     const makeFeed = useSelector((state: RootState) => state.makeFeed);
-    const makeQuestion = useSelector((state:RootState) => state.makeQuestion);
+    const makeQuestion = useSelector((state: RootState) => state.makeQuestion);
     const comments = useSelector((state: RootState) => state.questionComment);
     let { data: { user, cards, pages } } = profile;
 

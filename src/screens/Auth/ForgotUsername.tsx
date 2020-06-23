@@ -31,7 +31,7 @@ const InputWrapper = styled.View`
 
 const ButtonWrapper = styled.View`
     flex:1;
-    justify-content:flex-end;
+    margin-top:60px;
     align-items:center;
 `;
 

@@ -5,8 +5,7 @@ import {
   getFeedSuccess, MAKE_FEED_FAIL, makeCard,
   makeFeedSuccess
 } from './Action';
-import {LOGIN_SUCCESS, LOGOUT, LOGOUT_REQUEST} from "../../reducers/login";
-import {AsyncStorage} from "react-native";
+import { LOGIN_SUCCESS, LOGOUT, LOGOUT_REQUEST } from "../../reducers/login";
 
 
 
@@ -39,7 +38,7 @@ export function* handleOnlyGetFeed({ payload: { token } }: { type: string, paylo
 export function* handleMakeFeed({ type, payload: { title, tags, text, images, token } }: { type: string, payload: makeCard }) {
   try {
     const response = yield call(makeFeed, { title, tags, text, images, token });
-    const getResponse = yield call(getFeed, {token})
+    const getResponse = yield call(getFeed, { token })
     yield put(makeFeedSuccess(response.data));
     yield put(getFeedSuccess(getResponse.data.results));
     alert('카드가 작성 되었습니다.')

@@ -20,6 +20,7 @@ const InputWrapper = styled.View`
     background-color:white;
     font-size: 16px;
     margin-bottom: 5px;
+    elevation: 6;
 `
 
 const Input = styled.TextInput`
@@ -48,9 +49,9 @@ const MakeCardDescriptionInput = ({
             value={value}
             onBlur={onBlur}
             onFocus={onFocus}
-            autoCapitalize  = 'none'
-            autoCorrect = { false }
-            autoCompleteType = 'off'
+            autoCapitalize='none'
+            autoCorrect={false}
+            autoCompleteType='off'
         >
         </Input>
     </InputWrapper>

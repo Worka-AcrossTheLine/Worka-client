@@ -24,37 +24,37 @@ const Tab = createBottomTabNavigator<BottomCreateNavigationParamList>();
 
 export default function () {
   return (
-    <Tab.Navigator 
+    <Tab.Navigator
       tabBarOptions={{
         tabStyle: {
           justifyContent: 'center',
           alignItems: 'center',
         }
-    }}>
-      <Tab.Screen name="TabCard" 
+      }}>
+      <Tab.Screen name="TabCard"
         options={{
           tabBarLabel: '',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="camera-plus-outline" color={color} size={size} />
           ),
         }}
-        component={TabCard} 
+        component={TabCard}
       />
-      <Tab.Screen name="TabLink" 
+      {/* <Tab.Screen name="TabLink" 
         options={{
             tabBarLabel: '',
             tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="link-plus" color={color} size={size} />
             ),
           }}
-        component={TabLink} />
-      <Tab.Screen name="TabQuestion" 
+      component={TabLink} /> */}
+      <Tab.Screen name="TabQuestion"
         options={{
           tabBarLabel: '',
           tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="comment-question-outline" color={color} size={size} />
           ),
-        }} 
+        }}
         component={TabQuestion} />
     </Tab.Navigator>
   );
