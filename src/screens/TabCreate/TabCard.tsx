@@ -168,9 +168,9 @@ const TabCard = ({ navigation }: Props) => {
         } else if (Description === "") {
             Alert.alert("WORKA!", "설명글을 입력해주세요~")
         } else if (tags.length > 3) {
-            Alert.alert("tag는 3개 이상 사용할다 수 없습니다")
+            Alert.alert("WORKA!","tag는 3개 이상 사용할 수 없습니다")
         } else if (tags.length === 0){
-            Alert.alert("tag는 하나이상 입력해야합니다.")
+            Alert.alert("WORKA!", "tag는 하나이상 입력해야합니다.")
         } else if (token) {
             dispatch({
                 type: MAKE_FEED_REQUEST,
