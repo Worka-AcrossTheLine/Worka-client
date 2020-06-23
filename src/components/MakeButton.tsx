@@ -10,6 +10,8 @@ type Props = {
 
 const Button = styled.TouchableOpacity`
     padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 `;
 
 const Title = styled.Text`
