@@ -11,6 +11,7 @@ import {
   makeFeedSuccess
 } from './Action';
 import { LOGIN_SUCCESS, LOGOUT, LOGOUT_REQUEST } from "../../reducers/login";
+import { errorHandler } from '../errorHandler';
 
 
 
@@ -52,6 +53,12 @@ export function* handleMakeFeed({ type, payload: { title, tags, text, images, to
     yield put(getFeedSuccess(getResponse.data.results));
     Alert.alert("WORKA!", '카드가 작성 되었습니다.')
   } catch (err) {
+    if (err.status === 401) {
+      yield put({ type: LOGOUT });
+      alert('인증이 유효하지 않습니다.')
+    } else {
+      yield errorHandler(err.status)
+    }
     yield put({ type: MAKE_FEED_FAIL, payload: err })
   }
 }

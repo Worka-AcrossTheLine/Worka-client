@@ -169,7 +169,7 @@ const TabCard = ({ navigation }: Props) => {
         } else if (token) {
             dispatch({
                 type: MAKE_FEED_REQUEST,
-                payload: { title: InterestingTitle, tags: tapTag.replace(/,/gi, '').replace(/\s/gi, ','), text: Description, images: image, token: token }
+                payload: { title: InterestingTitle, tags: tapTag.replace(/^ /gi, "").replace(/,/gi, '').replace(/\s{2,}/gi, ' ').split(' '), text: Description, images: image, token: token }
             })
         } else {
             Alert.alert("WORKA!", "로그인이 필요한 기능입니다!")
