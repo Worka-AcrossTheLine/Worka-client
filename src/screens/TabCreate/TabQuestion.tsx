@@ -58,8 +58,18 @@ const TabQuestion = ({ navigation }: Props) => {
 
     const upload = () => {
         const tags = tapTag.split(' ')
-        if (isLogin.isLogin && isLogin.token && InterestingTitle && quetion) {
-            dispatch({ type: MAKE_QUESTION_REQUEST, payload: { tags: tags, title: InterestingTitle, question: quetion, token: isLogin.token } })
+        if (isLogin.isLogin && isLogin.token) {
+            if (InterestingTitle === "") {
+                alert("Title을 작성해주세요")
+            } else if (quetion === "") {
+                alert("질문을 등록하여 주세요")
+                dispatch({
+                    type: MAKE_QUESTION_REQUEST,
+                    payload: {tags: tags, title: InterestingTitle, question: quetion, token: isLogin.token}
+                })
+            }
+        } else {
+            alert('인증되지 않았습니다.')
         }
     }
 
