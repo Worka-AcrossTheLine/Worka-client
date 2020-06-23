@@ -106,19 +106,16 @@ const TabQuestion = ({ navigation }: Props) => {
                             placeholder="Make Job Tag"
                             value={tapTag}
                             onChange={addTap(setTaptag)}
-                            autoFocus={true}
                         />
                         <MakeInterestingInput
                             placeholder="Make Interesting Title"
                             value={InterestingTitle}
                             onChange={addTap(setInterestingTitle)}
-                            autoFocus={true}
                         />
                         <MakeQuestionInput
                             placeholder="Q1. Make Question"
                             value={quetion}
                             onChange={addTap(setQuestion)}
-                            autoFocus={true}
                         />
                     </InputWrapper>
                 </Wrapper>
