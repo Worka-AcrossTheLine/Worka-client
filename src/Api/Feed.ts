@@ -33,7 +33,7 @@ export const getFeedDetail = (body: string) => {
 
 interface Form extends FormData {
     append(name: string,
-        value: string | Blob | string[] | {
+        value: string | Blob | {
             uri: string;
             name?: string;
             type: string
@@ -48,9 +48,11 @@ export const makeFeed = ({ title,
 }: makeCard) => {
     const form: Form = new FormData();
     form.append("title", title);
-    form.append("tags", ["123", "456"]);
+
+    //예제 이런식으로 보내야지 list 로 보내집니다! 부탁드릴게욯ㅎ
+    // form.append("tags", "ads");
+    // form.append("tags", "adsgfda");
     form.append("text", text);
-    form.append("token", token);
     if (images) {
         let match = /\.(\w+)$/.exec(images);
         let type = match ? `image/${match[1]}` : `image`;
