@@ -126,12 +126,12 @@ export default function DetailModal({
                 <DetailWrapper>
                     <ScrollView>
                         <ScrollWrapper onStartShouldSetResponder={() => true}>
-                            
+
                             {images ? <ImageWrapper><Image source={{ uri: images || '' }} style={{ width: '100%', height: '100%' }} /></ImageWrapper> : <TitleView><Title>{title}</Title></TitleView>}
-                            
+
                             <BodyWrapper>
                                 <TextWrapper>
-                                        {images && <TitleView><Title>{title}</Title></TitleView>}
+                                    {images && <TitleView><Title>{title}</Title></TitleView>}
                                 </TextWrapper>
                                 <TagWrapper >
                                     {tags.map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FA5080" />)}
@@ -139,7 +139,7 @@ export default function DetailModal({
                                 <TagWrapper style={{ justifyContent: "space-between" }}>
                                     <Tag text={username} fontColor="#2C4F71" />
                                 </TagWrapper>
-                                <Desc style={{color: "white"}}>{text}</Desc>
+                                <Desc style={{ color: "white" }}>{text}</Desc>
                             </BodyWrapper>
                         </ScrollWrapper>
                     </ScrollView>

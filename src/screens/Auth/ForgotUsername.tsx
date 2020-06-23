@@ -85,10 +85,7 @@ const ForgotEmail = ({ navigation }: Props) => {
         if (forgotUsernameState.error) {
             const { error } = forgotUsernameState;
             if (error === '404') {
-                alert("일치하는 정보가 없습니다.");
-            }
-            if (error === '500') {
-                alert('잠시후에 다시 시도해주세요!')
+                Alert.alert("유저네임 찾기", "일치하는 정보가 없습니다.");
             }
             dispatch({ type: FORGOT_USERNAME_INIT });
         }
@@ -106,7 +103,6 @@ const ForgotEmail = ({ navigation }: Props) => {
             <InputWrapper>
                 <SignInput
                     placeholder="Email address for your account"
-                    fontSize={15}
                     value={email}
                     valid={emailValid}
                     onChange={handleInput}

@@ -1,3 +1,4 @@
+import { Alert } from 'react-native'
 import { call, put } from "redux-saga/effects";
 import {
     MAKE_QUESTION_COMMENT_FAIL,
@@ -17,8 +18,11 @@ export function* handleQuestion({ type, payload: { tags, title, question, token 
         const response = yield call(makeQuestionCard, { tags, title, token });
         yield call(makeQuestion, { id: response.data.id, question: question, token: token })
         yield put(makeQuestionSuccess(response.data));
-        alert('질문지 생성 완료')
+        Alert.alert("WORKA!", '질문지 생성 완료')
     } catch (err) {
+        if (!err) {
+            Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
+        }
         yield put({ type: MAKE_QUESTION_FAIL, payload: err })
     }
 }
@@ -28,6 +32,9 @@ export function* handleGetQuestion({ type, payload: { token } }: { type: string,
         const response = yield call(getQuestion, { token })
         yield put({ type: GET_QUESTION_SUCCESS, payload: response.data });
     } catch (err) {
+        if (!err) {
+            Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
+        }
         yield put({ type: GET_QUESTION_FAIL, payload: err })
     }
 }
@@ -37,6 +44,9 @@ export function* handleGetQuestionDetail({ type, payload: { token, id } }: { typ
         const response = yield call(getQuestionDetail, { token, id })
         yield put({ type: GET_QUESTION_DETAIL_SUCCESS, payload: response.data });
     } catch (err) {
+        if (!err) {
+            Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
+        }
         yield put({ type: GET_QUESTION_DETAIL_FAIL, payload: err })
     }
 }
@@ -47,6 +57,9 @@ export function* handleMakeQuestionComment({ type, payload: { token, question_pk
         yield put({ type: MAKE_QUESTION_COMMENT_SUCCESS, payload: response.data })
         yield put({ type: QUESTION_COMMENTS_REQUEST, payload: { token, page_pk, question_pk } })
     } catch (err) {
+        if (!err) {
+            Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
+        }
         yield put({ type: MAKE_QUESTION_COMMENT_FAIL, payload: err })
     }
 
@@ -57,6 +70,9 @@ export function* handleQuestionComments({ type, payload: { token, question_pk, p
         const response = yield call(getQuestionComment, { page_pk, question_pk, token });
         yield put({ type: QUESTION_COMMENTS_SUCCESS, payload: response.data.results })
     } catch (err) {
+        if (!err) {
+            Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
+        }
         yield put({ type: QUESTION_COMMENTS_FAIL, payload: err })
     }
 }

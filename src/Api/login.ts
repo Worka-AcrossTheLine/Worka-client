@@ -1,3 +1,4 @@
+import { Alert } from 'react-native'
 import axios, { AxiosPromise, AxiosError } from 'axios';
 import base from './baseURL.json'
 import { LoginPayload, forgetPayload, LoginResponse, forgetResponse } from '../reducers/login'
@@ -15,7 +16,10 @@ export const login = (
     username,
     password
   }).catch((error: AxiosError) => {
-    throw error.response
+    if (error) {
+      throw error.response
+    }
+    throw { status: 500 }
   });
 };
 
@@ -27,7 +31,10 @@ export const signup = (
     username,
     password,
   }).catch((error: AxiosError) => {
-    throw error.response;
+    if (error) {
+      throw error.response
+    }
+    throw { status: 500 }
   })
 }
 
@@ -36,10 +43,10 @@ export const forgotPassword = (
 ) => {
   return reqresApi.post('accounts/tmp-password/', { username, email })
     .catch((error: AxiosError) => {
-      if ('response' in error) {
-        throw error.response;
+      if (error) {
+        throw error.response
       }
-      throw error;
+      throw { status: 500 }
     })
 }
 
@@ -58,14 +65,20 @@ export const forgotUsername = (
 export const tendency = ({ token, mbti }: { token: string, mbti: string }): AxiosPromise<void> => {
   return reqresApi.patch('accounts/tendency/', { mbti }, { headers: { Authorization: `JWT ${token}` } })
     .catch((error: AxiosError) => {
-      throw error.response;
+      if (error) {
+        throw error.response
+      }
+      throw { status: 500 }
     })
 }
 
 export const withdrawal = ({ token }: { token: string }): AxiosPromise<void> => {
   return reqresApi.delete('/accounts/delete/', { headers: { Authorization: `JWT ${token}` } })
     .catch((error: AxiosError) => {
-      throw error.response;
+      if (error) {
+        throw error.response
+      }
+      throw { status: 500 }
     })
 
 }

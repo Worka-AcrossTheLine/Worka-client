@@ -21,7 +21,7 @@ const Wrapper = styled.View`
 
 const Text = styled.Text`
     font-size:${({ theme }: ThemeProps): number => theme.smFont}px;
-    color:${({ theme }: ThemeProps): string => theme.white};
+    color:${({ theme }: ThemeProps): string => theme.blue};
 `;
 
 export default function Tag({ fontColor, text }: Props) {

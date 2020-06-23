@@ -7,7 +7,7 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     ActivityIndicator,
-    StatusBar
+    Alert
 } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -117,7 +117,7 @@ const TabCard = ({ navigation }: Props) => {
             if (isIos) {
                 const { status } = await Permissions.askAsync(Permissions.CAMERA);
                 if (status !== 'granted') {
-                    alert("카메라 허가 필요");
+                    Alert.alert("권한 필요", "카메라 허가 필요");
                     return;
                 }
             }
@@ -129,7 +129,7 @@ const TabCard = ({ navigation }: Props) => {
                 setImage(result.uri)
             }
         } catch (e) {
-            alert("카메라 에러");
+            Alert.alert("카메라 에러", "카메라 불러오기 에러");
         }
     }
 
@@ -138,7 +138,7 @@ const TabCard = ({ navigation }: Props) => {
             if (isIos) {
                 const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
                 if (status !== 'granted') {
-                    alert("카메라 허가 필요");
+                    Alert.alert("권한 필요", "카메라 허가 필요");
                     return;
                 }
             }
@@ -151,7 +151,7 @@ const TabCard = ({ navigation }: Props) => {
                 setImage(result.uri)
             }
         } catch (e) {
-            alert("카메라 라이브러리 에러");
+            Alert.alert("카메라 라이브러리 에러", "카메라 라이브러리 불러오기 에러");
         }
     }
 
@@ -159,25 +159,25 @@ const TabCard = ({ navigation }: Props) => {
         Keyboard.dismiss();
         const token = login.token;
         if (tapTag === "") {
-            alert("TAG 를 작성해주세요")
+            Alert.alert("WORKA!", "TAG 를 작성해주세요")
         } else if (InterestingTitle === "") {
-            alert("TITLE 을 작성해주세오");
+            Alert.alert("WORKA!", "TITLE 을 작성해주세오");
         } else if (image === "") {
-            alert("이미지를 등록해주세요")
+            Alert.alert("WORKA!", "이미지를 등록해주세요")
         } else if (Description === "") {
-            alert("설명글을 입력해주세요~")
+            Alert.alert("WORKA!", "설명글을 입력해주세요~")
         } else if (token) {
             dispatch({
                 type: MAKE_FEED_REQUEST,
                 payload: { title: InterestingTitle, tags: tapTag.replace(/,/gi, '').replace(/\s/gi, ','), text: Description, images: image, token: token }
             })
         } else {
-            alert("로그인이 필요한 기능입니다!")
+            Alert.alert("WORKA!", "로그인이 필요한 기능입니다!")
         }
     }
 
     if (makeFeedState.err) {
-        alert(makeFeedState.err);
+        Alert.alert("WORKA!", `${makeFeedState.err}`);
         dispatch({ type: MAKE_FEED_INIT });
     }
 

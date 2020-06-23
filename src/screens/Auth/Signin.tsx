@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Keyboard, TouchableWithoutFeedback } from 'react-native'
+import { Keyboard, TouchableWithoutFeedback, Alert } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import styled from 'styled-components/native'
 
@@ -14,6 +14,7 @@ import MiddleButton from '../../components/MiddleButton'
 
 import { HEIGHT } from '../../constants/dimensions'
 import validCheck from '../../constants/validCheck'
+import OsView from '../../components/OsView';
 
 type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Signin'>;
 
@@ -22,29 +23,28 @@ type Props = {
 };
 
 const Wrapper = styled.SafeAreaView`
-    height:${HEIGHT}px;
+    flex:1;
     padding:20px 33px;
+    background-color:white;
 `;
 
 const TitleWrapper = styled.View`
-    flex:1;
     align-items:center;
-    justify-content:center;
 `;
 
 const HeaderTitle = styled.Text`
     font-size : 77px;
     font-weight:700;
     color:#35749F;
+    padding:10px;
 `;
 
 const InputWrapper = styled.View`
-    flex:1;
     padding:0px 20px;
 `;
 
 const FindWrapper = styled.TouchableOpacity`
-    margin-top:25px;
+    margin-top:20px;
 `;
 
 const FindText = styled.Text`
@@ -54,10 +54,8 @@ const FindText = styled.Text`
 `;
 
 const ButtonWrapper = styled.View`
-    flex:1;
-    justify-content:flex-end;
+    margin-top:30px;
     align-items:center;
-    margin-bottom:56px;
 `;
 
 const Signin = ({ navigation }: Props) => {
@@ -71,7 +69,7 @@ const Signin = ({ navigation }: Props) => {
     const dispatch = useDispatch();
 
     if (loginState.isError) {
-        alert("입력하신 정보가 맞지 않습니다. 다시 확인해주세요");
+        Alert.alert("로그인", "입력하신 정보가 맞지 않습니다. 다시 확인해주세요");
         dispatch({ type: LOGIN_INIT });
     }
 
@@ -103,7 +101,7 @@ const Signin = ({ navigation }: Props) => {
                 <TitleWrapper>
                     <HeaderTitle>Worka!</HeaderTitle>
                 </TitleWrapper>
-                <InputWrapper>
+                <InputWrapper onStartShouldSetResponder={() => true}>
                     <SignInput
                         placeholder="username"
                         value={username}
@@ -127,7 +125,7 @@ const Signin = ({ navigation }: Props) => {
                     <MiddleButton title="LOG IN" onPress={handleLogin} isPending={loginState.pending} />
                 </ButtonWrapper>
             </Wrapper>
-        </TouchableWithoutFeedback>
+        </TouchableWithoutFeedback >
     )
 }
 
