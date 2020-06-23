@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Text, Keyboard } from 'react-native'
+import { Text, Keyboard, Alert } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components/native'
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -70,14 +70,16 @@ const ForgotUsername = ({ navigation }: Props) => {
     useEffect(() => {
         if (isSubmit) {
             setIsSubmit(false);
-            dispatch({ type: FORGOT_PASSWORD_REQUEST, payload: { email, username } })
+            if (usernameValid === "" && emailValid === "") {
+                dispatch({ type: FORGOT_PASSWORD_REQUEST, payload: { email, username } })
+            }
         }
 
     }, [isSubmit]);
 
     useEffect(() => {
         if (passwordState.success) {
-            alert("Email 로 임시 패스워드가 전송되었습니다. 최대 5분이 걸릴수있습니다!");
+            Alert.alert("비밀번호 찾기", "Email 로 임시 패스워드가 전송되었습니다. 최대 5분이 걸릴수있습니다!");
             dispatch({ type: FORGOT_PASSWORD_INIT });
             navigation.navigate('Home');
         }
@@ -87,10 +89,7 @@ const ForgotUsername = ({ navigation }: Props) => {
         if (passwordState.error) {
             const { error } = passwordState;
             if (error === '404') {
-                alert("일치하는 정보가 없습니다.");
-            }
-            if (error === '500') {
-                alert('잠시후에 다시 시도해주세요');
+                Alert.alert("비밀번호 찾기", "일치하는 정보가 없습니다.");
             }
             dispatch({ type: FORGOT_PASSWORD_INIT });
         }

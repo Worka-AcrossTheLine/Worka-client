@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import { call, put } from "redux-saga/effects";
 import {
     PROFILE_FAIL,
@@ -14,6 +15,9 @@ export function* handleProfile(action: Action) {
         const response = yield call(getProfile, action.payload);
         yield put(ProfileSuccess(response.data));
     } catch (err) {
+        if (!err) {
+            Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
+        }
         yield put({ type: PROFILE_FAIL, payload: err })
     }
 }
@@ -23,6 +27,9 @@ export function* handleProfileQuestion(action: Action) {
         const response = yield call(getQuestion, action.payload);
         yield put(QuestionSuccess(response.data));
     } catch (err) {
+        if (!err) {
+            Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
+        }
         yield put({ type: PROFILE_QUESTION_FAIL, payload: err })
     }
 }
@@ -32,6 +39,8 @@ export function* handleProfileComments(action: PatchCommentsAction) {
         const response = yield call(patchComment, action.payload);
         yield put({ type: PATCH_COMMENTS_SUCCESS, comments: action.payload.comments })
     } catch (error) {
-
+        if (!error) {
+            Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
+        }
     }
 }

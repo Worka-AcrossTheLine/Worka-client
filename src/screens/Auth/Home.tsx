@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { View, Image, StyleSheet } from 'react-native';
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { StackNavigationProp } from '@react-navigation/stack'
@@ -6,7 +7,7 @@ import { AuthStackParamList } from '../../navigator/AuthNavigation'
 
 import SignButton from '../../components/SignButton'
 import { LOGIN_SKIP } from '../../reducers/login'
-import MainImg from '../../../assets/CreditCards.svg'
+
 
 type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Home'>;
 
@@ -30,7 +31,7 @@ const Container = styled.SafeAreaView`
 const ImageWrapper = styled.View`
   flex:2;
   justify-content:flex-end;
-`
+`;
 
 const ButtonWrapper = styled.View`
   flex:1;
@@ -40,22 +41,21 @@ const SignButtonWrapper = styled.View`
   flex-direction:row;
   align-items:center;
 `;
+// const SkipWrapper = styled.TouchableOpacity`
+//   flex:1;
+//   align-items:center;
+// `;
 
-const SkipWrapper = styled.TouchableOpacity`
-  flex:1;
-  align-items:center;
-`;
-
-const SkipText = styled.Text`
-  font-size:28px;
-  color:#286E9F;
-  font-weight:700;
-`;
+// const SkipText = styled.Text`
+//   font-size:28px;
+//   color:#286E9F;
+//   font-weight:700;
+// `;
 
 function Home({ navigation }: Props) {
   // skip 을 위한 dispatch
   // const dispatch = useDispatch();
-
+  
   const onSignin = () => {
     navigation.navigate('Signin');
   }
@@ -71,7 +71,9 @@ function Home({ navigation }: Props) {
   return (
     <Container>
       <ImageWrapper>
-        <MainImg />
+        <Image
+          source={require('../../../assets/iosWorka2.png')}
+        />
       </ImageWrapper>
       <ButtonWrapper>
         <SignButtonWrapper>

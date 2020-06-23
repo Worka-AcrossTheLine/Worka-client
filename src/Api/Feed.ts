@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import axios, { AxiosError, AxiosPromise } from "axios";
 import base from './baseURL.json'
 import { responseFeeds } from "../state/Feed/Action";
@@ -12,8 +13,10 @@ const reqresApi = axios.create({
 export const getFeed = ({ token }: { token: string }): AxiosPromise<responseFeeds> => {
     return reqresApi.get(`post/feed/`, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
-            console.log(error.response);
-            throw error.response
+            if (error) {
+                throw error.response
+            }
+            throw { status: 500 }
         });
 };
 
@@ -21,14 +24,16 @@ export const getFeed = ({ token }: { token: string }): AxiosPromise<responseFeed
 export const getFeedDetail = (body: string) => {
     return reqresApi.get(`post/detail/${body}/`)
         .catch((error: AxiosError) => {
-            console.log(error.response);
-            throw error.response
+            if (error) {
+                throw error.response
+            }
+            throw { status: 500 }
         });
 };
 
 interface Form extends FormData {
     append(name: string,
-        value: string | Blob | {
+        value: string | Blob | string[] | {
             uri: string;
             name?: string;
             type: string
@@ -62,7 +67,11 @@ export const makeFeed = ({ title,
         }
     })
         .catch((error: AxiosError) => {
-            throw error.response
+            console.log(error);
+            if (error) {
+                throw error.response
+            }
+            throw { status: 500 }
         });
 };
 

@@ -21,7 +21,7 @@ const IosWrapper = styled.SafeAreaView`
 `;
 
 const AndoroidWrapper = styled.View`
-    padding-top:${currentHeight > 25 ? 46 : 0}px;
+    padding-top:${currentHeight > 25 ? 46 : 20}px;
     background-color:white;
 `;
 

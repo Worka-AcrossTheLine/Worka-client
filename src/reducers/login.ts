@@ -3,6 +3,7 @@ import { handleActions } from 'redux-actions';
 import AsyncStorage from '@react-native-community/async-storage';
 
 import * as Api from '../Api/login';
+import { Alert } from 'react-native';
 
 export const LOGIN_INIT = "LOGIN_INIT" as const;
 export const LOGIN_SKIP = 'SKIP' as const;
@@ -179,7 +180,7 @@ export function* tendencyUser(action: TendencyActionTypes) {
     yield call(Api.tendency, action.payload);
     yield put({ type: TENDENCY_SUCSSES, payload: action.payload })
   } catch (error) {
-    alert(error.data);
+    Alert.alert("WORKA!", error.data);
     yield put({ type: LOGIN_FAILURE });
   }
 }

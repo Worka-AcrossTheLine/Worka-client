@@ -37,7 +37,7 @@ const QuestionWrapper = styled.View`
     width:100%;
     max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     height:70%;
-    background-color:${({ theme }: ThemeProps): string => theme.detailBg};
+    background-color:${({ theme }: ThemeProps): string => theme.detailTag};
 `;
 
 const ModalTabWrapper = styled.View`
@@ -309,7 +309,7 @@ export default function QuestionModal({
                                                 }
                                             </View>
                                             <DropDownWrapper >
-                                                <TouchableOpacity onPress={() => handleDetail(item.id)} style={{ padding: 5 }}>
+                                                <TouchableOpacity onPress={() => handleDetail(item.id)} style={{ padding: 10 }}>
                                                     {detailIndex === item.id ? <UpArrow /> : <DownArrow />}
                                                 </TouchableOpacity>
                                             </DropDownWrapper>

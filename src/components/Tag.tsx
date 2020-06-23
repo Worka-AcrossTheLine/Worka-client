@@ -14,13 +14,13 @@ type TextStyle = {
 
 const Wrapper = styled.View`
     border-radius:10px;
-    background-color:${({ theme }: ThemeProps): string => theme.white};
+    background-color:${({ theme }: ThemeProps): string => theme.blue};
     padding:2px 8px;
     margin:3px;
 `;
 
 const Text = styled.Text`
-    font-size:${({ theme }: ThemeProps): number => theme.smFont}px;
+    font-size:${({ theme }: ThemeProps): number => theme.mdFont}px;
     color:${({ theme }: ThemeProps): string => theme.white};
 `;
 

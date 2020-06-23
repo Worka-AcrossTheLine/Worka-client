@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { TouchableOpacity, FlatList, View, ActivityIndicator, Text } from 'react-native'
+import { TouchableWithoutFeedback, FlatList, View, ActivityIndicator, Text } from 'react-native'
 import styled from 'styled-components/native';
 
 import QuestionCard from '../../../components/QuestionCard';
@@ -55,11 +55,11 @@ const QuestionFeed = () => {
                     refreshing={refresh}
                     onRefresh={getQuestion}
                     renderItem={({ item }) =>
-                        <TouchableOpacity onPress={() => handleQuestion(item)} key={item.id}>
+                        <TouchableWithoutFeedback onPress={() => handleQuestion(item)} key={item.id}>
                             <PaddingHeight>
                                 <QuestionCard {...item} />
                             </PaddingHeight>
-                        </TouchableOpacity>
+                        </TouchableWithoutFeedback>
                     }
                 />
             }
