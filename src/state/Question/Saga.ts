@@ -26,8 +26,7 @@ export function* handleQuestion({ type, payload: { tags, title, question, token 
     } catch (err) {
         if (!err) {
             Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
-        }
-        if (err.status === 401) {
+        } else if (err.status === 401) {
             yield put({ type: LOGOUT });
             alert('인증이 유효하지 않습니다.')
         } else {
@@ -44,8 +43,7 @@ export function* handleGetQuestion({ type, payload: { token } }: { type: string,
     } catch (err) {
         if (!err) {
             Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
-        }
-        if (err.status === 401) {
+        } else if (err.status === 401) {
             yield put({ type: LOGOUT });
             alert('인증이 유효하지 않습니다.')
         } else {
@@ -62,8 +60,7 @@ export function* handleGetQuestionDetail({ type, payload: { token, id } }: { typ
     } catch (err) {
         if (!err) {
             Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
-        }
-        if (err.status === 401) {
+        } else if (err.status === 401) {
             yield put({ type: LOGOUT });
             alert('인증이 유효하지 않습니다.')
         } else {
@@ -81,8 +78,7 @@ export function* handleMakeQuestionComment({ type, payload: { token, question_pk
     } catch (err) {
         if (!err) {
             Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
-        }
-        if (err.status === 401) {
+        } else if (err.status === 401) {
             yield put({ type: LOGOUT });
             alert('인증이 유효하지 않습니다.')
         } else {
@@ -100,8 +96,7 @@ export function* handleQuestionComments({ type, payload: { token, question_pk, p
     } catch (err) {
         if (!err) {
             Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
-        }
-        if (err.status === 401) {
+        } else if (err.status === 401) {
             yield put({ type: LOGOUT });
             alert('인증이 유효하지 않습니다.')
         } else {

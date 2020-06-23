@@ -13,10 +13,9 @@ export function* handleLink(action: Action) {
     } catch (err) {
         if (!err) {
             Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
-        }
-        if (err.status === 401) {
+        } else if (err.status === 401) {
             yield put({ type: LOGOUT });
-            alert('인증이 유효하지 않습니다.')
+            Alert.alert("WORKA!", '인증이 유효하지 않습니다.')
         } else {
             yield errorHandler(err.status)
         }
@@ -30,10 +29,9 @@ export function* handleMakeLink(action: Action) {
     } catch (err) {
         if (!err) {
             Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
-        }
-        if (err.status === 401) {
+        } else if (err.status === 401) {
             yield put({ type: LOGOUT });
-            alert('인증이 유효하지 않습니다.')
+            Alert.alert("WORKA!", '인증이 유효하지 않습니다.')
         } else {
             yield errorHandler(err.status)
         }

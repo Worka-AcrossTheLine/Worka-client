@@ -21,10 +21,10 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
     yield put({ type: LOGIN_SUCCESS, payload: { token, user: response.data.request_user } })
     yield put(getFeedSuccess(response.data.results));
   } catch (err) {
-    if (err) {
-      yield put({ type: LOGOUT_REQUEST });
-    } else {
+    if (!err) {
       Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
+    } else {
+      yield put({ type: LOGOUT_REQUEST });
     }
     yield put({ type: GET_FEED_FAIL, payload: err })
   }
@@ -35,10 +35,10 @@ export function* handleOnlyGetFeed({ payload: { token } }: { type: string, paylo
     const response = yield call(getFeed, { token });
     yield put(getFeedSuccess(response.data.results));
   } catch (err) {
-    if (err) {
-      yield put({ type: LOGOUT });
-    } else {
+    if (!err) {
       Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
+    } else {
+      yield put({ type: LOGOUT });
     }
     yield put({ type: GET_FEED_FAIL, payload: err })
   }
@@ -53,9 +53,11 @@ export function* handleMakeFeed({ type, payload: { title, tags, text, images, to
     yield put(getFeedSuccess(getResponse.data.results));
     Alert.alert("WORKA!", '카드가 작성 되었습니다.')
   } catch (err) {
-    if (err.status === 401) {
+    if (!err) {
+      Alert.alert("WORKA!", '인터넷 연결이 필요한 기능입니다.')
+    } else if (err.status === 401) {
       yield put({ type: LOGOUT });
-      alert('인증이 유효하지 않습니다.')
+      Alert.alert("WORKA!", '인증이 유효하지 않습니다.')
     } else {
       yield errorHandler(err.status)
     }

@@ -177,7 +177,6 @@ const TabCard = ({ navigation }: Props) => {
     }
 
     if (makeFeedState.err) {
-        Alert.alert("WORKA!", `${makeFeedState.err}`);
         dispatch({ type: MAKE_FEED_INIT });
     }
 
@@ -220,9 +219,7 @@ const TabCard = ({ navigation }: Props) => {
     }, [focusDesc])
 
     useEffect(() => {
-        console.log("MOUNT_TAB_CARD")
         return () => {
-            console.log("UNMOUNT_TAB CARD")
             dispatch({ type: MAKE_FEED_INIT });
         }
     }, []);
