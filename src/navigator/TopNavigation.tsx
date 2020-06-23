@@ -21,7 +21,7 @@ export default function () {
     <Tab.Navigator>
       <Tab.Screen name="News" component={NewsFeed} />
       <Tab.Screen name="Questions" component={QuestionFeed} />
-      <Tab.Screen name="Populars" component={PopularFeed} />
+      {/* <Tab.Screen name="Populars" component={PopularFeed} /> */}
     </Tab.Navigator>
   );
 }
