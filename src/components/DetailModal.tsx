@@ -44,7 +44,7 @@ const DetailWrapper = styled.View`
     max-height:70%;
     max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     background-color:${({ theme }: ThemeProps): string => theme.detailTag}
-    padding:2px;
+    
 `;
 
 const ScrollWrapper = styled.View``;
@@ -52,7 +52,6 @@ const ScrollWrapper = styled.View``;
 const ImageWrapper = styled.View`
     width:100%;
     height:240px;
-    padding:5px;
 `;
 
 const TextWrapper = styled.View`
@@ -61,25 +60,27 @@ const TextWrapper = styled.View`
 `;
 
 const Image = styled.Image`
+    border-top-left-radius:8px;
+    border-top-right-radius:8px;
     width:100%;
     height:100%;
     resize-mode:stretch;
 `;
 
 const BodyWrapper = styled.View`
-    margin-top:10px;
+    margin-top:0px;
     width:100%;
 `;
 
 const TagWrapper = styled.View`
     width:100%;
-    padding:0px 10px;
+    padding:0px 5px;
     flex-wrap:wrap;
     flex-direction:row;
 `;
 
 const TitleView = styled.View`
-    margin:10px 0px;
+    
 `;
 
 const Title = styled.Text`
@@ -88,12 +89,15 @@ const Title = styled.Text`
     font-weight: 700;
     color: #554C4C;
     line-height: 20px;
+    margin-top: 8px;
+    margin-bottom:5px;
+    margin-left: 8px;
 `;
 
 const Desc = styled.Text`
     font-size:${({ theme }: ThemeProps): number => theme.lgFont}px;
     line-height:12px;
-    padding-left: 8px;
+    margin-left: 8px;
     padding-top: 3px;
     padding-bottom: 3px;
     margin-top: 5px;
@@ -139,6 +143,7 @@ export default function DetailModal({
                                 <TagWrapper style={{ justifyContent: "space-between" }}>
                                     <Tag text={username} fontColor="#2C4F71" />
                                 </TagWrapper>
+                                <Title>{title}</Title>
                                 <Desc style={{ color: "white" }}>{text}</Desc>
                             </BodyWrapper>
                         </ScrollWrapper>
