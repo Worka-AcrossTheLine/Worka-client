@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import axios, { AxiosError, AxiosPromise } from "axios";
 import base from './baseURL.json'
 import { responseFeeds } from "../state/Feed/Action";
@@ -12,8 +13,10 @@ const reqresApi = axios.create({
 export const getFeed = ({ token }: { token: string }): AxiosPromise<responseFeeds> => {
     return reqresApi.get(`post/feed/`, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
-            console.log(error.response);
-            throw error.response
+            if (error) {
+                throw error.response
+            }
+            throw { status: 500 }
         });
 };
 
@@ -21,14 +24,16 @@ export const getFeed = ({ token }: { token: string }): AxiosPromise<responseFeed
 export const getFeedDetail = (body: string) => {
     return reqresApi.get(`post/detail/${body}/`)
         .catch((error: AxiosError) => {
-            console.log(error.response);
-            throw error.response
+            if (error) {
+                throw error.response
+            }
+            throw { status: 500 }
         });
 };
 
 interface Form extends FormData {
     append(name: string,
-        value: string | Blob | {
+        value: string | Blob | string[] | {
             uri: string;
             name?: string;
             type: string
@@ -43,7 +48,7 @@ export const makeFeed = ({ title,
 }: makeCard) => {
     const form: Form = new FormData();
     form.append("title", title);
-    form.append("tags", tags);
+    form.append("tags", ["123", "456"]);
     form.append("text", text);
     form.append("token", token);
     if (images) {
@@ -58,7 +63,11 @@ export const makeFeed = ({ title,
         }
     })
         .catch((error: AxiosError) => {
-            throw error.response
+            console.log(error);
+            if (error) {
+                throw error.response
+            }
+            throw { status: 500 }
         });
 };
 

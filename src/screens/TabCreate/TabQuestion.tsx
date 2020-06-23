@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { ActivityIndicator, TouchableWithoutFeedback } from 'react-native'
+import { ActivityIndicator, TouchableWithoutFeedback, Alert } from 'react-native'
 import styled from 'styled-components/native'
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 
@@ -59,7 +59,17 @@ const TabQuestion = ({ navigation }: Props) => {
     const upload = () => {
         const tags = tapTag.split(' ')
         if (isLogin.isLogin && isLogin.token) {
-            dispatch({ type: MAKE_QUESTION_REQUEST, payload: { tags: tags, title: InterestingTitle, question: quetion, token: isLogin.token } })
+            if (InterestingTitle === "") {
+                Alert.alert("WORKA!", "Title을 작성해주세요")
+            } else if (quetion === "") {
+                Alert.alert("WORKA!", "질문을 등록하여 주세요")
+                dispatch({
+                    type: MAKE_QUESTION_REQUEST,
+                    payload: { tags: tags, title: InterestingTitle, question: quetion, token: isLogin.token }
+                })
+            }
+        } else {
+            Alert.alert("WORKA!", '인증되지 않았습니다.')
         }
     }
 

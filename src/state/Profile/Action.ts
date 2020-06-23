@@ -26,7 +26,7 @@ export interface page {
 }
 
 export interface card {
-    id: string,
+    id: number,
     author: author,
     images: string,
     text: string,
