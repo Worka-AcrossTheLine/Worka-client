@@ -6,7 +6,6 @@ import {
   makeFeedSuccess
 } from './Action';
 import { LOGIN_SUCCESS, LOGOUT, LOGOUT_REQUEST } from "../../reducers/login";
-import { AsyncStorage } from "react-native";
 
 
 
