@@ -40,6 +40,8 @@ const InputWrapper = styled.View`
     box-shadow:0px 3px 6px #000;
     font-size: 16px;
     margin-bottom: 5px;
+    elevation: 6;
+    background-color:white;
     
 `
 
