@@ -10,32 +10,36 @@ import Tag from './Tag';
 type Props = Feeds;
 
 const Wrapper = styled.View`
-    align-self:center;
     width:100%;
     max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
-    height:250px;
     padding:5px;
     box-shadow:0px 3px 6px #000;
     border-radius:8px;
     elevation:15;
 `;
 
+const TopWrapper = styled.View`
+    align-items: flex-start;
+    width: 100%;
+    elevation: 1;
+    background-color: white;
+    border-top-left-radius:8px;
+    border-top-right-radius:8px;
+    padding: 4px;
+    
+`;
+
 const ImageWrapper = styled.View`
     width:100%;
     height:180px;
-    background-color:white;
-    border-top-left-radius:8px;
-    border-top-right-radius:8px;
-    box-shadow:0px 1px 1px #000;
-    border-bottom-width:1px;
-    padding:2px;
+    background-color: white;
     elevation:1;
+    padding-top:3px;
 `;
 
 const Image = styled.Image`
     width:100%;
-    height:100%;
-    resize-mode:stretch
+    height: 180px;
 `;
 
 const TextWrapper = styled.View`
@@ -44,7 +48,7 @@ const TextWrapper = styled.View`
 `;
 
 const Title = styled.Text`
-    font-size:${({ theme }: ThemeProps): number => theme.lgFont}px;
+    font-size:${({ theme }: ThemeProps): number => theme.mainTitleFont}px;
     font-weight:700;
     text-align:center;
 `;
@@ -65,6 +69,7 @@ const BottomWrapper = styled.View`
 const TagsWrapper = styled.View`
     flex-direction:row;
     flex-wrap:wrap;
+    margin-bottom: 4px;
 `;
 
 const UserTagWrapper = styled.View`
@@ -85,15 +90,17 @@ export default function MentoCard({
 }: Props) {
     return (
         <Wrapper>
+            <TopWrapper>
+                <Title style={{padding: 3, paddingLeft: 5}}>{title}</Title>
+            </TopWrapper>
             <ImageWrapper>
                 {images ? <Image source={{ uri: images || '' }} /> : <TextWrapper>
-                    <Title>{title}</Title>
                     <Desc>{text}</Desc>
                 </TextWrapper>}
             </ImageWrapper>
             <BottomWrapper>
                 <TagsWrapper>
-                    {tags.map((el, index) => <Tag key={`tag-${index}`} fontColor={index ? "#FFFFFF" : 'black'} text={el} />)}
+                    {tags.map((el, index) => <Tag key={`tag-${index}`} fontColor={index ? "white" : 'black'} text={el} />)}
                 </TagsWrapper>
                 <UserTagWrapper>
                     <Tag text={username} />
