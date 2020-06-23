@@ -7,6 +7,7 @@ import {
 } from './Action';
 import {LOGIN_SUCCESS, LOGOUT, LOGOUT_REQUEST} from "../../reducers/login";
 import {AsyncStorage} from "react-native";
+import { errorHandler } from '../errorHandler';
 
 
 
@@ -19,10 +20,8 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
     if (err.status === 401) {
       yield put({ type: LOGOUT_REQUEST });
       alert('인증이 유효하지 않습니다.')
-    }else if (err.status === 400) {
-      alert('잘못된 요청입니다.')
-    }else if (err.status === 500) {
-      alert('네트워크에러')
+    }else{
+      yield errorHandler(err.status)
     }
     yield put({ type: GET_FEED_FAIL, payload: err })
   }
@@ -36,10 +35,8 @@ export function* handleOnlyGetFeed({ payload: { token } }: { type: string, paylo
     if (err.status === 401) {
       yield put({ type: LOGOUT });
       alert('인증이 유효하지 않습니다.')
-    }else if (err.status === 400) {
-      alert('잘못된 요청입니다.')
-    }else if (err.status === 500) {
-      alert('네트워크에러')
+    }else{
+      yield errorHandler(err.status)
     }
     yield put({ type: GET_FEED_FAIL, payload: err })
   }
@@ -57,12 +54,8 @@ export function* handleMakeFeed({ type, payload: { title, tags, text, images, to
     if (err.status === 401) {
       yield put({ type: LOGOUT });
       alert('인증이 유효하지 않습니다.')
-    }else if (err.status === 400) {
-      alert('잘못된 요청입니다.')
-    }else if (err.status === 500) {
-      alert('네트워크에러')
-    }else if (err.status === 413) {
-      alert('이미지의 파일이 너무 큽니다')
+    }else{
+      yield errorHandler(err.status)
     }
     yield put({ type: MAKE_FEED_FAIL, payload: err })
   }
