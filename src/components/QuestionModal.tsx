@@ -37,7 +37,7 @@ const QuestionWrapper = styled.View`
     width:100%;
     max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     height:70%;
-    background-color:${({ theme }: ThemeProps): string => theme.detailBg};
+    background-color:${({ theme }: ThemeProps): string => theme.detailTag};
 `;
 
 const ModalTabWrapper = styled.View`
