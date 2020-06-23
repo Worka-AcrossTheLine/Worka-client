@@ -6,6 +6,7 @@ import {
   makeFeedSuccess
 } from './Action';
 import { LOGIN_SUCCESS, LOGOUT, LOGOUT_REQUEST } from "../../reducers/login";
+import { errorHandler } from '../errorHandler';
 
 
 
@@ -17,6 +18,9 @@ export function* handleGetFeed({ payload: { token } }: { type: string, payload: 
   } catch (err) {
     if (err.status === 401) {
       yield put({ type: LOGOUT_REQUEST });
+      alert('인증이 유효하지 않습니다.')
+    }else{
+      yield errorHandler(err.status)
     }
     yield put({ type: GET_FEED_FAIL, payload: err })
   }
@@ -29,6 +33,9 @@ export function* handleOnlyGetFeed({ payload: { token } }: { type: string, paylo
   } catch (err) {
     if (err.status === 401) {
       yield put({ type: LOGOUT });
+      alert('인증이 유효하지 않습니다.')
+    }else{
+      yield errorHandler(err.status)
     }
     yield put({ type: GET_FEED_FAIL, payload: err })
   }
@@ -43,6 +50,12 @@ export function* handleMakeFeed({ type, payload: { title, tags, text, images, to
     yield put(getFeedSuccess(getResponse.data.results));
     alert('카드가 작성 되었습니다.')
   } catch (err) {
+    if (err.status === 401) {
+      yield put({ type: LOGOUT });
+      alert('인증이 유효하지 않습니다.')
+    }else{
+      yield errorHandler(err.status)
+    }
     yield put({ type: MAKE_FEED_FAIL, payload: err })
   }
 }
