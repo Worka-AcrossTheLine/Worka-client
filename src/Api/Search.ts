@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import axios, { AxiosError, AxiosPromise } from "axios";
 
 import { data } from '../state/Search/Reducer'
@@ -15,6 +16,9 @@ export const searching = ({ token, temp }: { token: string, temp: string }): Axi
         headers: { Authorization: `JWT ${token}` }
     })
         .catch((error: AxiosError) => {
-            throw error.response
+            if (error) {
+                throw error.response
+            }
+            throw { status: 500 }
         });
 };

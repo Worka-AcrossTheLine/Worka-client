@@ -43,11 +43,18 @@ export default function () {
         options={{
           headerStyle: headerNone,
           headerTitleAlign: 'center',
-          headerTitle: 'CREATE AN ACOUNT',
+          headerTitle: 'CREATE ACCOUNT',
           headerTitleStyle: titleStyle,
         }} />
       <Stack.Screen name="Signin" component={Signin} options={{
-        headerShown: false
+        headerTitle: "",
+        headerBackTitle: " ",
+        headerStyle: {
+          height: 50,
+          backgroundColor: '#fff',
+          shadowColor: 'transparent',
+          elevation: 0,
+        }
       }} />
       <Stack.Screen name="ForgotPassword" component={ForgotPassword} options={{
         headerStyle: headerNone,

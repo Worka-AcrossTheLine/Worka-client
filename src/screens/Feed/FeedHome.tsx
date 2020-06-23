@@ -83,11 +83,11 @@ const FeedHome = () => {
                     onRefresh={getFeed}
                     keyExtractor={(item) => `FEED-HOME${item.id}`}
                     renderItem={({ item }) =>
-                        <TouchableOpacity onPress={() => feedDetail(item)} key={item.id}>
+                        <TouchableWithoutFeedback onPress={() => feedDetail(item)} key={item.id}>
                             <PaddingHeight >
                                 <MentoCard {...item} />
                             </PaddingHeight>
-                        </TouchableOpacity>}
+                        </TouchableWithoutFeedback>}
                 />
             </View>
             <DetailModal

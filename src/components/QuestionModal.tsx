@@ -309,7 +309,7 @@ export default function QuestionModal({
                                                 }
                                             </View>
                                             <DropDownWrapper >
-                                                <TouchableOpacity onPress={() => handleDetail(item.id)} style={{ padding: 5 }}>
+                                                <TouchableOpacity onPress={() => handleDetail(item.id)} style={{ padding: 10 }}>
                                                     {detailIndex === item.id ? <UpArrow /> : <DownArrow />}
                                                 </TouchableOpacity>
                                             </DropDownWrapper>
