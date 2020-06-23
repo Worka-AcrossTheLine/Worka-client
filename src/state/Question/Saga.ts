@@ -18,6 +18,8 @@ export function* handleQuestion({ type, payload: { tags, title, question, token 
     try {
         const response = yield call(makeQuestionCard, { tags, title, token });
         yield call(makeQuestion, { id: response.data.id, question: question, token: token })
+        const Getresponse = yield call(getQuestion, { token })
+        yield put({ type: GET_QUESTION_SUCCESS, payload: Getresponse.data });
         yield put(makeQuestionSuccess(response.data));
         alert('질문지 생성 완료')
     } catch (err) {
