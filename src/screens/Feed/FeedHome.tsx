@@ -31,14 +31,13 @@ const FeedHome = () => {
     const dispatch = useDispatch()
     const rootState = useSelector((state: RootState) => state);
     const { feed: feedState, makeFeed, login: loginState } = rootState;
-    console.log(feedState);
 
     const [refresh, setRefresh] = useState<boolean>(false);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     // const FeedsAll = makeFeed.data.concat()
     const [storage, setStorage] = useState<Feeds>(
         {
-            id: '',
+            id: 0,
             author: {
                 username: '',
                 user_image: ''
@@ -82,7 +81,7 @@ const FeedHome = () => {
                     data={feedState.data}
                     refreshing={refresh}
                     onRefresh={getFeed}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => `FEED-HOME${item.id}`}
                     renderItem={({ item }) =>
                         <TouchableOpacity onPress={() => feedDetail(item)} key={item.id}>
                             <PaddingHeight >

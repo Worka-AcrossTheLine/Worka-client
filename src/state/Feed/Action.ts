@@ -6,7 +6,7 @@ export interface makeCard {
   token: string
 }
 export interface Feeds {
-  id: string,
+  id: number,
   author: {
     username: string;
     user_image: string;
