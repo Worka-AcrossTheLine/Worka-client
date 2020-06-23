@@ -103,7 +103,6 @@ export default function ({ navigation }: Props) {
                 </GoBackWrapper>
             </SearchWrapper>
             <BodyWrapper>
-                <Text>SEARCHED THE {temp} </Text>
                 {search.fetching ?
                     <ActivityIndicator /> :
                     <FlatList
