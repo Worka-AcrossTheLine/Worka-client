@@ -237,6 +237,7 @@ const forgotUsernameState: ForgotUsernameState = {
 }
 
 const reducer = (state: LoginState = initialState, action: action) => {
+  console.log(action.type);
   switch (action.type) {
     case LOGIN_INIT:
       return {

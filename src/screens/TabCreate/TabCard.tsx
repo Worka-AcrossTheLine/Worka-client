@@ -95,6 +95,7 @@ const TabCard = ({ navigation }: Props) => {
     const isIos = Platform.OS === 'ios';
 
     const onCancer = () => {
+        dispatch({ type: MAKE_FEED_INIT });
         navigation.navigate('News');
     }
     const handleKeyboard = () => {
@@ -166,6 +167,12 @@ const TabCard = ({ navigation }: Props) => {
     }
 
     if (makeFeedState.posting) {
+        setTaptag('');
+        setInterestingTitle('');
+        setImage('');
+        setDescription('');
+        setAnimationOn(false);
+        setFocusDesc(false);
         onCancer();
     }
 
@@ -198,7 +205,9 @@ const TabCard = ({ navigation }: Props) => {
     }, [focusDesc])
 
     useEffect(() => {
+        console.log("MOUNT_TAB_CARD")
         return () => {
+            console.log("UNMOUNT_TAB CARD")
             dispatch({ type: MAKE_FEED_INIT });
         }
     }, []);
@@ -217,7 +226,7 @@ const TabCard = ({ navigation }: Props) => {
                         </FlexWrapper>
                         {!makeFeedState.fetching ?
                             <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
-                            :<ActivityIndicator />}
+                            : <ActivityIndicator />}
                     </TitleWrapper>
                     <InputWrapper>
                         <MakeJobTagInput

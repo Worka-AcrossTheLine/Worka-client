@@ -31,6 +31,7 @@ const FeedHome = () => {
     const dispatch = useDispatch()
     const rootState = useSelector((state: RootState) => state);
     const { feed: feedState, makeFeed, login: loginState } = rootState;
+    console.log(feedState);
 
     const [refresh, setRefresh] = useState<boolean>(false);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
