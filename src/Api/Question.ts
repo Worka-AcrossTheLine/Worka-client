@@ -1,4 +1,3 @@
-import { Alert } from 'react-native';
 import axios, { AxiosError, AxiosPromise } from "axios";
 import base from './baseURL.json'
 const reqresApi = axios.create({
