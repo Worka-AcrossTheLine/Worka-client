@@ -58,7 +58,8 @@ const TabQuestion = ({ navigation }: Props) => {
 
 
     const upload = () => {
-        const tags = tapTag.trim().replace(/,/gi, '').replace(/\s{2,}/gi, ' ').split(' ')
+        const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+        const tags = tapTag.trim().replace(regExp, '').replace(/,/gi, '').replace(/\s{2,}/gi, ' ').split(' ')
         if (isLogin.isLogin && isLogin.token) {
             if (InterestingTitle === "") {
                 Alert.alert("WORKA!", "Title을 작성해주세요")
