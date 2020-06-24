@@ -1,11 +1,13 @@
-import React from 'react'
-import { TouchableOpacity, ScrollView, TouchableWithoutFeedback } from 'react-native'
+import React, { useState, useEffect } from 'react'
+import { TouchableOpacity, ScrollView, TouchableWithoutFeedback, TextInput } from 'react-native'
 import styled from 'styled-components/native';
 import Tag from './Tag';
 import { ThemeProps } from '../style/theme';
 
 import Xsvg from '../../assets/X_1.svg';
-import { Feeds } from '../state/Feed/Action';
+import { Feeds, PATCH_FEED_REQUEST } from '../state/Feed/Action';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../reducers';
 
 interface Props extends Feeds {
     visible: boolean;
@@ -82,6 +84,12 @@ const TagWrapper = styled.View`
 const TitleView = styled.View`
     
 `;
+const EditWrapper = styled.View`
+    border:1px solid black;
+    border-radius:8px;
+    padding:10px;
+`;
+
 
 const Title = styled.Text`
     font-size:14px;
@@ -102,7 +110,10 @@ const Desc = styled.Text`
     padding-bottom: 3px;
     margin-top: 5px;
     margin-bottom: 12px;
+`;
 
+const EditText = styled.Text`
+    color:yellow;
 `;
 
 export default function DetailModal({
@@ -110,6 +121,7 @@ export default function DetailModal({
     id,
     author: {
         username,
+        pk
     },
     title,
     images,
@@ -117,6 +129,48 @@ export default function DetailModal({
     tags,
     onPress
 }: Props) {
+    const loginState = useSelector((state: RootState) => state.login);
+    const dispatch = useDispatch();
+
+    const isMe = loginState.data.pk === pk;
+    console.log(title, text);
+    const [titleInput, setTitleInput] = useState(title);
+    const [descInput, setDescInput] = useState(text);
+    console.log(titleInput, descInput);
+    const [imageInput, setImageInput] = useState(images);
+    const [tagsInput, setTagsInput] = useState(tags);
+    const [isEdit, setIsEdit] = useState<boolean>(false);
+
+    const handleTitle = (e: string) => {
+        setTitleInput(e);
+    }
+
+    const handleDesc = (e: string) => {
+        setDescInput(e);
+    }
+
+    const handleUpdate = () => {
+        console.log("HANDLE UPDATE");
+        dispatch({
+            type: PATCH_FEED_REQUEST, payload: {
+                title: titleInput,
+                text: descInput,
+                images: imageInput,
+                tags: tagsInput,
+                id: id,
+                token: loginState.token,
+            }
+        });
+        setIsEdit(false);
+    }
+
+    useEffect(() => {
+        return () => {
+            console.log("UNMOunt");
+        }
+    }, [])
+
+
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={onPress} >
             <TouchableWithoutFeedback onPress={onPress}>
@@ -140,9 +194,31 @@ export default function DetailModal({
                                     </TagWrapper>
                                     <TagWrapper style={{ justifyContent: "space-between" }}>
                                         <Tag text={username} fontColor="#2C4F71" />
+                                        {isMe &&
+                                            (isEdit ?
+                                                <TouchableOpacity onPress={handleUpdate} >
+                                                    <EditText>수정, 등록</EditText>
+                                                </TouchableOpacity>
+                                                :
+                                                <TouchableOpacity onPress={() => setIsEdit(!isEdit)}>
+                                                    <EditText>edit</EditText>
+                                                </TouchableOpacity>)
+                                        }
                                     </TagWrapper>
-                                    <Title>{title}</Title>
-                                    <Desc style={{ color: "white" }}>{text}</Desc>
+                                    {isEdit ?
+                                        <EditWrapper>
+                                            <TextInput value={titleInput} onChangeText={handleTitle} />
+                                        </EditWrapper>
+                                        :
+                                        <Title>{title}</Title>
+                                    }
+                                    {isEdit ?
+                                        <EditWrapper>
+                                            <TextInput value={descInput} onChangeText={handleDesc} />
+                                        </EditWrapper>
+                                        :
+                                        <Desc style={{ color: "white" }}>{text}</Desc>
+                                    }
                                 </BodyWrapper>
                             </ScrollWrapper>
                         </ScrollView>

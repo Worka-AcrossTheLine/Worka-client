@@ -1,6 +1,6 @@
 import { Alert } from 'react-native';
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { getFeed, getFeedDetail, makeFeed } from '../../Api/Feed';
+import { getFeed, getFeedDetail, makeFeed, patchFeed } from '../../Api/Feed';
 import {
   GET_FEED_FAIL,
   GET_FEED_REQUEST,
@@ -8,7 +8,11 @@ import {
   getFeedSuccess,
   MAKE_FEED_FAIL,
   makeCard,
-  makeFeedSuccess
+  makeFeedSuccess,
+  PATCH_FEED_SUCCESS,
+  PATCH_FEED_FAIL,
+  PatchFeedPayload,
+  ONLY_GET_FEED_REQUEST
 } from './Action';
 import { LOGIN_SUCCESS, LOGOUT, LOGOUT_REQUEST } from "../../reducers/login";
 import { errorHandler } from '../errorHandler';
@@ -62,5 +66,24 @@ export function* handleMakeFeed({ type, payload: { title, tags, text, images, to
       yield errorHandler(err.status)
     }
     yield put({ type: MAKE_FEED_FAIL, payload: err })
+  }
+}
+
+export function* handlePatchFeed(
+  { type, payload }: { type: string, payload: PatchFeedPayload }) {
+  try {
+    const feed = yield call(patchFeed, payload);
+    console.log(feed);
+    yield put({ type: ONLY_GET_FEED_REQUEST, payload });
+    yield put({ type: PATCH_FEED_SUCCESS });
+  } catch (error) {
+    if (!error) {
+      Alert.alert("WORKA!", "인터넷 연결이 필요한 작업입니다. 다시 확인해주세요");
+    } else {
+      console.log(error.data);
+
+    }
+    yield put({ type: PATCH_FEED_FAIL });
+
   }
 }

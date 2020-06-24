@@ -279,7 +279,7 @@ export default function QuestionModal({
                                                             extraData={questionComment.data}
                                                             renderItem={({ item: questionComment }) =>
                                                                 <AnswerWrapper onStartShouldSetResponder={() => true}>
-                                                                    <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
+                                                                    <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username} 👍 👎</AnswerUsername>
                                                                     <AnswerUsername>{questionComment.text}</AnswerUsername>
                                                                     {/* <RatingWrapper>
                                                                         <ThumpsUp style={{ marginRight: 7 }} />

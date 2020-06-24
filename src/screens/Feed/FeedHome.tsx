@@ -39,6 +39,7 @@ const FeedHome = () => {
         {
             id: 0,
             author: {
+                pk: 0,
                 username: '',
                 user_image: ''
             },
@@ -90,11 +91,13 @@ const FeedHome = () => {
                         </TouchableWithoutFeedback>}
                 />
             </View>
-            <DetailModal
-                visible={modalVisible}
-                onPress={handleClose}
-                {...storage}
-            />
+            {storage.id > 0 &&
+                <DetailModal
+                    visible={modalVisible}
+                    onPress={handleClose}
+                    {...storage}
+                />
+            }
         </>
     )
 }
