@@ -48,10 +48,11 @@ export const makeFeed = ({ title,
 }: makeCard) => {
     const form: Form = new FormData();
     form.append("title", title);
+    for (let i = 0; i < tags.length; i++) {
+        const tag = tags[i];
+        form.append('tags', tag)
+    }
 
-    //예제 이런식으로 보내야지 list 로 보내집니다! 부탁드릴게욯ㅎ
-    // form.append("tags", "ads");
-    // form.append("tags", "adsgfda");
     form.append("text", text);
     if (images) {
         let match = /\.(\w+)$/.exec(images);

@@ -10,11 +10,12 @@ import {
     Alert
 } from 'react-native'
 import styled from 'styled-components/native'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
-import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
+
 import { TopTapParamList } from '../../navigator/TopNavigation';
 
 import { useSelector, useDispatch } from 'react-redux'
@@ -34,6 +35,7 @@ import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
 
 import { HEIGHT } from '../../constants/dimensions'
+import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs/lib/typescript/src/types';
 
 
 type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
@@ -71,7 +73,7 @@ const ImageToggleWrapper = styled.View`
 `;
 
 const Iconwrapper = styled.View`
-    border:1px solid black;
+    
 `;
 
 
@@ -157,6 +159,7 @@ const TabCard = ({ navigation }: Props) => {
 
     const Upload = () => {
         Keyboard.dismiss();
+        const tags = tapTag.replace(/^ /gi, "").replace(/,/gi, '').replace(/\s{2,}/gi, ' ').split(' ')
         const token = login.token;
         if (tapTag === "") {
             Alert.alert("WORKA!", "TAG 를 작성해주세요")
@@ -166,10 +169,14 @@ const TabCard = ({ navigation }: Props) => {
             Alert.alert("WORKA!", "이미지를 등록해주세요")
         } else if (Description === "") {
             Alert.alert("WORKA!", "설명글을 입력해주세요~")
+        } else if (tags.length > 3) {
+            Alert.alert("WORKA!", "tag는 3개 이상 사용할 수 없습니다")
+        } else if (tags.length === 0) {
+            Alert.alert("WORKA!", "tag는 하나이상 입력해야합니다.")
         } else if (token) {
             dispatch({
                 type: MAKE_FEED_REQUEST,
-                payload: { title: InterestingTitle, tags: tapTag.replace(/^ /gi, "").replace(/,/gi, '').replace(/\s{2,}/gi, ' ').split(' '), text: Description, images: image, token: token }
+                payload: { title: InterestingTitle, tags: tags, text: Description, images: image, token: token }
             })
         } else {
             Alert.alert("WORKA!", "로그인이 필요한 기능입니다!")
@@ -255,12 +262,18 @@ const TabCard = ({ navigation }: Props) => {
                             <MakeCameraInput>
                                 <TouchableOpacity onPress={camera}>
                                     <Iconwrapper >
-                                        <Title>카메라</Title>
+                                        <Image
+                                            source={require('../../../assets/camera-enhance-outline.png')}
+                                        />
+                                        {/* <Title>카메라</Title> */}
                                     </Iconwrapper>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={pickImage}>
                                     <Iconwrapper>
-                                        <Title>갤러리</Title>
+                                        <Image
+                                            source={require('../../../assets/folder-image.png')}
+                                        />
+                                        {/* <Title>갤러리</Title> */}
                                     </Iconwrapper>
                                 </TouchableOpacity>
                                 {image !== '' && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
