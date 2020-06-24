@@ -263,21 +263,21 @@ const Profile = () => {
                             </SelectWrapper>
                             {select === 'card' ?
                                 cards.map((item) =>
-                                    <TouchableOpacity onPress={() => handelDetail(item)} key={item.id}>
+                                    <TouchableWithoutFeedback onPress={() => handelDetail(item)} key={item.id}>
                                         <PaddingHeight >
                                             <MentoCard {...item} />
                                         </PaddingHeight>
-                                    </TouchableOpacity>
+                                    </TouchableWithoutFeedback>
                                 )
                                 :
                                 pages.map((item) =>
-                                    <TouchableOpacity onPress={() => handleQuestion(item)} key={item.id}>
+                                    <TouchableWithoutFeedback onPress={() => handleQuestion(item)} key={item.id}>
                                         <PaddingHeight>
                                             <QuestionCard
                                                 {...item}
                                             />
                                         </PaddingHeight>
-                                    </TouchableOpacity>
+                                    </TouchableWithoutFeedback>
                                 )
                             }
                         </BodyWrapper>
