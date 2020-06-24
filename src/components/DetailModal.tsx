@@ -1,5 +1,5 @@
 import React from 'react'
-import { TouchableOpacity, ScrollView } from 'react-native'
+import { TouchableOpacity, ScrollView, TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native';
 import Tag from './Tag';
 import { ThemeProps } from '../style/theme';
@@ -119,34 +119,36 @@ export default function DetailModal({
 }: Props) {
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={onPress} >
-            <Wrapper>
-                <CloseWrapper>
-                    <TouchableOpacity onPress={onPress} style={{}}>
-                        <CloseView>
-                            <Xsvg style={{}} />
-                        </CloseView>
-                    </TouchableOpacity>
-                </CloseWrapper>
-                <DetailWrapper>
-                    <ScrollView>
-                        <ScrollWrapper onStartShouldSetResponder={() => true}>
-                            <ImageWrapper><Image source={{ uri: images || '' }} style={{ width: '100%', height: '100%' }} /></ImageWrapper>
-                            <BodyWrapper>
-                                <TextWrapper>
-                                </TextWrapper>
-                                <TagWrapper >
-                                    {tags.map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FA5080" />)}
-                                </TagWrapper>
-                                <TagWrapper style={{ justifyContent: "space-between" }}>
-                                    <Tag text={username} fontColor="#2C4F71" />
-                                </TagWrapper>
-                                <Title>{title}</Title>
-                                <Desc style={{ color: "white" }}>{text}</Desc>
-                            </BodyWrapper>
-                        </ScrollWrapper>
-                    </ScrollView>
-                </DetailWrapper>
-            </Wrapper>
+            <TouchableWithoutFeedback onPress={onPress}>
+                <Wrapper>
+                    <CloseWrapper>
+                        <TouchableOpacity onPress={onPress} style={{}}>
+                            <CloseView>
+                                <Xsvg style={{}} />
+                            </CloseView>
+                        </TouchableOpacity>
+                    </CloseWrapper>
+                    <DetailWrapper>
+                        <ScrollView>
+                            <ScrollWrapper onStartShouldSetResponder={() => true}>
+                                <ImageWrapper><Image source={{ uri: images || '' }} style={{ width: '100%', height: '100%' }} /></ImageWrapper>
+                                <BodyWrapper>
+                                    <TextWrapper>
+                                    </TextWrapper>
+                                    <TagWrapper >
+                                        {tags.map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FA5080" />)}
+                                    </TagWrapper>
+                                    <TagWrapper style={{ justifyContent: "space-between" }}>
+                                        <Tag text={username} fontColor="#2C4F71" />
+                                    </TagWrapper>
+                                    <Title>{title}</Title>
+                                    <Desc style={{ color: "white" }}>{text}</Desc>
+                                </BodyWrapper>
+                            </ScrollWrapper>
+                        </ScrollView>
+                    </DetailWrapper>
+                </Wrapper>
+            </TouchableWithoutFeedback>
         </ModalWrapper>
     )
 }
