@@ -87,22 +87,22 @@ export const patchFeed = ({
         const tag = tags[i];
         form.append('tags', tag)
     }
-
     form.append("text", text);
     if (images) {
         let match = /\.(\w+)$/.exec(images);
         let type = match ? `image/${match[1]}` : `image`;
         // form.append('images', JSON.stringify({ uri: images, name: images.split('/').pop(), type }));
-        form.append('images', { uri: images, name: images.split('/').pop(), type });
+        if (images) {
+            form.append('images', { uri: images, name: images.split('/').pop(), type });
+        }
     }
 
-    return reqresApi.patch(`post/feed/${id}`, form, {
+    return reqresApi.patch(`post/feed/${id}/`, form, {
         headers: {
             Authorization: `JWT ${token}`, 'Content-Type': 'application/x-www-form-urlencoded', 'charset': 'utf-8'
         }
     })
         .catch((error) => {
-            console.log(error);
             if (error) {
                 throw error.response;
             }
@@ -110,3 +110,16 @@ export const patchFeed = ({
         })
 }
 
+export const deleteFeed = ({ id, token }: { id: number, token: string }) => {
+    return reqresApi.delete(`post/feed/${id}/`, {
+        headers: {
+            Authorization: `JWT ${token}`
+        }
+    })
+        .catch((error) => {
+            if (error) {
+                throw error.response;
+            }
+            throw { status: 500 }
+        })
+}

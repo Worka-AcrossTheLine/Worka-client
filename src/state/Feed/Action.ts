@@ -12,7 +12,7 @@ export interface Feeds {
     username: string;
     user_image: string;
   },
-  title?: string,
+  title: string,
   images: string,
   text: string,
   created_at: string,
@@ -58,6 +58,11 @@ export const PATCH_FEED_INIT = 'PATCH_FEED_INIT';
 export const PATCH_FEED_REQUEST = 'PATCH_FEED_REQUEST';
 export const PATCH_FEED_SUCCESS = 'PATCH_FEED_SUCCESS';
 export const PATCH_FEED_FAIL = 'PATCH_FEED_FAIL';
+//delete Feed
+export const DELETE_FEED_INIT = 'DELETE_FEED_INIT';
+export const DELETE_FEED_REQUEST = 'DELETE_FEED_REQUEST';
+export const DELETE_FEED_SUCCESS = 'DELETE_FEED_SUCCESS';
+export const DELETE_FEED_FAIL = 'DELETE_FEED_FAIL';
 //get Tag
 export const GET_TAG_REQUEST = 'GET_TAG_REQUEST';
 export const GET_TAG_SUCCESS = 'GET_TAG_SUCCESS';

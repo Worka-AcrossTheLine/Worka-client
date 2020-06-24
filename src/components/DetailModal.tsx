@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react'
-import { TouchableOpacity, ScrollView, TouchableWithoutFeedback, TextInput } from 'react-native'
+import { TouchableOpacity, ScrollView, TouchableWithoutFeedback, TextInput, Platform, Alert } from 'react-native'
 import styled from 'styled-components/native';
 import Tag from './Tag';
 import { ThemeProps } from '../style/theme';
 
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+
 import Xsvg from '../../assets/X_1.svg';
-import { Feeds, PATCH_FEED_REQUEST } from '../state/Feed/Action';
+import { Feeds, PATCH_FEED_REQUEST, PATCH_FEED_INIT, DELETE_FEED_REQUEST, DELETE_FEED_INIT } from '../state/Feed/Action';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../reducers';
+import { PROFILE_REQUEST } from '../state/Profile/Action';
 
 interface Props extends Feeds {
     visible: boolean;
@@ -16,7 +20,7 @@ interface Props extends Feeds {
 
 const ModalWrapper = styled.Modal``;
 
-const Wrapper = styled.View`
+const Wrapper = styled.SafeAreaView`
     width:100%;
     height:100%;
     background-color:rgba(112,112,112,0.9);
@@ -130,33 +134,107 @@ export default function DetailModal({
     onPress
 }: Props) {
     const loginState = useSelector((state: RootState) => state.login);
+    const patchFeedState = useSelector((state: RootState) => state.patchFeed);
+    const deleteFeedState = useSelector((state: RootState) => state.deleteFeed);
     const dispatch = useDispatch();
 
     const isMe = loginState.data.pk === pk;
-    console.log(title, text);
-    const [titleInput, setTitleInput] = useState(title);
-    const [descInput, setDescInput] = useState(text);
-    console.log(titleInput, descInput);
-    const [imageInput, setImageInput] = useState(images);
-    const [tagsInput, setTagsInput] = useState(tags);
+    const isIos = Platform.OS === 'ios';
+    const [inputState, setInputState] = useState({
+        title: "",
+        text: "",
+        images: "",
+        tags: ""
+    })
     const [isEdit, setIsEdit] = useState<boolean>(false);
 
-    const handleTitle = (e: string) => {
-        setTitleInput(e);
+
+    const handleText = (type: 'title' | 'text' | 'tags') => (e: string) => {
+        setInputState({
+            ...inputState,
+            [type]: e
+        })
     }
 
-    const handleDesc = (e: string) => {
-        setDescInput(e);
+    const handleImages = () => {
+        if (isEdit) {
+            Alert.alert(
+                "이미지 수정",
+                "이미지를 수정하시겠습니까?",
+                [
+                    {
+                        text: "카메라",
+                        onPress: camera
+                    },
+                    {
+                        text: "사진첩",
+                        onPress: pickImage
+                    },
+                    {
+                        text: "취소"
+                    }
+                ]
+            )
+        }
+    }
+    const camera = async () => {
+        try {
+            if (isIos) {
+                const { status } = await Permissions.askAsync(Permissions.CAMERA);
+                if (status !== 'granted') {
+                    Alert.alert("권한 필요", "카메라 허가 필요");
+                    return;
+                }
+            }
+
+            const result = await ImagePicker.launchCameraAsync({
+                quality: 0.5
+            });
+            if (!result.cancelled) {
+                setInputState({
+                    ...inputState,
+                    images: result.uri
+                })
+            }
+        } catch (e) {
+            Alert.alert("카메라 에러", "카메라 불러오기 에러");
+        }
+    }
+
+    const pickImage = async () => {
+        try {
+            if (isIos) {
+                const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+                if (status !== 'granted') {
+                    Alert.alert("권한 필요", "카메라 허가 필요");
+                    return;
+                }
+            }
+            let result = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 0.5
+            });
+            if (!result.cancelled) {
+                setInputState({
+                    ...inputState,
+                    images: result.uri
+                })
+            }
+        } catch (e) {
+            Alert.alert("카메라 라이브러리 에러", "카메라 라이브러리 불러오기 에러");
+        }
     }
 
     const handleUpdate = () => {
-        console.log("HANDLE UPDATE");
+        const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+        const tagsValid = inputState.tags.trim().replace(/,/gi, '').replace(regExp, '').replace(/\s{2,}/gi, ' ').split(' ')
         dispatch({
             type: PATCH_FEED_REQUEST, payload: {
-                title: titleInput,
-                text: descInput,
-                images: imageInput,
-                tags: tagsInput,
+                title: inputState.title,
+                text: inputState.text,
+                images: inputState.images,
+                tags: tagsValid,
                 id: id,
                 token: loginState.token,
             }
@@ -164,11 +242,65 @@ export default function DetailModal({
         setIsEdit(false);
     }
 
+    const handleDelete = () => {
+        Alert.alert(
+            "WORKA!",
+            "게시글을 정말 삭제하겠습니까?",
+            [
+                {
+                    text: "삭제",
+                    onPress: () => dispatch({ type: DELETE_FEED_REQUEST, payload: { id, token: loginState.token } })
+                },
+                {
+                    text: "취소"
+                }
+            ]
+        )
+    }
+
+    const handleError = () => {
+        Alert.alert("WORKA!", "올바르지 않은 접근입니다. 다시 시도해주세요");
+        onPress();
+    }
+    const deleteInit = () => {
+        onPress();
+        dispatch({ type: PROFILE_REQUEST, payload: { token: loginState.token, pk: loginState.data.pk } });
+        dispatch({ type: DELETE_FEED_INIT });
+    }
+
+    if (deleteFeedState.posting) {
+        Alert.alert("WORKA!", "유저카드가 삭제되었습니다.", [
+            {
+                text: "확인",
+                onPress: deleteInit
+            }
+        ]);
+    }
+    if (patchFeedState.posting) {
+        dispatch({ type: PROFILE_REQUEST, payload: { token: loginState.token, pk: loginState.data.pk } });
+        dispatch({ type: PATCH_FEED_INIT });
+    }
+
+    if (patchFeedState.err) {
+        handleError()
+        dispatch({ type: PATCH_FEED_INIT });
+    }
+    if (deleteFeedState.err) {
+        handleError()
+        dispatch({ type: DELETE_FEED_INIT });
+    }
+
     useEffect(() => {
-        return () => {
-            console.log("UNMOunt");
+        if (visible) {
+            setIsEdit(false);
+            setInputState({
+                title,
+                text,
+                images,
+                tags: tags.join(" "),
+            })
         }
-    }, [])
+    }, [visible])
 
 
     return (
@@ -185,20 +317,35 @@ export default function DetailModal({
                     <DetailWrapper>
                         <ScrollView>
                             <ScrollWrapper onStartShouldSetResponder={() => true}>
-                                <ImageWrapper><Image source={{ uri: images || '' }} style={{ width: '100%', height: '100%' }} /></ImageWrapper>
+                                <TouchableWithoutFeedback onPress={handleImages}>
+                                    <ImageWrapper>
+                                        <Image source={{ uri: inputState.images || images || '' }} style={{ width: '100%', height: '100%' }} />
+                                    </ImageWrapper>
+                                </TouchableWithoutFeedback>
                                 <BodyWrapper>
                                     <TextWrapper>
                                     </TextWrapper>
-                                    <TagWrapper >
-                                        {tags.map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FA5080" />)}
-                                    </TagWrapper>
+                                    {isEdit ?
+                                        <EditWrapper>
+                                            <TextInput value={inputState.tags} onChangeText={handleText('tags')} />
+                                        </EditWrapper>
+                                        :
+                                        <TagWrapper >
+                                            {inputState.tags.split(' ').map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FA5080" />)}
+                                        </TagWrapper>
+                                    }
                                     <TagWrapper style={{ justifyContent: "space-between" }}>
                                         <Tag text={username} fontColor="#2C4F71" />
                                         {isMe &&
                                             (isEdit ?
-                                                <TouchableOpacity onPress={handleUpdate} >
-                                                    <EditText>수정, 등록</EditText>
-                                                </TouchableOpacity>
+                                                <>
+                                                    <TouchableOpacity onPress={handleUpdate} >
+                                                        <EditText>수정, 등록</EditText>
+                                                    </TouchableOpacity>
+                                                    <TouchableOpacity onPress={handleDelete}>
+                                                        <EditText>삭제</EditText>
+                                                    </TouchableOpacity>
+                                                </>
                                                 :
                                                 <TouchableOpacity onPress={() => setIsEdit(!isEdit)}>
                                                     <EditText>edit</EditText>
@@ -207,17 +354,17 @@ export default function DetailModal({
                                     </TagWrapper>
                                     {isEdit ?
                                         <EditWrapper>
-                                            <TextInput value={titleInput} onChangeText={handleTitle} />
+                                            <TextInput value={inputState.title} onChangeText={handleText('title')} />
                                         </EditWrapper>
                                         :
-                                        <Title>{title}</Title>
+                                        <Title>{inputState.title}</Title>
                                     }
                                     {isEdit ?
                                         <EditWrapper>
-                                            <TextInput value={descInput} onChangeText={handleDesc} />
+                                            <TextInput value={inputState.text} onChangeText={handleText('text')} />
                                         </EditWrapper>
                                         :
-                                        <Desc style={{ color: "white" }}>{text}</Desc>
+                                        <Desc style={{ color: "white" }}>{inputState.text}</Desc>
                                     }
                                 </BodyWrapper>
                             </ScrollWrapper>

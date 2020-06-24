@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 import login, { LoginState, ForgotState, forgotPasswordReducer, ForgotUsernameState, forgotUsernameReducer } from './login';
 import signup, { SignupState } from './signup'
-import { getFeed, FeedState, PostFeed, PatchFeed } from '../state/Feed/Reducer'
+import { getFeed, FeedState, PostFeed, PatchFeed, DeleteFeed } from '../state/Feed/Reducer'
 import setting, { SettingState } from './setting'
 import { search, SearchState } from '../state/Search/Reducer'
 import {
@@ -29,6 +29,7 @@ export type RootState = {
     signup: SignupState,
     feed: FeedState,
     patchFeed: FeedState,
+    deleteFeed: FeedState,
     setting: SettingState,
     search: SearchState,
     question: QuestionState,
@@ -48,6 +49,7 @@ export default combineReducers({
     forgotUsername: forgotUsernameReducer,
     feed: getFeed,
     patchFeed: PatchFeed,
+    deleteFeed: DeleteFeed,
     setting,
     search,
     question: QuestionFeed,

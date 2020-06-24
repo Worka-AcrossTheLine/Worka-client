@@ -1,8 +1,8 @@
 import { takeEvery, takeLatest, all } from 'redux-saga/effects';
 import { LOGIN_REQUESTED, TENDENCY, WITHDRAWAL, loginUser, tendencyUser, withdrawal, LOGOUT_REQUEST, logout, FORGOT_PASSWORD_REQUEST, forgotPassword, FORGOT_USERNAME_REQUEST, forgotUsername } from '../reducers/login';
 import { SIGNUP_REQUESTED, signupUser } from '../reducers/signup'
-import { GET_FEED_DETAIL_REQUEST, GET_FEED_REQUEST, ONLY_GET_FEED_REQUEST, MAKE_FEED_REQUEST, PATCH_FEED_REQUEST } from "./Feed/Action";
-import { handleGetFeed, handleMakeFeed, handleOnlyGetFeed, handlePatchFeed } from "./Feed/Saga"
+import { GET_FEED_DETAIL_REQUEST, GET_FEED_REQUEST, ONLY_GET_FEED_REQUEST, MAKE_FEED_REQUEST, PATCH_FEED_REQUEST, DELETE_FEED_REQUEST } from "./Feed/Action";
+import { handleGetFeed, handleMakeFeed, handleOnlyGetFeed, handlePatchFeed, handleDeleteFeed } from "./Feed/Saga"
 import {
   handleQuestion,
   handleGetQuestion,
@@ -45,6 +45,7 @@ function* watchLoginRequested() {
   yield takeLatest(MAKE_QUESTION_REQUEST, handleQuestion);
   yield takeLatest(MAKE_FEED_REQUEST, handleMakeFeed);
   yield takeLatest(PATCH_FEED_REQUEST, handlePatchFeed);
+  yield takeLatest(DELETE_FEED_REQUEST, handleDeleteFeed)
   //profile
   yield takeLatest(PROFILE_REQUEST, handleProfile);
   yield takeLatest(PROFILE_QUESTION_REQUEST, handleProfileQuestion);

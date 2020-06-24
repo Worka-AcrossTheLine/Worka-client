@@ -11,7 +11,11 @@ import {
   PATCH_FEED_INIT,
   PATCH_FEED_REQUEST,
   PATCH_FEED_FAIL,
-  PATCH_FEED_SUCCESS
+  PATCH_FEED_SUCCESS,
+  DELETE_FEED_INIT,
+  DELETE_FEED_REQUEST,
+  DELETE_FEED_FAIL,
+  DELETE_FEED_SUCCESS
 } from './Action';
 import { Feeds } from "./Action";
 
@@ -123,6 +127,36 @@ export const PatchFeed = (state: FeedState = initialState, action: Action) => {
         err: false,
       };
     case PATCH_FEED_FAIL:
+      return {
+        ...state,
+        fetching: false,
+        err: true,
+      };
+    default:
+      return state;
+  }
+}
+
+export const DeleteFeed = (state: FeedState = initialState, action: Action) => {
+  switch (action.type) {
+    case DELETE_FEED_INIT:
+      return {
+        ...initialState
+      }
+    case DELETE_FEED_REQUEST:
+      return {
+        ...state,
+        fetching: true,
+        err: false,
+      };
+    case DELETE_FEED_SUCCESS:
+      return {
+        ...state,
+        posting: true,
+        fetching: false,
+        err: false,
+      };
+    case DELETE_FEED_FAIL:
       return {
         ...state,
         fetching: false,
