@@ -8,11 +8,9 @@ import { RootState } from '../reducers';
 
 import DownArrow from '../../assets/DownArrow.svg';
 import UpArrow from '../../assets/UpArrow.svg';
-import ThumpsUp from '../../assets/ThumpsUp.svg';
-import ThumpsDown from '../../assets/ThumpsDown.svg';
 import Tag from './Tag';
 import { questionCard } from '../state/Question/Reducer';
-import { GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST, MAKE_QUESTION_COMMENT_REQUEST, GET_QUESTION_DETAIL_INIT, QUESTION_COMMENTS_INIT } from "../state/Question/Action";
+import { GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST, MAKE_QUESTION_COMMENT_REQUEST, GET_QUESTION_DETAIL_INIT, QUESTION_COMMENTS_INIT, PATCH_QUESTION_REQUEST, PATCH_QUESTION_INIT } from "../state/Question/Action";
 import { TextInput } from 'react-native-gesture-handler';
 
 interface Props extends questionCard {
@@ -106,6 +104,11 @@ const CommnetWrapper = styled.View`
     flex-direction:row;
 `;
 
+const EditWrapper = styled.View`
+    padding:10px;
+    align-items:flex-end;
+`;
+
 const Image = styled.Image`
     width:64px;
     height:64px;
@@ -158,22 +161,22 @@ export default function QuestionModal({
         detailIndex: undefined,
         animationOn: false
     })
+    const [isEdit, setIsEdit] = useState({
+        edit: false,
+        index: 0,
+        id: 0,
+    });
+    const [modifyText, setModifyText] = useState("");
     const { detailIndex, animationOn } = animationState;
     const slideToggle = useRef(new Animated.Value(0)).current;
     // redux
     const dispatch = useDispatch()
     const rootState = useSelector((state: RootState) => state);
-    const { login: Logininfo, questionComment: questionComment, questionDetail: questionDetail } = rootState;
+    const { login: loginState, questionComment: questionComment, questionDetail: questionDetail, patchQuestion } = rootState;
     // refresh
 
-    const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number, overFlow?: string } => {
-        return (
-            typeof detailIndex === 'number' && detailIndex === index ?
-                { height: slideToggle }
-                :
-                { display: 'none' }
-        )
-    }
+
+    patchQuestion
     const [text, setText] = useState('');
 
     const closeModal = () => {
@@ -199,17 +202,66 @@ export default function QuestionModal({
         }
     };
 
+    const handleModifyQ = (e: string) => {
+        setModifyText(e);
+    }
+
+    const handleModifyAction = () => {
+        dispatch({
+            type: PATCH_QUESTION_REQUEST,
+            payload: {
+                token: loginState.token,
+                content: modifyText,
+                id,
+                index: isEdit.id
+            }
+        })
+    }
+
     const postComments = () => {
         dispatch({
             type: MAKE_QUESTION_COMMENT_REQUEST,
             payload: {
-                token: Logininfo.token,
+                token: loginState.token,
                 question_pk: detailIndex,
                 page_pk: id,
                 text,
             }
         })
         setText("");
+    }
+
+    const questionCommentsRequest = (index: number) => {
+        dispatch({
+            type: QUESTION_COMMENTS_REQUEST,
+            payload:
+            {
+                token: loginState.token,
+                page_pk: id,
+                question_pk: index
+            }
+        })
+    }
+
+    const getQuestionDetailRequest = () => {
+        dispatch({
+            type: GET_QUESTION_DETAIL_REQUEST,
+            payload:
+            {
+                token: loginState.token,
+                id: id
+            }
+        })
+    }
+
+    if (patchQuestion.posting) {
+        dispatch({ type: PATCH_QUESTION_INIT });
+        getQuestionDetailRequest();
+        setIsEdit({
+            edit: false,
+            index: 0,
+            id: 0
+        })
     }
 
     useEffect(() => {
@@ -222,13 +274,15 @@ export default function QuestionModal({
         }
     }, [animationState]);
 
-    const questionCommentsRequest = (index: number) => {
-        dispatch({ type: QUESTION_COMMENTS_REQUEST, payload: { token: Logininfo.token, page_pk: id, question_pk: index } })
-    }
-
-    const getQuestionDetailRequest = () => {
-        dispatch({ type: GET_QUESTION_DETAIL_REQUEST, payload: { token: Logininfo.token, id: id } })
-    }
+    useEffect(() => {
+        if (visible) {
+            setIsEdit({
+                edit: false,
+                index: 0,
+                id: 0
+            })
+        }
+    }, [visible])
 
     useEffect(() => {
         getQuestionDetailRequest()
@@ -237,6 +291,14 @@ export default function QuestionModal({
             dispatch({ type: QUESTION_COMMENTS_INIT });
         }
     }, []);
+
+    useEffect(() => {
+        if (isEdit.edit) {
+            setModifyText(questionDetail.data.results[isEdit.index].content)
+        } else {
+            setModifyText("");
+        }
+    }, [isEdit.edit])
 
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={closeModal} >
@@ -262,7 +324,11 @@ export default function QuestionModal({
                                     renderItem={({ item, index }) =>
                                         <ModalTabWrapper key={`q-${item.id}`} onStartShouldSetResponder={() => false}>
                                             <TextWrapper>
-                                                <QuestionText>Q{index + 1}.{item.content}</QuestionText>
+                                                {isEdit.edit && isEdit.index === index ?
+                                                    <TextInput value={modifyText} onChangeText={handleModifyQ} />
+                                                    :
+                                                    <QuestionText>Q{index + 1}.{item.content}</QuestionText>
+                                                }
                                             </TextWrapper>
                                             <View style={{ flex: 1, display: detailIndex === item.id ? 'flex' : 'none' }} >
                                                 {/*comment*/}
@@ -285,11 +351,12 @@ export default function QuestionModal({
                                                                         <ThumpsUp style={{ marginRight: 7 }} />
                                                                         <ThumpsDown style={{ marginRight: 5 }} />
                                                                     </RatingWrapper> */}
+                                                                    <AnswerUsername style={{ opacity: 0.3 }}>{questionComment.like_count}명이 THUMP UP!!</AnswerUsername>
                                                                 </AnswerWrapper>
                                                             }
                                                         />
                                                     )}
-                                                {Logininfo.data.pk !== pk &&
+                                                {loginState.data.pk !== pk ?
                                                     <PostComment>
                                                         <CommnetWrapper>
                                                             <TextInput
@@ -306,6 +373,21 @@ export default function QuestionModal({
                                                             }
                                                         </CommnetWrapper>
                                                     </PostComment>
+                                                    :
+                                                    <EditWrapper>
+                                                        {isEdit.edit
+                                                            ?
+                                                            <TouchableOpacity onPress={handleModifyAction}>
+                                                                <AnswerUsername style={{ color: 'blue', opacity: 0.4 }}>
+                                                                    수정
+                                                                </AnswerUsername>
+                                                            </TouchableOpacity>
+                                                            :
+                                                            <TouchableOpacity onPress={() => setIsEdit({ edit: true, index, id: item.id })}>
+                                                                <AnswerUsername style={{ color: 'blue', opacity: 0.4 }}>EDIT</AnswerUsername>
+                                                            </TouchableOpacity>
+                                                        }
+                                                    </EditWrapper>
                                                 }
                                             </View>
                                             <DropDownWrapper >
@@ -332,3 +414,15 @@ export default function QuestionModal({
         </ModalWrapper>
     )
 }
+
+
+/*  question comment slide down animated
+const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number, overFlow?: string } => {
+        return (
+            typeof detailIndex === 'number' && detailIndex === index ?
+                { height: slideToggle }
+                :
+                { display: 'none' }
+        )
+    }
+    */

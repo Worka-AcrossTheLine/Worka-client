@@ -17,6 +17,10 @@ import {
     GET_QUESTION_FAIL,
     GET_QUESTION_DETAIL_INIT,
     QUESTION_COMMENTS_INIT,
+    PATCH_QUESTION_INIT,
+    PATCH_QUESTION_REQUEST,
+    PATCH_QUESTION_SUCCESS,
+    PATCH_QUESTION_FAIL,
 
     MAKE_QUESTION_INIT
 
@@ -52,31 +56,27 @@ export interface questionCard {
     created_at: string
 }
 
-
-export interface QuestionState {
+export interface QuestionInitState {
     posting: boolean;
     fetching: boolean;
+    err: boolean;
+}
+export interface QuestionState extends QuestionInitState {
     data: {
         results: questionCard[]
     }
-    err: boolean;
 }
 
 
 
-export interface CommentState {
-    posting: boolean;
-    fetching: boolean;
+export interface CommentState extends QuestionInitState {
     data: QuestionComment[];
-    err: boolean;
 }
 
-export interface QuestionDetailState {
-    fetching: boolean;
+export interface QuestionDetailState extends QuestionInitState {
     data: {
         results: QuestionDetail[]
     }
-    err: boolean;
 }
 
 const initialState: QuestionState = {
@@ -95,10 +95,17 @@ const initialStateComment: CommentState = {
 };
 
 const initialStateQuestionDetail: QuestionDetailState = {
+    posting: false,
     fetching: false,
     data: {
         results: []
     },
+    err: false
+}
+
+const initialPatchQuestion: QuestionInitState = {
+    posting: false,
+    fetching: false,
     err: false
 }
 
@@ -228,6 +235,35 @@ export const QuestionDetailFeed = (state: QuestionDetailState = initialStateQues
                 ...state,
                 err: true,
                 fetching: false,
+            };
+        default:
+            return state;
+    }
+};
+
+export const PatchQuestionFeed = (state: QuestionInitState = initialPatchQuestion, action: { type: string }) => {
+    switch (action.type) {
+        case PATCH_QUESTION_INIT:
+            return {
+                ...initialPatchQuestion
+            }
+        case PATCH_QUESTION_REQUEST:
+            return {
+                ...state,
+                fetching: true,
+            };
+        case PATCH_QUESTION_SUCCESS:
+            return {
+                ...state,
+                posting: true,
+                fetching: false,
+                err: false,
+            };
+        case PATCH_QUESTION_FAIL:
+            return {
+                ...state,
+                fetching: false,
+                err: true,
             };
         default:
             return state;

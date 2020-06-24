@@ -8,14 +8,16 @@ import {
   handleGetQuestion,
   handleMakeQuestionComment,
   handleQuestionComments,
-  handleGetQuestionDetail
+  handleGetQuestionDetail,
+  handlePatchQuestion
 } from "./Question/Saga"
 import {
   GET_QUESTION_DETAIL_REQUEST,
   GET_QUESTION_REQUEST,
   MAKE_QUESTION_COMMENT_REQUEST,
   MAKE_QUESTION_REQUEST,
-  QUESTION_COMMENTS_REQUEST
+  QUESTION_COMMENTS_REQUEST,
+  PATCH_QUESTION_REQUEST
 } from "./Question/Action";
 import { PROFILE_QUESTION_REQUEST, PROFILE_REQUEST, PATCH_COMMENTS_REQUEST } from "./Profile/Action";
 import { handleProfile, handleProfileQuestion, handleProfileComments } from "./Profile/Saga";
@@ -57,7 +59,9 @@ function* watchLoginRequested() {
   // link
   yield takeLatest(GET_LINK_REQUEST, handleLink);
   yield takeLatest(MAKE_LINK_REQUEST, handleMakeLink);
+  //question
   yield takeLatest(MAKE_QUESTION_COMMENT_REQUEST, handleMakeQuestionComment)
+  yield takeLatest(PATCH_QUESTION_REQUEST, handlePatchQuestion)
   yield takeLatest(QUESTION_COMMENTS_REQUEST, handleQuestionComments)
   yield takeLatest(GET_QUESTION_DETAIL_REQUEST, handleGetQuestionDetail)
 }

@@ -1,5 +1,8 @@
 import axios, { AxiosError, AxiosPromise } from "axios";
 import base from './baseURL.json'
+
+import { patchPayload } from '../state/Question/Types'
+
 const reqresApi = axios.create({
     baseURL: base.baseURL,
 });
@@ -44,6 +47,20 @@ export const getQuestionDetail = ({ token, id }: { token: string, id: number }) 
             throw { status: 500 }
         });
 };
+
+export const patchQuestion = ({ token, content, id, index }: patchPayload) => {
+    return reqresApi.patch(
+        `pages/${id}/questions/${index}/`,
+        { content },
+        { headers: { Authorization: `JWT ${token}` } }
+    )
+        .catch((error: AxiosError) => {
+            if (error) {
+                throw error.response
+            }
+            throw { status: 500 }
+        })
+}
 
 
 export const makeQuestionComment = ({ page_pk, question_pk, text, token }: { page_pk: number, question_pk: number, token: string, text: string }) => {

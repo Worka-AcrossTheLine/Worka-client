@@ -7,10 +7,13 @@ import { search, SearchState } from '../state/Search/Reducer'
 import {
     QuestionState,
     QuestionFeed,
+    QuestionInitState,
+    PatchQuestionFeed,
     CommentState,
     CommentFeed,
     QuestionDetailState,
-    QuestionDetailFeed, MakeQuestionFeed
+    QuestionDetailFeed,
+    MakeQuestionFeed
 } from "../state/Question/Reducer";
 import {
     ProfileState,
@@ -33,6 +36,7 @@ export type RootState = {
     setting: SettingState,
     search: SearchState,
     question: QuestionState,
+    patchQuestion: QuestionInitState,
     profile: ProfileState,
     profileQuestion: ProfileQuestionState,
     questionComment: CommentState,
@@ -53,6 +57,7 @@ export default combineReducers({
     setting,
     search,
     question: QuestionFeed,
+    patchQuestion: PatchQuestionFeed,
     profile: ProfileFeed,
     profileQuestion: ProfileQuestionFeed,
     questionComment: CommentFeed,

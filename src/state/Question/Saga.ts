@@ -9,11 +9,15 @@ import {
     QUESTION_COMMENTS_SUCCESS,
     QUESTION_COMMENTS_FAIL,
     QUESTION_COMMENTS_REQUEST,
-    GET_QUESTION_SUCCESS, GET_QUESTION_DETAIL_SUCCESS, GET_QUESTION_DETAIL_FAIL
+    GET_QUESTION_SUCCESS, GET_QUESTION_DETAIL_SUCCESS, GET_QUESTION_DETAIL_FAIL, PATCH_QUESTION_SUCCESS, PATCH_QUESTION_FAIL
 } from "./Action";
-import { makeQuestion, makeQuestionCard, getQuestion, makeQuestionComment, getQuestionComment, getQuestionDetail } from "../../Api/Question";
+import { makeQuestion, makeQuestionCard, getQuestion, makeQuestionComment, getQuestionComment, getQuestionDetail, patchQuestion } from "../../Api/Question";
+
+import { patchPayload } from './Types'
+
 import { LOGOUT } from "../../reducers/login";
 import { errorHandler } from "../errorHandler";
+import { PROFILE_REQUEST } from '../Profile/Action';
 
 export function* handleQuestion({ type, payload: { tags, title, question, token } }: { type: string, payload: { token: string, tags: [], title: string, question: string } }) {
     try {
@@ -103,5 +107,23 @@ export function* handleQuestionComments({ type, payload: { token, question_pk, p
             yield errorHandler(err.status)
         }
         yield put({ type: QUESTION_COMMENTS_FAIL, payload: err })
+    }
+}
+
+export function* handlePatchQuestion({ type, payload }: { type: string, payload: patchPayload }) {
+    try {
+        yield call(patchQuestion, payload);
+        yield put({ type: PATCH_QUESTION_SUCCESS });
+    } catch (error) {
+        console.log(error);
+        if (!error) {
+            Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
+        } else if (error.status === 401) {
+            yield put({ type: LOGOUT });
+            alert('인증이 유효하지 않습니다.')
+        } else {
+            yield errorHandler(error.status)
+        }
+        yield put({ type: PATCH_QUESTION_FAIL, payload: error })
     }
 }
