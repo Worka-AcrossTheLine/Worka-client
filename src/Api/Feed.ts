@@ -66,7 +66,6 @@ export const makeFeed = ({ title,
         }
     })
         .catch((error: AxiosError) => {
-            console.log(error);
             if (error) {
                 throw error.response
             }

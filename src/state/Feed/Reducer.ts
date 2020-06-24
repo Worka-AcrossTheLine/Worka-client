@@ -24,7 +24,6 @@ const initialState: FeedState = {
 };
 
 export const getFeed = (state: FeedState = initialState, action: Action) => {
-  console.log(action.type)
   switch (action.type) {
     case GET_FEED_INIT:
       return {

@@ -117,7 +117,6 @@ export default function DetailModal({
     tags,
     onPress
 }: Props) {
-    console.log(id)
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={onPress} >
             <Wrapper>
