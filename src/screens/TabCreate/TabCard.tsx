@@ -10,11 +10,12 @@ import {
     Alert
 } from 'react-native'
 import styled from 'styled-components/native'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
-import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
+
 import { TopTapParamList } from '../../navigator/TopNavigation';
 
 import { useSelector, useDispatch } from 'react-redux'
@@ -71,7 +72,7 @@ const ImageToggleWrapper = styled.View`
 `;
 
 const Iconwrapper = styled.View`
-    border:1px solid black;
+    
 `;
 
 
@@ -255,12 +256,18 @@ const TabCard = ({ navigation }: Props) => {
                             <MakeCameraInput>
                                 <TouchableOpacity onPress={camera}>
                                     <Iconwrapper >
-                                        <Title>카메라</Title>
+                                        <Image
+                                            source={require('../../../assets/camera-enhance-outline.png')}
+                                        />
+                                        {/* <Title>카메라</Title> */}
                                     </Iconwrapper>
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={pickImage}>
                                     <Iconwrapper>
-                                        <Title>갤러리</Title>
+                                        <Image
+                                            source={require('../../../assets/folder-image.png')}
+                                        />
+                                        {/* <Title>갤러리</Title> */}
                                     </Iconwrapper>
                                 </TouchableOpacity>
                                 {image !== '' && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
