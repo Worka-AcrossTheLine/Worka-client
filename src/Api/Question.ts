@@ -1,7 +1,7 @@
 import axios, { AxiosError, AxiosPromise } from "axios";
 import base from './baseURL.json'
 
-import { patchPayload } from '../state/Question/Types'
+import { patchPayload, patchTitlePayload } from '../state/Question/Types'
 
 const reqresApi = axios.create({
     baseURL: base.baseURL,
@@ -17,8 +17,8 @@ export const makeQuestionCard = ({ tags, title, token }: { token: string, title:
         });
 };
 
-export const makeQuestion = ({ id, question, token }: { id: string, question: string, token: string }) => {
-    return reqresApi.post(`pages/${id}/questions/`, { content: question, title: 'kim' }, { headers: { Authorization: `JWT ${token}` } })
+export const makeQuestion = ({ id, title, question, token }: { id: string, title: string, question: string, token: string }) => {
+    return reqresApi.post(`pages/${id}/questions/`, { content: question, title }, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
             if (error) {
                 throw error.response
@@ -37,6 +37,26 @@ export const getQuestion = ({ token }: { token: string }) => {
             throw { status: 500 }
         });
 };
+
+export const patchQuestionPage = ({ token, id, title, tags }: patchTitlePayload) => {
+    return reqresApi.patch(`pages/${id}/`, { title, tags }, { headers: { Authorization: `JWT ${token}` } })
+        .catch((error: AxiosError) => {
+            if (error) {
+                throw error.response
+            }
+            throw { status: 500 }
+        })
+}
+
+export const deleteQuestionPage = ({ token, id }: patchTitlePayload) => {
+    return reqresApi.delete(`pages/${id}/`, { headers: { Authorization: `JWT ${token}` } })
+        .catch((error: AxiosError) => {
+            if (error) {
+                throw error.response
+            }
+            throw { status: 500 }
+        })
+}
 
 export const getQuestionDetail = ({ token, id }: { token: string, id: number }) => {
     return reqresApi.get(`pages/${id}/questions/`, { headers: { Authorization: `JWT ${token}` } })

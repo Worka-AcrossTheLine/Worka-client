@@ -4,3 +4,10 @@ export interface patchPayload {
     id: number;
     index: number;
 }
+
+export interface patchTitlePayload {
+    token: string;
+    tags: string[];
+    title: string;
+    id: number;
+}

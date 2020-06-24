@@ -21,6 +21,14 @@ import {
     PATCH_QUESTION_REQUEST,
     PATCH_QUESTION_SUCCESS,
     PATCH_QUESTION_FAIL,
+    PATCH_QUESTION_PAGE_INIT,
+    PATCH_QUESTION_PAGE_REQUEST,
+    PATCH_QUESTION_PAGE_SUCCESS,
+    PATCH_QUESTION_PAGE_FAIL,
+    DELETE_QUESTION_PAGE_INIT,
+    DELETE_QUESTION_PAGE_REQUEST,
+    DELETE_QUESTION_PAGE_SUCCESS,
+    DELETE_QUESTION_PAGE_FAIL,
 
     MAKE_QUESTION_INIT
 
@@ -260,6 +268,64 @@ export const PatchQuestionFeed = (state: QuestionInitState = initialPatchQuestio
                 err: false,
             };
         case PATCH_QUESTION_FAIL:
+            return {
+                ...state,
+                fetching: false,
+                err: true,
+            };
+        default:
+            return state;
+    }
+};
+
+export const PatchQuestionPages = (state: QuestionInitState = initialPatchQuestion, action: { type: string }) => {
+    switch (action.type) {
+        case PATCH_QUESTION_PAGE_INIT:
+            return {
+                ...initialPatchQuestion
+            }
+        case PATCH_QUESTION_PAGE_REQUEST:
+            return {
+                ...state,
+                fetching: true,
+            };
+        case PATCH_QUESTION_PAGE_SUCCESS:
+            return {
+                ...state,
+                posting: true,
+                fetching: false,
+                err: false,
+            };
+        case PATCH_QUESTION_PAGE_FAIL:
+            return {
+                ...state,
+                fetching: false,
+                err: true,
+            };
+        default:
+            return state;
+    }
+};
+
+export const DeleteQuestionPage = (state: QuestionInitState = initialPatchQuestion, action: { type: string }) => {
+    switch (action.type) {
+        case DELETE_QUESTION_PAGE_INIT:
+            return {
+                ...initialPatchQuestion
+            }
+        case DELETE_QUESTION_PAGE_REQUEST:
+            return {
+                ...state,
+                fetching: true,
+            };
+        case DELETE_QUESTION_PAGE_SUCCESS:
+            return {
+                ...state,
+                posting: true,
+                fetching: false,
+                err: false,
+            };
+        case DELETE_QUESTION_PAGE_FAIL:
             return {
                 ...state,
                 fetching: false,

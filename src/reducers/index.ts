@@ -13,7 +13,9 @@ import {
     CommentFeed,
     QuestionDetailState,
     QuestionDetailFeed,
-    MakeQuestionFeed
+    MakeQuestionFeed,
+    PatchQuestionPages,
+    DeleteQuestionPage
 } from "../state/Question/Reducer";
 import {
     ProfileState,
@@ -36,6 +38,8 @@ export type RootState = {
     setting: SettingState,
     search: SearchState,
     question: QuestionState,
+    patchQuestionPage: QuestionInitState,
+    deleteQuestionPage: QuestionInitState,
     patchQuestion: QuestionInitState,
     profile: ProfileState,
     profileQuestion: ProfileQuestionState,
@@ -57,6 +61,8 @@ export default combineReducers({
     setting,
     search,
     question: QuestionFeed,
+    patchQuestionPage: PatchQuestionPages,
+    deleteQuestionPage: DeleteQuestionPage,
     patchQuestion: PatchQuestionFeed,
     profile: ProfileFeed,
     profileQuestion: ProfileQuestionFeed,

@@ -9,7 +9,9 @@ import {
   handleMakeQuestionComment,
   handleQuestionComments,
   handleGetQuestionDetail,
-  handlePatchQuestion
+  handlePatchQuestion,
+  handlePatchQuestionPage,
+  handleDeleteQuestionPage
 } from "./Question/Saga"
 import {
   GET_QUESTION_DETAIL_REQUEST,
@@ -17,7 +19,9 @@ import {
   MAKE_QUESTION_COMMENT_REQUEST,
   MAKE_QUESTION_REQUEST,
   QUESTION_COMMENTS_REQUEST,
-  PATCH_QUESTION_REQUEST
+  PATCH_QUESTION_REQUEST,
+  PATCH_QUESTION_PAGE_REQUEST,
+  DELETE_QUESTION_PAGE_REQUEST
 } from "./Question/Action";
 import { PROFILE_QUESTION_REQUEST, PROFILE_REQUEST, PATCH_COMMENTS_REQUEST } from "./Profile/Action";
 import { handleProfile, handleProfileQuestion, handleProfileComments } from "./Profile/Saga";
@@ -61,10 +65,13 @@ function* watchLoginRequested() {
   yield takeLatest(MAKE_LINK_REQUEST, handleMakeLink);
   //question
   yield takeLatest(MAKE_QUESTION_COMMENT_REQUEST, handleMakeQuestionComment)
+  yield takeLatest(PATCH_QUESTION_PAGE_REQUEST, handlePatchQuestionPage)
+  yield takeLatest(DELETE_QUESTION_PAGE_REQUEST, handleDeleteQuestionPage)
   yield takeLatest(PATCH_QUESTION_REQUEST, handlePatchQuestion)
   yield takeLatest(QUESTION_COMMENTS_REQUEST, handleQuestionComments)
   yield takeLatest(GET_QUESTION_DETAIL_REQUEST, handleGetQuestionDetail)
 }
+
 
 
 export default function* rootSaga() {
