@@ -58,15 +58,18 @@ const TabQuestion = ({ navigation }: Props) => {
 
 
     const upload = () => {
-        const tags = tapTag.split(' ')
+        console.log('kiki')
+        const tags = tapTag.replace(/^ /gi, "").replace(/,/gi, '').replace(/\s{2,}/gi, ' ').split(' ')
         if (isLogin.isLogin && isLogin.token) {
             if (InterestingTitle === "") {
                 Alert.alert("WORKA!", "Title을 작성해주세요")
             } else if (quetion === "") {
                 Alert.alert("WORKA!", "질문을 등록하여 주세요")
+            } else {
+                console.log('mimi')
                 dispatch({
                     type: MAKE_QUESTION_REQUEST,
-                    payload: { tags: tags, title: InterestingTitle, question: quetion, token: isLogin.token }
+                    payload: {tags: tags, title: InterestingTitle, question: quetion, token: isLogin.token}
                 })
             }
         } else {
