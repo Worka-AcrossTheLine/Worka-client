@@ -160,7 +160,7 @@ const TabCard = ({ navigation }: Props) => {
 
     const Upload = () => {
         Keyboard.dismiss();
-        const tags = tapTag.replace(/(^\s*)|(\s*$)/, '').replace(/,/gi, '').replace(/\s{2,}/gi, ' ').split(' ')
+        const tags = tapTag.trim().replace(/,/gi, '').replace(/\s{2,}/gi, ' ').split(' ')
         const token = login.token;
         if (tapTag === "") {
             Alert.alert("WORKA!", "TAG 를 작성해주세요")
