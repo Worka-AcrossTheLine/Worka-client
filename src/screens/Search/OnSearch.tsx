@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Text, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { Text, ActivityIndicator, TouchableWithoutFeedback } from 'react-native';
 import styled from 'styled-components/native';
 import { StackNavigationProp } from '@react-navigation/stack'
 import { useSelector, useDispatch } from 'react-redux'
@@ -13,6 +13,7 @@ import { FlatList } from 'react-native-gesture-handler';
 import { Feeds } from '../../state/Feed/Action';
 import MentoCard from '../../components/MentoCard';
 import DetailModal from '../../components/DetailModal';
+import { ThemeProps } from '../../style/theme';
 type AuthHomeNavigationProps = StackNavigationProp<SearchStackParamList, 'Search'>
 
 type Props = {
@@ -37,7 +38,7 @@ const InputWrapper = styled.View`
     flex-direction:row;
 `;
 
-const GoBackWrapper = styled.TouchableOpacity``;
+const GoBackWrapper = styled.TouchableWithoutFeedback``;
 
 const BackText = styled.Text``;
 
@@ -48,6 +49,13 @@ const Input = styled.TextInput`
 const BodyWrapper = styled.View`
     height:100%;
     background-color:white;
+`;
+const SearchResultWrapper = styled.View`
+    padding:10px;
+`;
+
+const SearchResultText = styled.Text`
+    font-size:${({ theme }: ThemeProps) => theme.mdFont}px;
 `;
 
 const PaddingHeight = styled.View`
@@ -67,17 +75,20 @@ export default function ({ navigation }: Props) {
     })
     const [storage, setStorage] = useState<Feeds>(feed.data[0]);
     const [modal, setModal] = useState<boolean>(false);
-    const { temp, searchE } = searchState;
+    const { temp } = searchState;
 
     const handleInput = (e: string): void => {
         clearTimeout(searchState.searchE);
         const searchE = setTimeout(() => {
-            dispatch({ type: SEARCH_REQUEST, payload: { token, temp: e } })
+            if (e !== "") {
+                dispatch({ type: SEARCH_REQUEST, payload: { token, temp: e } })
+                setSearchState({ temp: e, searchE: 0 });
+            }
         }, 600);
 
         setSearchState({
             temp: e,
-            searchE: searchE
+            searchE
         })
     }
 
@@ -105,16 +116,23 @@ export default function ({ navigation }: Props) {
             <BodyWrapper>
                 {search.fetching ?
                     <ActivityIndicator /> :
-                    <FlatList
-                        data={search.data.results}
-                        keyExtractor={(item) => `${item.id}`}
-                        renderItem={({ item }) =>
-                            <TouchableOpacity onPress={() => feedDetail(item)} key={item.id}>
-                                <PaddingHeight >
-                                    <MentoCard {...item} />
-                                </PaddingHeight>
-                            </TouchableOpacity>}
-                    />
+                    <>
+                        {searchState.temp !== "" && searchState.searchE === 0 && search.data.results.length === 0 &&
+                            <SearchResultWrapper>
+                                <SearchResultText>{searchState.temp} 에 대한 검색결과가 없습니다.</SearchResultText>
+                                <SearchResultText>검색방법 팁) tag 나 username 을 중심으로 검색해보세요~</SearchResultText>
+                            </SearchResultWrapper>}
+                        <FlatList
+                            data={search.data.results}
+                            keyExtractor={(item) => `${item.id}`}
+                            renderItem={({ item }) =>
+                                <TouchableWithoutFeedback onPress={() => feedDetail(item)} key={item.id}>
+                                    <PaddingHeight >
+                                        <MentoCard {...item} />
+                                    </PaddingHeight>
+                                </TouchableWithoutFeedback>}
+                        />
+                    </>
                 }
                 {storage &&
                     < DetailModal
