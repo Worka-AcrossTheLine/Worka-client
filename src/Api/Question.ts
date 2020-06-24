@@ -6,7 +6,7 @@ const reqresApi = axios.create({
 });
 
 export const makeQuestionCard = ({ tags, title, token }: { token: string, title: string, tags: [] }) => {
-    return reqresApi.post(`pages/`, { title: title, tags: ['123', '456'] }, { headers: { Authorization: `JWT ${token}` } })
+    return reqresApi.post(`pages/`, { title, tags }, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
             if (error) {
                 throw error.response
