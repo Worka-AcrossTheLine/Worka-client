@@ -130,12 +130,9 @@ export default function DetailModal({
                 <DetailWrapper>
                     <ScrollView>
                         <ScrollWrapper onStartShouldSetResponder={() => true}>
-
-                            {images ? <ImageWrapper><Image source={{ uri: images || '' }} style={{ width: '100%', height: '100%' }} /></ImageWrapper> : <TitleView><Title>{title}</Title></TitleView>}
-
+                            <ImageWrapper><Image source={{ uri: images || '' }} style={{ width: '100%', height: '100%' }} /></ImageWrapper>
                             <BodyWrapper>
                                 <TextWrapper>
-                                    {images && <TitleView><Title>{title}</Title></TitleView>}
                                 </TextWrapper>
                                 <TagWrapper >
                                     {tags.map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FA5080" />)}

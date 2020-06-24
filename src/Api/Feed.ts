@@ -33,7 +33,7 @@ export const getFeedDetail = (body: string) => {
 
 interface Form extends FormData {
     append(name: string,
-        value: string | Blob | string[] | {
+        value: string | Blob | {
             uri: string;
             name?: string;
             type: string
@@ -54,7 +54,6 @@ export const makeFeed = ({ title,
     }
 
     form.append("text", text);
-    form.append("token", token);
     if (images) {
         let match = /\.(\w+)$/.exec(images);
         let type = match ? `image/${match[1]}` : `image`;
@@ -67,7 +66,6 @@ export const makeFeed = ({ title,
         }
     })
         .catch((error: AxiosError) => {
-            console.log(error);
             if (error) {
                 throw error.response
             }

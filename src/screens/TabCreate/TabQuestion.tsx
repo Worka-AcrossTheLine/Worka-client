@@ -16,6 +16,7 @@ import { MAKE_QUESTION_REQUEST, MAKE_QUESTION_INIT } from '../../state/Question/
 import { TopTapParamList } from "../../navigator/TopNavigation";
 import { RootState } from "../../reducers";
 import { makeFeed } from '../../Api/Feed';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 
@@ -98,36 +99,38 @@ const TabQuestion = ({ navigation }: Props) => {
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <TouchableWithoutFeedback onPress={handleKeyboard}>
                 <Wrapper>
-                    <TitleWrapper>
-                        <CancerButton
-                            title="CANCER"
-                            onPress={() => onCancer()}
-                        />
-                        <FlexWrapper>
-                            <Title>Link Question</Title>
-                        </FlexWrapper>
-                        {!makeState.fetching ?
-                            <MakeButton title="MAKE" onPress={() => upload()}></MakeButton>
-                            : <ActivityIndicator />}
-                    </TitleWrapper>
+                    <ScrollView>
+                        <TitleWrapper>
+                            <CancerButton
+                                title="CANCER"
+                                onPress={() => onCancer()}
+                            />
+                            <FlexWrapper>
+                                <Title>Link Question</Title>
+                            </FlexWrapper>
+                            {!makeState.fetching ?
+                                <MakeButton title="MAKE" onPress={() => upload()}></MakeButton>
+                                : <ActivityIndicator />}
+                        </TitleWrapper>
 
-                    <InputWrapper>
-                        <MakeJobTagInput
-                            placeholder="Make Job Tag"
-                            value={tapTag}
-                            onChange={addTap(setTaptag)}
-                        />
-                        <MakeInterestingInput
-                            placeholder="Make Interesting Title"
-                            value={InterestingTitle}
-                            onChange={addTap(setInterestingTitle)}
-                        />
-                        <MakeQuestionInput
-                            placeholder="Q1. Make Question"
-                            value={quetion}
-                            onChange={addTap(setQuestion)}
-                        />
-                    </InputWrapper>
+                        <InputWrapper>
+                            <MakeJobTagInput
+                                placeholder="Make Job Tag"
+                                value={tapTag}
+                                onChange={addTap(setTaptag)}
+                            />
+                            <MakeInterestingInput
+                                placeholder="Make Interesting Title"
+                                value={InterestingTitle}
+                                onChange={addTap(setInterestingTitle)}
+                            />
+                            <MakeQuestionInput
+                                placeholder="Q1. Make Question"
+                                value={quetion}
+                                onChange={addTap(setQuestion)}
+                            />
+                        </InputWrapper>
+                    </ScrollView>
                 </Wrapper>
             </TouchableWithoutFeedback>
         </OsView>

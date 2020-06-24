@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import {ActivityIndicator, Keyboard, TouchableWithoutFeedback} from 'react-native'
+import { ActivityIndicator, Keyboard, TouchableWithoutFeedback, ScrollView } from 'react-native'
 import styled from 'styled-components/native';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -97,7 +97,7 @@ const TabLink = ({
                 } else {
                 }
             }
-    }
+        }
         return () => {
             dispatch({
                 type: MAKE_LINK_INIT
@@ -115,42 +115,44 @@ const TabLink = ({
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             <TouchableWithoutFeedback onPress={handleKeyboard}>
                 <Wrapper>
-                    <TitleWrapper>
-                        <CancerButton
-                            title="CANCER"
-                            onPress={() => onCancer()}
-                        />
-                        <FlexWrapper>
-                            <Title>Link Worka</Title>
-                        </FlexWrapper>
-                        {!linkState.fetching ?
-                            <MakeButton title="MAKE" onPress={upLoad}></MakeButton>
-                            :<ActivityIndicator />}
-                    </TitleWrapper>
-                    <InputWrapper >
-                        <MakeJobTagInput
-                            placeholder="Make Job Tag"
-                            value={tapTag}
-                            onChange={addTap(setTaptag)}
-                            autoFocus={true}
-                            autoCorrect={false}
-                        />
-                        <MakeInterestingInput
-                            placeholder="Make Interesting Title"
-                            value={InterestingTitle}
-                            onChange={addTap(setInterestingTitle)}
-                            autoFocus={true}
-                            autoCorrect={false}
-                        />
-                        <MakeEmbed
-                            placeholder="http://"
-                            value={tapUrl}
-                            keyboardType={keyboardType}
-                            onChange={addTap(setTapUrl)}
-                            onBlur={() => validCheck('url')(tapUrl, setUrlValid)}
-                            valid={urlValid}
-                        />
-                    </InputWrapper>
+                    <ScrollView>
+                        <TitleWrapper>
+                            <CancerButton
+                                title="CANCER"
+                                onPress={() => onCancer()}
+                            />
+                            <FlexWrapper>
+                                <Title>Link Worka</Title>
+                            </FlexWrapper>
+                            {!linkState.fetching ?
+                                <MakeButton title="MAKE" onPress={upLoad}></MakeButton>
+                                : <ActivityIndicator />}
+                        </TitleWrapper>
+                        <InputWrapper >
+                            <MakeJobTagInput
+                                placeholder="Make Job Tag"
+                                value={tapTag}
+                                onChange={addTap(setTaptag)}
+                                autoFocus={true}
+                                autoCorrect={false}
+                            />
+                            <MakeInterestingInput
+                                placeholder="Make Interesting Title"
+                                value={InterestingTitle}
+                                onChange={addTap(setInterestingTitle)}
+                                autoFocus={true}
+                                autoCorrect={false}
+                            />
+                            <MakeEmbed
+                                placeholder="http://"
+                                value={tapUrl}
+                                keyboardType={keyboardType}
+                                onChange={addTap(setTapUrl)}
+                                onBlur={() => validCheck('url')(tapUrl, setUrlValid)}
+                                valid={urlValid}
+                            />
+                        </InputWrapper>
+                    </ScrollView>
                 </Wrapper>
             </TouchableWithoutFeedback>
         </OsView>
