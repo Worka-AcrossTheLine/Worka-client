@@ -59,6 +59,7 @@ export interface ProfileQuestion {
 export interface PatchProfileImagePayload {
     token: string;
     images: string;
+    pk: string;
 }
 
 interface CommentRequest {

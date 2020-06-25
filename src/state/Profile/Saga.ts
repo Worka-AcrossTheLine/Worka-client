@@ -53,11 +53,12 @@ export function* handleProfileImages({ type, payload }: { type: string, payload:
     try {
         const userImages = yield call(patchUserImages, payload);
         yield put({ type: PATCH_PROFILE_IMAGES_SUCCESS, payload: { data: { user: { user_image: userImages.data.user_image } } } });
+        const response = yield call(getProfile, {pk: payload.pk, token : payload.token});
+        yield put(ProfileSuccess(response.data));
     } catch (error) {
         if (!error) {
             Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
         }
-        console.log(error)
     }
 }
 
