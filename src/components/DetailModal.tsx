@@ -362,11 +362,10 @@ export default function DetailModal({
                                         </TagWrapper>
                                     }
                                     <TagWrapper style={{ justifyContent: "space-between" }}>
-                                        <TouchableOpacity onPress={() => {
+                                        <TouchableOpacity  onPress={() => {
                                             onPress();
                                             navigation && navigation.navigate('Profile', { pk });
                                         }}>
-                                            
                                             <Tag text={username} fontColor="#2C4F71" />
                                         </TouchableOpacity>
                                        

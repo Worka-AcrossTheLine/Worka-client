@@ -40,7 +40,7 @@ const SettingTab = ({ text, children }: Props) => {
     const animationStyle = {
         width: '100%',
         height: toggle,
-        backgroundColor: '#88C3FC',
+        backgroundColor: '#ffffff',
         overflow: 'hidden'
     }
 
