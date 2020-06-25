@@ -205,6 +205,11 @@ const Profile = ({
     }
 
     const image = user_image || modifyImage
+
+    useEffect(() => {
+        setInputComment(comments);
+    }, [comments])
+
     return (
         <Wrapper>
             <ShadowBox>
