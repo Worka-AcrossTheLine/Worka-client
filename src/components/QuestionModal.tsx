@@ -129,7 +129,7 @@ const Desc = styled.Text`
     text-align:center;
     font-size:${({ theme }: ThemeProps): number => theme.smFont}px;
     color:${({ theme }: ThemeProps): string => theme.textColor};
-    line-height:12px;
+    line-height:15px;
 `;
 
 const QuestionText = styled.Text`
@@ -137,7 +137,7 @@ const QuestionText = styled.Text`
     font-size:${({ theme }: ThemeProps): number => theme.lgFont}px;
     color:${({ theme }: ThemeProps): string => theme.textColor};
     font-weight:800;
-    line-height:12px;
+    line-height:15px;
 `;
 
 const AnswerUsername = styled.Text`
