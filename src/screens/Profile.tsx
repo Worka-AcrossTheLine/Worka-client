@@ -135,7 +135,7 @@ const SelectText = styled.Text`
 
 
 
-const Profile = ({ navigation, route }: Props) => {
+const Profile = ({ route }: Props) => {
     const [select, setSelect] = useState<select>("card");
     const [modal, setModal] = useState<modal>({
         type: 'none',
@@ -220,17 +220,6 @@ const Profile = ({ navigation, route }: Props) => {
         }
     }, [makeFeed.data, makeQuestion.data])
 
-    React.useEffect(() => {
-        const unsubscribe = navigation.addListener('tabPress', () => {
-            // Prevent default behavior
-            dispatch({ type: PROFILE_REQUEST, payload: { pk: logininfo.data.pk, token: logininfo.token } })
-
-            // Do something manually
-            // ...
-        });
-
-        return unsubscribe;
-    }, [navigation]);
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             {user.pk ?
