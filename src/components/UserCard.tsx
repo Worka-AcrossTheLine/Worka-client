@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from 'react'
+import { Alert, TouchableOpacity, TextInput, View, Image, Platform } from 'react-native';
 import styled from 'styled-components/native'
 
 import ShadowBox from './ShadowBox'
 import Tag from '../components/Tag';
 
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
+
 import { ThemeProps } from '../style/theme'
-import { user, PATCH_COMMENTS_REQUEST } from '../state/Profile/Action';
+import { user, PATCH_COMMENTS_REQUEST, PATCH_PROFILE_IMAGES_REQUEST } from '../state/Profile/Action';
 import ModifySvg from '../../assets/Modify.svg'
-import { TouchableOpacity, TextInput, View } from 'react-native';
 import { RootState } from '../reducers';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -31,6 +34,7 @@ const AvatarWrapper = styled.View`
     height:40px;
     border-radius:800px;
     border:1px solid black;
+    overflow:hidden;
 `
 
 const InfoWrapper = styled.View`
@@ -89,11 +93,13 @@ interface Props extends user {
 }
 
 const Profile = ({
+    pk,
     username,
     mento,
     mentiee,
     mbti,
     comments,
+    user_image,
     onPress
 }: Props) => {
     const dispatch = useDispatch();
@@ -101,6 +107,9 @@ const Profile = ({
 
     const [isModifyComment, setIsModifyComment] = useState<boolean>(false);
     const [inputComment, setInputComment] = useState(comments);
+
+    const [modifyImage, setModifyImge] = useState("");
+    const isIos = Platform.OS === 'ios';
 
     const handleComment = () => {
         setIsModifyComment(true);
@@ -123,12 +132,88 @@ const Profile = ({
         setIsModifyComment(false);
     }
 
+    const handleAvatar = () => {
+        if (pk === loginState.data.pk) {
+            Alert.alert(
+                "이미지 수정",
+                "이미지를 수정하시겠습니까?",
+                [
+                    {
+                        text: "카메라",
+                        onPress: camera
+                    },
+                    {
+                        text: "사진첩",
+                        onPress: pickImage
+                    },
+                    {
+                        text: "취소"
+                    }
+                ]
+            )
+        }
+    }
+
+    const patchImage = (images: string) => {
+        dispatch({ type: PATCH_PROFILE_IMAGES_REQUEST, payload: { token: loginState.token, images: images } })
+    }
+
+    const camera = async () => {
+        try {
+            if (isIos) {
+                const { status } = await Permissions.askAsync(Permissions.CAMERA);
+                if (status !== 'granted') {
+                    Alert.alert("권한 필요", "카메라 허가 필요");
+                    return;
+                }
+            }
+
+            const result = await ImagePicker.launchCameraAsync({
+                quality: 0.5
+            });
+            if (!result.cancelled) {
+                setModifyImge(result.uri)
+                patchImage(result.uri);
+            }
+        } catch (e) {
+            Alert.alert("카메라 에러", "카메라 불러오기 에러");
+        }
+    }
+
+    const pickImage = async () => {
+        try {
+            if (isIos) {
+                const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+                if (status !== 'granted') {
+                    Alert.alert("권한 필요", "카메라 허가 필요");
+                    return;
+                }
+            }
+            let result = await ImagePicker.launchImageLibraryAsync({
+                allowsEditing: true,
+                aspect: [4, 3],
+                quality: 0.5
+            });
+            if (!result.cancelled) {
+                setModifyImge(result.uri)
+                patchImage(result.uri);
+            }
+        } catch (e) {
+            Alert.alert("카메라 라이브러리 에러", "카메라 라이브러리 불러오기 에러");
+        }
+    }
+
+    const image = user_image || modifyImage
     return (
         <Wrapper>
             <ShadowBox>
                 <WrapperPadding>
                     <ProfileWrapper>
-                        <AvatarWrapper></AvatarWrapper>
+                        <TouchableOpacity onPress={handleAvatar}>
+                            <AvatarWrapper>
+                                {image !== "" && <Image style={{ width: "100%", height: "100%" }} source={{ uri: image }} />}
+                            </AvatarWrapper>
+                        </TouchableOpacity>
                         <InfoWrapper>
                             <NameText>{username}</NameText>
                             <NameText><DescText>Mento: {mento}  </DescText><DescText>  Mentiee: {mentiee}</DescText></NameText>
@@ -142,14 +227,18 @@ const Profile = ({
                     <CommentWrapper>
                         <SemiTitle>Comment</SemiTitle>
                         <ModifySvgWrapper>
-                            {isModifyComment ? <Comment>{inputComment.length}/50</Comment> :
+                            {isModifyComment
+                                ?
+                                <Comment>{inputComment.length}/50</Comment>
+                                :
                                 <TouchableOpacity onPress={handleComment}>
                                     <ModifySvg />
                                 </TouchableOpacity>
                             }
                         </ModifySvgWrapper>
                     </CommentWrapper>
-                    {isModifyComment ?
+                    {isModifyComment
+                        ?
                         <View style={{}}>
                             <TextInput style={{ borderWidth: 1, borderRadius: 8, fontSize: 12, padding: 5 }} value={inputComment} onChangeText={handleChange} maxLength={50} autoCorrect={false} />
                             <CommentButtonWrapper>

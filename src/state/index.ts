@@ -25,8 +25,8 @@ import {
   DELETE_QUESTION_PAGE_REQUEST,
   THUMP_HANDLE_REQUEST
 } from "./Question/Action";
-import { PROFILE_QUESTION_REQUEST, PROFILE_REQUEST, PATCH_COMMENTS_REQUEST } from "./Profile/Action";
-import { handleProfile, handleProfileQuestion, handleProfileComments } from "./Profile/Saga";
+import { PROFILE_QUESTION_REQUEST, PROFILE_REQUEST, PATCH_COMMENTS_REQUEST, PATCH_PROFILE_IMAGES_REQUEST } from "./Profile/Action";
+import { handleProfile, handleProfileQuestion, handleProfileComments, handleProfileImages } from "./Profile/Saga";
 import { SEARCH_REQUEST } from './Search/Action';
 import { handleSearch } from './Search/Saga';
 import { handleLink, handleMakeLink } from './Link/Saga';
@@ -56,6 +56,7 @@ function* watchLoginRequested() {
   yield takeLatest(DELETE_FEED_REQUEST, handleDeleteFeed)
   //profile
   yield takeLatest(PROFILE_REQUEST, handleProfile);
+  yield takeLatest(PATCH_PROFILE_IMAGES_REQUEST, handleProfileImages);
   yield takeLatest(PROFILE_QUESTION_REQUEST, handleProfileQuestion);
   yield takeLatest(PATCH_COMMENTS_REQUEST, handleProfileComments);
   // yield takeLatest(QUESTION_COMMENTS_REQUEST, handleQuestionComments);

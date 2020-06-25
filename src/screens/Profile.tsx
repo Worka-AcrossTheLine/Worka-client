@@ -213,6 +213,7 @@ const Profile = ({ route }: Props) => {
             { cancelable: true }
         )
     }
+
     useEffect(() => {
         if ('pk' in logininfo.data) {
             dispatch({ type: PROFILE_REQUEST, payload: { pk: (route && route.params && route.params.pk) || logininfo.data.pk, token: logininfo.token } })
