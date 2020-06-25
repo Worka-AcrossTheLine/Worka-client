@@ -33,7 +33,7 @@ const Image = styled.Image`
 `;
 
 const Desc = styled.Text`
-    font-size:${({ theme }: ThemeProps): number => theme.mdFont}px;
+    font-size:${({ theme }: ThemeProps): number => theme.lgFont}px;
     color:${({ theme }: ThemeProps): string => theme.textColor};
     text-align:center;
 `;
