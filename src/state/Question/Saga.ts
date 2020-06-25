@@ -78,7 +78,6 @@ export function* handleMakeQuestionComment({ type, payload: { token, question_pk
     try {
         const response = yield call(makeQuestionComment, { page_pk, question_pk, text, token })
         yield put({ type: MAKE_QUESTION_COMMENT_SUCCESS, payload: response.data })
-        // const comments = yield put({ type: QUESTION_COMMENTS_REQUEST, payload: { token, page_pk, question_pk } })
     } catch (err) {
         if (!err) {
             Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
