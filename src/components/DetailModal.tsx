@@ -12,9 +12,12 @@ import { Feeds, PATCH_FEED_REQUEST, PATCH_FEED_INIT, DELETE_FEED_REQUEST, DELETE
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../reducers';
 import { PROFILE_REQUEST } from '../state/Profile/Action';
+import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types';
+import { SearchStackParamList } from '../navigator/SeachNavigation';
 
 interface Props extends Feeds {
     visible: boolean;
+    navigation?: StackNavigationProp<SearchStackParamList, 'Home'>;
     onPress: () => void;
 }
 
@@ -121,7 +124,6 @@ const EditText = styled.Text`
 `;
 
 export default function DetailModal({
-    visible,
     id,
     author: {
         username,
@@ -131,6 +133,8 @@ export default function DetailModal({
     images,
     text,
     tags,
+    visible,
+    navigation,
     onPress
 }: Props) {
     const loginState = useSelector((state: RootState) => state.login);
@@ -335,7 +339,12 @@ export default function DetailModal({
                                         </TagWrapper>
                                     }
                                     <TagWrapper style={{ justifyContent: "space-between" }}>
-                                        <Tag text={username} fontColor="#2C4F71" />
+                                        <TouchableOpacity onPress={() => {
+                                            onPress();
+                                            navigation && navigation.navigate('Profile', { pk });
+                                        }}>
+                                            <Tag text={username} fontColor="#2C4F71" />
+                                        </TouchableOpacity>
                                         {isMe &&
                                             (isEdit ?
                                                 <>

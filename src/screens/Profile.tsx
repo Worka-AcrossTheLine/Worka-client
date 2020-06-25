@@ -26,6 +26,14 @@ import { LOGOUT, WITHDRAWAL, LOGOUT_REQUEST } from '../reducers/login'
 import { RootState } from '../reducers';
 import { card, page } from '../state/Profile/Action'
 import { questionCard } from '../state/Question/Reducer';
+import { RouteProp } from '@react-navigation/core';
+import { SearchStackParamList } from '../navigator/SeachNavigation';
+
+type ProfileScreenRouteProp = RouteProp<SearchStackParamList, 'Profile'>
+
+type Props = {
+    route: ProfileScreenRouteProp
+}
 
 type select = 'card' | 'question';
 
@@ -127,7 +135,7 @@ const SelectText = styled.Text`
 
 
 
-const Profile = () => {
+const Profile = ({ route }: Props) => {
     const [select, setSelect] = useState<select>("card");
     const [modal, setModal] = useState<modal>({
         type: 'none',
@@ -205,10 +213,9 @@ const Profile = () => {
             { cancelable: true }
         )
     }
-
     useEffect(() => {
         if ('pk' in logininfo.data) {
-            dispatch({ type: PROFILE_REQUEST, payload: { pk: logininfo.data.pk, token: logininfo.token } })
+            dispatch({ type: PROFILE_REQUEST, payload: { pk: (route && route.params && route.params.pk) || logininfo.data.pk, token: logininfo.token } })
         }
     }, [makeFeed.data, makeQuestion.data])
 
