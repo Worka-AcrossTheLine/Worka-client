@@ -94,12 +94,19 @@ export function* handlePatchFeed(
 }
 
 export function* handleDeleteFeed(
-  { type, payload }: { type: string, payload: { id: number, token: string } }
+  { type, payload }: { type: string, payload: { id: number, token: string, pk : string } }
 ) {
   try {
     yield call(deleteFeed, payload);
-    yield put({ type: ONLY_GET_FEED_REQUEST, payload });
     yield put({ type: DELETE_FEED_SUCCESS });
+    Alert.alert("WORKA!", "유저카드가 삭제되었습니다.", [
+      {
+        text: "확인",
+      }
+    ]);
+    const profileResponse = yield call(getProfile, {token : payload.token, pk: payload.pk});
+    yield put(ProfileSuccess(profileResponse.data));
+    yield put({ type: ONLY_GET_FEED_REQUEST, payload });
   } catch (error) {
     if (!error) {
       Alert.alert("WORKA!", "인터넷 연결이 필요한 작업입니다. 다시 확인해주세요");

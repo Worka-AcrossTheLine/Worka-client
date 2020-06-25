@@ -282,6 +282,7 @@ export default function QuestionModal({
             payload: {
                 token: loginState.token,
                 id,
+                pk: loginState.data.pk
             }
         })
     }
