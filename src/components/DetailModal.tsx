@@ -370,7 +370,7 @@ export default function DetailModal({
                                     }
                                     {isEdit ?
                                         <EditWrapper>
-                                            <TextInput value={inputState.text} onChangeText={handleText('text')} />
+                                            <TextInput value={inputState.text} onChangeText={handleText('text')} multiline={true} />
                                         </EditWrapper>
                                         :
                                         <Desc style={{ color: "white" }}>{inputState.text}</Desc>

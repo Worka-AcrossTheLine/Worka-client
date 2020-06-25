@@ -5,7 +5,7 @@ import TopNavigation from './TopNavigation';
 import Home from '../screens/Search/Home'
 import Search from '../screens/Search/OnSearch';
 import { ParamListBase } from '@react-navigation/core';
-import Profile from '../screens/Profile';
+import Profile from '../screens/Search/Profile';
 
 export type SearchStackParamList = {
     Home: undefined;

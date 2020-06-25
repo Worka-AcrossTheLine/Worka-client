@@ -6,6 +6,8 @@ import { ThemeProps } from '../style/theme';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from '../reducers';
 
+import { FontAwesome } from '@expo/vector-icons';
+
 import DownArrow from '../../assets/DownArrow.svg';
 import UpArrow from '../../assets/UpArrow.svg';
 import Tag from './Tag';
@@ -495,7 +497,10 @@ export default function QuestionModal({
                                                                             <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
                                                                         </TouchableOpacity>
                                                                         <TouchableOpacity onPress={() => handleThump(item.id, questionComment.id)}>
-                                                                            <AnswerUsername> 👍 </AnswerUsername>
+                                                                            <AnswerUsername style={{ marginRight: 10 }}>
+                                                                                <View style={{ marginRight: 10 }} />
+                                                                                <FontAwesome name={"thumbs-o-up"} />
+                                                                            </AnswerUsername>
                                                                         </TouchableOpacity>
                                                                     </UsernameWrapper>
                                                                     <AnswerUsername>{questionComment.text}</AnswerUsername>
