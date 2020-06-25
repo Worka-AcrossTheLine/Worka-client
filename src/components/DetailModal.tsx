@@ -19,6 +19,7 @@ interface Props extends Feeds {
     visible: boolean;
     navigation?: StackNavigationProp<SearchStackParamList, 'Home' | "Search">;
     onPress: () => void;
+    onFocus:() => void;
 }
 
 const ModalWrapper = styled.Modal``;
@@ -53,10 +54,11 @@ const DetailWrapper = styled.View`
     max-height:70%;
     max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     background-color:${({ theme }: ThemeProps): string => theme.white}
-    
 `;
 
-const ScrollWrapper = styled.View``;
+const ScrollWrapper = styled.View`
+    
+`;
 
 const ImageWrapper = styled.View`
     width:100%;
@@ -141,11 +143,13 @@ export default function DetailModal({
     tags,
     visible,
     navigation,
-    onPress
+    onPress,
+    onFocus,
 }: Props) {
     const loginState = useSelector((state: RootState) => state.login);
     const patchFeedState = useSelector((state: RootState) => state.patchFeed);
     const deleteFeedState = useSelector((state: RootState) => state.deleteFeed);
+    const [isOnKeyboard, setIsOnKeyboard] = useState<boolean>(false);
     const dispatch = useDispatch();
 
     const isMe = loginState.data.pk === pk;
@@ -311,12 +315,11 @@ export default function DetailModal({
             })
         }
     }, [visible])
-
-
+    
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={onPress}  >
             <TouchableWithoutFeedback onPress={onPress} >
-                <Wrapper>
+                <Wrapper style={{ justifyContent: isOnKeyboard ? "flex-start" : "center" }}>
                     <CloseWrapper>
                         <TouchableOpacity onPress={onPress} style={{ }}>
                             <CloseView>
@@ -324,9 +327,13 @@ export default function DetailModal({
                             </CloseView>
                         </TouchableOpacity>
                     </CloseWrapper>
-                    <DetailWrapper onStartShouldSetResponder={() => true}>
+                    <DetailWrapper onStartShouldSetResponder={() => true}
+                        style={{ justifyContent: isOnKeyboard ? "flex-start" : "center" }}
+                    >
                         <ScrollView>
-                            <ScrollWrapper >
+                            <ScrollWrapper 
+                                style={{ marginBottom: isOnKeyboard? 150 : 0 }}
+                            >
                                 <TouchableWithoutFeedback onPress={handleImages}>
                                     <ImageWrapper>
                                         <Image source={{ uri: inputState.images || images || '' }} style={{ width: '100%', height: '100%' }} />
@@ -353,8 +360,11 @@ export default function DetailModal({
                                     }
                                     {/* tag edit */}
                                     {isEdit ?
-                                        <EditWrapper >
-                                            <TextInput value={inputState.tags} onChangeText={handleText('tags')} onStartShouldSetResponder={() => true} />
+                                        <EditWrapper>
+                                            <TextInput 
+                                                onFocus={() => setIsOnKeyboard(true)} 
+                                                onBlur={() => setIsOnKeyboard(false)} 
+                                                value={inputState.tags} onChangeText={handleText('tags')} onStartShouldSetResponder={() => true} />
                                         </EditWrapper>
                                         :
                                         <TagWrapper onStartShouldSetResponder={() => true}>
@@ -372,14 +382,20 @@ export default function DetailModal({
                                     </TagWrapper>
                                     {isEdit ?
                                         <EditWrapper>
-                                            <TextInput value={inputState.title} onChangeText={handleText('title')} />
+                                            <TextInput 
+                                                onFocus={() => setIsOnKeyboard(true)} 
+                                                onBlur={() => setIsOnKeyboard(false)} 
+                                                value={inputState.title} onChangeText={handleText('title')} />
                                         </EditWrapper>
                                         :
                                         <Title>{inputState.title}</Title>
                                     }
                                     {isEdit ?
                                         <EditWrapper>
-                                            <TextInput multiline value={inputState.text} onChangeText={handleText('text')} />
+                                            <TextInput 
+                                                onFocus={() => setIsOnKeyboard(true)} 
+                                                onBlur={() => setIsOnKeyboard(false)} 
+                                                multiline value={inputState.text} onChangeText={handleText('text')} />
                                         </EditWrapper>
                                         :
                                         <Desc style={{ color: "black" }}>{inputState.text}</Desc>
