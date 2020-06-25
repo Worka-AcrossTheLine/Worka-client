@@ -11,7 +11,8 @@ import {
   handleGetQuestionDetail,
   handlePatchQuestion,
   handlePatchQuestionPage,
-  handleDeleteQuestionPage
+  handleDeleteQuestionPage,
+  handleThumps
 } from "./Question/Saga"
 import {
   GET_QUESTION_DETAIL_REQUEST,
@@ -21,7 +22,8 @@ import {
   QUESTION_COMMENTS_REQUEST,
   PATCH_QUESTION_REQUEST,
   PATCH_QUESTION_PAGE_REQUEST,
-  DELETE_QUESTION_PAGE_REQUEST
+  DELETE_QUESTION_PAGE_REQUEST,
+  THUMP_HANDLE_REQUEST
 } from "./Question/Action";
 import { PROFILE_QUESTION_REQUEST, PROFILE_REQUEST, PATCH_COMMENTS_REQUEST } from "./Profile/Action";
 import { handleProfile, handleProfileQuestion, handleProfileComments } from "./Profile/Saga";
@@ -70,6 +72,7 @@ function* watchLoginRequested() {
   yield takeLatest(PATCH_QUESTION_REQUEST, handlePatchQuestion)
   yield takeLatest(QUESTION_COMMENTS_REQUEST, handleQuestionComments)
   yield takeLatest(GET_QUESTION_DETAIL_REQUEST, handleGetQuestionDetail)
+  yield takeLatest(THUMP_HANDLE_REQUEST, handleThumps);
 }
 
 

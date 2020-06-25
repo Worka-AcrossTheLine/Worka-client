@@ -75,8 +75,6 @@ export interface QuestionState extends QuestionInitState {
     }
 }
 
-
-
 export interface CommentState extends QuestionInitState {
     data: QuestionComment[];
 }
