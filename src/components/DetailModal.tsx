@@ -17,7 +17,7 @@ import { SearchStackParamList } from '../navigator/SeachNavigation';
 
 interface Props extends Feeds {
     visible: boolean;
-    navigation?: StackNavigationProp<SearchStackParamList, 'Home'>;
+    navigation?: StackNavigationProp<SearchStackParamList, 'Home' | "Search">;
     onPress: () => void;
 }
 
@@ -337,20 +337,20 @@ export default function DetailModal({
                                     </TextWrapper>
                                     {/* edit */}
                                     {isMe &&
-                                                (isEdit ?
-                                                    <EditView>
-                                                        <TouchableOpacity onPress={handleUpdate} >
-                                                            <EditText>저장</EditText>
-                                                        </TouchableOpacity>
-                                                        <TouchableOpacity onPress={handleDelete}>
-                                                            <EditText>삭제</EditText>
-                                                        </TouchableOpacity>
-                                                    </EditView>
-                                                    :
-                                                    <TouchableOpacity onPress={() => setIsEdit(!isEdit)}>
-                                                        <EditText>edit</EditText>
-                                                    </TouchableOpacity>)
-                                            }
+                                        (isEdit ?
+                                            <EditView>
+                                                <TouchableOpacity onPress={handleUpdate} >
+                                                    <EditText>저장</EditText>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity onPress={handleDelete}>
+                                                    <EditText>삭제</EditText>
+                                                </TouchableOpacity>
+                                            </EditView>
+                                            :
+                                            <TouchableOpacity onPress={() => setIsEdit(!isEdit)}>
+                                                <EditText>edit</EditText>
+                                            </TouchableOpacity>)
+                                    }
                                     {/* tag edit */}
                                     {isEdit ?
                                         <EditWrapper >
@@ -362,13 +362,13 @@ export default function DetailModal({
                                         </TagWrapper>
                                     }
                                     <TagWrapper style={{ justifyContent: "space-between" }}>
-                                        <TouchableOpacity  onPress={() => {
+                                        <TouchableOpacity onPress={() => {
                                             onPress();
                                             navigation && navigation.navigate('Profile', { pk });
                                         }}>
                                             <Tag text={username} fontColor="#2C4F71" />
                                         </TouchableOpacity>
-                                       
+
                                     </TagWrapper>
                                     {isEdit ?
                                         <EditWrapper>
