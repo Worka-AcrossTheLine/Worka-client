@@ -104,6 +104,7 @@ const Profile = ({
 }: Props) => {
     const dispatch = useDispatch();
     const loginState = useSelector((state: RootState) => state.login);
+    const profileState = useSelector((state: RootState) => state.profile);
 
     const [isModifyComment, setIsModifyComment] = useState<boolean>(false);
     const [inputComment, setInputComment] = useState(comments);
@@ -127,7 +128,7 @@ const Profile = ({
                 dispatch({ type: PATCH_COMMENTS_REQUEST, payload: { token: loginState.token, comment: inputComment } })
             }
         } else {
-            setInputComment(comments);
+            setInputComment(profileState.data.user.comments);
         }
         setIsModifyComment(false);
     }
