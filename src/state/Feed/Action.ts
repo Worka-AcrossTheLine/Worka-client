@@ -8,10 +8,11 @@ export interface makeCard {
 export interface Feeds {
   id: number,
   author: {
+    pk: number;
     username: string;
     user_image: string;
   },
-  title?: string,
+  title: string,
   images: string,
   text: string,
   created_at: string,
@@ -29,6 +30,15 @@ export interface responseFeeds {
   results: Feeds[]
 }
 
+export interface PatchFeedPayload {
+  images: string;
+  title: string;
+  text: string;
+  tags: string[];
+  token: string;
+  id: number;
+}
+
 export const GET_FEED_INIT = 'GET_FEED_INIT';
 export const GET_FEED_REQUEST = 'GET_FEED_REQUEST';
 export const ONLY_GET_FEED_REQUEST = 'ONLY_GET_FEED_REQUEST';
@@ -43,10 +53,21 @@ export const MAKE_FEED_REQUEST = 'MAKE_FEED_REQUEST';
 export const MAKE_FEED_SUCCESS = 'MAKE_FEED_SUCCESS';
 export const MAKE_FEED_FAIL = 'MAKE_FEED_FAIL';
 export const MAKE_FEED_INIT = 'MAKE_FEED_INIT'
+//patch Feed
+export const PATCH_FEED_INIT = 'PATCH_FEED_INIT';
+export const PATCH_FEED_REQUEST = 'PATCH_FEED_REQUEST';
+export const PATCH_FEED_SUCCESS = 'PATCH_FEED_SUCCESS';
+export const PATCH_FEED_FAIL = 'PATCH_FEED_FAIL';
+//delete Feed
+export const DELETE_FEED_INIT = 'DELETE_FEED_INIT';
+export const DELETE_FEED_REQUEST = 'DELETE_FEED_REQUEST';
+export const DELETE_FEED_SUCCESS = 'DELETE_FEED_SUCCESS';
+export const DELETE_FEED_FAIL = 'DELETE_FEED_FAIL';
 //get Tag
 export const GET_TAG_REQUEST = 'GET_TAG_REQUEST';
 export const GET_TAG_SUCCESS = 'GET_TAG_SUCCESS';
 export const GET_TAG_FAIL = 'GET_TAG_FAIL';
+
 
 
 export const getFeedRequest = () => {

@@ -29,6 +29,7 @@ export interface card {
     id: number,
     author: author,
     images: string,
+    title: string;
     text: string,
     created_at: string,
     updated_at: string,

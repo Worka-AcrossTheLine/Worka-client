@@ -9,11 +9,19 @@ import { GET_QUESTION_REQUEST } from "../../../state/Question/Action";
 import { RootState } from "../../../reducers";
 import { questionCard } from '../../../state/Question/Reducer';
 import QuestionModal from '../../../components/QuestionModal';
+import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types';
+import { SearchStackParamList } from '../../../navigator/SeachNavigation';
+
+type navigation = StackNavigationProp<SearchStackParamList, 'Home'>
+
+type Props = {
+    navigation: navigation
+}
 
 const PaddingHeight = styled.View`
     padding:10px 0px;
 `;
-const QuestionFeed = () => {
+const QuestionFeed = ({ navigation }: Props) => {
     const [modal, setModal] = useState<questionCard>();
     const [refresh, setRefresh] = useState<boolean>(false);
 
@@ -67,6 +75,7 @@ const QuestionFeed = () => {
                 <QuestionModal
                     visible={true}
                     onPress={handelClose}
+                    navigation={navigation}
                     {...modal}
                 />
             }
