@@ -218,7 +218,7 @@ const Profile = ({
                             <NameText>{username}</NameText>
                             <NameText><DescText>Mento: {mento}  </DescText><DescText>  Mentiee: {mentiee}</DescText></NameText>
                         </InfoWrapper>
-                        <Button title="Setting" onPress={() => onPress()} />
+                        {pk === loginState.data.pk && <Button title="Setting" onPress={() => onPress()} />}
                     </ProfileWrapper>
                     <SemiTitle>Tendency</SemiTitle>
                     <TendencyWrapper>

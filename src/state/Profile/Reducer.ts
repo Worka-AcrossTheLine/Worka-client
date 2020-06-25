@@ -8,6 +8,9 @@ import {
     PROFILE_QUESTION_FAIL,
     PATCH_COMMENTS_SUCCESS,
     PATCH_PROFILE_IMAGES_SUCCESS,
+    PROFILE_INFO_REQUEST,
+    PROFILE_INFO_SUCCESS,
+    PROFILE_INFO_FAIL,
 } from "./Action";
 import { Profile, ProfileQuestion, Comment } from "./Action";
 import { number, string } from "prop-types";
@@ -140,6 +143,31 @@ export const ProfileQuestionFeed = (state: ProfileQuestionState = initialStateQ,
                 data: action.payload.data,
             };
         case PROFILE_QUESTION_FAIL:
+            return {
+                ...state,
+                fetching: false,
+                err: action.payload.err,
+            };
+        default:
+            return state;
+    }
+};
+
+export const ProfileInfo = (state: ProfileState = initialState, action: ProfileReducePayload) => {
+    switch (action.type) {
+        case PROFILE_INFO_REQUEST:
+            return {
+                ...state,
+                fetching: true,
+                err: false,
+            };
+        case PROFILE_INFO_SUCCESS:
+            return {
+                ...state,
+                fetching: false,
+                data: action.payload.data,
+            };
+        case PROFILE_INFO_FAIL:
             return {
                 ...state,
                 fetching: false,

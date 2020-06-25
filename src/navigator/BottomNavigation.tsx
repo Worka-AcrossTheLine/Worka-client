@@ -46,9 +46,10 @@ export default function () {
       <Tab.Screen name="Profile"
         options={{
           tabBarLabel: 'Profile',
-          tabBarIcon: ({color, size}) => (
+          tabBarIcon: ({ color, size }) => (
             <MaterialCommunityIcons name="face-profile" color={color} size={size} />
           ),
+
         }}
         component={Profile} />
       {/* <Tab.Screen name="Coin" component={Coin} /> */}

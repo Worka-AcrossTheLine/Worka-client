@@ -8,7 +8,8 @@ import {
     PATCH_COMMENTS_SUCCESS,
     PatchProfileImagePayload,
     PATCH_PROFILE_IMAGES_SUCCESS,
-    PROFILE_REQUEST
+    PROFILE_REQUEST,
+    PROFILE_INFO_SUCCESS
 } from "./Action";
 import { getProfile, getQuestion, patchComment, patchUserImages } from "../../Api/Profile";
 import { PatchCommentsAction, GetProfileAction } from "./Reducer";
@@ -57,5 +58,17 @@ export function* handleProfileImages({ type, payload }: { type: string, payload:
             Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
         }
         console.log(error)
+    }
+}
+
+export function* handleProfileInfo(action: GetProfileAction) {
+    try {
+        const response = yield call(getProfile, action.payload);
+        yield put({ type: PROFILE_INFO_SUCCESS, payload: response });
+    } catch (err) {
+        if (!err) {
+            Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
+        }
+        yield put({ type: PROFILE_FAIL, payload: err })
     }
 }

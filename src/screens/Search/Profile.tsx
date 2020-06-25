@@ -10,24 +10,24 @@ import {
 } from 'react-native';
 import styled from 'styled-components/native';
 
-import theme, { ThemeProps } from '../style/theme'
+import theme, { ThemeProps } from '../../style/theme'
 
-import OsView from '../components/OsView';
-import UserCard from '../components/UserCard';
-import MentoCard from '../components/MentoCard';
-import QuestionCard from '../components/QuestionCard'
-import SettingTab from '../components/SettingTab'
-import DetailModal from '../components/DetailModal';
+import OsView from '../../components/OsView';
+import UserCard from '../../components/UserCard';
+import MentoCard from '../../components/MentoCard';
+import QuestionCard from '../../components/QuestionCard'
+import SettingTab from '../../components/SettingTab'
+import DetailModal from '../../components/DetailModal';
 import { useDispatch, useSelector } from "react-redux";
 
-import QuestionModal from '../components/QuestionModal';
-import { PROFILE_REQUEST } from "../state/Profile/Action";
-import { LOGOUT, WITHDRAWAL, LOGOUT_REQUEST } from '../reducers/login'
-import { RootState } from '../reducers';
-import { card, page } from '../state/Profile/Action'
-import { questionCard } from '../state/Question/Reducer';
+import QuestionModal from '../../components/QuestionModal';
+import { PROFILE_INFO_REQUEST } from "../../state/Profile/Action";
+import { LOGOUT, WITHDRAWAL, LOGOUT_REQUEST } from '../../reducers/login'
+import { RootState } from '../../reducers';
+import { card, page } from '../../state/Profile/Action'
+import { questionCard } from '../../state/Question/Reducer';
 import { RouteProp } from '@react-navigation/core';
-import { SearchStackParamList } from '../navigator/SeachNavigation';
+import { SearchStackParamList } from '../../navigator/SeachNavigation';
 
 type ProfileScreenRouteProp = RouteProp<SearchStackParamList, 'Profile'>
 
@@ -135,7 +135,7 @@ const SelectText = styled.Text`
 
 
 
-const Profile = ({ navigation, route }: Props) => {
+const Profile = ({ route }: Props) => {
     const [select, setSelect] = useState<select>("card");
     const [modal, setModal] = useState<modal>({
         type: 'none',
@@ -145,10 +145,10 @@ const Profile = ({ navigation, route }: Props) => {
     //분기처리를 했는데
     const dispatch = useDispatch()
     const logininfo = useSelector((state: RootState) => state.login);
-    const profile = useSelector((state: RootState) => state.profile);
+    const profile = useSelector((state: RootState) => state.profileInfo);
     const makeFeed = useSelector((state: RootState) => state.makeFeed);
     const makeQuestion = useSelector((state: RootState) => state.makeQuestion);
-    const comments = useSelector((state: RootState) => state.questionComment);
+    console.log(profile)
     let { data: { user, cards, pages } } = profile;
 
     const handleSelect = (text: select) => () => {
@@ -215,22 +215,9 @@ const Profile = ({ navigation, route }: Props) => {
     }
 
     useEffect(() => {
-        if ('pk' in logininfo.data) {
-            dispatch({ type: PROFILE_REQUEST, payload: { pk: (route && route.params && route.params.pk) || logininfo.data.pk, token: logininfo.token } })
-        }
-    }, [makeFeed.data, makeQuestion.data])
+        dispatch({ type: PROFILE_INFO_REQUEST, payload: { pk: (route && route.params && route.params.pk), token: logininfo.token } })
+    }, [])
 
-    React.useEffect(() => {
-        const unsubscribe = navigation.addListener('tabPress', () => {
-            // Prevent default behavior
-            dispatch({ type: PROFILE_REQUEST, payload: { pk: logininfo.data.pk, token: logininfo.token } })
-
-            // Do something manually
-            // ...
-        });
-
-        return unsubscribe;
-    }, [navigation]);
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
             {user.pk ?
