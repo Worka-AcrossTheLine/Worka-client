@@ -21,13 +21,21 @@ import MentoCard from '../../components/MentoCard';
 import DetailModal from '../../components/DetailModal';
 import { LOGIN_SUCCESS } from "../../reducers/login";
 import { login } from "../../Api/login";
+import { SearchStackParamList } from '../../navigator/SeachNavigation';
+import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types';
+
+type navigationProps = StackNavigationProp<SearchStackParamList, 'Home'>
+
+export interface Props {
+    navigation: navigationProps
+}
 
 
 const PaddingHeight = styled.View`
     padding:10px 0px;
 `;
 
-const FeedHome = () => {
+const FeedHome = ({ navigation }: Props) => {
     const dispatch = useDispatch()
     const rootState = useSelector((state: RootState) => state);
     const { feed: feedState, makeFeed, login: loginState } = rootState;
@@ -39,6 +47,7 @@ const FeedHome = () => {
         {
             id: 0,
             author: {
+                pk: 0,
                 username: '',
                 user_image: ''
             },
@@ -90,11 +99,14 @@ const FeedHome = () => {
                         </TouchableWithoutFeedback>}
                 />
             </View>
-            <DetailModal
-                visible={modalVisible}
-                onPress={handleClose}
-                {...storage}
-            />
+            {storage.id > 0 &&
+                <DetailModal
+                    visible={modalVisible}
+                    onPress={handleClose}
+                    navigation={navigation}
+                    {...storage}
+                />
+            }
         </>
     )
 }
