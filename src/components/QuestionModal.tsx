@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { TouchableWithoutFeedback, TouchableOpacity, View, Animated, FlatList, Button, ActivityIndicator } from 'react-native'
+import { TouchableWithoutFeedback, TouchableOpacity, View, Animated, FlatList, Button, ActivityIndicator, Alert } from 'react-native'
 import styled from 'styled-components/native';
 
 import { ThemeProps } from '../style/theme';
@@ -8,12 +8,11 @@ import { RootState } from '../reducers';
 
 import DownArrow from '../../assets/DownArrow.svg';
 import UpArrow from '../../assets/UpArrow.svg';
-import ThumpsUp from '../../assets/ThumpsUp.svg';
-import ThumpsDown from '../../assets/ThumpsDown.svg';
 import Tag from './Tag';
 import { questionCard } from '../state/Question/Reducer';
-import { GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST, MAKE_QUESTION_COMMENT_REQUEST, GET_QUESTION_DETAIL_INIT, QUESTION_COMMENTS_INIT } from "../state/Question/Action";
+import { GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST, MAKE_QUESTION_COMMENT_REQUEST, GET_QUESTION_DETAIL_INIT, QUESTION_COMMENTS_INIT, PATCH_QUESTION_REQUEST, PATCH_QUESTION_INIT, PATCH_QUESTION_PAGE_REQUEST, PATCH_QUESTION_PAGE_INIT, DELETE_QUESTION_PAGE_INIT, DELETE_QUESTION_PAGE_REQUEST, GET_QUESTION_REQUEST } from "../state/Question/Action";
 import { TextInput } from 'react-native-gesture-handler';
+import { PROFILE_REQUEST } from '../state/Profile/Action';
 
 interface Props extends questionCard {
     visible: boolean;
@@ -106,6 +105,11 @@ const CommnetWrapper = styled.View`
     flex-direction:row;
 `;
 
+const EditWrapper = styled.View`
+    padding:10px;
+    align-items:flex-end;
+`;
+
 const Image = styled.Image`
     width:64px;
     height:64px;
@@ -158,22 +162,37 @@ export default function QuestionModal({
         detailIndex: undefined,
         animationOn: false
     })
+
+    // modify question ( not commnet );
+    const [isEdit, setIsEdit] = useState({
+        edit: false,
+        index: 0,
+        id: 0,
+    });
+    const [modifyText, setModifyText] = useState("");
+
+    //modify question title, tags;
+    const [isEditPages, setIsEditPages] = useState(false)
+    const [editTitle, setEditTitle] = useState("");
+    const [editTags, setEditTags] = useState("");
+
+
     const { detailIndex, animationOn } = animationState;
     const slideToggle = useRef(new Animated.Value(0)).current;
     // redux
     const dispatch = useDispatch()
     const rootState = useSelector((state: RootState) => state);
-    const { login: Logininfo, questionComment: questionComment, questionDetail: questionDetail } = rootState;
+    const {
+        login: loginState,
+        questionComment: questionComment,
+        questionDetail: questionDetail,
+        patchQuestionPage,
+        deleteQuestionPage,
+        patchQuestion } = rootState;
     // refresh
 
-    const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number, overFlow?: string } => {
-        return (
-            typeof detailIndex === 'number' && detailIndex === index ?
-                { height: slideToggle }
-                :
-                { display: 'none' }
-        )
-    }
+
+    patchQuestion
     const [text, setText] = useState('');
 
     const closeModal = () => {
@@ -199,17 +218,142 @@ export default function QuestionModal({
         }
     };
 
+    const handleModifyQ = (e: string) => {
+        setModifyText(e);
+    }
+
+    const handleModifyAction = () => {
+        dispatch({
+            type: PATCH_QUESTION_REQUEST,
+            payload: {
+                token: loginState.token,
+                content: modifyText,
+                id,
+                index: isEdit.id
+            }
+        })
+    }
+
+    const handleModifyTitle = () => {
+        setIsEditPages(true);
+    }
+
+    const handleUpdate = () => {
+        const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+        const tagsValid = editTags.trim().replace(/,/gi, '').replace(regExp, '').replace(/\s{2,}/gi, ' ').split(' ');
+        dispatch({
+            type: PATCH_QUESTION_PAGE_REQUEST,
+            payload: {
+                token: loginState.token,
+                id,
+                title: editTitle,
+                tags: tagsValid
+            }
+        })
+    }
+
+    const dispatchDelete = () => {
+        dispatch({
+            type: DELETE_QUESTION_PAGE_REQUEST,
+            payload: {
+                token: loginState.token,
+                id,
+            }
+        })
+    }
+
+    const handleDelete = () => {
+        Alert.alert("WORKA!", "정말 질문카드를 지우시겠습니까?",
+            [
+                {
+                    text: "삭제",
+                    onPress: dispatchDelete
+                },
+                {
+                    text: "취소"
+                }
+            ]
+        )
+    }
+
+    const handleError = () => {
+        Alert.alert("WORKA!", "올바르지 않은 접근입니다. 다시 시도해주세요");
+        onPress();
+    }
+
+    if (patchQuestionPage.posting) {
+        setIsEditPages(false);
+        dispatch({ type: PROFILE_REQUEST, payload: { token: loginState.token, pk: loginState.data.pk } });
+        dispatch({ type: GET_QUESTION_REQUEST, payload: { token: loginState.token } });
+        dispatch({ type: PATCH_QUESTION_PAGE_INIT });
+    }
+
+    if (deleteQuestionPage.posting) {
+        Alert.alert("WORKA!", "해당 질문 카드가 성공적으로 삭제되었습니다.", [{ text: "확인", onPress: closeModal }]);
+        setIsEditPages(false);
+        dispatch({ type: PROFILE_REQUEST, payload: { token: loginState.token, pk: loginState.data.pk } });
+        dispatch({ type: GET_QUESTION_REQUEST, payload: { token: loginState.token } });
+        dispatch({ type: DELETE_QUESTION_PAGE_INIT });
+    }
+
+    if (patchQuestionPage.err || deleteQuestionPage.err) {
+        handleError()
+        dispatch({ type: PATCH_QUESTION_PAGE_INIT });
+        dispatch({ type: DELETE_QUESTION_PAGE_INIT });
+    }
+
     const postComments = () => {
         dispatch({
             type: MAKE_QUESTION_COMMENT_REQUEST,
             payload: {
-                token: Logininfo.token,
+                token: loginState.token,
                 question_pk: detailIndex,
                 page_pk: id,
                 text,
             }
         })
         setText("");
+    }
+
+    const questionCommentsRequest = (index: number) => {
+        dispatch({
+            type: QUESTION_COMMENTS_REQUEST,
+            payload:
+            {
+                token: loginState.token,
+                page_pk: id,
+                question_pk: index
+            }
+        })
+    }
+
+    const getQuestionDetailRequest = () => {
+        dispatch({
+            type: GET_QUESTION_DETAIL_REQUEST,
+            payload:
+            {
+                token: loginState.token,
+                id: id
+            }
+        })
+    }
+
+    const handleTitle = (e: string) => {
+        setEditTitle(e);
+    }
+
+    const handleTags = (e: string) => {
+        setEditTags(e);
+    }
+
+    if (patchQuestion.posting) {
+        dispatch({ type: PATCH_QUESTION_INIT });
+        getQuestionDetailRequest();
+        setIsEdit({
+            edit: false,
+            index: 0,
+            id: 0
+        })
     }
 
     useEffect(() => {
@@ -222,13 +366,18 @@ export default function QuestionModal({
         }
     }, [animationState]);
 
-    const questionCommentsRequest = (index: number) => {
-        dispatch({ type: QUESTION_COMMENTS_REQUEST, payload: { token: Logininfo.token, page_pk: id, question_pk: index } })
-    }
-
-    const getQuestionDetailRequest = () => {
-        dispatch({ type: GET_QUESTION_DETAIL_REQUEST, payload: { token: Logininfo.token, id: id } })
-    }
+    useEffect(() => {
+        if (visible) {
+            setIsEdit({
+                edit: false,
+                index: 0,
+                id: 0
+            })
+            setIsEditPages(false);
+            setEditTitle(title);
+            setEditTags(tags.join(' '));
+        }
+    }, [visible])
 
     useEffect(() => {
         getQuestionDetailRequest()
@@ -238,6 +387,14 @@ export default function QuestionModal({
         }
     }, []);
 
+    useEffect(() => {
+        if (isEdit.edit) {
+            setModifyText(questionDetail.data.results[isEdit.index].content)
+        } else {
+            setModifyText("");
+        }
+    }, [isEdit.edit])
+
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={closeModal} >
             <TouchableWithoutFeedback onPress={closeModal}>
@@ -246,7 +403,29 @@ export default function QuestionModal({
                         <ModalTabWrapper>
                             <TileWrapper >
                                 <TextWrapper style={{ flex: 1 }}>
-                                    <Desc>{title}</Desc>
+                                    {isEditPages
+                                        ?
+                                        <TextInput value={editTitle} onChangeText={handleTitle} />
+                                        :
+                                        <Desc>{editTitle}</Desc>
+                                    }
+                                    {isEditPages
+                                        ?
+                                        <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                            <TouchableOpacity onPress={handleUpdate} >
+                                                <Desc style={{ marginRight: 10 }}>수정, 등록</Desc>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity onPress={handleDelete}>
+                                                <Desc>삭제</Desc>
+                                            </TouchableOpacity>
+                                        </View>
+                                        :
+                                        (pk === loginState.data.pk &&
+                                            <TouchableOpacity onPress={handleModifyTitle}>
+                                                <Desc style={{ textAlign: 'right', color: 'blue', opacity: 0.8 }}>edit</Desc>
+                                            </TouchableOpacity>
+                                        )
+                                    }
                                 </TextWrapper>
                                 <Image source={{ uri: user_image || "https://miro.medium.com/max/1400/1*mk1-6aYaf_Bes1E3Imhc0A.jpeg" }} />
                             </TileWrapper>
@@ -262,7 +441,11 @@ export default function QuestionModal({
                                     renderItem={({ item, index }) =>
                                         <ModalTabWrapper key={`q-${item.id}`} onStartShouldSetResponder={() => false}>
                                             <TextWrapper>
-                                                <QuestionText>Q{index + 1}.{item.content}</QuestionText>
+                                                {isEdit.edit && isEdit.index === index ?
+                                                    <TextInput value={modifyText} onChangeText={handleModifyQ} />
+                                                    :
+                                                    <QuestionText>Q{index + 1}.{item.content}</QuestionText>
+                                                }
                                             </TextWrapper>
                                             <View style={{ flex: 1, display: detailIndex === item.id ? 'flex' : 'none' }} >
                                                 {/*comment*/}
@@ -279,17 +462,18 @@ export default function QuestionModal({
                                                             extraData={questionComment.data}
                                                             renderItem={({ item: questionComment }) =>
                                                                 <AnswerWrapper onStartShouldSetResponder={() => true}>
-                                                                    <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
+                                                                    <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username} 👍 👎</AnswerUsername>
                                                                     <AnswerUsername>{questionComment.text}</AnswerUsername>
                                                                     {/* <RatingWrapper>
                                                                         <ThumpsUp style={{ marginRight: 7 }} />
                                                                         <ThumpsDown style={{ marginRight: 5 }} />
                                                                     </RatingWrapper> */}
+                                                                    <AnswerUsername style={{ opacity: 0.3 }}>{questionComment.like_count}명이 THUMP UP!!</AnswerUsername>
                                                                 </AnswerWrapper>
                                                             }
                                                         />
                                                     )}
-                                                {Logininfo.data.pk !== pk &&
+                                                {loginState.data.pk !== pk ?
                                                     <PostComment>
                                                         <CommnetWrapper>
                                                             <TextInput
@@ -306,6 +490,21 @@ export default function QuestionModal({
                                                             }
                                                         </CommnetWrapper>
                                                     </PostComment>
+                                                    :
+                                                    <EditWrapper>
+                                                        {isEdit.edit
+                                                            ?
+                                                            <TouchableOpacity onPress={handleModifyAction}>
+                                                                <AnswerUsername style={{ color: 'blue', opacity: 0.4 }}>
+                                                                    수정
+                                                                </AnswerUsername>
+                                                            </TouchableOpacity>
+                                                            :
+                                                            <TouchableOpacity onPress={() => setIsEdit({ edit: true, index, id: item.id })}>
+                                                                <AnswerUsername style={{ color: 'blue', opacity: 0.4 }}>EDIT</AnswerUsername>
+                                                            </TouchableOpacity>
+                                                        }
+                                                    </EditWrapper>
                                                 }
                                             </View>
                                             <DropDownWrapper >
@@ -319,7 +518,12 @@ export default function QuestionModal({
                             ) : <ActivityIndicator />}
                             <TagWrapper >
                                 <TendencyTagWrapper>
-                                    {tags.map((tag, tagIndex) => <Tag key={`tag-${tagIndex}`} text={tag} fontColor="#FFFFFF" />)}
+                                    {isEditPages
+                                        ?
+                                        <TextInput value={editTags} onChangeText={handleTags} />
+                                        :
+                                        editTags.split(' ').map((tag, tagIndex) => <Tag key={`tag-${tagIndex}`} text={tag} fontColor="#FFFFFF" />)
+                                    }
                                 </TendencyTagWrapper>
                                 <UserTagWrapper>
                                     <Tag text={username} fontColor="#FFFFFF" />
@@ -332,3 +536,15 @@ export default function QuestionModal({
         </ModalWrapper>
     )
 }
+
+
+/*  question comment slide down animated
+const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number, overFlow?: string } => {
+        return (
+            typeof detailIndex === 'number' && detailIndex === index ?
+                { height: slideToggle }
+                :
+                { display: 'none' }
+        )
+    }
+    */
