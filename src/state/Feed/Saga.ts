@@ -18,7 +18,8 @@ import {
 } from './Action';
 import { LOGIN_SUCCESS, LOGOUT, LOGOUT_REQUEST } from "../../reducers/login";
 import { errorHandler } from '../errorHandler';
-import { PROFILE_REQUEST } from '../Profile/Action';
+import {PROFILE_REQUEST, ProfileSuccess} from '../Profile/Action';
+import {getProfile} from "../../Api/Profile";
 
 
 
@@ -52,12 +53,14 @@ export function* handleOnlyGetFeed({ payload: { token } }: { type: string, paylo
 }
 
 
-export function* handleMakeFeed({ type, payload: { title, tags, text, images, token } }: { type: string, payload: makeCard }) {
+export function* handleMakeFeed({ type, payload: { pk, title, tags, text, images, token } }: { type: string, payload: makeCard }) {
   try {
-    const response = yield call(makeFeed, { title, tags, text, images, token });
+    const response = yield call(makeFeed, { title, tags, text, images, token, pk });
     const getResponse = yield call(getFeed, { token })
     yield put(makeFeedSuccess(response.data));
     yield put(getFeedSuccess(getResponse.data.results));
+    const profileResponse = yield call(getProfile, {pk: pk, token :token});
+    yield put(ProfileSuccess(profileResponse.data));
     Alert.alert("WORKA!", '카드가 작성 되었습니다.')
   } catch (err) {
     if (!err) {
