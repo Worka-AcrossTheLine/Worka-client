@@ -246,6 +246,10 @@ const TabCard = ({ navigation }: Props) => {
 
     useEffect(() => {
         const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+        if(tapTag.trim().length === 0){
+            setTaptag('')
+            return
+        }
         if(tagArr.length < 3){
             if(tapTag.split(' ').length > 1 && tapTag.length > 0 && tapTag.trim().length > 0){
                     tagArr.push(tapTag.trim().replace(regExp, '').replace(/\s{2,}/gi, ' '))
