@@ -259,14 +259,17 @@ export default function DetailModal({
             [
                 {
                     text: "삭제",
-                    onPress: () => dispatch({ type: DELETE_FEED_REQUEST, payload: { id, token: loginState.token } })
+                    onPress: () => {
+                        onPress()
+                        dispatch({type: DELETE_FEED_REQUEST, payload: {id, token: loginState.token, pk: loginState.data.pk}})
+                    }
                 },
                 {
                     text: "취소"
                 }
-            ]
-        )
+            ])
     }
+
 
     const handleError = () => {
         Alert.alert("WORKA!", "올바르지 않은 접근입니다. 다시 시도해주세요");
@@ -279,12 +282,7 @@ export default function DetailModal({
     }
 
     if (deleteFeedState.posting) {
-        Alert.alert("WORKA!", "유저카드가 삭제되었습니다.", [
-            {
-                text: "확인",
-                onPress: deleteInit
-            }
-        ]);
+
     }
     if (patchFeedState.posting) {
         dispatch({ type: PROFILE_REQUEST, payload: { token: loginState.token, pk: loginState.data.pk } });
