@@ -29,8 +29,8 @@ const theme = {
     maxWidth: 800,
     smFont: 8,
     mdFont: 10,
-    lgFont: 12,
-    mainTitleFont: 14
+    lgFont: 14,
+    mainTitleFont: 18
 }
 
 // function update() {

@@ -52,7 +52,7 @@ const DetailWrapper = styled.View`
     width:100%;
     max-height:70%;
     max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
-    background-color:${({ theme }: ThemeProps): string => theme.detailTag}
+    background-color:${({ theme }: ThemeProps): string => theme.white}
     
 `;
 
@@ -60,7 +60,7 @@ const ScrollWrapper = styled.View``;
 
 const ImageWrapper = styled.View`
     width:100%;
-    height:240px;
+    height:300px;
 `;
 
 const TextWrapper = styled.View`
@@ -92,17 +92,19 @@ const TitleView = styled.View`
     
 `;
 const EditWrapper = styled.View`
-    border:1px solid black;
-    border-radius:8px;
+    background: #C7C7C7;
     padding:10px;
+    margin-top: 5px;
+    color: black;
 `;
 
 
 const Title = styled.Text`
-    font-size:14px;
+    font-size:18px;
     text-align:left;
     font-weight: 700;
     color: #554C4C;
+    opacity: 0.33;
     line-height: 20px;
     margin-top: 8px;
     margin-bottom:5px;
@@ -111,7 +113,8 @@ const Title = styled.Text`
 
 const Desc = styled.Text`
     font-size:${({ theme }: ThemeProps): number => theme.lgFont}px;
-    line-height:12px;
+    line-height:15px;
+    font-weight: 500;
     margin-left: 8px;
     padding-top: 3px;
     padding-bottom: 3px;
@@ -120,7 +123,10 @@ const Desc = styled.Text`
 `;
 
 const EditText = styled.Text`
-    color:yellow;
+    color:#DA1A48;
+    padding: 5px 10px 5px 10px;
+    margin-left: auto;
+    font-size: 16px;
 `;
 
 export default function DetailModal({
@@ -308,8 +314,8 @@ export default function DetailModal({
 
 
     return (
-        <ModalWrapper visible={visible} transparent={true} onRequestClose={onPress} >
-            <TouchableWithoutFeedback onPress={onPress}>
+        <ModalWrapper visible={visible} transparent={true} onRequestClose={onPress}  >
+            <TouchableWithoutFeedback onPress={onPress} >
                 <Wrapper>
                     <CloseWrapper>
                         <TouchableOpacity onPress={onPress} style={{}}>
@@ -318,24 +324,41 @@ export default function DetailModal({
                             </CloseView>
                         </TouchableOpacity>
                     </CloseWrapper>
-                    <DetailWrapper>
+                    <DetailWrapper onStartShouldSetResponder={() => true}>
                         <ScrollView>
-                            <ScrollWrapper onStartShouldSetResponder={() => true}>
+                            <ScrollWrapper >
                                 <TouchableWithoutFeedback onPress={handleImages}>
                                     <ImageWrapper>
                                         <Image source={{ uri: inputState.images || images || '' }} style={{ width: '100%', height: '100%' }} />
                                     </ImageWrapper>
                                 </TouchableWithoutFeedback>
-                                <BodyWrapper>
-                                    <TextWrapper>
+                                <BodyWrapper onStartShouldSetResponder={() => true}>
+                                    <TextWrapper >
                                     </TextWrapper>
+                                    {/* edit */}
+                                    {isMe &&
+                                                (isEdit ?
+                                                    <EditView>
+                                                        <TouchableOpacity onPress={handleUpdate} >
+                                                            <EditText>저장</EditText>
+                                                        </TouchableOpacity>
+                                                        <TouchableOpacity onPress={handleDelete}>
+                                                            <EditText>삭제</EditText>
+                                                        </TouchableOpacity>
+                                                    </EditView>
+                                                    :
+                                                    <TouchableOpacity onPress={() => setIsEdit(!isEdit)}>
+                                                        <EditText>edit</EditText>
+                                                    </TouchableOpacity>)
+                                            }
+                                    {/* tag edit */}
                                     {isEdit ?
-                                        <EditWrapper>
-                                            <TextInput value={inputState.tags} onChangeText={handleText('tags')} />
+                                        <EditWrapper >
+                                            <TextInput value={inputState.tags} onChangeText={handleText('tags')} onStartShouldSetResponder={() => true} />
                                         </EditWrapper>
                                         :
-                                        <TagWrapper >
-                                            {inputState.tags.split(' ').map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FA5080" />)}
+                                        <TagWrapper onStartShouldSetResponder={() => true}>
+                                            {inputState.tags.split(' ').map((el: string, index: number) => <Tag key={`tag-${index}`} text={el} fontColor="#FFFFFF" />)}
                                         </TagWrapper>
                                     }
                                     <TagWrapper style={{ justifyContent: "space-between" }}>
@@ -343,23 +366,10 @@ export default function DetailModal({
                                             onPress();
                                             navigation && navigation.navigate('Profile', { pk });
                                         }}>
+                                            
                                             <Tag text={username} fontColor="#2C4F71" />
                                         </TouchableOpacity>
-                                        {isMe &&
-                                            (isEdit ?
-                                                <>
-                                                    <TouchableOpacity onPress={handleUpdate} >
-                                                        <EditText>수정, 등록</EditText>
-                                                    </TouchableOpacity>
-                                                    <TouchableOpacity onPress={handleDelete}>
-                                                        <EditText>삭제</EditText>
-                                                    </TouchableOpacity>
-                                                </>
-                                                :
-                                                <TouchableOpacity onPress={() => setIsEdit(!isEdit)}>
-                                                    <EditText>edit</EditText>
-                                                </TouchableOpacity>)
-                                        }
+                                       
                                     </TagWrapper>
                                     {isEdit ?
                                         <EditWrapper>
@@ -370,10 +380,10 @@ export default function DetailModal({
                                     }
                                     {isEdit ?
                                         <EditWrapper>
-                                            <TextInput value={inputState.text} onChangeText={handleText('text')} />
+                                            <TextInput multiline value={inputState.text} onChangeText={handleText('text')} />
                                         </EditWrapper>
                                         :
-                                        <Desc style={{ color: "white" }}>{inputState.text}</Desc>
+                                        <Desc style={{ color: "black" }}>{inputState.text}</Desc>
                                     }
                                 </BodyWrapper>
                             </ScrollWrapper>
@@ -384,3 +394,10 @@ export default function DetailModal({
         </ModalWrapper>
     )
 }
+
+const EditView = styled.View`
+    margin-left: auto;
+    flex-direction:row;
+    align-items:flex-end;
+    padding-left: 10px;
+`
