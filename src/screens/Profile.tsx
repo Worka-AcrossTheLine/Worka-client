@@ -116,6 +116,7 @@ const SettingChlidWrapper = styled.View`
     margin-bottom: 5px;
     box-shadow: 0px 3px 6px #000;
     border-radius: 8px;
+    elevation: 6;
     
 
 `;

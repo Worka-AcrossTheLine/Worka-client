@@ -467,7 +467,7 @@ export default function QuestionModal({
                                         ?
                                         <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                                             <TouchableOpacity onPress={handleUpdate} >
-                                                <Desc style={{ marginRight: 10 }}>수정, 등록</Desc>
+                                                <Desc style={{ marginRight: 10 }}>수정</Desc>
                                             </TouchableOpacity>
                                             <TouchableOpacity onPress={handleDelete}>
                                                 <Desc>삭제</Desc>
@@ -568,7 +568,7 @@ export default function QuestionModal({
                                                             </TouchableOpacity>
                                                             :
                                                             <TouchableOpacity onPress={() => setIsEdit({ edit: true, index, id: item.id })}>
-                                                                <AnswerUsername style={{ color: 'blue', opacity: 0.4 }}>EDIT</AnswerUsername>
+                                                                <AnswerUsername style={{ color: 'blue', opacity: 0.4 }}>edit</AnswerUsername>
                                                             </TouchableOpacity>
                                                         }
                                                     </EditWrapper>
