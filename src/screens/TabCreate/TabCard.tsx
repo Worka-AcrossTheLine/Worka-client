@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     TouchableWithoutFeedback,
     ActivityIndicator,
-    Alert
+    Alert,
+    ScrollView
 } from 'react-native'
 import styled from 'styled-components/native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -35,6 +36,7 @@ import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
 
 import { HEIGHT } from '../../constants/dimensions'
+import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs/lib/typescript/src/types';
 
 
 type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
@@ -124,7 +126,7 @@ const TabCard = ({ navigation }: Props) => {
             }
 
             const result = await ImagePicker.launchCameraAsync({
-                quality: 0.1
+                quality: 0.5
             });
             if (!result.cancelled) {
                 setImage(result.uri)
@@ -146,7 +148,7 @@ const TabCard = ({ navigation }: Props) => {
             let result = await ImagePicker.launchImageLibraryAsync({
                 allowsEditing: true,
                 aspect: [4, 3],
-                quality: 0.1
+                quality: 0.5
             });
             if (!result.cancelled) {
                 setImage(result.uri)
@@ -158,6 +160,8 @@ const TabCard = ({ navigation }: Props) => {
 
     const Upload = () => {
         Keyboard.dismiss();
+        const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+        const tags = tapTag.trim().replace(/,/gi, '').replace(regExp, '').replace(/\s{2,}/gi, ' ').split(' ')
         const token = login.token;
         if (tapTag === "") {
             Alert.alert("WORKA!", "TAG 를 작성해주세요")
@@ -167,10 +171,14 @@ const TabCard = ({ navigation }: Props) => {
             Alert.alert("WORKA!", "이미지를 등록해주세요")
         } else if (Description === "") {
             Alert.alert("WORKA!", "설명글을 입력해주세요~")
+        } else if (tags.length > 3) {
+            Alert.alert("WORKA!", "tag는 3개 이상 사용할 수 없습니다")
+        } else if (tags.length === 0) {
+            Alert.alert("WORKA!", "tag는 하나이상 입력해야합니다.")
         } else if (token) {
             dispatch({
                 type: MAKE_FEED_REQUEST,
-                payload: { title: InterestingTitle, tags: tapTag.replace(/^ /gi, "").replace(/,/gi, '').replace(/\s{2,}/gi, ' ').split(' '), text: Description, images: image, token: token }
+                payload: { title: InterestingTitle, tags: tags, text: Description, images: image, token: token }
             })
         } else {
             Alert.alert("WORKA!", "로그인이 필요한 기능입니다!")
@@ -229,67 +237,69 @@ const TabCard = ({ navigation }: Props) => {
         <OsView style={{ backgroundColor: "#FFFFFF" }}>
             <TouchableWithoutFeedback onPress={handleKeyboard}>
                 <Wrapper>
-                    <TitleWrapper>
-                        <CancerButton
-                            title="CANCER"
-                            onPress={() => onCancer()}
-                        />
-                        <FlexWrapper>
-                            <Title>Card Worka</Title>
-                        </FlexWrapper>
-                        {!makeFeedState.fetching ?
-                            <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
-                            : <ActivityIndicator />}
-                    </TitleWrapper>
-                    <InputWrapper>
-                        <MakeJobTagInput
-                            placeholder="Make Job Tag"
-                            value={tapTag}
-                            onChange={addTap(setTaptag)}
-                        />
-                        <MakeInterestingInput
-                            placeholder="Make Interesting Title"
-                            value={InterestingTitle}
-                            onChange={addTap(setInterestingTitle)}
-                        />
-                        <Animated.View style={{ height: slideIn, overflow: 'hidden' }}>
-                            <MakeCameraInput>
-                                <TouchableOpacity onPress={camera}>
-                                    <Iconwrapper >
-                                        <Image
-                                            source={require('../../../assets/camera-enhance-outline.png')}
-                                        />
-                                        {/* <Title>카메라</Title> */}
-                                    </Iconwrapper>
-                                </TouchableOpacity>
-                                <TouchableOpacity onPress={pickImage}>
-                                    <Iconwrapper>
-                                        <Image
-                                            source={require('../../../assets/folder-image.png')}
-                                        />
-                                        {/* <Title>갤러리</Title> */}
-                                    </Iconwrapper>
-                                </TouchableOpacity>
-                                {image !== '' && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
-                            </MakeCameraInput>
-                        </Animated.View>
-                        <TouchableOpacity onPress={handleCameraWrapper}>
-                            <ImageToggleWrapper>
-                                {animationOn ? <UpArrow /> : <DownArrow />}
-                            </ImageToggleWrapper>
-                        </TouchableOpacity>
-                        <Animated.View style={{ height: descSlide, elevation: 10 }}>
-                            <MakeCardDescriptionInput
-                                multiline
-                                numberOfLines={4}
-                                placeholder="Make Card Description"
-                                value={Description}
-                                onChange={addTap(setDescription)}
-                                onBlur={() => setFocusDesc(false)}
-                                onFocus={handleDescInput}
+                    <ScrollView>
+                        <TitleWrapper>
+                            <CancerButton
+                                title="CANCER"
+                                onPress={() => onCancer()}
                             />
-                        </Animated.View>
-                    </InputWrapper>
+                            <FlexWrapper>
+                                <Title>Card Worka</Title>
+                            </FlexWrapper>
+                            {!makeFeedState.fetching ?
+                                <MakeButton title="MAKE" onPress={() => Upload()}></MakeButton>
+                                : <ActivityIndicator />}
+                        </TitleWrapper>
+                        <InputWrapper>
+                            <MakeJobTagInput
+                                placeholder="Make Job Tag"
+                                value={tapTag}
+                                onChange={addTap(setTaptag)}
+                            />
+                            <MakeInterestingInput
+                                placeholder="Make Interesting Title"
+                                value={InterestingTitle}
+                                onChange={addTap(setInterestingTitle)}
+                            />
+                            <Animated.View style={{ height: slideIn, overflow: 'hidden' }}>
+                                <MakeCameraInput>
+                                    <TouchableOpacity onPress={camera}>
+                                        <Iconwrapper >
+                                            <Image
+                                                source={require('../../../assets/camera-enhance-outline.png')}
+                                            />
+                                            {/* <Title>카메라</Title> */}
+                                        </Iconwrapper>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity onPress={pickImage}>
+                                        <Iconwrapper>
+                                            <Image
+                                                source={require('../../../assets/folder-image.png')}
+                                            />
+                                            {/* <Title>갤러리</Title> */}
+                                        </Iconwrapper>
+                                    </TouchableOpacity>
+                                    {image !== '' && <Image source={{ uri: image }} style={{ width: 100, height: 100 }} />}
+                                </MakeCameraInput>
+                            </Animated.View>
+                            <TouchableOpacity onPress={handleCameraWrapper}>
+                                <ImageToggleWrapper>
+                                    {animationOn ? <UpArrow /> : <DownArrow />}
+                                </ImageToggleWrapper>
+                            </TouchableOpacity>
+                            <Animated.View style={{ height: descSlide, elevation: 10 }}>
+                                <MakeCardDescriptionInput
+                                    multiline
+                                    numberOfLines={4}
+                                    placeholder="Make Card Description"
+                                    value={Description}
+                                    onChange={addTap(setDescription)}
+                                    onBlur={() => setFocusDesc(false)}
+                                    onFocus={handleDescInput}
+                                />
+                            </Animated.View>
+                        </InputWrapper>
+                    </ScrollView>
                 </Wrapper>
             </TouchableWithoutFeedback>
         </OsView>

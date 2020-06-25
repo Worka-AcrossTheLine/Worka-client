@@ -1,6 +1,6 @@
 export interface makeCard {
   title: string,
-  tags: string,
+  tags: [],
   text: string,
   images: string,
   token: string
