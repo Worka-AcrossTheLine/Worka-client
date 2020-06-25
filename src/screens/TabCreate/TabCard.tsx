@@ -173,7 +173,7 @@ const TabCard = ({ navigation }: Props) => {
     const Upload = () => {
         Keyboard.dismiss();
         const token = login.token;
-        if (tapTag === "") {
+        if (tagArr.length === 0) {
             Alert.alert("WORKA!", "TAG 를 작성해주세요")
         } else if (InterestingTitle === "") {
             Alert.alert("WORKA!", "TITLE 을 작성해주세오");
@@ -256,6 +256,7 @@ const TabCard = ({ navigation }: Props) => {
                     setTaptag((''))
                 }
         } else {
+            setTaptag((''))
             Alert.alert('Worka!', 'Tag는 3종류까지 넣을 수 있습니다.')
         }
     }, [tapTag])
@@ -286,7 +287,7 @@ const TabCard = ({ navigation }: Props) => {
                             />
                             <TagWrapper>
                                 {tagArr.map((el, index) =>
-                                    <TouchableOpacity onPress={() => removeTag(index)}>
+                                    <TouchableOpacity key={`${index}`} onPress={() => removeTag(index)}>
                                     <Tag key={`${index}`} text={el} response={false}/>
                                     </TouchableOpacity>
                                 )}
