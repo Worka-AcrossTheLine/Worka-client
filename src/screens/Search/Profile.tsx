@@ -249,9 +249,6 @@ const Profile = ({ route }: Props) => {
                         </TouchableWithoutFeedback>
                     </Modal>
                     <ScrollView>
-                        <TitleView>
-                            <Title>Question</Title>
-                        </TitleView>
                         <BodyWrapper>
                             {user ? <UserCard {...user} onPress={handleSetting} /> : <ActivityIndicator />}
                             <SelectWrapper>

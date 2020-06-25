@@ -16,8 +16,8 @@ type TextStyle = {
 const Wrapper = styled.View`
     border-radius:10px;
     background-color:${({ theme }: ThemeProps): string => theme.blue};
-    padding:2px 8px;
-    margin:3px;
+    padding:5px 8px 6px 8px;
+    margin:5px;
 `;
 
 const Text = styled.Text`
@@ -29,7 +29,7 @@ export default function Tag({ fontColor, text, response = true }: Props) {
     const textStyle: TextStyle = {};
     fontColor && (textStyle.color = fontColor);
     return (
-        <Wrapper onStartShouldSetResponder={() => response}>
+        <Wrapper onStartShouldSetResponder={() => true} >
             <Text style={textStyle}>{text}</Text>
         </Wrapper>
     )

@@ -54,7 +54,6 @@ const Title = styled.Text`
 `;
 
 const Desc = styled.Text`
-    font-size:${({ theme }: ThemeProps): number => theme.mdFont}px;
     line-height:16px;
 `;
 

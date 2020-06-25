@@ -129,7 +129,7 @@ const Desc = styled.Text`
     text-align:center;
     font-size:${({ theme }: ThemeProps): number => theme.smFont}px;
     color:${({ theme }: ThemeProps): string => theme.textColor};
-    line-height:12px;
+    line-height:15px;
 `;
 
 const QuestionText = styled.Text`
@@ -137,7 +137,7 @@ const QuestionText = styled.Text`
     font-size:${({ theme }: ThemeProps): number => theme.lgFont}px;
     color:${({ theme }: ThemeProps): string => theme.textColor};
     font-weight:800;
-    line-height:12px;
+    line-height:15px;
 `;
 
 const AnswerUsername = styled.Text`
@@ -330,20 +330,20 @@ export default function QuestionModal({
         setText("");
     }
 
-    const timestamp = (date:string) => {
+    const timestamp = (date: string) => {
         const today = new Date()
         const Hour = today.getHours()
         const days = date.split('T')[0].split('-')
         const times = date.split('T')[1].split('.')[0].split(':')
-        if((today.getFullYear() - Number(days[0])) >= 1){
+        if ((today.getFullYear() - Number(days[0])) >= 1) {
             return today.getFullYear() - Number(days[0]) + 'Years'
-        }else if((today.getMonth()- Number(days[1])) >= 1) {
-            return today.getMonth()- Number(days[1]) + 'Month'
-        }else if((today.getDate() - Number(days[2])) >=1) {
+        } else if ((today.getMonth() - Number(days[1])) >= 1) {
+            return today.getMonth() - Number(days[1]) + 'Month'
+        } else if ((today.getDate() - Number(days[2])) >= 1) {
             return today.getDate() - Number(days[2]) + 'Days'
-        }else if ((today.getHours() - Number(times[0])) >= 1) {
+        } else if ((today.getHours() - Number(times[0])) >= 1) {
             return today.getHours() - Number(times[0]) + 'Hours'
-        }else{
+        } else {
             return today.getMinutes() - Number(times[1]) + 'Minutes'
         }
     }
@@ -519,11 +519,8 @@ export default function QuestionModal({
                                                                         }}>
                                                                             <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
                                                                         </TouchableOpacity>
-                                                                        <TouchableOpacity onPress={() => handleThump(item.id, questionComment.id)}>
-                                                                            <AnswerUsername style={{ marginRight: 10 }}>
-                                                                                <View style={{ marginRight: 10 }} />
-                                                                                <FontAwesome name={"thumbs-o-up"} />
-                                                                            </AnswerUsername>
+                                                                        <TouchableOpacity onPress={() => handleThump(item.id, questionComment.id)} style={{ marginLeft: 10, justifyContent: 'center' }}>
+                                                                            <FontAwesome name={"thumbs-o-up"} />
                                                                         </TouchableOpacity>
                                                                     </UsernameWrapper>
                                                                     <AnswerUsername>{questionComment.text}, {timestamp(questionComment.created_at)}</AnswerUsername>
