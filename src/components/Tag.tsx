@@ -6,6 +6,7 @@ import { ThemeProps } from '../style/theme'
 type Props = {
     fontColor?: string;
     text: string;
+    response?:boolean;
 }
 
 type TextStyle = {
@@ -24,11 +25,11 @@ const Text = styled.Text`
     color:${({ theme }: ThemeProps): string => theme.white};
 `;
 
-export default function Tag({ fontColor, text }: Props) {
+export default function Tag({ fontColor, text, response = true }: Props) {
     const textStyle: TextStyle = {};
     fontColor && (textStyle.color = fontColor);
     return (
-        <Wrapper onStartShouldSetResponder={() => true} >
+        <Wrapper onStartShouldSetResponder={() => false} >
             <Text style={textStyle}>{text}</Text>
         </Wrapper>
     )

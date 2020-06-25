@@ -5,12 +5,16 @@ import {
     PROFILE_QUESTION_FAIL,
     ProfileSuccess,
     QuestionSuccess,
-    PATCH_COMMENTS_SUCCESS
+    PATCH_COMMENTS_SUCCESS,
+    PatchProfileImagePayload,
+    PATCH_PROFILE_IMAGES_SUCCESS,
+    PROFILE_REQUEST,
+    PROFILE_INFO_SUCCESS
 } from "./Action";
-import { getProfile, getQuestion, patchComment } from "../../Api/Profile";
-import { Action, PatchCommentsAction } from "./Reducer";
+import { getProfile, getQuestion, patchComment, patchUserImages } from "../../Api/Profile";
+import { PatchCommentsAction, GetProfileAction } from "./Reducer";
 
-export function* handleProfile(action: Action) {
+export function* handleProfile(action: GetProfileAction) {
     try {
         const response = yield call(getProfile, action.payload);
         yield put(ProfileSuccess(response.data));
@@ -22,7 +26,7 @@ export function* handleProfile(action: Action) {
     }
 }
 
-export function* handleProfileQuestion(action: Action) {
+export function* handleProfileQuestion(action: GetProfileAction) {
     try {
         const response = yield call(getQuestion, action.payload);
         yield put(QuestionSuccess(response.data));
@@ -36,11 +40,35 @@ export function* handleProfileQuestion(action: Action) {
 
 export function* handleProfileComments(action: PatchCommentsAction) {
     try {
-        const response = yield call(patchComment, action.payload);
+        yield call(patchComment, action.payload);
         yield put({ type: PATCH_COMMENTS_SUCCESS, comments: action.payload.comments })
     } catch (error) {
         if (!error) {
             Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
         }
+    }
+}
+
+export function* handleProfileImages({ type, payload }: { type: string, payload: PatchProfileImagePayload }) {
+    try {
+        const userImages = yield call(patchUserImages, payload);
+        yield put({ type: PATCH_PROFILE_IMAGES_SUCCESS, payload: { data: { user: { user_image: userImages.data.user_image } } } });
+    } catch (error) {
+        if (!error) {
+            Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
+        }
+        console.log(error)
+    }
+}
+
+export function* handleProfileInfo(action: GetProfileAction) {
+    try {
+        const response = yield call(getProfile, action.payload);
+        yield put({ type: PROFILE_INFO_SUCCESS, payload: response });
+    } catch (err) {
+        if (!err) {
+            Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
+        }
+        yield put({ type: PROFILE_FAIL, payload: err })
     }
 }

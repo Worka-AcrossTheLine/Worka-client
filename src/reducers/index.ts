@@ -22,6 +22,7 @@ import {
     ProfileFeed,
     ProfileQuestionState,
     ProfileQuestionFeed,
+    ProfileInfo,
 
 } from "../state/Profile/Reducer";
 import { LinkState, GetLinkState } from "../state/Link/Reducer";
@@ -44,6 +45,7 @@ export type RootState = {
     profile: ProfileState,
     profileQuestion: ProfileQuestionState,
     questionComment: CommentState,
+    profileInfo: ProfileState,
     link: LinkState,
     questionDetail: QuestionDetailState,
     makeFeed: FeedState,
@@ -67,6 +69,7 @@ export default combineReducers({
     profile: ProfileFeed,
     profileQuestion: ProfileQuestionFeed,
     questionComment: CommentFeed,
+    profileInfo: ProfileInfo,
     link: GetLinkState,
     questionDetail: QuestionDetailFeed,
     makeFeed: PostFeed,

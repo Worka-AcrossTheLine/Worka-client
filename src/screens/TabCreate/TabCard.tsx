@@ -37,6 +37,7 @@ import addTap from "../../constants/addTap"
 
 import { HEIGHT } from '../../constants/dimensions'
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs/lib/typescript/src/types';
+import Tag from "../../components/Tag";
 
 
 type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
@@ -60,6 +61,10 @@ const Title = styled.Text`
 `;
 
 const InputWrapper = styled.View``;
+
+const TagWrapper = styled.View`
+    flex-direction:row;
+`;
 
 const ImageToggleWrapper = styled.View`
     height:30px;
@@ -85,6 +90,7 @@ const TabCard = ({ navigation }: Props) => {
     const [Description, setDescription] = useState('');
     const [animationOn, setAnimationOn] = useState(true);
     const [focusDesc, setFocusDesc] = useState(false);
+    const [tagArr, setTagArr] = useState<string[]>([]);
 
     const slideIn = useRef(new Animated.Value(0)).current;
     const descSlide = useRef(new Animated.Value(70)).current;
@@ -158,10 +164,14 @@ const TabCard = ({ navigation }: Props) => {
         }
     }
 
+    const removeTag = (index:number) => {
+        const tmp = [...tagArr];
+        tmp.splice(index, 1)
+        setTagArr(tmp)
+    }
+
     const Upload = () => {
         Keyboard.dismiss();
-        const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-        const tags = tapTag.trim().replace(/,/gi, '').replace(regExp, '').replace(/\s{2,}/gi, ' ').split(' ')
         const token = login.token;
         if (tapTag === "") {
             Alert.alert("WORKA!", "TAG 를 작성해주세요")
@@ -171,18 +181,19 @@ const TabCard = ({ navigation }: Props) => {
             Alert.alert("WORKA!", "이미지를 등록해주세요")
         } else if (Description === "") {
             Alert.alert("WORKA!", "설명글을 입력해주세요~")
-        } else if (tags.length > 3) {
+        } else if (tagArr.length > 3) {
             Alert.alert("WORKA!", "tag는 3개 이상 사용할 수 없습니다")
-        } else if (tags.length === 0) {
+        } else if (tagArr.length === 0) {
             Alert.alert("WORKA!", "tag는 하나이상 입력해야합니다.")
         } else if (token) {
             dispatch({
                 type: MAKE_FEED_REQUEST,
-                payload: { title: InterestingTitle, tags: tags, text: Description, images: image, token: token }
+                payload: { title: InterestingTitle, tags: tagArr, text: Description, images: image, token: token }
             })
         } else {
             Alert.alert("WORKA!", "로그인이 필요한 기능입니다!")
         }
+        setTagArr([])
     }
 
     if (makeFeedState.err) {
@@ -233,6 +244,18 @@ const TabCard = ({ navigation }: Props) => {
         }
     }, []);
 
+    useEffect(() => {
+        const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+        if(tagArr.length < 3){
+            if(tapTag.split(' ').length > 1 && tapTag.length > 0 && tapTag.trim().length > 0){
+                    tagArr.push(tapTag.trim().replace(regExp, '').replace(/\s{2,}/gi, ' '))
+                    setTaptag((''))
+                }
+        } else {
+            Alert.alert('Worka!', 'Tag는 3종류까지 넣을 수 있습니다.')
+        }
+    }, [tapTag])
+
     return (
         <OsView style={{ backgroundColor: "#FFFFFF" }}>
             <TouchableWithoutFeedback onPress={handleKeyboard}>
@@ -252,10 +275,19 @@ const TabCard = ({ navigation }: Props) => {
                         </TitleWrapper>
                         <InputWrapper>
                             <MakeJobTagInput
+
                                 placeholder="Make Job Tag"
                                 value={tapTag}
                                 onChange={addTap(setTaptag)}
                             />
+                            <TagWrapper>
+                                {tagArr.map((el, index) =>
+                                    <TouchableOpacity onPress={() => removeTag(index)}>
+                                    <Tag key={`${index}`} text={el} response={false}/>
+                                    </TouchableOpacity>
+                                )}
+                            </TagWrapper>
+
                             <MakeInterestingInput
                                 placeholder="Make Interesting Title"
                                 value={InterestingTitle}

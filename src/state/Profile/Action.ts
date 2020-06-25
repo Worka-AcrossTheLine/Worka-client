@@ -8,7 +8,6 @@ export interface user {
     mentiee: number,
     mbti: string,
     comments: string,
-    is_me: boolean
 }
 
 interface author {
@@ -57,6 +56,11 @@ export interface ProfileQuestion {
     }
 }
 
+export interface PatchProfileImagePayload {
+    token: string;
+    images: string;
+}
+
 interface CommentRequest {
     account_pk: number,
     pk: number,
@@ -84,6 +88,14 @@ export interface CommentResponse {
 export const PROFILE_REQUEST = 'PROFILE_REQUEST'
 export const PROFILE_SUCCESS = 'PROFILE_SUCCESS'
 export const PROFILE_FAIL = 'PROFILE_FAIL'
+
+export const PROFILE_INFO_REQUEST = 'PROFILE_INFO_REQUEST'
+export const PROFILE_INFO_SUCCESS = 'PROFILE_INFO_SUCCESS'
+export const PROFILE_INFO_FAIL = 'PROFILE_INFO_FAIL'
+
+export const PATCH_PROFILE_IMAGES_REQUEST = 'PATCH_PROFILE_IMAGES_REQUEST'
+export const PATCH_PROFILE_IMAGES_SUCCESS = 'PATCH_PROFILE_IMAGES_SUCCESS'
+export const PATCH_PROFILE_IMAGES_FAIL = 'PATCH_PROFILE_IMAGES_FAIL'
 
 export const PROFILE_QUESTION_REQUEST = 'PROFILE_QUESTION_REQUEST'
 export const PROFILE_QUESTION_SUCCESS = 'PROFILE_QUESTION_SUCCESS'

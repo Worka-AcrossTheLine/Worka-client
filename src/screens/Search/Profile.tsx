@@ -10,24 +10,24 @@ import {
 } from 'react-native';
 import styled from 'styled-components/native';
 
-import theme, { ThemeProps } from '../style/theme'
+import theme, { ThemeProps } from '../../style/theme'
 
-import OsView from '../components/OsView';
-import UserCard from '../components/UserCard';
-import MentoCard from '../components/MentoCard';
-import QuestionCard from '../components/QuestionCard'
-import SettingTab from '../components/SettingTab'
-import DetailModal from '../components/DetailModal';
+import OsView from '../../components/OsView';
+import UserCard from '../../components/UserCard';
+import MentoCard from '../../components/MentoCard';
+import QuestionCard from '../../components/QuestionCard'
+import SettingTab from '../../components/SettingTab'
+import DetailModal from '../../components/DetailModal';
 import { useDispatch, useSelector } from "react-redux";
 
-import QuestionModal from '../components/QuestionModal';
-import { PROFILE_REQUEST } from "../state/Profile/Action";
-import { LOGOUT, WITHDRAWAL, LOGOUT_REQUEST } from '../reducers/login'
-import { RootState } from '../reducers';
-import { card, page } from '../state/Profile/Action'
-import { questionCard } from '../state/Question/Reducer';
+import QuestionModal from '../../components/QuestionModal';
+import { PROFILE_INFO_REQUEST } from "../../state/Profile/Action";
+import { LOGOUT, WITHDRAWAL, LOGOUT_REQUEST } from '../../reducers/login'
+import { RootState } from '../../reducers';
+import { card, page } from '../../state/Profile/Action'
+import { questionCard } from '../../state/Question/Reducer';
 import { RouteProp } from '@react-navigation/core';
-import { SearchStackParamList } from '../navigator/SeachNavigation';
+import { SearchStackParamList } from '../../navigator/SeachNavigation';
 
 type ProfileScreenRouteProp = RouteProp<SearchStackParamList, 'Profile'>
 
@@ -110,13 +110,11 @@ const ModalLayout = styled.View`
 const SettingChlidWrapper = styled.View`
     width:90%;
     align-self:center;
+    border:1px solid black;
+    border-radius:8px;
     background-color:${({ theme }: ThemeProps): string => theme.white};
-    padding:8px 3px;
+    padding:5px 3px;
     margin-top:5px;
-    margin-bottom: 5px;
-    box-shadow: 0px 3px 6px #000;
-    border-radius: 8px;
-    
 
 `;
 const ModalTitle = styled.Text`
@@ -124,7 +122,6 @@ const ModalTitle = styled.Text`
     font-size:20px;
     color:#DEE53A;
     margin-bottom:25px;
-    font-weight: 900;
 `;
 
 const Title = styled.Text`
@@ -134,7 +131,6 @@ const Title = styled.Text`
 
 const SelectText = styled.Text`
     font-size:20px;
-    padding-left: 10px;
 `;
 
 
@@ -149,10 +145,9 @@ const Profile = ({ route }: Props) => {
     //분기처리를 했는데
     const dispatch = useDispatch()
     const logininfo = useSelector((state: RootState) => state.login);
-    const profile = useSelector((state: RootState) => state.profile);
+    const profile = useSelector((state: RootState) => state.profileInfo);
     const makeFeed = useSelector((state: RootState) => state.makeFeed);
     const makeQuestion = useSelector((state: RootState) => state.makeQuestion);
-    const comments = useSelector((state: RootState) => state.questionComment);
     let { data: { user, cards, pages } } = profile;
 
     const handleSelect = (text: select) => () => {
@@ -219,10 +214,8 @@ const Profile = ({ route }: Props) => {
     }
 
     useEffect(() => {
-        if ('pk' in logininfo.data) {
-            dispatch({ type: PROFILE_REQUEST, payload: { pk: (route && route.params && route.params.pk) || logininfo.data.pk, token: logininfo.token } })
-        }
-    }, [makeFeed.data, makeQuestion.data])
+        dispatch({ type: PROFILE_INFO_REQUEST, payload: { pk: (route && route.params && route.params.pk), token: logininfo.token } })
+    }, [])
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
@@ -233,7 +226,7 @@ const Profile = ({ route }: Props) => {
                             <ModalWrapper >
                                 <ModalLayout onStartShouldSetResponder={() => true}>
                                     <ScrollView style={{ width: '100%', padding: 18 }}>
-                                        <ModalTitle>Hello {user.username}</ModalTitle>
+                                        <ModalTitle>Helle {user.username}</ModalTitle>
                                         {/* <SettingTab text="password" />
                                     <SettingTab text="font size" />
                                     <SettingTab text="dark theme" /> */}
