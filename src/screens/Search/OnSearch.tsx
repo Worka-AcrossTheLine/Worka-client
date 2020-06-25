@@ -138,6 +138,7 @@ export default function ({ navigation }: Props) {
                     < DetailModal
                         visible={modal}
                         onPress={handleClose}
+                        navigation={navigation}
                         {...storage}
                     />
                 }
