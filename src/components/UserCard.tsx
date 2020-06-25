@@ -156,7 +156,7 @@ const Profile = ({
     }
 
     const patchImage = (images: string) => {
-        dispatch({ type: PATCH_PROFILE_IMAGES_REQUEST, payload: { token: loginState.token, images: images } })
+        dispatch({ type: PATCH_PROFILE_IMAGES_REQUEST, payload: { token: loginState.token, images: images, pk: loginState.data.pk } })
     }
 
     const camera = async () => {
