@@ -37,6 +37,7 @@ import addTap from "../../constants/addTap"
 
 import { HEIGHT } from '../../constants/dimensions'
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs/lib/typescript/src/types';
+import Tag from "../../components/Tag";
 
 
 type TopNewsNavigationProp = MaterialTopTabNavigationProp<TopTapParamList, 'News'>;
@@ -60,6 +61,10 @@ const Title = styled.Text`
 `;
 
 const InputWrapper = styled.View``;
+
+const TagWrapper = styled.View`
+    flex-direction:row;
+`;
 
 const ImageToggleWrapper = styled.View`
     height:30px;
@@ -85,6 +90,7 @@ const TabCard = ({ navigation }: Props) => {
     const [Description, setDescription] = useState('');
     const [animationOn, setAnimationOn] = useState(true);
     const [focusDesc, setFocusDesc] = useState(false);
+    const [tagArr, setTagArr] = useState<string[]>([]);
 
     const slideIn = useRef(new Animated.Value(0)).current;
     const descSlide = useRef(new Animated.Value(70)).current;
@@ -158,10 +164,15 @@ const TabCard = ({ navigation }: Props) => {
         }
     }
 
+    const removeTag = (index:number) => {
+        console.log('tmp', index)
+        const tmp = [...tagArr];
+        tmp.splice(index, 1)
+        setTagArr(tmp)
+    }
+
     const Upload = () => {
         Keyboard.dismiss();
-        const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-        const tags = tapTag.trim().replace(/,/gi, '').replace(regExp, '').replace(/\s{2,}/gi, ' ').split(' ')
         const token = login.token;
         if (tapTag === "") {
             Alert.alert("WORKA!", "TAG 를 작성해주세요")
@@ -233,6 +244,19 @@ const TabCard = ({ navigation }: Props) => {
         }
     }, []);
 
+    useEffect(() => {
+        const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
+        const Tags = tapTag.trim()
+        if(tagArr.length < 3){
+            if(tapTag.split(' ').length > 1 && tapTag.length > 0 && Tags.length > 0){
+                    tagArr.push(tapTag.trim().replace(regExp, '').replace(/\s{2,}/gi, ' '))
+                    setTaptag((''))
+                }
+        } else {
+            Alert.alert('Worka!', 'Tag는 3종류까지 넣을 수 있습니다.')
+        }
+    }, [tapTag])
+
     return (
         <OsView style={{ backgroundColor: "#FFFFFF" }}>
             <TouchableWithoutFeedback onPress={handleKeyboard}>
@@ -252,10 +276,19 @@ const TabCard = ({ navigation }: Props) => {
                         </TitleWrapper>
                         <InputWrapper>
                             <MakeJobTagInput
+
                                 placeholder="Make Job Tag"
                                 value={tapTag}
                                 onChange={addTap(setTaptag)}
                             />
+                            <TagWrapper>
+                                {tagArr.map((el, index) =>
+                                    <TouchableOpacity onPress={() => removeTag(index)}>
+                                    <Tag key={`${el-index}`} text={el} response={false}/>
+                                    </TouchableOpacity>
+                                )}
+                            </TagWrapper>
+
                             <MakeInterestingInput
                                 placeholder="Make Interesting Title"
                                 value={InterestingTitle}
