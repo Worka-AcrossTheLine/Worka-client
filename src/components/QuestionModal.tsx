@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { TouchableWithoutFeedback, TouchableOpacity, View, Animated, FlatList, Button, ActivityIndicator, Alert } from 'react-native'
+import { TouchableWithoutFeedback, TouchableOpacity, View, FlatList, Button, ActivityIndicator, Alert, Animated } from 'react-native'
 import styled from 'styled-components/native';
 
 import { ThemeProps } from '../style/theme';
@@ -186,6 +186,9 @@ export default function QuestionModal({
         id: 0,
     });
     const [modifyText, setModifyText] = useState("");
+
+    const slideIn = useRef(new Animated.Value(0)).current;
+    const descSlide = useRef(new Animated.Value(70)).current;
 
     //modify question title, tags;
     const [isEditPages, setIsEditPages] = useState(false)
@@ -523,19 +526,19 @@ export default function QuestionModal({
                                                                                 navigation.navigate('Profile', { pk: questionComment.author.pk })
                                                                             }
                                                                         }}>
-                                                                            <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
+                                                                            <AnswerUsername>{questionComment.author.username}</AnswerUsername>
                                                                         </TouchableOpacity>
                                                                         <TouchableOpacity onPress={() => handleThump(item.id, questionComment.id)} style={{ marginLeft: 10, justifyContent: 'center' }}>
                                                                             <FontAwesome name={"thumbs-o-up"} />
                                                                         </TouchableOpacity>
                                                                     </UsernameWrapper>
-                                                                    <AnswerUsername>{questionComment.text}, {timestamp(questionComment.created_at)}</AnswerUsername>
+                                                                    <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.text}, {timestamp(questionComment.created_at)}</AnswerUsername>
                                                                     {/* <RatingWrapper>
                                                                         <ThumpsUp style={{ marginRight: 7 }} />
                                                                         <ThumpsDown style={{ marginRight: 5 }} />
                                                                     </RatingWrapper> */}
                                                                     <AnswerUsername style={{ opacity: 0.3 }}>{questionComment.is_like && "본인 포함 "}{questionComment.like_count}명이 THUMP UP!!</AnswerUsername>
-                                                                    <TimeStamp style={{ opacity: 0.3 }}> {timestamp(questionComment.created_at)}</TimeStamp>
+                                                                    <TimeStamp> {timestamp(questionComment.created_at)}</TimeStamp>
                                                                 </AnswerWrapper>
                                                             }
                                                         />
@@ -543,18 +546,20 @@ export default function QuestionModal({
                                                 {loginState.data.pk !== pk ?
                                                     <PostComment>
                                                         <CommnetWrapper>
-                                                            <TextInput
-                                                                style={{ flex: 1, fontSize: 10, padding: 3 }}
-                                                                multiline={true}
-                                                                autoCorrect={false}
-                                                                value={text}
-                                                                onChangeText={(e) => setText(e)}
-                                                            />
-                                                            {questionComment.fetching ?
-                                                                <ActivityIndicator />
-                                                                :
-                                                                <Button title="등록" onPress={postComments} />
-                                                            }
+                                                            {/* <Animated.View style={{ height: descSlide, elevation: 10 }}> */}
+                                                                <TextInput
+                                                                    style={{ flex: 1, fontSize: 10, padding: 3 }}
+                                                                    multiline={true}
+                                                                    autoCorrect={false}
+                                                                    value={text}
+                                                                    onChangeText={(e) => setText(e)}
+                                                                />
+                                                                {questionComment.fetching ?
+                                                                    <ActivityIndicator />
+                                                                    :
+                                                                    <Button title="등록" onPress={postComments} />
+                                                                }
+                                                            {/* </Animated.View> */}
                                                         </CommnetWrapper>
                                                     </PostComment>
                                                     :
