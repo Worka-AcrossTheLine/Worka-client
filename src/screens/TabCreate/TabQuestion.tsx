@@ -89,7 +89,6 @@ const TabQuestion = ({ navigation }: Props) => {
         Keyboard.dismiss();
     }
     const removeTag = (index:number) => {
-        console.log('tmp', index)
         const tmp = [...tagArr];
         tmp.splice(index, 1)
         setTagArr(tmp)
