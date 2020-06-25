@@ -47,7 +47,12 @@ export default function () {
             <Stack.Screen
                 name="Profile"
                 component={Profile}
-                options={{}}
+                options={{
+                    headerStyle: headerNone,
+                    headerTitleAlign: 'center',
+                    headerTitle: '',
+                    headerTitleStyle: titleStyle,
+                }}
             />
         </Stack.Navigator>
     );
