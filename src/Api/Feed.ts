@@ -31,7 +31,7 @@ export const getFeedDetail = (body: string) => {
         });
 };
 
-interface Form extends FormData {
+export interface Form extends FormData {
     append(name: string,
         value: string | Blob | {
             uri: string;
