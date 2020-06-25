@@ -10,12 +10,15 @@ import DownArrow from '../../assets/DownArrow.svg';
 import UpArrow from '../../assets/UpArrow.svg';
 import Tag from './Tag';
 import { questionCard } from '../state/Question/Reducer';
-import { GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST, MAKE_QUESTION_COMMENT_REQUEST, GET_QUESTION_DETAIL_INIT, QUESTION_COMMENTS_INIT, PATCH_QUESTION_REQUEST, PATCH_QUESTION_INIT, PATCH_QUESTION_PAGE_REQUEST, PATCH_QUESTION_PAGE_INIT, DELETE_QUESTION_PAGE_INIT, DELETE_QUESTION_PAGE_REQUEST, GET_QUESTION_REQUEST } from "../state/Question/Action";
+import { GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST, MAKE_QUESTION_COMMENT_REQUEST, GET_QUESTION_DETAIL_INIT, QUESTION_COMMENTS_INIT, PATCH_QUESTION_REQUEST, PATCH_QUESTION_INIT, PATCH_QUESTION_PAGE_REQUEST, PATCH_QUESTION_PAGE_INIT, DELETE_QUESTION_PAGE_INIT, DELETE_QUESTION_PAGE_REQUEST, GET_QUESTION_REQUEST, THUMP_HANDLE_REQUEST } from "../state/Question/Action";
 import { TextInput } from 'react-native-gesture-handler';
 import { PROFILE_REQUEST } from '../state/Profile/Action';
+import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types';
+import { SearchStackParamList } from '../navigator/SeachNavigation';
 
 interface Props extends questionCard {
     visible: boolean;
+    navigation?: StackNavigationProp<SearchStackParamList, 'Home'>;
     onPress: () => void;
 }
 
@@ -69,6 +72,10 @@ const AnswerWrapper = styled.View`
     width:100%;
     margin-top:10px;
     padding:0px 10px;
+`;
+
+const UsernameWrapper = styled.View`
+    flex-direction:row;
 `;
 
 const RatingWrapper = styled.View`
@@ -146,6 +153,7 @@ type animationState = {
 export default function QuestionModal({
     visible,
     onPress,
+    navigation,
     id,
     author: {
         username,
@@ -175,7 +183,6 @@ export default function QuestionModal({
     const [isEditPages, setIsEditPages] = useState(false)
     const [editTitle, setEditTitle] = useState("");
     const [editTags, setEditTags] = useState("");
-
 
     const { detailIndex, animationOn } = animationState;
     const slideToggle = useRef(new Animated.Value(0)).current;
@@ -321,8 +328,8 @@ export default function QuestionModal({
             payload:
             {
                 token: loginState.token,
-                page_pk: id,
-                question_pk: index
+                id,
+                questionId: index
             }
         })
     }
@@ -344,6 +351,22 @@ export default function QuestionModal({
 
     const handleTags = (e: string) => {
         setEditTags(e);
+    }
+
+    const handleThump = (questionId: number, commentId: number) => {
+        dispatch(
+            {
+                type: THUMP_HANDLE_REQUEST,
+                payload:
+                {
+                    id,
+                    questionId,
+                    commentId,
+                    token: loginState.token,
+
+                }
+            }
+        )
     }
 
     if (patchQuestion.posting) {
@@ -462,13 +485,25 @@ export default function QuestionModal({
                                                             extraData={questionComment.data}
                                                             renderItem={({ item: questionComment }) =>
                                                                 <AnswerWrapper onStartShouldSetResponder={() => true}>
-                                                                    <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username} 👍 👎</AnswerUsername>
+                                                                    <UsernameWrapper>
+                                                                        <TouchableOpacity onPress={() => {
+                                                                            closeModal();
+                                                                            if (navigation) {
+                                                                                navigation.navigate('Profile', { pk: questionComment.author.pk })
+                                                                            }
+                                                                        }}>
+                                                                            <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
+                                                                        </TouchableOpacity>
+                                                                        <TouchableOpacity onPress={() => handleThump(item.id, questionComment.id)}>
+                                                                            <AnswerUsername> 👍 </AnswerUsername>
+                                                                        </TouchableOpacity>
+                                                                    </UsernameWrapper>
                                                                     <AnswerUsername>{questionComment.text}</AnswerUsername>
                                                                     {/* <RatingWrapper>
                                                                         <ThumpsUp style={{ marginRight: 7 }} />
                                                                         <ThumpsDown style={{ marginRight: 5 }} />
                                                                     </RatingWrapper> */}
-                                                                    <AnswerUsername style={{ opacity: 0.3 }}>{questionComment.like_count}명이 THUMP UP!!</AnswerUsername>
+                                                                    <AnswerUsername style={{ opacity: 0.3 }}>{questionComment.is_like && "본인 포함 "}{questionComment.like_count}명이 THUMP UP!!</AnswerUsername>
                                                                 </AnswerWrapper>
                                                             }
                                                         />
