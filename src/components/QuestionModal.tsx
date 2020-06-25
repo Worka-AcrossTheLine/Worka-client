@@ -166,6 +166,7 @@ export default function QuestionModal({
     const { login: Logininfo, questionComment: questionComment, questionDetail: questionDetail } = rootState;
     // refresh
 
+
     const setDetailStyle = (index: number): { display?: 'none' | 'flex', height?: Animated.Value, flex?: number, overFlow?: string } => {
         return (
             typeof detailIndex === 'number' && detailIndex === index ?
@@ -212,6 +213,23 @@ export default function QuestionModal({
         setText("");
     }
 
+    const timestamp = (date:string) => {
+        const today = new Date()
+        const Hour = today.getHours()
+        const days = date.split('T')[0].split('-')
+        const times = date.split('T')[1].split('.')[0].split(':')
+        if((today.getFullYear() - Number(days[0])) >= 1){
+            return today.getFullYear() - Number(days[0]) + 'Years'
+        }else if((today.getMonth()- Number(days[1])) >= 1) {
+            return today.getMonth()- Number(days[1]) + 'Month'
+        }else if((today.getDate() - Number(days[2])) >=1) {
+            return today.getDate() - Number(days[2]) + 'Days'
+        }else if ((today.getHours() - Number(times[0])) >= 1) {
+            return today.getHours() - Number(times[0]) + 'Hours'
+        }else{
+            return today.getMinutes() - Number(times[1]) + 'Minutes'
+        }
+    }
     useEffect(() => {
         if (animationOn && typeof detailIndex === 'number') {
             questionCommentsRequest(detailIndex);
@@ -280,7 +298,7 @@ export default function QuestionModal({
                                                             renderItem={({ item: questionComment }) =>
                                                                 <AnswerWrapper onStartShouldSetResponder={() => true}>
                                                                     <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
-                                                                    <AnswerUsername>{questionComment.text}</AnswerUsername>
+                                                                    <AnswerUsername>{questionComment.text}, {timestamp(questionComment.created_at)}</AnswerUsername>
                                                                     {/* <RatingWrapper>
                                                                         <ThumpsUp style={{ marginRight: 7 }} />
                                                                         <ThumpsDown style={{ marginRight: 5 }} />
