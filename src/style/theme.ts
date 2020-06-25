@@ -17,6 +17,7 @@ type Theme = {
     mdFont: number;
     lgFont: number;
     mainTitleFont: number;
+    profileName: string;
 }
 const theme = {
     white: "#FFFFFF",
@@ -30,7 +31,8 @@ const theme = {
     smFont: 8,
     mdFont: 10,
     lgFont: 14,
-    mainTitleFont: 18
+    mainTitleFont: 18,
+    profileName: "#9ED2FC"
 }
 
 // function update() {

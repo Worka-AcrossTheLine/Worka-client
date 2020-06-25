@@ -127,9 +127,10 @@ const Image = styled.Image`
 
 const Desc = styled.Text`
     text-align:center;
-    font-size:${({ theme }: ThemeProps): number => theme.smFont}px;
+    font-size:${({ theme }: ThemeProps): number => theme.lgFont}px;
     color:${({ theme }: ThemeProps): string => theme.textColor};
     line-height:15px;
+    font-weight: 600;
 `;
 
 const QuestionText = styled.Text`
@@ -146,6 +147,11 @@ const AnswerUsername = styled.Text`
     font-weight:800;
     margin-bottom:4px;
 `;
+
+const TimeStamp = styled.Text`
+    opacity: 0.8;
+    font-size: 8px;
+`
 
 type animationState = {
     detailIndex?: number;
@@ -519,16 +525,23 @@ export default function QuestionModal({
                                                                         }}>
                                                                             <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
                                                                         </TouchableOpacity>
-                                                                        <TouchableOpacity onPress={() => handleThump(item.id, questionComment.id)} style={{ marginLeft: 10, justifyContent: 'center' }}>
-                                                                            <FontAwesome name={"thumbs-o-up"} />
+                                                                        <TouchableOpacity onPress={() => handleThump(item.id, questionComment.id)}>
+                                                                            <AnswerUsername style={{ marginRight: 10 }}>
+                                                                                <View style={{ marginRight: 10 }} />
+                                                                                <FontAwesome name={"thumbs-o-up"} />
+                                                                            </AnswerUsername>
+                                                                            <AnswerUsername style={{ opacity: 0.3 }}>{questionComment.is_like && "본인 포함 "}{questionComment.like_count}명이 THUMP UP!!</AnswerUsername>
                                                                         </TouchableOpacity>
                                                                     </UsernameWrapper>
-                                                                    <AnswerUsername>{questionComment.text}, {timestamp(questionComment.created_at)}</AnswerUsername>
+                                                                    <AnswerUsername>{questionComment.text}
+                                                                    </AnswerUsername>
                                                                     {/* <RatingWrapper>
                                                                         <ThumpsUp style={{ marginRight: 7 }} />
                                                                         <ThumpsDown style={{ marginRight: 5 }} />
                                                                     </RatingWrapper> */}
-                                                                    <AnswerUsername style={{ opacity: 0.3 }}>{questionComment.is_like && "본인 포함 "}{questionComment.like_count}명이 THUMP UP!!</AnswerUsername>
+
+                                                                    
+                                                                    <TimeStamp style={{ opacity: 0.3 }}> {timestamp(questionComment.created_at)}</TimeStamp>
                                                                 </AnswerWrapper>
                                                             }
                                                         />
