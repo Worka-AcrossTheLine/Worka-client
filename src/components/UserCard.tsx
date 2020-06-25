@@ -226,16 +226,18 @@ const Profile = ({
                     </TendencyWrapper>
                     <CommentWrapper>
                         <SemiTitle>Comment</SemiTitle>
-                        <ModifySvgWrapper>
-                            {isModifyComment
-                                ?
-                                <Comment>{inputComment.length}/50</Comment>
-                                :
-                                <TouchableOpacity onPress={handleComment}>
-                                    <ModifySvg />
-                                </TouchableOpacity>
-                            }
-                        </ModifySvgWrapper>
+                        {pk === loginState.data.pk &&
+                            <ModifySvgWrapper>
+                                {isModifyComment
+                                    ?
+                                    <Comment>{inputComment.length}/50</Comment>
+                                    :
+                                    <TouchableOpacity onPress={handleComment}>
+                                        <ModifySvg />
+                                    </TouchableOpacity>
+                                }
+                            </ModifySvgWrapper>
+                        }
                     </CommentWrapper>
                     {isModifyComment
                         ?
