@@ -110,11 +110,13 @@ const ModalLayout = styled.View`
 const SettingChlidWrapper = styled.View`
     width:90%;
     align-self:center;
-    border:1px solid black;
-    border-radius:8px;
     background-color:${({ theme }: ThemeProps): string => theme.white};
-    padding:5px 3px;
+    padding:8px 3px;
     margin-top:5px;
+    margin-bottom: 5px;
+    box-shadow: 0px 3px 6px #000;
+    border-radius: 8px;
+    
 
 `;
 const ModalTitle = styled.Text`
@@ -122,6 +124,7 @@ const ModalTitle = styled.Text`
     font-size:20px;
     color:#DEE53A;
     margin-bottom:25px;
+    font-weight: 900;
 `;
 
 const Title = styled.Text`
@@ -131,6 +134,7 @@ const Title = styled.Text`
 
 const SelectText = styled.Text`
     font-size:20px;
+    padding-left: 10px;
 `;
 
 
@@ -229,7 +233,7 @@ const Profile = ({ route }: Props) => {
                             <ModalWrapper >
                                 <ModalLayout onStartShouldSetResponder={() => true}>
                                     <ScrollView style={{ width: '100%', padding: 18 }}>
-                                        <ModalTitle>Helle {user.username}</ModalTitle>
+                                        <ModalTitle>Hello {user.username}</ModalTitle>
                                         {/* <SettingTab text="password" />
                                     <SettingTab text="font size" />
                                     <SettingTab text="dark theme" /> */}

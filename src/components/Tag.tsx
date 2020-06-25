@@ -29,7 +29,7 @@ export default function Tag({ fontColor, text, response = true }: Props) {
     const textStyle: TextStyle = {};
     fontColor && (textStyle.color = fontColor);
     return (
-        <Wrapper onStartShouldSetResponder={() => true} >
+        <Wrapper onStartShouldSetResponder={() => false} >
             <Text style={textStyle}>{text}</Text>
         </Wrapper>
     )
