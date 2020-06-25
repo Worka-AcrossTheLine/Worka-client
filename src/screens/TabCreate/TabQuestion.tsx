@@ -77,6 +77,7 @@ const TabQuestion = ({ navigation }: Props) => {
         } else {
             Alert.alert("WORKA!", '인증되지 않았습니다.')
         }
+        setTagArr([])
     }
 
     const onCancer = () => {
