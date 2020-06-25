@@ -41,7 +41,7 @@ export function* handleProfileQuestion(action: GetProfileAction) {
 export function* handleProfileComments(action: PatchCommentsAction) {
     try {
         yield call(patchComment, action.payload);
-        yield put({ type: PATCH_COMMENTS_SUCCESS, comments: action.payload.comments })
+        yield put({ type: PATCH_COMMENTS_SUCCESS, payload: { data: { user: { comments: action.payload.comment } } } })
     } catch (error) {
         if (!error) {
             Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");

@@ -27,8 +27,8 @@ export const getQuestion = ({ pk, token }: { pk: string, token: string }) => {
         });
 };
 
-export const patchComment = ({ token, comments }: { token: string, comments: string }) => {
-    return reqresApi.patch(`accounts/comment/`, { comment: comments }, { headers: { Authorization: `JWT ${token}` } })
+export const patchComment = ({ token, comment }: { token: string, comment: string }) => {
+    return reqresApi.patch(`accounts/comment/`, { comment }, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
             if (error) {
                 throw error.response

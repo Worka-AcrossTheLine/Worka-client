@@ -43,7 +43,7 @@ export interface PatchCommentsAction {
     type: string;
     payload: {
         token: string;
-        comments: string;
+        comment: string;
     }
 }
 
@@ -119,6 +119,19 @@ export const ProfileFeed = (state: ProfileState = initialState, action: ProfileR
                     user: {
                         ...state.data.user,
                         user_image: action.payload.data.user.user_image
+                    }
+                },
+                fetching: false,
+                err: false,
+            };
+        case PATCH_COMMENTS_SUCCESS:
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    user: {
+                        ...state.data.user,
+                        comments: action.payload.data.user.comments
                     }
                 },
                 fetching: false,
