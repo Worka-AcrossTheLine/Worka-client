@@ -181,14 +181,14 @@ const TabCard = ({ navigation }: Props) => {
             Alert.alert("WORKA!", "이미지를 등록해주세요")
         } else if (Description === "") {
             Alert.alert("WORKA!", "설명글을 입력해주세요~")
-        } else if (tags.length > 3) {
+        } else if (tagArr.length > 3) {
             Alert.alert("WORKA!", "tag는 3개 이상 사용할 수 없습니다")
-        } else if (tags.length === 0) {
+        } else if (tagArr.length === 0) {
             Alert.alert("WORKA!", "tag는 하나이상 입력해야합니다.")
         } else if (token) {
             dispatch({
                 type: MAKE_FEED_REQUEST,
-                payload: { title: InterestingTitle, tags: tags, text: Description, images: image, token: token }
+                payload: { title: InterestingTitle, tags: tagArr, text: Description, images: image, token: token }
             })
         } else {
             Alert.alert("WORKA!", "로그인이 필요한 기능입니다!")
@@ -246,9 +246,8 @@ const TabCard = ({ navigation }: Props) => {
 
     useEffect(() => {
         const regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-_+<>@\#$%&\\\=\(\'\"]/gi;
-        const Tags = tapTag.trim()
         if(tagArr.length < 3){
-            if(tapTag.split(' ').length > 1 && tapTag.length > 0 && Tags.length > 0){
+            if(tapTag.split(' ').length > 1 && tapTag.length > 0 && tapTag.trim().length > 0){
                     tagArr.push(tapTag.trim().replace(regExp, '').replace(/\s{2,}/gi, ' '))
                     setTaptag((''))
                 }
@@ -284,7 +283,7 @@ const TabCard = ({ navigation }: Props) => {
                             <TagWrapper>
                                 {tagArr.map((el, index) =>
                                     <TouchableOpacity onPress={() => removeTag(index)}>
-                                    <Tag key={`${el-index}`} text={el} response={false}/>
+                                    <Tag key={`${index}`} text={el} response={false}/>
                                     </TouchableOpacity>
                                 )}
                             </TagWrapper>

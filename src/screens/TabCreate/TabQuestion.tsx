@@ -145,7 +145,7 @@ const TabQuestion = ({ navigation }: Props) => {
                             <TagWrapper>
                                 {tagArr.map((el, index) =>
                                     <TouchableOpacity onPress={() => removeTag(index)}>
-                                        <Tag key={`${el-index}`} text={el} response={false}/>
+                                        <Tag key={`${index}`} text={el} response={false}/>
                                     </TouchableOpacity>
                                 )}
                             </TagWrapper>
