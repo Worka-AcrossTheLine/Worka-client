@@ -69,6 +69,9 @@ const TabQuestion = ({ navigation }: Props) => {
             } else if (quetion === "") {
                 Alert.alert("WORKA!", "질문을 등록하여 주세요")
             } else {
+                if(tagArr.length === 0){
+                    tagArr.push(tapTag)
+                }
                 dispatch({
                     type: MAKE_QUESTION_REQUEST,
                     payload: {tags: tagArr, title: InterestingTitle, question: quetion, token: isLogin.token, pk: isLogin.data.pk}
