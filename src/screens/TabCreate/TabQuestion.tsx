@@ -76,6 +76,7 @@ const TabQuestion = ({ navigation }: Props) => {
             }
         } else {
             Alert.alert("WORKA!", '인증되지 않았습니다.')
+            setTaptag((''))
         }
         setTagArr([])
     }
@@ -148,7 +149,7 @@ const TabQuestion = ({ navigation }: Props) => {
                             />
                             <TagWrapper>
                                 {tagArr.map((el, index) =>
-                                    <TouchableOpacity onPress={() => removeTag(index)}>
+                                    <TouchableOpacity key={`${index}`} onPress={() => removeTag(index)}>
                                         <Tag key={`${index}`} text={el} response={false}/>
                                     </TouchableOpacity>
                                 )}
