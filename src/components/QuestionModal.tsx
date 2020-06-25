@@ -572,9 +572,11 @@ export default function QuestionModal({
                                                                 </AnswerUsername>
                                                             </TouchableOpacity>
                                                             :
+                                                            ( questionComment.data.length === 0  &&
                                                             <TouchableOpacity onPress={() => setIsEdit({ edit: true, index, id: item.id })}>
                                                                 <AnswerUsername style={{ color: 'blue', opacity: 0.4 }}>edit</AnswerUsername>
                                                             </TouchableOpacity>
+                                                            )
                                                         }
                                                     </EditWrapper>
                                                 }
