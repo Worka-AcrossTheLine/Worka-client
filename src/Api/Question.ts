@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosPromise } from "axios";
 import base from './baseURL.json'
 
 import { patchPayload, patchTitlePayload } from '../state/Question/Types'
+import { LikeActions } from "../state/Question/Action.js";
 
 const reqresApi = axios.create({
     baseURL: base.baseURL,
@@ -102,3 +103,19 @@ export const getQuestionComment = ({ page_pk, question_pk, token }: { page_pk: n
             throw { status: 500 }
         });
 };
+
+export const postThumpHandle = ({ token, id, questionId, commentId }: LikeActions) => {
+    return reqresApi
+        .post(
+            `pages/${id}/questions/${questionId}/comments/${commentId}/like/`,
+            {},
+            { headers: { Authorization: `JWT ${token}` } }
+        )
+        .catch((error: AxiosError) => {
+            if (error) {
+                console.log(error.response)
+                throw error.response
+            }
+            throw { status: 500 }
+        })
+}
