@@ -17,15 +17,18 @@ import { patchPayload, patchTitlePayload } from './Types'
 
 import { LOGOUT } from "../../reducers/login";
 import { errorHandler } from "../errorHandler";
-import { PROFILE_REQUEST } from '../Profile/Action';
+import {PROFILE_REQUEST, ProfileSuccess} from '../Profile/Action';
+import {getProfile} from "../../Api/Profile";
 
-export function* handleQuestion({ type, payload: { tags, title, question, token } }: { type: string, payload: { token: string, tags: [], title: string, question: string } }) {
+export function* handleQuestion({ type, payload: { pk,tags, title, question, token } }: { type: string, payload: { pk: string, token: string, tags: [], title: string, question: string } }) {
     try {
         const response = yield call(makeQuestionCard, { tags, title, token });
         yield call(makeQuestion, { id: response.data.id, title, question: question, token: token })
         const Getresponse = yield call(getQuestion, { token })
         yield put({ type: GET_QUESTION_SUCCESS, payload: Getresponse.data });
         yield put(makeQuestionSuccess(response.data));
+        const profileResponse = yield call(getProfile, {pk: pk, token :token});
+        yield put(ProfileSuccess(profileResponse.data));
         Alert.alert("WORKA!", '질문지 생성 완료')
     } catch (err) {
         if (!err) {

@@ -3,7 +3,8 @@ export interface makeCard {
   tags: [],
   text: string,
   images: string,
-  token: string
+  token: string,
+  pk : string,
 }
 export interface Feeds {
   id: number,

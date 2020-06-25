@@ -71,7 +71,7 @@ const TabQuestion = ({ navigation }: Props) => {
             } else {
                 dispatch({
                     type: MAKE_QUESTION_REQUEST,
-                    payload: {tags: tagArr, title: InterestingTitle, question: quetion, token: isLogin.token}
+                    payload: {tags: tagArr, title: InterestingTitle, question: quetion, token: isLogin.token, pk: isLogin.data.pk}
                 })
             }
         } else {
