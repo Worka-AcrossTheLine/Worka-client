@@ -521,8 +521,6 @@ export default function QuestionModal({
                                                                             <AnswerUsername> 👍 </AnswerUsername>
                                                                         </TouchableOpacity>
                                                                     </UsernameWrapper>
-                                                                    <AnswerUsername>{questionComment.text}</AnswerUsername>
-                                                                    <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.author.username}</AnswerUsername>
                                                                     <AnswerUsername>{questionComment.text}, {timestamp(questionComment.created_at)}</AnswerUsername>
                                                                     {/* <RatingWrapper>
                                                                         <ThumpsUp style={{ marginRight: 7 }} />
