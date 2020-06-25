@@ -148,7 +148,6 @@ const Profile = ({ route }: Props) => {
     const profile = useSelector((state: RootState) => state.profileInfo);
     const makeFeed = useSelector((state: RootState) => state.makeFeed);
     const makeQuestion = useSelector((state: RootState) => state.makeQuestion);
-    console.log(profile)
     let { data: { user, cards, pages } } = profile;
 
     const handleSelect = (text: select) => () => {
