@@ -151,6 +151,8 @@ export function* handlePatchQuestionPage({ type, payload }: { type: string, payl
 export function* handleDeleteQuestionPage({ type, payload }: { type: string, payload: patchTitlePayload }) {
     try {
         yield call(deleteQuestionPage, payload);
+        const profileResponse = yield call(getProfile, {token : payload.token, pk: payload.pk});
+        yield put(ProfileSuccess(profileResponse.data));
         yield put({ type: DELETE_QUESTION_PAGE_SUCCESS });
     } catch (error) {
         console.log(error);

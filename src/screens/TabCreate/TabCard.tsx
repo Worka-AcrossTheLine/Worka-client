@@ -173,7 +173,7 @@ const TabCard = ({ navigation }: Props) => {
     const Upload = () => {
         Keyboard.dismiss();
         const token = login.token;
-        if (tagArr.length === 0) {
+        if (tagArr.length === 0 && tapTag === '') {
             Alert.alert("WORKA!", "TAG 를 작성해주세요")
         } else if (InterestingTitle === "") {
             Alert.alert("WORKA!", "TITLE 을 작성해주세오");
@@ -183,9 +183,10 @@ const TabCard = ({ navigation }: Props) => {
             Alert.alert("WORKA!", "설명글을 입력해주세요~")
         } else if (tagArr.length > 3) {
             Alert.alert("WORKA!", "tag는 3개 이상 사용할 수 없습니다")
-        } else if (tagArr.length === 0) {
-            Alert.alert("WORKA!", "tag는 하나이상 입력해야합니다.")
         } else if (token) {
+            if(tagArr.length === 0){
+                tagArr.push(tapTag)
+            }
             dispatch({
                 type: MAKE_FEED_REQUEST,
                 payload: { title: InterestingTitle, tags: tagArr, text: Description, images: image, token: token, pk: login.data.pk }

@@ -10,4 +10,5 @@ export interface patchTitlePayload {
     tags: string[];
     title: string;
     id: number;
+    pk: string
 }
