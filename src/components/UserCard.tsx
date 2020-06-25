@@ -40,6 +40,7 @@ const AvatarWrapper = styled.View`
 const InfoWrapper = styled.View`
     flex:1;
     padding:0px 14px;
+    margin-top: 10px;
 `;
 
 const CommentWrapper = styled.View`
@@ -222,7 +223,6 @@ const Profile = ({
                         </TouchableOpacity>
                         <InfoWrapper>
                             <NameText>{username}</NameText>
-                            <NameText><DescText>Mento: {mento}  </DescText><DescText>  Mentiee: {mentiee}</DescText></NameText>
                         </InfoWrapper>
                         {pk === loginState.data.pk && <Button title="Setting" onPress={() => onPress()} />}
                     </ProfileWrapper>

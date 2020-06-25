@@ -316,9 +316,9 @@ export default function DetailModal({
             <TouchableWithoutFeedback onPress={onPress} >
                 <Wrapper>
                     <CloseWrapper>
-                        <TouchableOpacity onPress={onPress} style={{}}>
+                        <TouchableOpacity onPress={onPress} style={{ }}>
                             <CloseView>
-                                <Xsvg style={{}} />
+                                <Xsvg style={{ }} />
                             </CloseView>
                         </TouchableOpacity>
                     </CloseWrapper>

@@ -47,7 +47,7 @@ const Input = styled.TextInput`
 `;
 
 const BodyWrapper = styled.View`
-    height:100%;
+    
     background-color:white;
 `;
 const SearchResultWrapper = styled.View`
@@ -60,6 +60,10 @@ const SearchResultText = styled.Text`
 
 const PaddingHeight = styled.View`
     padding:10px 0px;
+`;
+
+const ViewHeight = styled.View`
+    height: 95%;
 `;
 
 export default function ({ navigation }: Props) {
@@ -116,7 +120,7 @@ export default function ({ navigation }: Props) {
             <BodyWrapper>
                 {search.fetching ?
                     <ActivityIndicator /> :
-                    <>
+                    <ViewHeight>
                         {searchState.temp !== "" && searchState.searchE === 0 && search.data.results.length === 0 &&
                             <SearchResultWrapper>
                                 <SearchResultText>{searchState.temp} 에 대한 검색결과가 없습니다.</SearchResultText>
@@ -132,7 +136,7 @@ export default function ({ navigation }: Props) {
                                     </PaddingHeight>
                                 </TouchableWithoutFeedback>}
                         />
-                    </>
+                    </ViewHeight>
                 }
                 {storage &&
                     < DetailModal
@@ -146,3 +150,4 @@ export default function ({ navigation }: Props) {
         </OsView>
     )
 }
+
