@@ -532,7 +532,7 @@ export default function QuestionModal({
                                                                             <FontAwesome name={"thumbs-o-up"} />
                                                                         </TouchableOpacity>
                                                                     </UsernameWrapper>
-                                                                    <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.text}, {timestamp(questionComment.created_at)}</AnswerUsername>
+                                                                    <AnswerUsername style={{ opacity: 0.6 }}>{questionComment.text}</AnswerUsername>
                                                                     {/* <RatingWrapper>
                                                                         <ThumpsUp style={{ marginRight: 7 }} />
                                                                         <ThumpsDown style={{ marginRight: 5 }} />
