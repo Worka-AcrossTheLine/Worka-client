@@ -64,13 +64,16 @@ const FeedHome = ({ navigation }: Props) => {
 
     const feedDetail = (item: Feeds) => {
         clearTimeout(timeoutNumber);
-        const timeNum = setTimeout(() => {
-            setStorage({
-                ...item
-            })
-            setModalVisible(true)
-        }, 50);
-        setTimeoutNumber(timeNum);
+        if(!modalVisible) {
+            const timeNum = setTimeout(() => {
+                setModalVisible(true)
+                setStorage({
+                    ...item
+                })
+            }, 50);
+            setTimeoutNumber(timeNum);
+        }
+
     }
 
     const handleClose = () => {
