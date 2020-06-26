@@ -39,7 +39,7 @@ const FeedHome = ({ navigation }: Props) => {
     const dispatch = useDispatch()
     const rootState = useSelector((state: RootState) => state);
     const { feed: feedState, makeFeed, login: loginState } = rootState;
-
+    const [timeoutNumber, setTimeoutNumber] = useState<number>(0);
     const [refresh, setRefresh] = useState<boolean>(false);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     // const FeedsAll = makeFeed.data.concat()
@@ -63,14 +63,21 @@ const FeedHome = ({ navigation }: Props) => {
         });
 
     const feedDetail = (item: Feeds) => {
-        setStorage({
-            ...item
-        })
-        setModalVisible(true)
+        clearTimeout(timeoutNumber);
+        if(!modalVisible) {
+            const timeNum = setTimeout(() => {
+                setModalVisible(true)
+                setStorage({
+                    ...item
+                })
+            }, 50);
+            setTimeoutNumber(timeNum);
+        }
+
     }
 
     const handleClose = () => {
-        setModalVisible(false);
+            setModalVisible(false);
     }
 
     const getFeed = async () => {
