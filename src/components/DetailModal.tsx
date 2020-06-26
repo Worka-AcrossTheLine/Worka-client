@@ -19,7 +19,6 @@ interface Props extends Feeds {
     visible: boolean;
     navigation?: StackNavigationProp<SearchStackParamList, 'Home' | "Search">;
     onPress: () => void;
-    onFocus:() => void;
 }
 
 const ModalWrapper = styled.Modal``;
@@ -37,7 +36,7 @@ const CloseWrapper = styled.View`
     width:100%;
     max-width:${({ theme }: ThemeProps): number => theme.maxWidth}px;
     align-items:flex-end;
-    margin-bottom: 3px;
+    margin-bottom: 3px; 
 `;
 
 const CloseView = styled.View`
@@ -48,7 +47,7 @@ const CloseView = styled.View`
     justify-content:flex-end;
 `;
 
-const DetailWrapper = styled.View`
+const DetailWrapper = styled.KeyboardAvoidingView`
     border-radius: 8px;
     width:100%;
     max-height:70%;
@@ -144,12 +143,10 @@ export default function DetailModal({
     visible,
     navigation,
     onPress,
-    onFocus,
 }: Props) {
     const loginState = useSelector((state: RootState) => state.login);
     const patchFeedState = useSelector((state: RootState) => state.patchFeed);
     const deleteFeedState = useSelector((state: RootState) => state.deleteFeed);
-    const [isOnKeyboard, setIsOnKeyboard] = useState<boolean>(false);
     const dispatch = useDispatch();
 
     const isMe = loginState.data.pk === pk;
@@ -317,7 +314,7 @@ export default function DetailModal({
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={onPress}  >
             <TouchableWithoutFeedback onPress={onPress} >
-                <Wrapper style={{ justifyContent: isOnKeyboard ? "flex-start" : "center" }}>
+                <Wrapper >
                     <CloseWrapper>
                         <TouchableOpacity onPress={onPress} style={{ }}>
                             <CloseView>
@@ -325,13 +322,11 @@ export default function DetailModal({
                             </CloseView>
                         </TouchableOpacity>
                     </CloseWrapper>
-                    <DetailWrapper onStartShouldSetResponder={() => true}
-                        style={{ justifyContent: isOnKeyboard ? "flex-start" : "center" }}
-                    >
+                    <DetailWrapper 
+                        behavior={Platform.OS === 'ios' ? "position" : 'height'}
+                        onStartShouldSetResponder={() => true}>
                         <ScrollView>
-                            <ScrollWrapper 
-                                style={{ marginBottom: isOnKeyboard? 150 : 0 }}
-                            >
+                            <ScrollWrapper >
                                 <TouchableWithoutFeedback onPress={handleImages}>
                                     <ImageWrapper>
                                         <Image source={{ uri: inputState.images || images || '' }} style={{ width: '100%', height: '100%' }} />
@@ -360,8 +355,6 @@ export default function DetailModal({
                                     {isEdit ?
                                         <EditWrapper>
                                             <TextInput 
-                                                onFocus={() => setIsOnKeyboard(true)} 
-                                                onBlur={() => setIsOnKeyboard(false)} 
                                                 value={inputState.tags} onChangeText={handleText('tags')} onStartShouldSetResponder={() => true} />
                                         </EditWrapper>
                                         :
@@ -381,8 +374,6 @@ export default function DetailModal({
                                     {isEdit ?
                                         <EditWrapper>
                                             <TextInput 
-                                                onFocus={() => setIsOnKeyboard(true)} 
-                                                onBlur={() => setIsOnKeyboard(false)} 
                                                 value={inputState.title} onChangeText={handleText('title')} />
                                         </EditWrapper>
                                         :
@@ -391,8 +382,6 @@ export default function DetailModal({
                                     {isEdit ?
                                         <EditWrapper>
                                             <TextInput 
-                                                onFocus={() => setIsOnKeyboard(true)} 
-                                                onBlur={() => setIsOnKeyboard(false)} 
                                                 multiline value={inputState.text} onChangeText={handleText('text')} />
                                         </EditWrapper>
                                         :
