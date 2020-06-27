@@ -11,14 +11,13 @@ import { FontAwesome } from '@expo/vector-icons';
 import DownArrow from '../../assets/DownArrow.svg';
 import UpArrow from '../../assets/UpArrow.svg';
 import Tag from './Tag';
-import { questionCard } from '../state/Question/Reducer';
 import { GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST, MAKE_QUESTION_COMMENT_REQUEST, GET_QUESTION_DETAIL_INIT, QUESTION_COMMENTS_INIT, PATCH_QUESTION_REQUEST, PATCH_QUESTION_INIT, PATCH_QUESTION_PAGE_REQUEST, PATCH_QUESTION_PAGE_INIT, DELETE_QUESTION_PAGE_INIT, DELETE_QUESTION_PAGE_REQUEST, GET_QUESTION_REQUEST, THUMP_HANDLE_REQUEST } from "../state/Question/Action";
 import { TextInput } from 'react-native-gesture-handler';
-import { PROFILE_REQUEST } from '../state/Profile/Action';
+import { PROFILE_REQUEST, page } from '../state/Profile/Action';
 import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types';
 import { SearchStackParamList } from '../navigator/SeachNavigation';
 
-interface Props extends questionCard {
+interface Props extends page {
     visible: boolean;
     navigation?: StackNavigationProp<SearchStackParamList, 'Home'>;
     onPress: () => void;
@@ -548,18 +547,18 @@ export default function QuestionModal({
                                                     <PostComment>
                                                         <CommnetWrapper>
                                                             {/* <Animated.View style={{ height: descSlide, elevation: 10 }}> */}
-                                                                <TextInput
-                                                                    style={{ flex: 1, fontSize: 10, padding: 3 }}
-                                                                    multiline={true}
-                                                                    autoCorrect={false}
-                                                                    value={text}
-                                                                    onChangeText={(e) => setText(e)}
-                                                                />
-                                                                {questionComment.fetching ?
-                                                                    <ActivityIndicator />
-                                                                    :
-                                                                    <Button title="등록" onPress={postComments} />
-                                                                }
+                                                            <TextInput
+                                                                style={{ flex: 1, fontSize: 10, padding: 3 }}
+                                                                multiline={true}
+                                                                autoCorrect={false}
+                                                                value={text}
+                                                                onChangeText={(e) => setText(e)}
+                                                            />
+                                                            {questionComment.fetching ?
+                                                                <ActivityIndicator />
+                                                                :
+                                                                <Button title="등록" onPress={postComments} />
+                                                            }
                                                             {/* </Animated.View> */}
                                                         </CommnetWrapper>
                                                     </PostComment>
@@ -573,10 +572,10 @@ export default function QuestionModal({
                                                                 </AnswerUsername>
                                                             </TouchableOpacity>
                                                             :
-                                                            ( questionComment.data.length === 0  &&
-                                                            <TouchableOpacity onPress={() => setIsEdit({ edit: true, index, id: item.id })}>
-                                                                <AnswerUsername style={{ color: 'blue', opacity: 0.4 }}>edit</AnswerUsername>
-                                                            </TouchableOpacity>
+                                                            (questionComment.data.length === 0 &&
+                                                                <TouchableOpacity onPress={() => setIsEdit({ edit: true, index, id: item.id })}>
+                                                                    <AnswerUsername style={{ color: 'blue', opacity: 0.4 }}>edit</AnswerUsername>
+                                                                </TouchableOpacity>
                                                             )
                                                         }
                                                     </EditWrapper>

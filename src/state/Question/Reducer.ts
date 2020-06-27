@@ -34,11 +34,12 @@ import {
 
 } from "./Action";
 import { QuestionComment } from "./Action";
+import { card, page } from "../Profile/Action";
 
 
 export interface QuestionCardAction {
     type: string;
-    payload: questionCard[];
+    payload: card[];
 }
 
 export interface QuestionCommentAction {
@@ -51,19 +52,6 @@ export interface QuestionDetailAction {
     payload: QuestionDetail[]
 }
 
-export interface questionCard {
-    id: string;
-    title: string;
-    tags: string[];
-    questions: number;
-    author: {
-        pk: number;
-        username: string;
-        user_image: string;
-    }
-    created_at: string
-}
-
 export interface QuestionInitState {
     posting: boolean;
     fetching: boolean;
@@ -71,7 +59,7 @@ export interface QuestionInitState {
 }
 export interface QuestionState extends QuestionInitState {
     data: {
-        results: questionCard[]
+        results: page[]
     }
 }
 

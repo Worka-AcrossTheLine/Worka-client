@@ -1,10 +1,13 @@
 import { Alert } from 'react-native';
 import axios, { AxiosError, AxiosPromise } from "axios";
 import base from './baseURL.json'
-import { responseFeeds, Feeds, PatchFeedPayload } from "../state/Feed/Action";
+import { responseFeeds, PatchFeedPayload, Feed } from "../state/Feed/Action";
 
 import { makeCard } from '../state/Feed/Action'
-import { string } from "prop-types";
+
+export interface ResponseMakeFeed {
+    data: Feed;
+}
 
 const reqresApi = axios.create({
     baseURL: base.baseURL
@@ -40,12 +43,13 @@ export interface Form extends FormData {
         }): void;
 }
 
+
 export const makeFeed = ({ title,
     tags,
     text,
     images,
     token
-}: makeCard) => {
+}: makeCard): AxiosPromise<ResponseMakeFeed> => {
     const form: Form = new FormData();
     form.append("title", title);
     for (let i = 0; i < tags.length; i++) {

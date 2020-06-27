@@ -10,7 +10,7 @@ import { SearchStackParamList } from '../../navigator/SeachNavigation'
 import OsView from '../../components/OsView';
 import { RootState } from '../../reducers';
 import { FlatList } from 'react-native-gesture-handler';
-import { Feeds } from '../../state/Feed/Action';
+import { Feed } from '../../state/Feed/Action';
 import MentoCard from '../../components/MentoCard';
 import DetailModal from '../../components/DetailModal';
 import { ThemeProps } from '../../style/theme';
@@ -77,7 +77,7 @@ export default function ({ navigation }: Props) {
         temp: '',
         searchE: 0,
     })
-    const [storage, setStorage] = useState<Feeds>(feed.data[0]);
+    const [storage, setStorage] = useState<Feed>(feed.data[0]);
     const [modal, setModal] = useState<boolean>(false);
     const { temp } = searchState;
 
@@ -96,7 +96,7 @@ export default function ({ navigation }: Props) {
         })
     }
 
-    const feedDetail = (item: Feeds) => {
+    const feedDetail = (item: Feed) => {
         setStorage({
             ...item
         })

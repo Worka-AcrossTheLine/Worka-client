@@ -2,7 +2,6 @@ import { Alert } from 'react-native';
 import { call, put } from "redux-saga/effects";
 import {
     PROFILE_FAIL,
-    PROFILE_QUESTION_FAIL,
     ProfileSuccess,
     QuestionSuccess,
     PATCH_COMMENTS_SUCCESS,
@@ -26,18 +25,6 @@ export function* handleProfile(action: GetProfileAction) {
     }
 }
 
-export function* handleProfileQuestion(action: GetProfileAction) {
-    try {
-        const response = yield call(getQuestion, action.payload);
-        yield put(QuestionSuccess(response.data));
-    } catch (err) {
-        if (!err) {
-            Alert.alert("WORKA!", "인터넷 연결이 필요한 기능입니다.");
-        }
-        yield put({ type: PROFILE_QUESTION_FAIL, payload: err })
-    }
-}
-
 export function* handleProfileComments(action: PatchCommentsAction) {
     try {
         yield call(patchComment, action.payload);
@@ -53,7 +40,7 @@ export function* handleProfileImages({ type, payload }: { type: string, payload:
     try {
         const userImages = yield call(patchUserImages, payload);
         yield put({ type: PATCH_PROFILE_IMAGES_SUCCESS, payload: { data: { user: { user_image: userImages.data.user_image } } } });
-        const response = yield call(getProfile, {pk: payload.pk, token : payload.token});
+        const response = yield call(getProfile, { pk: payload.pk, token: payload.token });
         yield put(ProfileSuccess(response.data));
     } catch (error) {
         if (!error) {

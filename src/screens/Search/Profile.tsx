@@ -25,7 +25,6 @@ import { PROFILE_INFO_REQUEST } from "../../state/Profile/Action";
 import { LOGOUT, WITHDRAWAL, LOGOUT_REQUEST } from '../../reducers/login'
 import { RootState } from '../../reducers';
 import { card, page } from '../../state/Profile/Action'
-import { questionCard } from '../../state/Question/Reducer';
 import { RouteProp } from '@react-navigation/core';
 import { SearchStackParamList } from '../../navigator/SeachNavigation';
 
@@ -50,7 +49,7 @@ type myprofile = {
 type modal = {
     type: ModalType;
     detail: card | null;
-    question: questionCard | null;
+    question: page | null;
 }
 
 const Wrapper = styled.View`
@@ -176,7 +175,7 @@ const Profile = ({ route }: Props) => {
         })
     }
 
-    const handleQuestion = (card: questionCard) => {
+    const handleQuestion = (card: page) => {
         setModal({
             ...modal,
             type: "question",

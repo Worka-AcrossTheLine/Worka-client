@@ -6,9 +6,11 @@ import ShadowBox from './ShadowBox'
 import Tag from './Tag'
 
 import { ThemeProps } from '../style/theme';
-import { questionCard } from '../state/Question/Reducer';
+import { page } from '../state/Profile/Action';
 
-type Props = questionCard;
+interface Props extends page {
+
+}
 
 const Wrapper = styled.View`
     width:100%;

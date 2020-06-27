@@ -1,9 +1,9 @@
 import { SEARCH_FAILURCH, SEARCH_REQUEST, SEARCH_SUCCESS } from "./Action";
-import { Feeds } from "../Feed/Action";
+import { Feed } from "../Feed/Action";
 
 export interface data {
     count: number;
-    results: Feeds[];
+    results: Feed[];
 }
 
 export interface SearchState {

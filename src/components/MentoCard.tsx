@@ -1,13 +1,15 @@
 import React from 'react'
 import styled from 'styled-components/native';
 
-import { Feeds } from "../state/Feed/Action";
+import { Feed } from "../state/Feed/Action";
 
 import { ThemeProps } from '../style/theme';
 
 import Tag from './Tag';
 
-type Props = Feeds;
+interface Props extends Feed {
+
+}
 
 const Wrapper = styled.View`
     width:100%;
@@ -90,7 +92,7 @@ export default function MentoCard({
     return (
         <Wrapper>
             <TopWrapper>
-                <Title style={{padding: 3, paddingLeft: 5}}>{title}</Title>
+                <Title style={{ padding: 3, paddingLeft: 5 }}>{title}</Title>
             </TopWrapper>
             <ImageWrapper>
                 {images ? <Image source={{ uri: images || '' }} /> : <TextWrapper>

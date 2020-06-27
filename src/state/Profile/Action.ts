@@ -1,4 +1,4 @@
-import { questionCard } from "../Question/Reducer";
+
 
 export interface user {
     pk: number,
@@ -10,7 +10,7 @@ export interface user {
     comments: string,
 }
 
-interface author {
+export interface author {
     pk: number,
     username: string,
     user_image: string,
@@ -39,14 +39,9 @@ export interface card {
 
 export interface Profile {
     user: user
-    pages: questionCard[]
+    pages: page[]
     cards: card[]
 }
-interface RequestProfileQuestion {
-    token: string
-    pk: number
-}
-
 export interface ProfileQuestion {
     count: number,
     results: {
@@ -61,14 +56,6 @@ export interface PatchProfileImagePayload {
     images: string;
     pk: string;
 }
-
-interface CommentRequest {
-    account_pk: number,
-    pk: number,
-    question_id: number,
-    token: string
-}
-//수정
 export interface Comment {
     id: number,
     author: author,
@@ -89,18 +76,17 @@ export interface CommentResponse {
 export const PROFILE_REQUEST = 'PROFILE_REQUEST'
 export const PROFILE_SUCCESS = 'PROFILE_SUCCESS'
 export const PROFILE_FAIL = 'PROFILE_FAIL'
-
+// 다른사람 프로필 들어가기
 export const PROFILE_INFO_REQUEST = 'PROFILE_INFO_REQUEST'
 export const PROFILE_INFO_SUCCESS = 'PROFILE_INFO_SUCCESS'
 export const PROFILE_INFO_FAIL = 'PROFILE_INFO_FAIL'
-
+// 이미지 바꾸기
 export const PATCH_PROFILE_IMAGES_REQUEST = 'PATCH_PROFILE_IMAGES_REQUEST'
 export const PATCH_PROFILE_IMAGES_SUCCESS = 'PATCH_PROFILE_IMAGES_SUCCESS'
 export const PATCH_PROFILE_IMAGES_FAIL = 'PATCH_PROFILE_IMAGES_FAIL'
 
-export const PROFILE_QUESTION_REQUEST = 'PROFILE_QUESTION_REQUEST'
 export const PROFILE_QUESTION_SUCCESS = 'PROFILE_QUESTION_SUCCESS'
-export const PROFILE_QUESTION_FAIL = 'PROFILE_QUESTION_FAIL'
+export const PROFILE_CARD_SUCCESS = "PROFILE_CARD_SUCCESS"
 
 export const PATCH_COMMENTS_SUCCESS = 'PATCH_COMMENTS_SUCCESS'
 export const PATCH_COMMENTS_REQUEST = 'PATCH_COMMENTS_REQUEST'
@@ -116,12 +102,6 @@ export const ProfileFail = (err: boolean) => {
     return { type: PROFILE_FAIL, payload: { err } };
 };
 
-export const QuestionRequest = (data: RequestProfileQuestion) => {
-    return { type: PROFILE_QUESTION_REQUEST, payload: { data } };
-};
 export const QuestionSuccess = (data: ProfileQuestion[]) => {
     return { type: PROFILE_QUESTION_SUCCESS, payload: { data } };
-};
-export const QuestionFail = (err: boolean) => {
-    return { type: PROFILE_QUESTION_FAIL, payload: { err } };
 };

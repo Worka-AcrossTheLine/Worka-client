@@ -8,14 +8,14 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
 import Xsvg from '../../assets/X_1.svg';
-import { Feeds, PATCH_FEED_REQUEST, PATCH_FEED_INIT, DELETE_FEED_REQUEST, DELETE_FEED_INIT } from '../state/Feed/Action';
+import { Feed, PATCH_FEED_REQUEST, PATCH_FEED_INIT, DELETE_FEED_REQUEST, DELETE_FEED_INIT } from '../state/Feed/Action';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../reducers';
 import { PROFILE_REQUEST } from '../state/Profile/Action';
 import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types';
 import { SearchStackParamList } from '../navigator/SeachNavigation';
 
-interface Props extends Feeds {
+interface Props extends Feed {
     visible: boolean;
     navigation?: StackNavigationProp<SearchStackParamList, 'Home' | "Search">;
     onPress: () => void;
@@ -262,7 +262,7 @@ export default function DetailModal({
                     text: "삭제",
                     onPress: () => {
                         onPress()
-                        dispatch({type: DELETE_FEED_REQUEST, payload: {id, token: loginState.token, pk: loginState.data.pk}})
+                        dispatch({ type: DELETE_FEED_REQUEST, payload: { id, token: loginState.token, pk: loginState.data.pk } })
                     }
                 },
                 {
@@ -310,19 +310,19 @@ export default function DetailModal({
             })
         }
     }, [visible])
-    
+
     return (
         <ModalWrapper visible={visible} transparent={true} onRequestClose={onPress}  >
             <TouchableWithoutFeedback onPress={onPress} >
                 <Wrapper >
                     <CloseWrapper>
-                        <TouchableOpacity onPress={onPress} style={{ }}>
+                        <TouchableOpacity onPress={onPress} style={{}}>
                             <CloseView>
-                                <Xsvg style={{ }} />
+                                <Xsvg style={{}} />
                             </CloseView>
                         </TouchableOpacity>
                     </CloseWrapper>
-                    <DetailWrapper 
+                    <DetailWrapper
                         behavior={Platform.OS === 'ios' ? "position" : 'height'}
                         onStartShouldSetResponder={() => true}>
                         <ScrollView>
@@ -354,7 +354,7 @@ export default function DetailModal({
                                     {/* tag edit */}
                                     {isEdit ?
                                         <EditWrapper>
-                                            <TextInput 
+                                            <TextInput
                                                 value={inputState.tags} onChangeText={handleText('tags')} onStartShouldSetResponder={() => true} />
                                         </EditWrapper>
                                         :
@@ -373,7 +373,7 @@ export default function DetailModal({
                                     </TagWrapper>
                                     {isEdit ?
                                         <EditWrapper>
-                                            <TextInput 
+                                            <TextInput
                                                 value={inputState.title} onChangeText={handleText('title')} />
                                         </EditWrapper>
                                         :
@@ -381,7 +381,7 @@ export default function DetailModal({
                                     }
                                     {isEdit ?
                                         <EditWrapper>
-                                            <TextInput 
+                                            <TextInput
                                                 multiline value={inputState.text} onChangeText={handleText('text')} />
                                         </EditWrapper>
                                         :
