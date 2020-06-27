@@ -1,10 +1,8 @@
 import { Alert } from 'react-native';
-import { call, put, takeLatest } from 'redux-saga/effects';
-import { getFeed, getFeedDetail, makeFeed, patchFeed, deleteFeed } from '../../Api/Feed';
+import { call, put } from 'redux-saga/effects';
+import { getFeed, makeFeed, patchFeed, deleteFeed, ResponseMakeFeed } from '../../Api/Feed';
 import {
   GET_FEED_FAIL,
-  GET_FEED_REQUEST,
-  GET_FEED_SUCCESS,
   getFeedSuccess,
   MAKE_FEED_FAIL,
   makeCard,
@@ -14,12 +12,13 @@ import {
   PatchFeedPayload,
   ONLY_GET_FEED_REQUEST,
   DELETE_FEED_SUCCESS,
-  DELETE_FEED_FAIL
+  DELETE_FEED_FAIL,
+  GET_FEED_SUCCESS,
 } from './Action';
 import { LOGIN_SUCCESS, LOGOUT, LOGOUT_REQUEST } from "../../reducers/login";
 import { errorHandler } from '../errorHandler';
-import {PROFILE_REQUEST, ProfileSuccess} from '../Profile/Action';
-import {getProfile} from "../../Api/Profile";
+import { ProfileSuccess, PROFILE_CARD_SUCCESS } from '../Profile/Action';
+import { getProfile } from "../../Api/Profile";
 
 
 
@@ -53,16 +52,16 @@ export function* handleOnlyGetFeed({ payload: { token } }: { type: string, paylo
 }
 
 
-export function* handleMakeFeed({ type, payload: { pk, title, tags, text, images, token } }: { type: string, payload: makeCard }) {
+export function* handleMakeFeed({ payload: { pk, title, tags, text, images, token } }: { type: string, payload: makeCard }) {
   try {
-    const response = yield call(makeFeed, { title, tags, text, images, token, pk });
-    const getResponse = yield call(getFeed, { token })
-    yield put(makeFeedSuccess(response.data));
-    yield put(getFeedSuccess(getResponse.data.results));
-    const profileResponse = yield call(getProfile, {pk: pk, token :token});
-    yield put(ProfileSuccess(profileResponse.data));
+    const response: ResponseMakeFeed = yield call(makeFeed, { title, tags, text, images, token, pk });
+    yield put(makeFeedSuccess());
+    // const profileResponse = yield call(getProfile, { pk: pk, token: token });
+    yield put({ type: PROFILE_CARD_SUCCESS, payload: { data: { cards: response.data } } })
+    yield put({ type: GET_FEED_SUCCESS, payload: [response.data] });
     Alert.alert("WORKA!", '카드가 작성 되었습니다.')
   } catch (err) {
+    console.log(err);
     if (!err) {
       Alert.alert("WORKA!", '인터넷 연결이 필요한 기능입니다.')
     } else if (err.status === 401) {
@@ -94,7 +93,7 @@ export function* handlePatchFeed(
 }
 
 export function* handleDeleteFeed(
-  { type, payload }: { type: string, payload: { id: number, token: string, pk : string } }
+  { type, payload }: { type: string, payload: { id: number, token: string, pk: string } }
 ) {
   try {
     yield call(deleteFeed, payload);
@@ -104,7 +103,7 @@ export function* handleDeleteFeed(
         text: "확인",
       }
     ]);
-    const profileResponse = yield call(getProfile, {token : payload.token, pk: payload.pk});
+    const profileResponse = yield call(getProfile, { token: payload.token, pk: payload.pk });
     yield put(ProfileSuccess(profileResponse.data));
     yield put({ type: ONLY_GET_FEED_REQUEST, payload });
   } catch (error) {

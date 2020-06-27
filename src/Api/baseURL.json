@@ -1,3 +1,4 @@
 {
-    "baseURL": "https://www.worka.co.kr/"
+    "baseURL": "http://127.0.0.1:8000/",
+    "_baseURL": "https://www.worka.co.kr/"
 }

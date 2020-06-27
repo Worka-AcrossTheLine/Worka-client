@@ -17,17 +17,17 @@ import {
   DELETE_FEED_FAIL,
   DELETE_FEED_SUCCESS
 } from './Action';
-import { Feeds } from "./Action";
+import { Feed } from "./Action";
 
 export interface FeedState {
   posting: boolean;
   fetching: boolean;
-  data: Feeds[]
+  data: Feed[]
   err: boolean;
 }
-export interface Action {
+export interface FeedAction {
   type: string;
-  payload: Feeds[] | Feeds;
+  payload: Feed[]
 }
 
 const initialState: FeedState = {
@@ -39,7 +39,7 @@ const initialState: FeedState = {
 
 
 
-export const getFeed = (state: FeedState = initialState, action: Action) => {
+export const getFeed = (state: FeedState = initialState, action: FeedAction) => {
   switch (action.type) {
     case GET_FEED_INIT:
       return {
@@ -51,17 +51,19 @@ export const getFeed = (state: FeedState = initialState, action: Action) => {
         fetching: true,
         err: false,
       };
-    case ONLY_GET_FEED_REQUEST:
-      return {
-        ...state,
-        fetching: true,
-        err: false
-      }
     case GET_FEED_SUCCESS:
       return {
         ...state,
         fetching: false,
-        data: action.payload,
+        data: [...action.payload, ...state.data],
+        err: false,
+      };
+    case PATCH_FEED_SUCCESS:
+      return {
+        ...state,
+        posting: true,
+        fetching: false,
+        data: [action.payload, ...state.data],
         err: false,
       };
     case GET_FEED_FAIL:
@@ -70,12 +72,18 @@ export const getFeed = (state: FeedState = initialState, action: Action) => {
         fetching: false,
         err: true,
       };
+    case ONLY_GET_FEED_REQUEST:
+      return {
+        ...state,
+        fetching: true,
+        err: false
+      }
     default:
       return state;
   }
 };
 
-export const PostFeed = (state: FeedState = initialState, action: Action) => {
+export const PostFeed = (state: FeedState = initialState, action: FeedAction) => {
   switch (action.type) {
     case MAKE_FEED_INIT:
       return {
@@ -92,9 +100,8 @@ export const PostFeed = (state: FeedState = initialState, action: Action) => {
         ...state,
         posting: true,
         fetching: false,
-        data: [action.payload, ...state.data],
-        err: false,
-      };
+        err: false
+      }
     case MAKE_FEED_FAIL:
       return {
         ...state,
@@ -106,7 +113,7 @@ export const PostFeed = (state: FeedState = initialState, action: Action) => {
   }
 };
 
-export const PatchFeed = (state: FeedState = initialState, action: Action) => {
+export const PatchFeed = (state: FeedState = initialState, action: FeedAction) => {
   switch (action.type) {
     case PATCH_FEED_INIT:
       return {
@@ -137,7 +144,7 @@ export const PatchFeed = (state: FeedState = initialState, action: Action) => {
   }
 }
 
-export const DeleteFeed = (state: FeedState = initialState, action: Action) => {
+export const DeleteFeed = (state: FeedState = initialState, action: FeedAction) => {
   switch (action.type) {
     case DELETE_FEED_INIT:
       return {

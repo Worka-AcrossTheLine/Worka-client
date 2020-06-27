@@ -151,7 +151,9 @@ export function* forgotPassword(action: forgotAction) {
     yield put({ type: FORGOT_PASSWORD_SUCCESS });
   } catch (error) {
     let status: string;
-    if ('status' in error) {
+    if (!error) {
+      status = '500'
+    } else if ('status' in error) {
       status = error.status.toString()
     } else {
       status = '500'
@@ -166,7 +168,9 @@ export function* forgotUsername(action: forgotEamilAciton) {
     yield put({ type: FORGOT_USERNAME_SUCCESS, payload: email.data.username });
   } catch (error) {
     let status: string;
-    if ('status' in error) {
+    if (!error) {
+      status = '500'
+    } else if ('status' in error) {
       status = error.status.toString()
     } else {
       status = '500'
@@ -180,7 +184,11 @@ export function* tendencyUser(action: TendencyActionTypes) {
     yield call(Api.tendency, action.payload);
     yield put({ type: TENDENCY_SUCSSES, payload: action.payload })
   } catch (error) {
-    Alert.alert("WORKA!", error.data);
+    if (!error) {
+      Alert.alert("WORKA!", "인터넷 연결이 필요한 작업입니다.");
+    } else {
+      Alert.alert("WORKA!", error.data);
+    }
     yield put({ type: LOGIN_FAILURE });
   }
 }
@@ -200,6 +208,9 @@ export function* withdrawal({ payload: { token } }: withdrawal) {
     yield call(Api.withdrawal, { token });
     yield put({ type: LOGOUT_REQUEST })
   } catch (error) {
+    if (!error) {
+      Alert.alert("WORKA!", "인터넷 연결이 필요한 작업입니다.");
+    }
   }
 }
 

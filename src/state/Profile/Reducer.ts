@@ -3,17 +3,15 @@ import {
     PROFILE_SUCCESS,
     PROFILE_FAIL,
     PROFILE_REQUEST,
-    PROFILE_QUESTION_REQUEST,
     PROFILE_QUESTION_SUCCESS,
-    PROFILE_QUESTION_FAIL,
     PATCH_COMMENTS_SUCCESS,
     PATCH_PROFILE_IMAGES_SUCCESS,
     PROFILE_INFO_REQUEST,
     PROFILE_INFO_SUCCESS,
     PROFILE_INFO_FAIL,
+    PROFILE_CARD_SUCCESS,
 } from "./Action";
 import { Profile, ProfileQuestion, Comment } from "./Action";
-import { number, string } from "prop-types";
 
 export interface ProfileState {
     fetching: boolean;
@@ -111,6 +109,31 @@ export const ProfileFeed = (state: ProfileState = initialState, action: ProfileR
                 fetching: false,
                 err: action.payload.err,
             };
+        case PROFILE_CARD_SUCCESS:
+            return {
+                ...state,
+                fetching: false,
+                data: {
+                    ...state.data,
+                    cards: [
+                        action.payload.data.cards,
+                        ...state.data.cards
+                    ]
+                }
+            }
+        case PROFILE_QUESTION_SUCCESS:
+            return {
+                ...state,
+                fetching: false,
+                data: {
+                    ...state.data,
+                    pages: [
+                        action.payload.data.pages,
+                        ...state.data.pages
+
+                    ]
+                }
+            }
         case PATCH_PROFILE_IMAGES_SUCCESS:
             return {
                 ...state,
@@ -137,30 +160,6 @@ export const ProfileFeed = (state: ProfileState = initialState, action: ProfileR
                 fetching: false,
                 err: false,
             }
-        default:
-            return state;
-    }
-};
-
-export const ProfileQuestionFeed = (state: ProfileQuestionState = initialStateQ, action: ProfileQuestionReducePayload) => {
-    switch (action.type) {
-        case PROFILE_QUESTION_REQUEST:
-            return {
-                ...state,
-                fetching: true,
-            };
-        case PROFILE_QUESTION_SUCCESS:
-            return {
-                ...state,
-                fetching: false,
-                data: action.payload.data,
-            };
-        case PROFILE_QUESTION_FAIL:
-            return {
-                ...state,
-                fetching: false,
-                err: action.payload.err,
-            };
         default:
             return state;
     }

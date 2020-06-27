@@ -15,7 +15,7 @@ import styled from 'styled-components/native';
 
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../reducers";
-import { GET_FEED_REQUEST, responseFeeds, Feeds, ONLY_GET_FEED_REQUEST, } from "../../state/Feed/Action";
+import { GET_FEED_REQUEST, responseFeeds, Feed, ONLY_GET_FEED_REQUEST, } from "../../state/Feed/Action";
 
 import MentoCard from '../../components/MentoCard';
 import DetailModal from '../../components/DetailModal';
@@ -43,7 +43,7 @@ const FeedHome = ({ navigation }: Props) => {
     const [refresh, setRefresh] = useState<boolean>(false);
     const [modalVisible, setModalVisible] = useState<boolean>(false);
     // const FeedsAll = makeFeed.data.concat()
-    const [storage, setStorage] = useState<Feeds>(
+    const [storage, setStorage] = useState<Feed>(
         {
             id: 0,
             author: {
@@ -62,9 +62,9 @@ const FeedHome = ({ navigation }: Props) => {
             tags: [],
         });
 
-    const feedDetail = (item: Feeds) => {
+    const feedDetail = (item: Feed) => {
         clearTimeout(timeoutNumber);
-        if(!modalVisible) {
+        if (!modalVisible) {
             const timeNum = setTimeout(() => {
                 setModalVisible(true)
                 setStorage({
@@ -77,7 +77,7 @@ const FeedHome = ({ navigation }: Props) => {
     }
 
     const handleClose = () => {
-            setModalVisible(false);
+        setModalVisible(false);
     }
 
     const getFeed = async () => {

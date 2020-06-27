@@ -25,7 +25,6 @@ import { PROFILE_REQUEST } from "../state/Profile/Action";
 import { LOGOUT, WITHDRAWAL, LOGOUT_REQUEST } from '../reducers/login'
 import { RootState } from '../reducers';
 import { card, page } from '../state/Profile/Action'
-import { questionCard } from '../state/Question/Reducer';
 import { RouteProp } from '@react-navigation/core';
 import { SearchStackParamList } from '../navigator/SeachNavigation';
 
@@ -39,18 +38,10 @@ type select = 'card' | 'question';
 
 type ModalType = 'setting' | 'detail' | 'question' | 'none';
 
-type myprofile = {
-    username: string;
-    mento: string;
-    mentiee: string;
-    tag: string[];
-    comment: string;
-}
-
 type modal = {
     type: ModalType;
     detail: card | null;
-    question: questionCard | null;
+    question: page | null;
 }
 
 const Wrapper = styled.View`
@@ -151,9 +142,6 @@ const Profile = ({ route }: Props) => {
     const dispatch = useDispatch()
     const logininfo = useSelector((state: RootState) => state.login);
     const profile = useSelector((state: RootState) => state.profile);
-    const makeFeed = useSelector((state: RootState) => state.makeFeed);
-    const makeQuestion = useSelector((state: RootState) => state.makeQuestion);
-    const comments = useSelector((state: RootState) => state.questionComment);
     let { data: { user, cards, pages } } = profile;
 
     const handleSelect = (text: select) => () => {
@@ -182,7 +170,7 @@ const Profile = ({ route }: Props) => {
         })
     }
 
-    const handleQuestion = (card: questionCard) => {
+    const handleQuestion = (card: page) => {
         setModal({
             ...modal,
             type: "question",
@@ -220,10 +208,11 @@ const Profile = ({ route }: Props) => {
     }
 
     useEffect(() => {
+        alert("USE EFFECT");
         if ('pk' in logininfo.data) {
             dispatch({ type: PROFILE_REQUEST, payload: { pk: (route && route.params && route.params.pk) || logininfo.data.pk, token: logininfo.token } })
         }
-    }, [makeFeed.data, makeQuestion.data])
+    }, [])
 
     return (
         <OsView style={{ flex: 1, backgroundColor: "#FFFFFF" }}>
@@ -275,13 +264,16 @@ const Profile = ({ route }: Props) => {
                                 </Select>
                             </SelectWrapper>
                             {select === 'card' ?
-                                cards.map((item) =>
-                                    <TouchableWithoutFeedback onPress={() => handelDetail(item)} key={item.id}>
-                                        <PaddingHeight >
-                                            <MentoCard {...item} />
-                                        </PaddingHeight>
-                                    </TouchableWithoutFeedback>
-                                )
+                                cards.map((item) => {
+                                    alert(item.id);
+                                    return (
+                                        <TouchableWithoutFeedback onPress={() => handelDetail(item)} key={item.id}>
+                                            <PaddingHeight >
+                                                <MentoCard {...item} />
+                                            </PaddingHeight>
+                                        </TouchableWithoutFeedback>
+                                    )
+                                })
                                 :
                                 pages.map((item) =>
                                     <TouchableWithoutFeedback onPress={() => handleQuestion(item)} key={item.id}>
