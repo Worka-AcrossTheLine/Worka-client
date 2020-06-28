@@ -5,30 +5,34 @@ import {
     MAKE_QUESTION_COMMENT_SUCCESS,
     GET_QUESTION_FAIL,
     MAKE_QUESTION_FAIL,
-    makeQuestionSuccess,
     QUESTION_COMMENTS_SUCCESS,
     QUESTION_COMMENTS_FAIL,
-    QUESTION_COMMENTS_REQUEST,
-    GET_QUESTION_SUCCESS, GET_QUESTION_DETAIL_SUCCESS, GET_QUESTION_DETAIL_FAIL, PATCH_QUESTION_SUCCESS, PATCH_QUESTION_FAIL, PATCH_QUESTION_PAGE_SUCCESS, DELETE_QUESTION_PAGE_SUCCESS, LikeActions
+    GET_QUESTION_SUCCESS,
+    GET_QUESTION_DETAIL_SUCCESS,
+    GET_QUESTION_DETAIL_FAIL,
+    PATCH_QUESTION_SUCCESS,
+    PATCH_QUESTION_FAIL,
+    PATCH_QUESTION_PAGE_SUCCESS,
+    DELETE_QUESTION_PAGE_SUCCESS,
+    MAKE_QUESTION_SUCCESS
 } from "./Action";
 import { makeQuestion, makeQuestionCard, getQuestion, makeQuestionComment, getQuestionComment, getQuestionDetail, patchQuestion, patchQuestionPage, deleteQuestionPage, postThumpHandle } from "../../Api/Question";
-
-import { patchPayload, patchTitlePayload } from './Types'
-
-import { LOGOUT } from "../../reducers/login";
+import * as Types from './Types'
+import { LOGOUT } from "../Login/Action";
 import { errorHandler } from "../errorHandler";
-import {PROFILE_REQUEST, ProfileSuccess} from '../Profile/Action';
+import {PROFILE_SUCCESS, ProfileSuccess} from '../Profile/Action';
 import {getProfile} from "../../Api/Profile";
+import { ProfileResponse } from '../Profile/Types';
 
 export function* handleQuestion({ type, payload: { pk,tags, title, question, token } }: { type: string, payload: { pk: string, token: string, tags: [], title: string, question: string } }) {
     try {
-        const response = yield call(makeQuestionCard, { tags, title, token });
+        const response:Types.MakeQuestionResponse = yield call(makeQuestionCard, { tags, title, token });
         yield call(makeQuestion, { id: response.data.id, title, question: question, token: token })
-        const Getresponse = yield call(getQuestion, { token })
+        const Getresponse:Types.GetQuestionResponse = yield call(getQuestion, { token })
         yield put({ type: GET_QUESTION_SUCCESS, payload: Getresponse.data });
-        yield put(makeQuestionSuccess(response.data));
-        const profileResponse = yield call(getProfile, {pk: pk, token :token});
-        yield put(ProfileSuccess(profileResponse.data));
+        yield put({type: MAKE_QUESTION_SUCCESS, payload:response.data });
+        const profileResponse:ProfileResponse = yield call(getProfile, {pk: pk, token :token});
+        yield put({type: PROFILE_SUCCESS, payload :profileResponse.data});
         Alert.alert("WORKA!", '질문지 생성 완료')
     } catch (err) {
         if (!err) {
@@ -45,7 +49,7 @@ export function* handleQuestion({ type, payload: { pk,tags, title, question, tok
 
 export function* handleGetQuestion({ type, payload: { token } }: { type: string, payload: { token: string } }) {
     try {
-        const response = yield call(getQuestion, { token })
+        const response:Types.GetQuestionResponse = yield call(getQuestion, { token })
         yield put({ type: GET_QUESTION_SUCCESS, payload: response.data });
     } catch (err) {
         if (!err) {
@@ -62,7 +66,7 @@ export function* handleGetQuestion({ type, payload: { token } }: { type: string,
 
 export function* handleGetQuestionDetail({ type, payload: { token, id } }: { type: string, payload: { token: string, id: number } }) {
     try {
-        const response = yield call(getQuestionDetail, { token, id })
+        const response:Types.GetQuestionDetailResponse = yield call(getQuestionDetail, { token, id })
         yield put({ type: GET_QUESTION_DETAIL_SUCCESS, payload: response.data });
     } catch (err) {
         if (!err) {
@@ -79,7 +83,7 @@ export function* handleGetQuestionDetail({ type, payload: { token, id } }: { typ
 
 export function* handleMakeQuestionComment({ type, payload: { token, question_pk, page_pk, text } }: { type: string, payload: { token: string, question_pk: number, page_pk: number, text: string } }) {
     try {
-        const response = yield call(makeQuestionComment, { page_pk, question_pk, text, token })
+        const response:Types.MakeQuestionCommentResponse = yield call(makeQuestionComment, { page_pk, question_pk, text, token })
         yield put({ type: MAKE_QUESTION_COMMENT_SUCCESS, payload: response.data })
     } catch (err) {
         if (!err) {
@@ -97,7 +101,7 @@ export function* handleMakeQuestionComment({ type, payload: { token, question_pk
 
 export function* handleQuestionComments({ type, payload: { token, questionId, id } }: { type: string, payload: { token: string, questionId: number, id: number } }) {
     try {
-        const response = yield call(getQuestionComment, { page_pk: id, question_pk: questionId, token });
+        const response:Types.GetQuestionCommentResponse = yield call(getQuestionComment, { page_pk: id, question_pk: questionId, token });
         yield put({ type: QUESTION_COMMENTS_SUCCESS, payload: response.data.results })
     } catch (err) {
         if (!err) {
@@ -112,7 +116,7 @@ export function* handleQuestionComments({ type, payload: { token, questionId, id
     }
 }
 
-export function* handlePatchQuestion({ type, payload }: { type: string, payload: patchPayload }) {
+export function* handlePatchQuestion({ type, payload }: { type: string, payload: Types.patchPayload }) {
     try {
         yield call(patchQuestion, payload);
         yield put({ type: PATCH_QUESTION_SUCCESS });
@@ -130,9 +134,9 @@ export function* handlePatchQuestion({ type, payload }: { type: string, payload:
     }
 }
 
-export function* handlePatchQuestionPage({ type, payload }: { type: string, payload: patchTitlePayload }) {
+export function* handlePatchQuestionPage({ type, payload }: { type: string, payload: Types.patchTitlePayload }) {
     try {
-        yield call(patchQuestionPage, payload);
+        yield call(patchQuestionPage, payload)
         yield put({ type: PATCH_QUESTION_PAGE_SUCCESS });
     } catch (error) {
         console.log(error);
@@ -148,11 +152,11 @@ export function* handlePatchQuestionPage({ type, payload }: { type: string, payl
     }
 }
 
-export function* handleDeleteQuestionPage({ type, payload }: { type: string, payload: patchTitlePayload }) {
+export function* handleDeleteQuestionPage({ type, payload }: { type: string, payload: Types.patchTitlePayload }) {
     try {
         yield call(deleteQuestionPage, payload);
-        const profileResponse = yield call(getProfile, {token : payload.token, pk: payload.pk});
-        yield put(ProfileSuccess(profileResponse.data));
+        const profileResponse:ProfileResponse = yield call(getProfile, {token : payload.token, pk: payload.pk});
+        yield put({ type: PROFILE_SUCCESS, payload: profileResponse.data});
         yield put({ type: DELETE_QUESTION_PAGE_SUCCESS });
     } catch (error) {
         console.log(error);
@@ -168,7 +172,7 @@ export function* handleDeleteQuestionPage({ type, payload }: { type: string, pay
     }
 }
 
-export function* handleThumps({ type, payload }: { type: string, payload: LikeActions }) {
+export function* handleThumps({ type, payload }: { type: string, payload: Types.LikeActions }) {
     try {
         yield call(postThumpHandle, payload);
         yield call(handleQuestionComments, { type: "", payload })

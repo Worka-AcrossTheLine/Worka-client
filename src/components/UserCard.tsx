@@ -9,9 +9,10 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
 import { ThemeProps } from '../style/theme'
-import { user, PATCH_COMMENTS_REQUEST, PATCH_PROFILE_IMAGES_REQUEST } from '../state/Profile/Action';
+import { PATCH_COMMENTS_REQUEST, PATCH_PROFILE_IMAGES_REQUEST } from '../state/Profile/Action';
+import { user } from '../state/Profile/Types'
 import ModifySvg from '../../assets/Modify.svg'
-import { RootState } from '../reducers';
+import { RootState } from '../state';
 import { useDispatch, useSelector } from 'react-redux';
 
 const Wrapper = styled.View`

@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import TendencyButton from '../../components/TendencyButton';
 import { TENDENCYQUESTIONS } from '../../constants/tendencyQ';
-import { RootState } from '../../reducers';
-import { TENDENCY } from '../../reducers/login'
+import { RootState } from '../../state';
+import { TENDENCY } from '../../state/Login/Action'
 
 type Props = {
     isFetch: boolean;

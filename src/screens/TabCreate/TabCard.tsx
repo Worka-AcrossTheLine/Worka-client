@@ -21,7 +21,7 @@ import { TopTapParamList } from '../../navigator/TopNavigation';
 
 import { useSelector, useDispatch } from 'react-redux'
 import { MAKE_FEED_REQUEST, MAKE_FEED_INIT } from "../../state/Feed/Action";
-import { RootState } from '../../reducers';
+import { RootState } from '../../state';
 import { ThemeProps } from '../../style/theme';
 
 import DownArrow from '../../../assets/DownArrow.svg';

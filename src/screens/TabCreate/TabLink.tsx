@@ -12,7 +12,7 @@ import OsView from "../../components/OsView"
 import addTap from "../../constants/addTap"
 import { MaterialTopTabNavigationProp } from '@react-navigation/material-top-tabs';
 import { MAKE_LINK_REQUEST, MAKE_LINK_INIT } from '../../state/Link/Action';
-import { RootState } from '../../reducers';
+import { RootState } from '../../state';
 import { TopTapParamList } from '../../navigator/TopNavigation'
 
 import validCheck from '../../constants/validCheck'

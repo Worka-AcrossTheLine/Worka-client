@@ -8,7 +8,6 @@ import {
     QUESTION_COMMENTS_REQUEST,
     QUESTION_COMMENTS_SUCCESS,
     QUESTION_COMMENTS_FAIL,
-    QuestionDetail,
     GET_QUESTION_DETAIL_REQUEST,
     GET_QUESTION_DETAIL_SUCCESS,
     GET_QUESTION_DETAIL_FAIL,
@@ -29,51 +28,13 @@ import {
     DELETE_QUESTION_PAGE_REQUEST,
     DELETE_QUESTION_PAGE_SUCCESS,
     DELETE_QUESTION_PAGE_FAIL,
-
     MAKE_QUESTION_INIT
-
 } from "./Action";
-import { QuestionComment } from "./Action";
-import { card, page } from "../Profile/Action";
+import * as Types from './Types'
 
 
-export interface QuestionCardAction {
-    type: string;
-    payload: card[];
-}
 
-export interface QuestionCommentAction {
-    type: string;
-    payload: Comment[]
-}
-
-export interface QuestionDetailAction {
-    type: string;
-    payload: QuestionDetail[]
-}
-
-export interface QuestionInitState {
-    posting: boolean;
-    fetching: boolean;
-    err: boolean;
-}
-export interface QuestionState extends QuestionInitState {
-    data: {
-        results: page[]
-    }
-}
-
-export interface CommentState extends QuestionInitState {
-    data: QuestionComment[];
-}
-
-export interface QuestionDetailState extends QuestionInitState {
-    data: {
-        results: QuestionDetail[]
-    }
-}
-
-const initialState: QuestionState = {
+const initialState: Types.QuestionState = {
     posting: false,
     fetching: false,
     data: {
@@ -81,14 +42,14 @@ const initialState: QuestionState = {
     },
     err: false
 };
-const initialStateComment: CommentState = {
+const initialStateComment: Types.CommentState = {
     posting: false,
     fetching: false,
     data: [],
     err: false
 };
 
-const initialStateQuestionDetail: QuestionDetailState = {
+const initialStateQuestionDetail: Types.QuestionDetailState = {
     posting: false,
     fetching: false,
     data: {
@@ -97,13 +58,13 @@ const initialStateQuestionDetail: QuestionDetailState = {
     err: false
 }
 
-const initialPatchQuestion: QuestionInitState = {
+const initialPatchQuestion: Types.QuestionInitState = {
     posting: false,
     fetching: false,
     err: false
 }
 
-export const QuestionFeed = (state: QuestionState = initialState, action: QuestionCardAction) => {
+export const QuestionFeed = (state: Types.QuestionState = initialState, action: Types.Action) => {
     switch (action.type) {
         case GET_QUESTION_REQUEST:
             return {
@@ -127,7 +88,7 @@ export const QuestionFeed = (state: QuestionState = initialState, action: Questi
     }
 };
 
-export const MakeQuestionFeed = (state: QuestionState = initialState, action: QuestionCardAction) => {
+export const MakeQuestionFeed = (state: Types.QuestionState = initialState, action: Types.Action) => {
     switch (action.type) {
         case MAKE_QUESTION_INIT:
             return {
@@ -156,7 +117,7 @@ export const MakeQuestionFeed = (state: QuestionState = initialState, action: Qu
             return state;
     }
 };
-export const CommentFeed = (state: CommentState = initialStateComment, action: QuestionCommentAction) => {
+export const CommentFeed = (state: Types.CommentState = initialStateComment, action: Types.Action) => {
     switch (action.type) {
         case MAKE_QUESTION_COMMENT_REQUEST:
             return {
@@ -204,7 +165,7 @@ export const CommentFeed = (state: CommentState = initialStateComment, action: Q
     }
 };
 
-export const QuestionDetailFeed = (state: QuestionDetailState = initialStateQuestionDetail, action: QuestionDetailAction) => {
+export const QuestionDetailFeed = (state: Types.QuestionDetailState = initialStateQuestionDetail, action: Types.Action) => {
     switch (action.type) {
         case GET_QUESTION_DETAIL_INIT:
             return {
@@ -235,7 +196,7 @@ export const QuestionDetailFeed = (state: QuestionDetailState = initialStateQues
     }
 };
 
-export const PatchQuestionFeed = (state: QuestionInitState = initialPatchQuestion, action: { type: string }) => {
+export const PatchQuestionFeed = (state: Types.QuestionInitState = initialPatchQuestion, action: { type: string }) => {
     switch (action.type) {
         case PATCH_QUESTION_INIT:
             return {
@@ -264,7 +225,7 @@ export const PatchQuestionFeed = (state: QuestionInitState = initialPatchQuestio
     }
 };
 
-export const PatchQuestionPages = (state: QuestionInitState = initialPatchQuestion, action: { type: string }) => {
+export const PatchQuestionPages = (state: Types.QuestionInitState = initialPatchQuestion, action: { type: string }) => {
     switch (action.type) {
         case PATCH_QUESTION_PAGE_INIT:
             return {
@@ -293,7 +254,7 @@ export const PatchQuestionPages = (state: QuestionInitState = initialPatchQuesti
     }
 };
 
-export const DeleteQuestionPage = (state: QuestionInitState = initialPatchQuestion, action: { type: string }) => {
+export const DeleteQuestionPage = (state: Types.QuestionInitState = initialPatchQuestion, action: { type: string }) => {
     switch (action.type) {
         case DELETE_QUESTION_PAGE_INIT:
             return {

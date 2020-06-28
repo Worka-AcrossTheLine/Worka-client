@@ -8,9 +8,9 @@ import { SEARCH_REQUEST } from '../../state/Search/Action'
 import { SearchStackParamList } from '../../navigator/SeachNavigation'
 
 import OsView from '../../components/OsView';
-import { RootState } from '../../reducers';
+import { RootState } from '../../state';
 import { FlatList } from 'react-native-gesture-handler';
-import { Feed } from '../../state/Feed/Action';
+import { Feed } from '../../state/Feed/Types';
 import MentoCard from '../../components/MentoCard';
 import DetailModal from '../../components/DetailModal';
 import { ThemeProps } from '../../style/theme';

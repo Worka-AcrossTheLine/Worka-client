@@ -6,7 +6,7 @@ import { StackNavigationProp } from '@react-navigation/stack'
 import { AuthStackParamList } from '../../navigator/AuthNavigation'
 
 import SignButton from '../../components/SignButton'
-import { LOGIN_SKIP } from '../../reducers/login'
+import { LOGIN_SKIP } from '../../state/Login/Action'
 
 
 type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'Home'>;

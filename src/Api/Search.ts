@@ -1,7 +1,7 @@
 import { Alert } from 'react-native';
 import axios, { AxiosError, AxiosPromise } from "axios";
 
-import { data } from '../state/Search/Reducer'
+import { data } from '../state/Search/Types'
 import base from './baseURL.json'
 
 const reqresApi = axios.create({

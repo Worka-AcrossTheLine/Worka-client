@@ -1,13 +1,14 @@
 import { Alert } from 'react-native'
 import axios, { AxiosError, AxiosPromise } from "axios";
 import base from './baseURL.json'
-import { PatchProfileImagePayload } from '../state/Profile/Action.js';
-import { Form } from './Feed.js';
+import { PatchProfileImagePayload ,ProfileResponse, UserImageResponse} from '../state/Profile/Types';
+import { Form } from '../state/Feed/Types';
+import { GetQuestionResponse } from '../state/Question/Types';
 const reqresApi = axios.create({
     baseURL: base.baseURL,
 });
 
-export const getProfile = ({ pk, token }: { token: string, pk: string }) => {
+export const getProfile = ({ pk, token }: { token: string, pk: string }): AxiosPromise<ProfileResponse> => {
     return reqresApi.get(`profile/${pk}/`, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
             if (error) {
@@ -17,7 +18,7 @@ export const getProfile = ({ pk, token }: { token: string, pk: string }) => {
         });
 };
 
-export const getQuestion = ({ pk, token }: { pk: string, token: string }) => {
+export const getQuestion = ({ pk, token }: { pk: string, token: string }): AxiosPromise<GetQuestionResponse> => {
     return reqresApi.get(`pages/${pk}/questions/`, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
             if (error) {
@@ -27,7 +28,7 @@ export const getQuestion = ({ pk, token }: { pk: string, token: string }) => {
         });
 };
 
-export const patchComment = ({ token, comment }: { token: string, comment: string }) => {
+export const patchComment = ({ token, comment }: { token: string, comment: string }):AxiosPromise<void> => {
     return reqresApi.patch(`accounts/comment/`, { comment }, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
             if (error) {
@@ -37,7 +38,7 @@ export const patchComment = ({ token, comment }: { token: string, comment: strin
         })
 }
 
-export const patchUserImages = ({ token, images }: PatchProfileImagePayload) => {
+export const patchUserImages = ({ token, images }: PatchProfileImagePayload):AxiosPromise<UserImageResponse> => {
     if (!images) {
         throw "NEED IMAGES";
     }

@@ -1,36 +1,7 @@
-import {
-  GET_FEED_FAIL,
-  GET_FEED_REQUEST,
-  GET_FEED_SUCCESS,
-  MAKE_FEED_FAIL,
-  MAKE_FEED_REQUEST,
-  MAKE_FEED_SUCCESS,
-  GET_FEED_INIT,
-  MAKE_FEED_INIT,
-  ONLY_GET_FEED_REQUEST,
-  PATCH_FEED_INIT,
-  PATCH_FEED_REQUEST,
-  PATCH_FEED_FAIL,
-  PATCH_FEED_SUCCESS,
-  DELETE_FEED_INIT,
-  DELETE_FEED_REQUEST,
-  DELETE_FEED_FAIL,
-  DELETE_FEED_SUCCESS
-} from './Action';
-import { Feed } from "./Action";
+import * as ActionTypes from './Action';
+import * as Types from "./Types";
 
-export interface FeedState {
-  posting: boolean;
-  fetching: boolean;
-  data: Feed[]
-  err: boolean;
-}
-export interface FeedAction {
-  type: string;
-  payload: Feed[]
-}
-
-const initialState: FeedState = {
+const initialState: Types.FeedState = {
   posting: false,
   fetching: false,
   data: [],
@@ -39,26 +10,26 @@ const initialState: FeedState = {
 
 
 
-export const getFeed = (state: FeedState = initialState, action: FeedAction) => {
+export const getFeed = (state: Types.FeedState = initialState, action: Types.FeedAction) => {
   switch (action.type) {
-    case GET_FEED_INIT:
+    case ActionTypes.GET_FEED_INIT:
       return {
         ...initialState
       }
-    case GET_FEED_REQUEST:
+    case ActionTypes.GET_FEED_REQUEST:
       return {
         ...state,
         fetching: true,
         err: false,
       };
-    case GET_FEED_SUCCESS:
+    case ActionTypes.GET_FEED_SUCCESS:
       return {
         ...state,
         fetching: false,
         data: [...action.payload, ...state.data],
         err: false,
       };
-    case PATCH_FEED_SUCCESS:
+    case ActionTypes.PATCH_FEED_SUCCESS:
       return {
         ...state,
         posting: true,
@@ -66,13 +37,13 @@ export const getFeed = (state: FeedState = initialState, action: FeedAction) => 
         data: [action.payload, ...state.data],
         err: false,
       };
-    case GET_FEED_FAIL:
+    case ActionTypes.GET_FEED_FAIL:
       return {
         ...state,
         fetching: false,
         err: true,
       };
-    case ONLY_GET_FEED_REQUEST:
+    case ActionTypes.ONLY_GET_FEED_REQUEST:
       return {
         ...state,
         fetching: true,
@@ -83,26 +54,26 @@ export const getFeed = (state: FeedState = initialState, action: FeedAction) => 
   }
 };
 
-export const PostFeed = (state: FeedState = initialState, action: FeedAction) => {
+export const PostFeed = (state: Types.FeedState = initialState, action: Types.FeedAction) => {
   switch (action.type) {
-    case MAKE_FEED_INIT:
+    case ActionTypes.MAKE_FEED_INIT:
       return {
         ...initialState
       }
-    case MAKE_FEED_REQUEST:
+    case ActionTypes.MAKE_FEED_REQUEST:
       return {
         ...state,
         fetching: true,
         err: false,
       };
-    case MAKE_FEED_SUCCESS:
+    case ActionTypes.MAKE_FEED_SUCCESS:
       return {
         ...state,
         posting: true,
         fetching: false,
         err: false
       }
-    case MAKE_FEED_FAIL:
+    case ActionTypes.MAKE_FEED_FAIL:
       return {
         ...state,
         fetching: false,
@@ -113,19 +84,19 @@ export const PostFeed = (state: FeedState = initialState, action: FeedAction) =>
   }
 };
 
-export const PatchFeed = (state: FeedState = initialState, action: FeedAction) => {
+export const PatchFeed = (state: Types.FeedState = initialState, action: Types.FeedAction) => {
   switch (action.type) {
-    case PATCH_FEED_INIT:
+    case ActionTypes.PATCH_FEED_INIT:
       return {
         ...initialState
       }
-    case PATCH_FEED_REQUEST:
+    case ActionTypes.PATCH_FEED_REQUEST:
       return {
         ...state,
         fetching: true,
         err: false,
       };
-    case PATCH_FEED_SUCCESS:
+    case ActionTypes.PATCH_FEED_SUCCESS:
       return {
         ...state,
         posting: true,
@@ -133,7 +104,7 @@ export const PatchFeed = (state: FeedState = initialState, action: FeedAction) =
         data: [action.payload, ...state.data],
         err: false,
       };
-    case PATCH_FEED_FAIL:
+    case ActionTypes.PATCH_FEED_FAIL:
       return {
         ...state,
         fetching: false,
@@ -144,26 +115,26 @@ export const PatchFeed = (state: FeedState = initialState, action: FeedAction) =
   }
 }
 
-export const DeleteFeed = (state: FeedState = initialState, action: FeedAction) => {
+export const DeleteFeed = (state: Types.FeedState = initialState, action: Types.FeedAction) => {
   switch (action.type) {
-    case DELETE_FEED_INIT:
+    case ActionTypes.DELETE_FEED_INIT:
       return {
         ...initialState
       }
-    case DELETE_FEED_REQUEST:
+    case ActionTypes.DELETE_FEED_REQUEST:
       return {
         ...state,
         fetching: true,
         err: false,
       };
-    case DELETE_FEED_SUCCESS:
+    case ActionTypes.DELETE_FEED_SUCCESS:
       return {
         ...state,
         posting: true,
         fetching: false,
         err: false,
       };
-    case DELETE_FEED_FAIL:
+    case ActionTypes.DELETE_FEED_FAIL:
       return {
         ...state,
         fetching: false,

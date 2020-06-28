@@ -9,8 +9,8 @@ import SubmitButton from '../../components/MiddleButton';
 
 import validCheck from '../../constants/validCheck'
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../reducers';
-import { FORGOT_USERNAME_REQUEST, FORGOT_USERNAME_INIT } from '../../reducers/login';
+import { RootState } from '../../state';
+import { FORGOT_USERNAME_REQUEST, FORGOT_USERNAME_INIT } from '../../state/Login/Action';
 import { AuthStackParamList } from '../../navigator/AuthNavigation';
 
 type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'ForgotUsername'>;
