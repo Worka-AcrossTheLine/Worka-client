@@ -38,7 +38,7 @@ type select = 'card' | 'question';
 
 type ModalType = 'setting' | 'detail' | 'question' | 'none';
 
-type modal = {
+type ModalState = {
     type: ModalType;
     detail: card | null;
     question: page | null;
@@ -133,7 +133,7 @@ const SelectText = styled.Text`
 
 const Profile = ({ route }: Props) => {
     const [select, setSelect] = useState<select>("card");
-    const [modal, setModal] = useState<modal>({
+    const [modal, setModal] = useState<ModalState>({
         type: 'none',
         detail: null,
         question: null
@@ -208,7 +208,6 @@ const Profile = ({ route }: Props) => {
     }
 
     useEffect(() => {
-        alert("USE EFFECT");
         if ('pk' in logininfo.data) {
             dispatch({ type: PROFILE_REQUEST, payload: { pk: (route && route.params && route.params.pk) || logininfo.data.pk, token: logininfo.token } })
         }
@@ -287,14 +286,14 @@ const Profile = ({ route }: Props) => {
                             }
                         </BodyWrapper>
                     </ScrollView>
-                    {modal.detail && 'id' in modal.detail && modal.type === 'detail' &&
+                    {modal.detail && modal.type === 'detail' &&
                         <DetailModal
                             visible={true}
                             onPress={handelClose}
                             {...modal.detail}
                         />
                     }
-                    {modal.question && 'id' in modal.question && modal.type === 'question' &&
+                    {modal.question && modal.type === 'question' &&
                         <QuestionModal
                             visible={true}
                             onPress={handelClose}
