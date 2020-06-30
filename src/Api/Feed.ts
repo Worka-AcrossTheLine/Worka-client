@@ -1,19 +1,15 @@
 import { Alert } from 'react-native';
 import axios, { AxiosError, AxiosPromise } from "axios";
 import base from './baseURL.json'
-import { responseFeeds, PatchFeedPayload, Feed } from "../state/Feed/Action";
+import * as Types from '../state/Feed/Types'
 
-import { makeCard } from '../state/Feed/Action'
 
-export interface ResponseMakeFeed {
-    data: Feed;
-}
 
 const reqresApi = axios.create({
     baseURL: base.baseURL
 });
 
-export const getFeed = ({ token }: { token: string }): AxiosPromise<responseFeeds> => {
+export const getFeed = ({ token }: { token: string }): AxiosPromise<Types.responseFeeds> => {
     return reqresApi.get(`post/feed/`, { headers: { Authorization: `JWT ${token}` } })
         .catch((error: AxiosError) => {
             if (error) {
@@ -24,24 +20,17 @@ export const getFeed = ({ token }: { token: string }): AxiosPromise<responseFeed
 };
 
 
-export const getFeedDetail = (body: string) => {
-    return reqresApi.get(`post/detail/${body}/`)
-        .catch((error: AxiosError) => {
-            if (error) {
-                throw error.response
-            }
-            throw { status: 500 }
-        });
-};
+// export const getFeedDetail = (body: string) => {
+//     return reqresApi.get(`post/detail/${body}/`)
+//         .catch((error: AxiosError) => {
+//             if (error) {
+//                 throw error.response
+//             }
+//             throw { status: 500 }
+//         });
+// };
 
-export interface Form extends FormData {
-    append(name: string,
-        value: string | Blob | {
-            uri: string;
-            name?: string;
-            type: string
-        }): void;
-}
+
 
 
 export const makeFeed = ({ title,
@@ -49,8 +38,8 @@ export const makeFeed = ({ title,
     text,
     images,
     token
-}: makeCard): AxiosPromise<ResponseMakeFeed> => {
-    const form: Form = new FormData();
+}: Types.makeCard): AxiosPromise<Types.ResponseMakeFeed> => {
+    const form: Types.Form = new FormData();
     form.append("title", title);
     for (let i = 0; i < tags.length; i++) {
         const tag = tags[i];
@@ -84,8 +73,8 @@ export const patchFeed = ({
     tags,
     token,
     id
-}: PatchFeedPayload) => {
-    const form: Form = new FormData();
+}: Types.PatchFeedPayload):AxiosPromise<void> => {
+    const form: Types.Form = new FormData();
     form.append("title", title);
     for (let i = 0; i < tags.length; i++) {
         const tag = tags[i];
@@ -114,7 +103,7 @@ export const patchFeed = ({
         })
 }
 
-export const deleteFeed = ({ id, token }: { id: number, token: string }) => {
+export const deleteFeed = ({ id, token }: { id: number, token: string }):AxiosPromise<void> => {
     return reqresApi.delete(`post/feed/${id}/`, {
         headers: {
             Authorization: `JWT ${token}`

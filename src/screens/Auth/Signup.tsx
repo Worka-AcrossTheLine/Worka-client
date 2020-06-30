@@ -4,14 +4,14 @@ import styled from 'styled-components/native'
 import { useHeaderHeight, StackNavigationProp } from '@react-navigation/stack'
 import { useSelector, useDispatch } from 'react-redux';
 
-import { SIGNUP_REQUESTED, SIGNUP_INIT } from '../../reducers/signup'
+import { SIGNUP_REQUESTED, SIGNUP_INIT } from '../../state/Signup/Action'
 import { AuthStackParamList } from '../../navigator/AuthNavigation'
 import SignInput from '../../components/SignInput';
 import SignupText from '../../components/SignupText';
 import MiddleButton from '../../components/MiddleButton';
 import { HEIGHT } from '../../constants/dimensions';
 import validCheck from '../../constants/validCheck'
-import { RootState } from '../../reducers';
+import { RootState } from '../../state';
 
 type AuthHomeNavigationProps = StackNavigationProp<AuthStackParamList, 'Signup'>
 

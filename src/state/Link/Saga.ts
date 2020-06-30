@@ -2,8 +2,8 @@ import { Alert } from 'react-native';
 import { call, put } from "redux-saga/effects"
 import { getLinkSuccess, GET_LINK_FAIL, MAKE_LINK_FAIL, makeLinkSuccess } from "./Action";
 import { getLink, postLink } from "../../Api/Link"
-import { Action } from "../index"
-import { LOGOUT } from "../../reducers/login";
+import { Action } from "../RootSaga"
+import { LOGOUT } from "../Login/Action";
 import { errorHandler } from "../errorHandler";
 
 export function* handleLink(action: Action) {

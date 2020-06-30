@@ -6,8 +6,8 @@ import styled from 'styled-components/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { AuthStackParamList } from '../../navigator/AuthNavigation'
 
-import { RootState } from '../../reducers'
-import { LOGIN_INIT, LOGIN_REQUESTED } from '../../reducers/login'
+import { RootState } from '../../state'
+import { LOGIN_INIT, LOGIN_REQUESTED } from '../../state/Login/Action'
 
 import SignInput from '../../components/SignInput'
 import MiddleButton from '../../components/MiddleButton'

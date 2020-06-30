@@ -9,8 +9,8 @@ import SignInput from '../../components/SignInput'
 import SubmitButton from '../../components/MiddleButton';
 
 import validCheck from '../../constants/validCheck'
-import { RootState } from '../../reducers';
-import { FORGOT_PASSWORD_REQUEST, FORGOT_PASSWORD_INIT } from '../../reducers/login';
+import { RootState } from '../../state';
+import { FORGOT_PASSWORD_REQUEST, FORGOT_PASSWORD_INIT } from '../../state/Login/Action';
 
 type AuthHomeNavigationProp = StackNavigationProp<AuthStackParamList, 'ForgotPassword'>;
 

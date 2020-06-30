@@ -4,7 +4,7 @@ import styled from 'styled-components/native';
 
 import { ThemeProps } from '../style/theme';
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from '../reducers';
+import { RootState } from '../state';
 
 import { FontAwesome } from '@expo/vector-icons';
 
@@ -13,7 +13,8 @@ import UpArrow from '../../assets/UpArrow.svg';
 import Tag from './Tag';
 import { GET_QUESTION_DETAIL_REQUEST, QUESTION_COMMENTS_REQUEST, MAKE_QUESTION_COMMENT_REQUEST, GET_QUESTION_DETAIL_INIT, QUESTION_COMMENTS_INIT, PATCH_QUESTION_REQUEST, PATCH_QUESTION_INIT, PATCH_QUESTION_PAGE_REQUEST, PATCH_QUESTION_PAGE_INIT, DELETE_QUESTION_PAGE_INIT, DELETE_QUESTION_PAGE_REQUEST, GET_QUESTION_REQUEST, THUMP_HANDLE_REQUEST } from "../state/Question/Action";
 import { TextInput } from 'react-native-gesture-handler';
-import { PROFILE_REQUEST, page } from '../state/Profile/Action';
+import { PROFILE_REQUEST } from '../state/Profile/Action';
+import { page } from '../state/Profile/Types'
 import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types';
 import { SearchStackParamList } from '../navigator/SeachNavigation';
 

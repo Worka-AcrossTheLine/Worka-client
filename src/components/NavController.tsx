@@ -5,8 +5,8 @@ import AuthNavigation from '../navigator/AuthNavigation';
 import BottomNavigation from '../navigator/BottomNavigation'
 import Tendency from '../screens/Tendency/Select'
 
-import { RootState } from '../reducers';
-import { LOGIN_SUCCESS, LOGIN_REQUESTED, LOGIN_INIT } from "../reducers/login";
+import { RootState } from '../state';
+import { LOGIN_SUCCESS, LOGIN_REQUESTED, LOGIN_INIT } from "../state/Login/Action";
 import { LoginInfo } from "../../App";
 import { GET_FEED_REQUEST, GET_FEED_INIT } from "../state/Feed/Action";
 import { ActivityIndicator } from 'react-native';

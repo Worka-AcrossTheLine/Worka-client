@@ -1,62 +1,4 @@
-interface Question {
-    author: {
-        username: string
-    },
-    title: string,
-    tags: string[]
-}
-interface QuestionRequest {
-    tag: string,
-    title: string,
-    question: string,
-    token: string
-}
-
-interface author {
-    pk: number,
-    username: string,
-    user_image: string,
-}
-
-export interface QuestionDetail {
-    id: number,
-    content: string,
-    created_at: string,
-}
-
-export interface QuestionComment {
-    id: number,
-    author: author,
-    text: string,
-    is_like: string,
-    is_unlike: string,
-    like_count: string,
-    unlike_count: string,
-    is_mento: string,
-    created_at: string
-}
-
-export interface MakeCommentRequest {
-    question_pk: number,
-    page_pk: number,
-    text: string,
-    token: string,
-}
-
-interface CommentRequest {
-    page_pk: number,
-    question_pk: number,
-    token: string
-}
-
-export interface LikeActions {
-    id: number;
-    questionId: number;
-    commentId: number;
-    token: string;
-
-}
-
+import * as Types from './Types'
 export const MAKE_QUESTION_REQUEST = 'MAKE_QUESTION_REQUEST'
 export const MAKE_QUESTION_SUCCESS = 'MAKE_QUESTION_SUCCESS'
 export const MAKE_QUESTION_FAIL = 'MAKE_QUESTION_FAIL'
@@ -101,10 +43,10 @@ export const QUESTION_COMMENTS_REQUEST = 'QUESTION_COMMENTS_REQUEST'
 export const QUESTION_COMMENTS_SUCCESS = 'QUESTION_COMMENTS_SUCCESS'
 export const QUESTION_COMMENTS_FAIL = 'QUESTION_COMMENTS_FAIL'
 
-export const makeQuestionRequest = (data: QuestionRequest) => {
+export const makeQuestionRequest = (data: Types.QuestionRequest) => {
     return { type: MAKE_QUESTION_REQUEST, payload: { data } };
 };
-export const makeQuestionSuccess = (data: Question) => {
+export const makeQuestionSuccess = (data: Types.Question) => {
     return { type: MAKE_QUESTION_SUCCESS, payload: data };
 };
 export const MakeQuestionFail = (err: boolean) => {
@@ -114,10 +56,10 @@ export const MakeQuestionInit = () => {
     return { type: MAKE_QUESTION_INIT }
 }
 
-export const makeQuestionCommentRequest = (data: MakeCommentRequest) => {
+export const makeQuestionCommentRequest = (data: Types.MakeCommentRequest) => {
     return { type: MAKE_QUESTION_COMMENT_REQUEST, payload: { data } };
 };
-export const makeQuestionCommentSuccess = (data: Question[]) => {
+export const makeQuestionCommentSuccess = (data: Types.Question[]) => {
     return { type: MAKE_QUESTION_COMMENT_SUCCESS, payload: { data } };
 };
 export const makeQuestionCommentFail = (err: boolean) => {
@@ -128,17 +70,17 @@ export const getQuestionDetailRequest = ({ id, token }: { id: number, token: str
     return { type: GET_QUESTION_DETAIL_REQUEST, payload: { id, token } };
 }
 
-export const getQuestionDetailSuccess = (data: QuestionDetail[]) => {
+export const getQuestionDetailSuccess = (data: Types.QuestionDetail[]) => {
     return { type: GET_QUESTION_DETAIL_SUCCESS, payload: { data } };
 };
 export const getQuestionDetailFail = (err: boolean) => {
     return { type: GET_QUESTION_DETAIL_FAIL, payload: { err } };
 };
 
-export const QuestionCommentRequest = (data: CommentRequest) => {
+export const QuestionCommentRequest = (data: Types.CommentRequest) => {
     return { type: QUESTION_COMMENTS_REQUEST, payload: { data } };
 };
-export const QuestionCommentSuccess = (data: QuestionComment[]) => {
+export const QuestionCommentSuccess = (data: Types.QuestionComment[]) => {
     return { type: QUESTION_COMMENTS_SUCCESS, payload: { data } };
 };
 export const QuestionCommentFail = (err: boolean) => {

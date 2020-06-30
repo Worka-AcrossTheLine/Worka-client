@@ -1,23 +1,9 @@
 import { SEARCH_FAILURCH, SEARCH_REQUEST, SEARCH_SUCCESS } from "./Action";
-import { Feed } from "../Feed/Action";
+import * as Types from "./Types"
 
-export interface data {
-    count: number;
-    results: Feed[];
-}
 
-export interface SearchState {
-    fetching: boolean;
-    err: boolean;
-    data: data;
-}
 
-export interface Action {
-    type: string;
-    payload: data;
-}
-
-const initialState: SearchState = {
+const initialState: Types.SearchState = {
     fetching: false,
     err: false,
     data: {
@@ -27,8 +13,8 @@ const initialState: SearchState = {
 };
 
 export const search = (
-    state: SearchState = initialState,
-    action: Action
+    state: Types.SearchState = initialState,
+    action: Types.ReducerAction
 ) => {
     switch (action.type) {
         case SEARCH_REQUEST:

@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components/native';
 
-import { Feed } from "../state/Feed/Action";
+import { Feed } from "../state/Feed/Types";
 
 import { ThemeProps } from '../style/theme';
 

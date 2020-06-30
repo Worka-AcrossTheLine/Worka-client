@@ -11,62 +11,11 @@ import {
     PROFILE_INFO_FAIL,
     PROFILE_CARD_SUCCESS,
 } from "./Action";
-import { Profile, ProfileQuestion, Comment } from "./Action";
-
-export interface ProfileState {
-    fetching: boolean;
-    data: Profile;
-    err: boolean;
-}
-
-export interface GetProfileAction {
-    type: string;
-    payload: {
-        token: string;
-        pk: string;
-    }
-}
-
-export interface ProfileReducePayload {
-    type: string;
-    payload: {
-        data: Profile;
-        err: boolean;
-    }
-}
+import * as Types from './Types'
 
 
 
-export interface PatchCommentsAction {
-    type: string;
-    payload: {
-        token: string;
-        comment: string;
-    }
-}
-
-export interface ProfileQuestionState {
-    fetching: boolean;
-    data: ProfileQuestion[];
-    err: boolean;
-}
-
-export interface ProfileQuestionReducePayload {
-    type: string;
-    payload: {
-        data: ProfileQuestion[];
-        err: boolean;
-    }
-}
-
-export interface ProfileQuestionDetailState {
-    fetching: boolean;
-    data: ProfileQuestion;
-    err: boolean;
-}
-
-
-const initialState: ProfileState = {
+const initialState: Types.ProfileState = {
     fetching: false,
     data: {
         user: {
@@ -83,13 +32,9 @@ const initialState: ProfileState = {
     },
     err: false
 };
-const initialStateQ: ProfileQuestionState = {
-    fetching: false,
-    data: [],
-    err: false
-};
 
-export const ProfileFeed = (state: ProfileState = initialState, action: ProfileReducePayload) => {
+
+export const ProfileFeed = (state: Types.ProfileState = initialState, action: Types.ProfileReducePayload) => {
     switch (action.type) {
         case PROFILE_REQUEST:
             return {
@@ -165,7 +110,7 @@ export const ProfileFeed = (state: ProfileState = initialState, action: ProfileR
     }
 };
 
-export const ProfileInfo = (state: ProfileState = initialState, action: ProfileReducePayload) => {
+export const ProfileInfo = (state: Types.ProfileState = initialState, action: Types.ProfileReducePayload) => {
     switch (action.type) {
         case PROFILE_INFO_REQUEST:
             return {

@@ -6,11 +6,11 @@ import QuestionCard from '../../../components/QuestionCard';
 
 import { useDispatch, useSelector } from "react-redux";
 import { GET_QUESTION_REQUEST } from "../../../state/Question/Action";
-import { RootState } from "../../../reducers";
+import { RootState } from "../../../state";
 import QuestionModal from '../../../components/QuestionModal';
 import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types';
 import { SearchStackParamList } from '../../../navigator/SeachNavigation';
-import { page } from '../../../state/Profile/Action';
+import { page } from '../../../state/Profile/Types';
 
 type navigation = StackNavigationProp<SearchStackParamList, 'Home'>
 

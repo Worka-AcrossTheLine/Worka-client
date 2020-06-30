@@ -14,7 +14,7 @@ import { Keyboard } from 'react-native'
 import { useDispatch, useSelector } from "react-redux";
 import { MAKE_QUESTION_REQUEST, MAKE_QUESTION_INIT } from '../../state/Question/Action'
 import { TopTapParamList } from "../../navigator/TopNavigation";
-import { RootState } from "../../reducers";
+import { RootState } from "../../state";
 import { makeFeed } from '../../Api/Feed';
 import { ScrollView } from 'react-native-gesture-handler';
 import Tag from "../../components/Tag";

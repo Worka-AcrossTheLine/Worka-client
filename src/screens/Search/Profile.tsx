@@ -22,9 +22,9 @@ import { useDispatch, useSelector } from "react-redux";
 
 import QuestionModal from '../../components/QuestionModal';
 import { PROFILE_INFO_REQUEST } from "../../state/Profile/Action";
-import { LOGOUT, WITHDRAWAL, LOGOUT_REQUEST } from '../../reducers/login'
-import { RootState } from '../../reducers';
-import { card, page } from '../../state/Profile/Action'
+import { LOGOUT, WITHDRAWAL, LOGOUT_REQUEST } from '../../state/Login/Action'
+import { RootState } from '../../state';
+import { card, page } from '../../state/Profile/Types'
 import { RouteProp } from '@react-navigation/core';
 import { SearchStackParamList } from '../../navigator/SeachNavigation';
 

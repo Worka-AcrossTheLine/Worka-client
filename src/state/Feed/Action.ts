@@ -1,42 +1,4 @@
-import { author } from "../Profile/Action";
-
-export interface makeCard {
-  title: string,
-  tags: [],
-  text: string,
-  images: string,
-  token: string,
-  pk: string,
-}
-export interface Feed {
-  id: number,
-  author: author,
-  title: string,
-  images: string,
-  text: string,
-  created_at: string,
-  updated_at: string,
-  number_of_likes: string,
-  number_of_comments: string,
-  post_comments?: string[],
-  tags: string[]
-}
-
-export interface responseFeeds {
-  count: number,
-  next: string,
-  previous: string,
-  results: Feed[]
-}
-
-export interface PatchFeedPayload {
-  images: string;
-  title: string;
-  text: string;
-  tags: string[];
-  token: string;
-  id: number;
-}
+import * as Types from './Types'
 
 export const GET_FEED_INIT = 'GET_FEED_INIT';
 export const GET_FEED_REQUEST = 'GET_FEED_REQUEST';
@@ -72,14 +34,14 @@ export const GET_TAG_FAIL = 'GET_TAG_FAIL';
 export const getFeedRequest = () => {
   return { type: GET_FEED_REQUEST };
 };
-export const getFeedSuccess = (data: Feed[]) => {
+export const getFeedSuccess = (data: Types.Feed[]) => {
   return { type: GET_FEED_SUCCESS, payload: data };
 };
 export const getFeedFail = (err: boolean) => {
   return { type: GET_FEED_FAIL, payload: { err } };
 };
 
-export const makeFeedRequest = (data: makeCard) => {
+export const makeFeedRequest = (data: Types.makeCard) => {
   return { type: MAKE_FEED_REQUEST, payload: { data } }
 }
 export const makeFeedSuccess = () => {

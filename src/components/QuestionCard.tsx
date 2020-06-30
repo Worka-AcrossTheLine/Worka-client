@@ -6,7 +6,7 @@ import ShadowBox from './ShadowBox'
 import Tag from './Tag'
 
 import { ThemeProps } from '../style/theme';
-import { page } from '../state/Profile/Action';
+import { page } from '../state/Profile/Types';
 
 interface Props extends page {
 

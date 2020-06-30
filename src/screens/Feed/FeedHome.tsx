@@ -14,12 +14,13 @@ import {
 import styled from 'styled-components/native';
 
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../reducers";
-import { GET_FEED_REQUEST, responseFeeds, Feed, ONLY_GET_FEED_REQUEST, } from "../../state/Feed/Action";
+import { RootState } from "../../state";
+import {  ONLY_GET_FEED_REQUEST } from "../../state/Feed/Action";
+import { Feed } from "../../state/Feed/Types"
 
 import MentoCard from '../../components/MentoCard';
 import DetailModal from '../../components/DetailModal';
-import { LOGIN_SUCCESS } from "../../reducers/login";
+import { LOGIN_SUCCESS } from "../../state/Login/Action";
 import { login } from "../../Api/login";
 import { SearchStackParamList } from '../../navigator/SeachNavigation';
 import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types';

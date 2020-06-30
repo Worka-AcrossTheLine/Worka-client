@@ -1,8 +1,8 @@
 import { Alert } from 'react-native'
 import axios, { AxiosPromise, AxiosError } from 'axios';
 import base from './baseURL.json'
-import { LoginPayload, forgetPayload, LoginResponse, forgetResponse } from '../reducers/login'
-import { SignupPayload, SignupResponse } from '../reducers/signup';
+import { LoginPayload, forgetPayload, LoginResponse, forgetResponse } from '../state/Login/Types'
+import { SignupPayload, SignupResponse } from '../state/Signup/Types';
 
 const reqresApi = axios.create({
   baseURL: base.baseURL,
@@ -40,7 +40,7 @@ export const signup = (
 
 export const forgotPassword = (
   { username, email }: forgetPayload
-) => {
+) :AxiosPromise<void>=> {
   return reqresApi.post('accounts/tmp-password/', { username, email })
     .catch((error: AxiosError) => {
       if (error) {
@@ -52,7 +52,7 @@ export const forgotPassword = (
 
 export const forgotUsername = (
   { email }: { email: string }
-) => {
+) : AxiosPromise<void> => {
   return reqresApi.post('accounts/forgot-username/', { email })
     .catch((error: AxiosError) => {
       if ('response' in error) {

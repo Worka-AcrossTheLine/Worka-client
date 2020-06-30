@@ -8,9 +8,10 @@ import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
 
 import Xsvg from '../../assets/X_1.svg';
-import { Feed, PATCH_FEED_REQUEST, PATCH_FEED_INIT, DELETE_FEED_REQUEST, DELETE_FEED_INIT } from '../state/Feed/Action';
+import { PATCH_FEED_REQUEST, PATCH_FEED_INIT, DELETE_FEED_REQUEST, DELETE_FEED_INIT } from '../state/Feed/Action';
+import { Feed } from '../state/Feed/Types'
 import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../reducers';
+import { RootState } from '../state';
 import { PROFILE_REQUEST } from '../state/Profile/Action';
 import { StackNavigationProp } from '@react-navigation/stack/lib/typescript/src/types';
 import { SearchStackParamList } from '../navigator/SeachNavigation';
