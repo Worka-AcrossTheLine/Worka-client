@@ -9,7 +9,7 @@
     ],
     "version": "1.2.0",
     "orientation": "portrait",
-    "icon": "./assets/iosWorka2.png",
+    "icon": "./assets/icon_192.png",
     "splash": {
       "image": "./assets/iosWorka2.png",
       "resizeMode": "contain",
