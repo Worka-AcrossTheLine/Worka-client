@@ -66,10 +66,10 @@ const FeedHome = ({ navigation }: Props) => {
         clearTimeout(timeoutNumber);
         if (!modalVisible) {
             const timeNum = setTimeout(() => {
-                setModalVisible(true)
                 setStorage({
                     ...item
                 })
+                setModalVisible(true)
             }, 50);
             setTimeoutNumber(timeNum);
         }

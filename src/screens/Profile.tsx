@@ -208,7 +208,6 @@ const Profile = ({ route }: Props) => {
     }
 
     useEffect(() => {
-        alert("USE EFFECT");
         if ('pk' in logininfo.data) {
             dispatch({ type: PROFILE_REQUEST, payload: { pk: (route && route.params && route.params.pk) || logininfo.data.pk, token: logininfo.token } })
         }
