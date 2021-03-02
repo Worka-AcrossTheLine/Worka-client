@@ -18,7 +18,7 @@
     "@types/react-redux": "^7.1.9",
     "@types/redux-actions": "^2.6.1",
     "@types/redux-saga": "^0.10.5",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "expo": "~37.0.3",
     "expo-font": "^8.1.1",
     "expo-image-picker": "^8.1.0",
